@@ -9,7 +9,7 @@ try:
 except ImportError:
     pass
 
-from dasf.preprocessing import StantardScaler
+from dasf.ml.preprocessing import StantardScaler
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
