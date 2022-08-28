@@ -31,8 +31,6 @@ dependencies:
     - ipympl
     - pandas
     - prefect
-    - segyio
-    - segysak
     - sklearn
     - scikit-image
     - torch
