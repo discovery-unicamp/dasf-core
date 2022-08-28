@@ -1,0 +1,33 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # TODO: add python 3.10 when it is faster than others
+        python-version: ["3.8", "3.9"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+          $HOME/.poetry/bin/poetry self update
+          $HOME/.poetry/bin/poetry config virtualenvs.create false
+          $HOME/.poetry/bin/poetry build
+          pip install dist/*.whl flake8
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 dasf/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 dasf/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Run test cases
+        run: |
+          pytest tests/
