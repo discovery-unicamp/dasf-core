@@ -1,7 +1,5 @@
 # DASF is an Accelerated and Scalable Framework
 
-[![Build](https://github.com/lmcad-unicamp/dasf-core/actions/workflows/ci.yaml/badge.svg)](https://github.com/lmcad-unicamp/dasf-core/actions/workflows/ci.yaml)
-
 DASF is a generic framework specialized in acceleration and scaling common 
 techniques for Machine Learning. DASF uses most methods and function from 
 the most common libraries to increase the speed up of most algorithms. Part 
