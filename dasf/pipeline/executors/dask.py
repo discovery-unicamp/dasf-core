@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 import os
-import GPUtil
 
-import dask.delayed as dd
 import dask_memusage as dmem
 
 from pathlib import Path

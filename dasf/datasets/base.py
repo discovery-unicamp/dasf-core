@@ -16,8 +16,6 @@ from enum import Enum
 from pathlib import Path
 
 from dasf.utils import utils
-from dasf.utils.utils import is_gpu_supported
-from dasf.utils.utils import is_dask_supported
 from dasf.utils.generators import generate_load
 from dasf.pipeline import ParameterOperator
 from dasf.pipeline.types import TaskExecutorType
