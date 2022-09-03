@@ -10,7 +10,7 @@ ENV SINGULARITYENV_TINI_SUBREAPER=1
 COPY environment.yml /tmp/
 
 # Set timezone to Greenwich
-RUN apt-get update && DEBIAN_FRONTEND="noninteractive" TZ="Europe/London" apt-get install git wget bzip2 graphviz -y \
+RUN apt-get update && DEBIAN_FRONTEND="noninteractive" TZ="Europe/London" apt-get install git wget bzip2 graphviz gcc g++ python3-dev -y \
     && wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba --strip-components=1 \
     && cp micromamba /usr/bin/ \
     && touch /root/.bashrc

@@ -42,9 +42,9 @@ CONTAINER_CMD=$(GET_CONTAINER_CMD)
 DOCKERFILE_DIR=$DOCKERFILE_DIR/$ARCH_TYPE
 
 # Copy respective conda settings
-cp conda/*.yml $DOCKERFILE_DIR
-cp scripts/.bashrc $DOCKERFILE_DIR
-cp scripts/entrypoint.sh $DOCKERFILE_DIR
+cp conda/$ARCH_TYPE/*.yml $DOCKERFILE_DIR
+cp scripts/$ARCH_TYPE/.bashrc $DOCKERFILE_DIR
+cp scripts/$ARCH_TYPE/entrypoint.sh $DOCKERFILE_DIR
 
 pushd $DOCKERFILE_DIR
 $CONTAINER_CMD build -t $IMAGE . 

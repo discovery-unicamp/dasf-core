@@ -19,7 +19,7 @@ RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machi
 
 COPY environment.yml /tmp/
 
-RUN apt-get update && apt-get install git wget bzip2 graphviz -y
+RUN apt-get update && apt-get install git wget bzip2 graphviz gcc python3-dev g++ -y
 
 RUN conda create --clone rapids --name dasf
 
