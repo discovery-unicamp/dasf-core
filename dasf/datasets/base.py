@@ -226,46 +226,46 @@ class DatasetLabeled(Dataset):
         self.__chunks = chunks
 
     def download(self):
-        if hasattr(self, '_train'):
+        if hasattr(self, '_train') and hasattr(self._train, 'download'):
             self._train.download()
 
-        if hasattr(self, '_labels'):
-            self._labels.download()
+        if hasattr(self, '_val') and hasattr(self._val, 'download'):
+            self._val.download()
 
     def inspect_metadata(self):
         metadata_train = self._train.inspect_metadata()
-        metadata_labels = self._labels.inspect_metadata()
+        metadata_val = self._val.inspect_metadata()
 
         assert metadata_train['shape'] == \
-               metadata_labels['shape'], ("Train and Labels should have same "
-                                          "shape: " +
-                                          str(metadata_train['shape']) +
-                                          " != " +
-                                          str(metadata_train['shape']))
+               metadata_val['shape'], ("Train and Labels should have same "
+                                       "shape: " +
+                                       str(metadata_train['shape']) +
+                                       " != " +
+                                       str(metadata_val['shape']))
 
-        return {"train": metadata_train, "labels": metadata_labels}
+        return {"train": metadata_train, "labels": metadata_val}
 
     def _lazy_load(self, xp, **kwargs):
         local_data = self._train._lazy_load(xp)
-        local_labels = self._labels._lazy_load(xp)
+        local_labels = self._val._lazy_load(xp)
 
         return (local_data, local_labels)
 
     def _load(self, xp, **kwargs):
         local_data = self._train._load(xp)
-        local_labels = self._labels._load(xp)
+        local_labels = self._val._load(xp)
 
         return (local_data, local_labels)
 
     def _load_meta(self):
         assert self._train._root_file is not None, ("There is no temporary "
                                                     "file to inspect")
-        assert self._labels._root_file is not None, ("There is no temporary "
-                                                     "file to inspect")
+        assert self._val._root_file is not None, ("There is no temporary "
+                                                  "file to inspect")
         assert os.path.isfile(self._train._root_file), ("The root variable "
                                                         "should be a file")
-        assert os.path.isfile(self._labels._root_file), ("The root variable "
-                                                         "should be a file")
+        assert os.path.isfile(self._val._root_file), ("The root variable "
+                                                      "should be a file")
 
         return self.inspect_metadata()
 
