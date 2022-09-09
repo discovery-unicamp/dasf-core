@@ -16,6 +16,7 @@ from dasf.utils.utils import get_gpu_count
 from dasf.utils.utils import get_dask_gpu_count
 from dasf.utils.utils import get_worker_info
 from dasf.utils.utils import get_dask_running_client
+from dasf.utils.generators import generate_fit
 
 
 class TorchDataLoader(pl.LightningDataModule):
@@ -29,23 +30,38 @@ class TorchDataLoader(pl.LightningDataModule):
         self._batch_size = batch_size
 
     def prepare_data(self):
-        if self._train and hasattr(self._train, 'download') and self._train._download:
+        if self._train and hasattr(self._train, 'download'):
             self._train.download()
 
-        if self._val and hasattr(self._val, 'download') and self._val._download:
+        if self._val and hasattr(self._val, 'download'):
             self._val.download()
 
-        if self._test and hasattr(self._test, 'download') and self._test._download:
+        if self._test and hasattr(self._test, 'download'):
             self._test.download()
 
     def train_dataloader(self):
-        return DataLoader(self._train.load())
+        if hasattr(self._train, 'load'):
+            in_train = self._train.load()
+        else:
+            in_train = self._train
+
+        return DataLoader(in_train, batch_size=self._batch_size)
 
     def val_dataloader(self):
-        return DataLoader(self._val.load())
+        if hasattr(self._val, 'load'):
+            in_val = self._val.load()
+        else:
+            in_val = self._val
+
+        return DataLoader(in_val, batch_size=self._batch_size)
 
     def test_dataloader(self):
-        return DataLoader(self._test.load())
+        if hasattr(self._test, 'load'):
+            in_test = self._test.load()
+        else:
+            in_test = self._test
+
+        return DataLoader(in_test, batch_size=self._batch_size)
 
 
 def run_dask_clustered(func, client=None, **kwargs):
@@ -86,6 +102,7 @@ def fit(model, X, y, max_iter, accel, strategy, devices, ngpus, batch_size,
     trainer.fit(model, dataloader)
 
 
+@generate_fit
 class NeuralNetClassifier:
     def __init__(self, model, max_iter=100):
         self._model = model
