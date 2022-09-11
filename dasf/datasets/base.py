@@ -18,7 +18,6 @@ from pathlib import Path
 from dasf.utils import utils
 from dasf.utils.generators import generate_load
 from dasf.pipeline import ParameterOperator
-from dasf.pipeline.types import TaskExecutorType
 
 
 class DatasetType(Enum):
