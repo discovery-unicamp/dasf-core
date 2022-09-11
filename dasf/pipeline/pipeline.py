@@ -126,7 +126,7 @@ class Operator(Task):
         self.xp = np
         self.df = pd
 
-    def setup_mcpu(self, executor):
+    def setup_lazy_cpu(self, executor):
         self.xp = da
         self.df = ddf
 
@@ -134,7 +134,7 @@ class Operator(Task):
         self.xp = cp
         self.df = cudf
 
-    def setup_mgpu(self, executor):
+    def setup_lazy_gpu(self, executor):
         self.xp = da
         self.df = ddf
 
@@ -147,33 +147,33 @@ class Operator(Task):
         if self.dtype == TaskExecutorType.single_cpu:
             return self.setup_cpu(executor)
         elif self.dtype == TaskExecutorType.multi_cpu:
-            return self.setup_mcpu(executor)
+            return self.setup_lazy_cpu(executor)
         elif self.dtype == TaskExecutorType.single_gpu:
             return self.setup_gpu(executor)
         elif self.dtype == TaskExecutorType.multi_gpu:
-            return self.setup_mgpu(executor)
+            return self.setup_lazy_gpu(executor)
 
     def run_cpu(self, **kwargs):
         pass
 
-    def run_mcpu(self, **kwargs):
+    def run_lazy_cpu(self, **kwargs):
         pass
 
     def run_gpu(self, **kwargs):
         pass
 
-    def run_mgpu(self, **kwargs):
+    def run_lazy_gpu(self, **kwargs):
         pass
 
     def run(self, **kwargs):
         if self.dtype == TaskExecutorType.single_cpu:
             return self.run_cpu(**kwargs)
         elif self.dtype == TaskExecutorType.multi_cpu:
-            return self.run_mcpu(**kwargs)
+            return self.run_lazy_cpu(**kwargs)
         elif self.dtype == TaskExecutorType.single_gpu:
             return self.run_gpu(**kwargs)
         elif self.dtype == TaskExecutorType.multi_gpu:
-            return self.run_mgpu(**kwargs)
+            return self.run_lazy_gpu(**kwargs)
 
 
 class BatchPipeline(Task):

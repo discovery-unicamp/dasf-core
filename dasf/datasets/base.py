@@ -98,28 +98,33 @@ class DatasetLoader(ParameterOperator):
 
         self.__dataset = dataset
 
-    def run(self):
+    def run_lazy_cpu(self):
         self.__dataset.download()
 
-        if self.dtype == TaskExecutorType.single_cpu:
-            if hasattr(self.__dataset, 'load_cpu'):
-                self.__dataset.load_cpu()
-                return self.__dataset
-        elif self.dtype == TaskExecutorType.multi_cpu:
-            if hasattr(self.__dataset, 'lazy_load_cpu'):
-                self.__dataset.lazy_load_cpu()
-                return self.__dataset
-        elif self.dtype == TaskExecutorType.single_gpu:
-            if hasattr(self.__dataset, 'load_gpu'):
-                self.__dataset.load_gpu()
-                return self.__dataset
-        elif self.dtype == TaskExecutorType.multi_gpu:
-            if hasattr(self.__dataset, 'lazy_load_gpu'):
-                self.__dataset.lazy_load_gpu()
-                return self.__dataset
-        else:
-            self.__dataset.load()
-            return self.__dataset.transform()
+        if hasattr(self.__dataset, 'lazy_load_cpu'):
+            self.__dataset.lazy_load_cpu()
+            return self.__dataset
+
+    def run_cpu(self):
+        self.__dataset.download()
+
+        if hasattr(self.__dataset, 'load_cpu'):
+            self.__dataset.load_cpu()
+            return self.__dataset
+
+    def run_lazy_gpu(self):
+        self.__dataset.download()
+
+        if hasattr(self.__dataset, 'lazy_load_gpu'):
+            self.__dataset.lazy_load_gpu()
+            return self.__dataset
+
+    def run_gpu(self):
+        self.__dataset.download()
+
+        if hasattr(self.__dataset, 'load_gpu'):
+            self.__dataset.load_gpu()
+            return self.__dataset
 
 
 @generate_load
