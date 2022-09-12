@@ -5,6 +5,7 @@ import math
 import numpy as np
 import pandas as pd
 
+from dasf.pipeline import Operator
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dask_array
 from dasf.utils.generators import generate_transform
@@ -83,3 +84,22 @@ class ArraysToDataFrame(Transform):
             datas = dfs
 
         return datas
+
+
+class ArraysToDataFrameOp(Operator):
+    def __init__(self):
+        super().__init__(name="ArraysToDataFrame")
+
+        self._operator = ArraysToDataFrame()
+
+    def run_lazy_cpu(self, X, y):
+        return self._operator._lazy_transform_cpu(X, y)
+
+    def run_cpu(self, X, y):
+        return self._operator._transform_cpu(X, y)
+
+    def run_lazy_gpu(self, X, y):
+        return self._operator._lazy_transform_gpu(X, y)
+
+    def run_gpu(self, X, y):
+        return self._operator._transform_gpu(X, y)

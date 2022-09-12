@@ -8,104 +8,191 @@ from pathlib import Path
 from dasf.pipeline import Operator
 
 
-class ML(Operator):
-    def __init__(self, name, checkpoint=False, method=None, **kwargs):
-        # Machine Learning Algorithm Fit
+class MLGeneric(Operator):
+    def __init__(self, name, checkpoint=False, **kwargs):
+        # Machine Learning Algorithm
         super().__init__(name=name, checkpoint=checkpoint, **kwargs)
 
         self._cached_dir = os.path.abspath(str(Path.home()) +
                                            "/.cache/dasf/ml/")
         os.makedirs(self._cached_dir, exist_ok=True)
 
-        if method is None:
-            self._tmp = os.path.abspath(self._cached_dir + "/" +
-                                        type(self).__name__.lower())
-        else:
-            self._tmp = os.path.abspath(self._cached_dir + "/" +
-                                        method)
+        self._tmp = os.path.abspath(self._cached_dir + "/" +
+                                    name.lower())
 
         self.__checkpoint = checkpoint
 
     def dump(self, model):
-        print(type(model))
-        with open(self._tmp, "wb") as fh:
-            pickle.dump(model, fh)
+        if self.get_checkpoint():
+            with open(self._tmp, "wb") as fh:
+                pickle.dump(model, fh)
 
     def load(self, model):
-        with open(self._tmp, "rb") as fh:
-            return pickle.load(fh)
-        return None
+        if self.get_checkpoint() and os.path.exists(self._tmp):
+            with open(self._tmp, "rb") as fh:
+                return pickle.load(fh)
+        return model
 
 
-class FitInternal(ML):
-    def __init__(self, name, checkpoint=False, method=None, **kwargs):
+class FitInternal(MLGeneric):
+    def __init__(self, name, checkpoint=False, **kwargs):
         # Machine Learning Algorithm Fit
-        super().__init__(name=name, checkpoint=checkpoint,
-                         method=method, **kwargs)
+        super().__init__(name=name, checkpoint=checkpoint, **kwargs)
 
-    def run(self, model, X, y=None, sample_weight=None):
-        if self.get_checkpoint() and os.path.exists(self._tmp):
-            model = self.load(model)
+    def run_generic(self, func, model, X, y=None, sample_weight=None):
+        model = self.load(model)
 
-        result = model.fit(X, y)
+        if hasattr(model, func):
+            result = getattr(model, func)(X, y, sample_weight)
+        else:
+            result = model.fit(X, y, sample_weight)
 
-        if self.get_checkpoint():
-            self.dump(result)
+        self.dump(model)
 
         return result
 
+    def run_lazy_cpu(self, model, X, y=None, sample_weight=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                sample_weight=sample_weight,
+                                func="_lazy_fit_cpu")
 
-class FitPredictInternal(ML):
-    def __init__(self, name, checkpoint=False, method=None, **kwargs):
+    def run_cpu(self, model, X, y=None, sample_weight=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                sample_weight=sample_weight,
+                                func="_fit_cpu")
+
+    def run_lazy_gpu(self, model, X, y=None, sample_weight=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                sample_weight=sample_weight,
+                                func="_lazy_fit_gpu")
+
+    def run_gpu(self, model, X, y=None, sample_weight=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                sample_weight=sample_weight,
+                                func="_fit_gpu")
+
+
+class FitPredictInternal(MLGeneric):
+    def __init__(self, name, checkpoint=False, **kwargs):
         # Machine Learning Algorithm Fit Predict
-        super().__init__(name=name, checkpoint=checkpoint,
-                         method=method, **kwargs)
+        super().__init__(name=name, checkpoint=checkpoint, **kwargs)
 
-    def run(self, model, X, y=None, sample_weight=None):
-        if self.get_checkpoint() and os.path.exists(self._tmp):
-            model = self.load(model)
+    def run_generic(self, func, model, X, y=None, sample_weight=None):
+        model = self.load(model)
 
-        result = model.fit_predict(X, y, sample_weight)
+        if hasattr(model, func):
+            return getattr(model, func)(X, y, sample_weight)
+        else:
+            return model.fit_predict(X, y, sample_weight)
 
-        return result
+    def run_lazy_cpu(self, model, X, y=None, sample_weight=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                sample_weight=sample_weight,
+                                func="_lazy_fit_predict_cpu")
+
+    def run_cpu(self, model, X, y=None, sample_weight=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                sample_weight=sample_weight,
+                                func="_fit_predict_cpu")
+
+    def run_lazy_gpu(self, model, X, y=None, sample_weight=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                sample_weight=sample_weight,
+                                func="_lazy_fit_predict_gpu")
+
+    def run_gpu(self, model, X, y=None, sample_weight=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                sample_weight=sample_weight,
+                                func="_fit_predict_gpu")
 
 
-class FitTransformInternal(ML):
-    def __init__(self, name, checkpoint=False, method=None, **kwargs):
+class FitTransformInternal(MLGeneric):
+    def __init__(self, name, checkpoint=False, **kwargs):
         # Machine Learning Algorithm Fit Transform
-        super().__init__(name=name, checkpoint=checkpoint,
-                         method=method, **kwargs)
+        super().__init__(name=name, checkpoint=checkpoint, **kwargs)
 
-    def run(self, model, X, y=None):
-        if self.get_checkpoint() and os.path.exists(self._tmp):
-            model = self.load(model)
+    def run_generic(self, func, model, X, y=None):
+        model = self.load(model)
 
-        result = model.fit_transform(X, y)
+        if hasattr(model, func):
+            result = getattr(model, func)(X, y)
+        else:
+            result = model.fit_transform(X, y)
 
-        if self.get_checkpoint():
-            self.dump(result)
+        self.dump(result)
 
         return result
 
+    def run_lazy_cpu(self, model, X, y=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                func="_lazy_fit_transform_cpu")
 
-class PredictInternal(ML):
-    def __init__(self, name, checkpoint=False, method=None, **kwargs):
+    def run_cpu(self, model, X, y=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                func="_fit_transform_cpu")
+
+    def run_lazy_gpu(self, model, X, y=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                func="_lazy_fit_transform_gpu")
+
+    def run_gpu(self, model, X, y=None):
+        return self.run_generic(model=model, X=X, y=y,
+                                func="_fit_transform_gpu")
+
+
+class PredictInternal(MLGeneric):
+    def __init__(self, name, checkpoint=False, **kwargs):
         # Machine Learning Algorithm Predict
-        super().__init__(name=name, checkpoint=checkpoint,
-                         method=method, **kwargs)
+        super().__init__(name=name, checkpoint=checkpoint, **kwargs)
 
-    def run(self, model, X, sample_weight=None):
-        if self.get_checkpoint() and os.path.exists(self._tmp):
-            model = self.load(model)
+    def run_generic(self, func, model, X, sample_weight=None):
+        model = self.load(model)
 
-        return model.predict(X)
+        if hasattr(model, func):
+            return getattr(model, func)(X, sample_weight)
+        else:
+            return model.predict(X, sample_weight)
+
+    def run_lazy_cpu(self, model, X, sample_weight=None):
+        return self.run_generic(model=model, X=X, sample_weight=sample_weight,
+                                func="_lazy_predict_cpu")
+
+    def run_cpu(self, model, X, sample_weight=None):
+        return self.run_generic(model=model, X=X, sample_weight=sample_weight,
+                                func="_predict_cpu")
+
+    def run_lazy_gpu(self, model, X, sample_weight=None):
+        return self.run_generic(model=model, X=X, sample_weight=sample_weight,
+                                func="_lazy_predict_gpu")
+
+    def run_gpu(self, model, X, sample_weight=None):
+        return self.run_generic(model=model, X=X, sample_weight=sample_weight,
+                                func="_fit_predict_gpu")
 
 
-class TransformInternal(ML):
-    def __init__(self, name, checkpoint=False, method=None, **kwargs):
+class TransformInternal(MLGeneric):
+    def __init__(self, name, checkpoint=False, **kwargs):
         # Machine Learning Algorithm Predict
-        super().__init__(name=name, checkpoint=checkpoint,
-                         method=method, **kwargs)
+        super().__init__(name=name, checkpoint=checkpoint, **kwargs)
 
-    def run(self, model, X, copy=False):
-        return model.transform(X, copy)
+    def run_generic(self, func, model, X, copy=False):
+        if hasattr(model, func):
+            return getattr(model, func)(X, copy)
+        else:
+            return model.transform(X, copy)
+
+    def run_lazy_cpu(self, model, X, copy=False):
+        return self.run_generic(model=model, X=X, copy=copy,
+                                func="_lazy_transform_cpu")
+
+    def run_cpu(self, model, X, copy=False):
+        return self.run_generic(model=model, X=X, copy=copy,
+                                func="_transform_cpu")
+
+    def run_lazy_gpu(self, model, X, copy=False):
+        return self.run_generic(model=model, X=X, copy=copy,
+                                func="_lazy_transform_gpu")
+
+    def run_gpu(self, model, X, copy=False):
+        return self.run_generic(model=model, X=X, copy=copy,
+                                func="_transform_gpu")

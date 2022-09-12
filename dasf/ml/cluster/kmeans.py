@@ -101,96 +101,69 @@ class KMeans(ClusterClassifier):
         return self.__kmeans_gpu.predict(X, sample_weight)
 
 
-class KMeansOperator(ParameterOperator):
+class KMeansOp(ParameterOperator):
     def __init__(self, n_clusters, random_state=0, max_iter=300,
                  checkpoint=False):
-        super().__init__(name=type(self).__name__)
+        super().__init__(name="KMeans")
 
-        self.n_clusters = n_clusters
-        self.random_state = random_state
-        self.max_iter = max_iter
+        self._operator = KMeans(n_clusters=n_clusters,
+                                random_state=random_state,
+                                max_iter=max_iter)
 
-        self.checkpoint = checkpoint
-
-        self.__kmeans_cpu = KMeans_CPU(n_clusters=self.n_clusters,
-                                       random_state=self.random_state,
-                                       max_iter=self.max_iter)
-
-        self.__kmeans_mcpu = KMeans_MCPU(n_clusters=self.n_clusters,
-                                         random_state=self.random_state,
-                                         max_iter=self.max_iter)
-
-        if is_gpu_supported():
-            self.__kmeans_gpu = KMeans_GPU(n_clusters=self.n_clusters,
-                                           random_state=self.random_state,
-                                           max_iter=self.max_iter)
-
-            self.__kmeans_mgpu = KMeans_MGPU(n_clusters=self.n_clusters,
-                                             random_state=self.random_state,
-                                             max_iter=self.max_iter)
-
-        self.kmeans = None
-
-        self.fit = KMeansFit(checkpoint=self.checkpoint)
-        self.predict = KMeansPredict(checkpoint=self.checkpoint)
-        self.predict2 = KMeansPredict2(checkpoint=self.checkpoint)
-        self.fit_predict = KMeansFitPredict(checkpoint=self.checkpoint)
-
-    def setup_cpu(self, executor):
-        self.kmeans = self.__kmeans_cpu
-
-    def setup_mcpu(self, executor):
-        self.kmeans = self.__kmeans_mcpu
-
-    def setup_gpu(self, executor):
-        self.kmeans = self.__kmeans_gpu
-
-    def setup_mgpu(self, executor):
-        self.kmeans = self.__kmeans_mgpu
+        self.fit = KMeansFitOp(checkpoint=checkpoint)
+        self.fit_predict = KMeansFitPredictOp(checkpoint=checkpoint)
+        self.predict = KMeansPredictOp(checkpoint=checkpoint)
+        self.predict2 = KMeansPredict2Op(checkpoint=checkpoint)
 
     def run(self):
-        return self.kmeans
+        return self._operator
 
 
-class KMeansFit(FitInternal):
+class KMeansFitOp(FitInternal):
     def __init__(self, checkpoint=False):
         super().__init__(name="KMeansFit", checkpoint=checkpoint,
                          method="kmeans")
 
     def dump(self, model):
-        with open(self._tmp, "wb") as fh:
-            pickle.dump(model.cluster_centers_, fh)
+        if self.get_checkpoint():
+            with open(self._tmp, "wb") as fh:
+                pickle.dump(model.cluster_centers_, fh)
 
     def load(self, model):
-        with open(self._tmp, "rb") as fh:
-            model.cluster_centers_ = pickle.load(fh)
+        if self.get_checkpoint() and os.path.exists(self._tmp):
+            with open(self._tmp, "rb") as fh:
+                model.cluster_centers_ = pickle.load(fh)
 
         return model
 
 
-class KMeansFitPredict(FitPredictInternal):
+class KMeansFitPredictOp(FitPredictInternal):
     def __init__(self, checkpoint=False):
         super().__init__(name="KMeansFitPredict", checkpoint=checkpoint,
                          method="kmeans")
 
     def load(self, model):
-        with open(self._tmp, "rb") as fh:
-            model.cluster_centers_ = pickle.load(fh)
+        if self.get_checkpoint() and os.path.exists(self._tmp):
+            with open(self._tmp, "rb") as fh:
+                model.cluster_centers_ = pickle.load(fh)
+
         return model
 
 
-class KMeansPredict(PredictInternal):
+class KMeansPredictOp(PredictInternal):
     def __init__(self, checkpoint=False):
         super().__init__(name="KMeansPredict", checkpoint=checkpoint,
                          method="kmeans")
 
     def load(self, model):
-        with open(self._tmp, "rb") as fh:
-            model.cluster_centers_ = pickle.load(fh)
+        if self.get_checkpoint() and os.path.exists(self._tmp):
+            with open(self._tmp, "rb") as fh:
+                model.cluster_centers_ = pickle.load(fh)
+
         return model
 
 
-class KMeansPredict2(Operator):
+class KMeansPredict2Op(Operator):
     def __init__(self, checkpoint=False):
         super().__init__(name="KMeansPredict2", checkpoint=checkpoint)
 
@@ -203,13 +176,14 @@ class KMeansPredict2(Operator):
         self.__checkpoint = checkpoint
 
     def load(self, model):
-        with open(self._tmp, "rb") as fh:
-            model.cluster_centers_ = pickle.load(fh)
+        if self.get_checkpoint() and os.path.exists(self._tmp):
+            with open(self._tmp, "rb") as fh:
+                model.cluster_centers_ = pickle.load(fh)
+
         return model
 
     def run(self, model, X):
-        if self.get_checkpoint() and os.path.exists(self._tmp):
-            model = self.load(model)
+        model = self.load(model)
 
         def __predict(block, kmeans_model):
             return kmeans_model.predict(block)
