@@ -4,7 +4,6 @@ from sklearn.cluster import DBSCAN as DBSCAN_CPU
 
 from dasf.ml.core import FitInternal, FitPredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
-from dasf.utils.utils import get_full_qualname
 from dasf.utils.utils import is_gpu_supported
 from dasf.pipeline import ParameterOperator
 
@@ -63,70 +62,29 @@ class DBSCAN(ClusterClassifier):
         self.__dbscan_gpu.fit_predict(X=X, out_dtype=out_dtype)
 
 
-class DBSCANOperator(ParameterOperator):
+class DBSCANOp(ParameterOperator):
     def __init__(self, eps=0.5, leaf_size=40, metric='euclidean',
-                 min_samples=None, p=None):
-        super().__init__(name=type(self).__name__)
+                 min_samples=None, p=None, checkpoint=False):
+        super().__init__(name="DBSCAN")
 
-        self.eps = eps
-        self.leaf_size = leaf_size
-        self.metric = metric
-        self.min_samples = min_samples
-        self.p = p
+        self._operator = DBSCAN(eps=eps,
+                                leaf_size=leaf_size,
+                                metric=metric,
+                                min_samples=min_samples,
+                                p=p)
 
-        self.__dbscan_cpu = DBSCAN_CPU(eps=self.eps,
-                                       leaf_size=self.leaf_size,
-                                       metric=self.metric,
-                                       min_samples=self.min_samples,
-                                       p=self.p)
-
-        if is_gpu_supported():
-            self.__dbscan_gpu = DBSCAN_GPU(eps=self.eps,
-                                           leaf_size=self.leaf_size,
-                                           metric=self.metric,
-                                           min_samples=self.min_samples,
-                                           p=self.p)
-
-            self.__dbscan_mgpu = DBSCAN_MGPU(eps=self.eps,
-                                             leaf_size=self.leaf_size,
-                                             metric=self.metric,
-                                             min_samples=self.min_samples,
-                                             p=self.p)
-
-        # Select CPU as default to initialize the attribute
-        self.dbscan = self.__dbscan_cpu
-
-        if is_gpu_supported():
-            self.set_output([get_full_qualname(self.__dbscan_cpu),
-                             get_full_qualname(self.__dbscan_gpu),
-                             get_full_qualname(self.__dbscan_mgpu)])
-        else:
-            self.set_output([get_full_qualname(self.__dbscan_cpu)])
-
-        self.fit = DBSCANFit()
-        self.fit_predict = DBSCANFitPredict()
-
-    def setup_cpu(self, executor):
-        self.dbscan = self.__dbscan_cpu
-
-    def setup_mcpu(self, executor):
-        raise NotImplementedError
-
-    def setup_gpu(self, executor):
-        self.dbscan = self.__dbscan_gpu
-
-    def setup_mgpu(self, executor):
-        self.dbscan = self.__dbscan_mgpu
+        self.fit = DBSCANFitOp(checkpoint=checkpoint)
+        self.fit_predict = DBSCANFitPredictOp(checkpoint=checkpoint)
 
     def run(self):
-        return self.dbscan
+        return self._operator
 
 
-class DBSCANFit(FitInternal):
-    def __init__(self):
-        super().__init__(name="DBSCANFit")
+class DBSCANFitOp(FitInternal):
+    def __init__(self, checkpoint=False):
+        super().__init__(name="DBSCANFit", checkpoint=checkpoint)
 
 
-class DBSCANFitPredict(FitPredictInternal):
-    def __init__(self):
-        super().__init__(name="DBSCANFitPredict")
+class DBSCANFitPredictOp(FitPredictInternal):
+    def __init__(self, checkpoint=False):
+        super().__init__(name="DBSCANFitPredict", checkpoint=checkpoint)

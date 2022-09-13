@@ -121,8 +121,7 @@ class KMeansOp(ParameterOperator):
 
 class KMeansFitOp(FitInternal):
     def __init__(self, checkpoint=False):
-        super().__init__(name="KMeansFit", checkpoint=checkpoint,
-                         method="kmeans")
+        super().__init__(name="KMeansFit", checkpoint=checkpoint)
 
     def dump(self, model):
         if self.get_checkpoint():
@@ -139,8 +138,7 @@ class KMeansFitOp(FitInternal):
 
 class KMeansFitPredictOp(FitPredictInternal):
     def __init__(self, checkpoint=False):
-        super().__init__(name="KMeansFitPredict", checkpoint=checkpoint,
-                         method="kmeans")
+        super().__init__(name="KMeansFitPredict", checkpoint=checkpoint)
 
     def load(self, model):
         if self.get_checkpoint() and os.path.exists(self._tmp):
@@ -152,8 +150,7 @@ class KMeansFitPredictOp(FitPredictInternal):
 
 class KMeansPredictOp(PredictInternal):
     def __init__(self, checkpoint=False):
-        super().__init__(name="KMeansPredict", checkpoint=checkpoint,
-                         method="kmeans")
+        super().__init__(name="KMeansPredict", checkpoint=checkpoint)
 
     def load(self, model):
         if self.get_checkpoint() and os.path.exists(self._tmp):

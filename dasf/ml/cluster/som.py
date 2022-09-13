@@ -5,13 +5,12 @@ import numpy as np
 
 from xpysom import XPySom
 
+from dasf.ml.core import FitInternal, PredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_dask_gpu_supported
 from dasf.utils.utils import is_dask_supported
 from dasf.utils.utils import is_gpu_supported
 from dasf.pipeline import ParameterOperator
-from dasf.pipeline import Operator
-from dasf.pipeline.types import TaskExecutorType
 from dasf.utils.generators import generate_fit
 from dasf.utils.generators import generate_predict
 
@@ -168,80 +167,51 @@ class SOM(ClusterClassifier):
             self._quantization_error_cpu(X)
 
 
-class SOMOperator(ParameterOperator):
+class SOMOp(ParameterOperator):
     def __init__(self, x, y, input_len, num_epochs=100, sigma=0, sigmaN=1,
                  learning_rate=0.5, learning_rateN=0.01,
                  decay_function='exponential',
                  neighborhood_function='gaussian', std_coeff=0.5,
                  topology='rectangular', activation_distance='euclidean',
-                 random_seed=None, n_parallel=0, compact_support=False):
+                 random_seed=None, n_parallel=0, compact_support=False,
+                 checkpoint=False):
         super().__init__(name="SOM")
 
-        self.__som = SOM(x=x, y=y, input_len=input_len,
-                         num_epochs=num_epochs, sigma=sigma, sigmaN=sigmaN,
-                         learning_rate=learning_rate,
-                         learning_rateN=learning_rateN,
-                         decay_function=decay_function,
-                         neighborhood_function=neighborhood_function,
-                         std_coeff=std_coeff, topology=topology,
-                         activation_distance=activation_distance,
-                         random_seed=random_seed, n_parallel=n_parallel,
-                         compact_support=compact_support)
+        self._operator = SOM(x=x, y=y, input_len=input_len,
+                             num_epochs=num_epochs, sigma=sigma, sigmaN=sigmaN,
+                             learning_rate=learning_rate,
+                             learning_rateN=learning_rateN,
+                             decay_function=decay_function,
+                             neighborhood_function=neighborhood_function,
+                             std_coeff=std_coeff, topology=topology,
+                             activation_distance=activation_distance,
+                             random_seed=random_seed, n_parallel=n_parallel,
+                             compact_support=compact_support)
+
+        self.fit = SOMFitOp(checkpoint=checkpoint)
+        self.predict = SOMPredictOp(checkpoint=checkpoint)
 
     def run(self):
-        return self.som
+        return self._operator
 
 
-class SOMTrain(Operator):
-    def __init__(self, num_epochs):
-        super().__init__(name="SOMTrain")
+class SOMFitOp(FitInternal):
+    def __init__(self, checkpoint=False):
+        super().__init__(name="SOMFit", checkpoint=checkpoint)
 
-        self.num_epochs = num_epochs
+    def dump(self, model):
+        # TODO: Check how this algorithm can be saved
+        return model
 
-    def run(self, data):
-        self.som.train(data, self.num_epochs)
+    def load(self, model):
+        # TODO: Check how this algorithm can be restored
+        return model
 
-        return self.som
 
+class SOMPredictOp(PredictInternal):
+    def __init__(self, checkpoint=False):
+        super().__init__(name="SOMPredict", checkpoint=checkpoint)
 
-class SOMClassify(Operator):
-    def __init__(self):
-        super().__init__(name=type(self).__name__)
-
-        self.dtype = TaskExecutorType.single_cpu
-
-    def define_executor(self, executor):
-        self.dtype = executor.type
-
-    def __classify_item(self, som, winmap, default_class, data):
-        win_position = som.winner(data)
-        if win_position in winmap:
-            return winmap[win_position].most_common()[0][0]
-        else:
-            return default_class
-
-    def __classify(self, som, data, train, labels):
-        winmap = {}
-
-        input_labels = np.ndarray([labels.flatten()
-                                   for i in range(som._input_len)])
-        input_train = np.ndarray([train.flatten()
-                                  for i in range(som._input_len)])
-
-        input_labels = input_labels.reshape((input_labels.shape[1],
-                                             input_labels.shape[0]))
-        input_train = input_train.reshape((input_train.shape[1],
-                                           input_train.shape[0]))
-
-        class_assignments = som.labels_map(input_train, input_labels)
-        default_class = np.sum(list(winmap.values())).most_common()[0][0]
-
-        return np.vectorize(self.__classify_item)(som, class_assignments,
-                                                  default_class, data)
-
-    def run(self, som, data, train, labels):
-        predict = data.copy()
-
-        predict = self.__classify(som, predict, train, labels)
-
-        return predict
+    def load(self, model):
+        # TODO: Check how this algorithm can be restored
+        return model
