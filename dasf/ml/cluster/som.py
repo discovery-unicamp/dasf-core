@@ -13,6 +13,7 @@ from dasf.utils.utils import is_gpu_supported
 from dasf.pipeline import ParameterOperator
 from dasf.utils.generators import generate_fit
 from dasf.utils.generators import generate_predict
+from dasf.utils.generators import generate_fit_predict
 
 try:
     import cupy as cp
@@ -22,6 +23,7 @@ except ImportError:
 
 @generate_fit
 @generate_predict
+@generate_fit_predict
 class SOM(ClusterClassifier):
     def __init__(self, x, y, input_len, num_epochs=100, sigma=0, sigmaN=1,
                  learning_rate=0.5, learning_rateN=0.01,
@@ -131,6 +133,22 @@ class SOM(ClusterClassifier):
     def _fit_gpu(self, X, y=None, sample_weight=None):
         self.__som = self.__som_gpu
         return self.__som_gpu.train(X, self.num_epochs)
+
+    def _lazy_fit_predict_cpu(self, X, y=None, sample_weight=None):
+        self.__som = self.__som_mcpu
+        return self.__som_mcpu.train(X, self.num_epochs).predict(X)
+
+    def _lazy_fit_predict_gpu(self, X, y=None, sample_weight=None):
+        self.__som = self.__som_mgpu
+        return self.__som_mgpu.train(X, self.num_epochs).predict(X)
+
+    def _fit_predict_cpu(self, X, y=None, sample_weight=None):
+        self.__som = self.__som_cpu
+        return self.__som_cpu.train(X, self.num_epochs).predict(X)
+
+    def _fit_predict_gpu(self, X, y=None, sample_weight=None):
+        self.__som = self.__som_gpu
+        return self.__som_gpu.train(X, self.num_epochs).predict(X)
 
     def _lazy_predict_cpu(self, X, sample_weight=None):
         return self.__som_mcpu.predict(X)
