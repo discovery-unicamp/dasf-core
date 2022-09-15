@@ -20,37 +20,14 @@ from dasf.utils.generators import generate_load
 from dasf.pipeline import ParameterOperator
 
 
-class DatasetType(Enum):
-    none = "none"
-    cmp_gathers = "CMP Gathers"
-    surface_seismic = "Surface Seismic"
-    borehole_seismic = "Borehole Seismic"
-    fourd_far_stack = "4D Far Stack"
-    fourd_near_stack = "4D Near Stack"
-    fourd_mid_stack = "4D Mid Stack"
-    fourd_full_stack = "4D Full Stack"
-    far_stack = "Far Stack"
-    near_stack = "Near Stack"
-    mid_stack = "Mid Stack"
-    full_stack = "Full Stack"
-    prestack_seismic = "Prestack Seismic"
-    poststack_seismic = "Poststack Seismic"
-    migrated_volume = "Migrated Volume"
-
-    def __str__(self):
-        return self.value
-
-
 class Dataset(object):
     def __init__(self,
                  name,
-                 subtype=DatasetType.none,
                  download=False,
                  root=None):
 
         # Dataset internals
         self._name = name
-        self._subtype = subtype
         self._download = download
         self._root = root
         self._metadata = dict()
@@ -58,8 +35,6 @@ class Dataset(object):
 
         # Internal chunks division (for Dask Types)
         self.__chunks = None
-
-        assert type(self._subtype) == DatasetType
 
         self.__set_dataset_cache_dir()
 
@@ -130,12 +105,11 @@ class DatasetLoader(ParameterOperator):
 class DatasetArray(Dataset):
     def __init__(self,
                  name,
-                 subtype=None,
                  download=False,
                  root=None,
                  chunks="auto"):
 
-        Dataset.__init__(self, name, subtype, download, root)
+        Dataset.__init__(self, name, download, root)
 
         self.__chunks = chunks
 
@@ -208,7 +182,6 @@ class DatasetArray(Dataset):
         return {
             'size': array_file_size,
             'file': self._root_file,
-            'subtype': self._subtype,
             'shape': npy_shape,
             'block': {
                "chunks": self.__chunks
@@ -220,12 +193,11 @@ class DatasetArray(Dataset):
 class DatasetLabeled(Dataset):
     def __init__(self,
                  name,
-                 subtype=None,
                  download=False,
                  root=None,
                  chunks="auto"):
 
-        Dataset.__init__(self, name, subtype, download, root)
+        Dataset.__init__(self, name, download, root)
 
         self.__chunks = chunks
 
