@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dasf &mdash; DASF 1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dasf.datasets" href="datasets/index.html" />
+    <link rel="prev" title="DASF API Reference" href="../../api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASF
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../api.html">DASF API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ml/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../api.html">DASF API Reference</a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/autoapi/dasf/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-dasf">
+<span id="dasf"></span><h1><a class="reference internal" href="#module-dasf" title="dasf"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><a class="headerlink" href="#module-dasf" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="datasets/base/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets.base</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/blobs/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets.blobs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets.download</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="debug/debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug.debug</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="feature_extraction/histogram/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction.histogram</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="feature_extraction/transform/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction.transform</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ml/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ml/cluster/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml/cluster/agglomerative/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.agglomerative</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml/cluster/classifier/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.classifier</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml/cluster/dbscan/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.dbscan</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml/cluster/hdbscan/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.hdbscan</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml/cluster/kmeans/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.kmeans</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml/cluster/som/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.som</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ml/decomposition/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.decomposition</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml/decomposition/pca/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.decomposition.pca</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ml/dl/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.dl</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml/dl/clusters/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.dl.clusters</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml/dl/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.dl.models</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml/dl/pytorch_lightning/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.dl.pytorch_lightning</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ml/model_selection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.model_selection</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml/model_selection/split/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.model_selection.split</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ml/preprocessing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.preprocessing</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml/preprocessing/standardscaler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.preprocessing.standardscaler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ml/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pipeline/executors/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pipeline/executors/dask/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.dask</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipeline/executors/wrapper/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.wrapper</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline/pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.pipeline</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline/types/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.types</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="transforms/memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms.memory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="transforms/operations/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms.operations</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="transforms/transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms.transforms</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils/generators/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils.generators</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/labels/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils.labels</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/types/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils.types</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../api.html" class="btn btn-neutral float-left" title="DASF API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="datasets/index.html" class="btn btn-neutral float-right" title="dasf.datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Discovery UNICAMP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

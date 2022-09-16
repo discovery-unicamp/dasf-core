@@ -1,0 +1,90 @@
+:py:mod:`dasf.ml.dl.clusters`
+=============================
+
+.. py:module:: dasf.ml.dl.clusters
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   dask/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.dl.clusters.DaskClusterEnvironment
+
+
+
+
+.. py:class:: DaskClusterEnvironment(metadata=None)
+
+   Bases: :py:obj:`pytorch_lightning.plugins.environments.ClusterEnvironment`
+
+   Create a Dask Cluster environment for workers
+
+   metadata -- dictionary containing all data related to workers.
+
+   .. py:method:: detect()
+
+
+   .. py:method:: creates_processes_externally()
+      :property:
+
+      Return True if the cluster is managed (you don't launch processes
+      yourself).
+
+
+   .. py:method:: main_address()
+      :property:
+
+      Return master worker address.
+
+
+   .. py:method:: main_port()
+      :property:
+
+      Return master worker port.
+
+
+   .. py:method:: creates_children()
+
+      Fork children when generate a cluster.
+
+
+   .. py:method:: world_size()
+
+      Return worker world size.
+
+
+   .. py:method:: global_rank()
+
+      Return worker global rank.
+
+
+   .. py:method:: local_rank()
+
+      Return worker local rank.
+
+
+   .. py:method:: node_rank()
+
+      Return worker node rank (which is similar to global rank).
+
+
+   .. py:method:: set_world_size(size)
+
+
+   .. py:method:: set_global_rank(rank)
+
+
+

@@ -10,7 +10,18 @@ from dasf.pipeline import Operator
 
 
 class Debug(Operator):
-    def __init__(self, name=None, **kwargs):
+    """Print information about an operator (shape, datatype, etc.), and return
+    the self object reference.
+
+    Parameters
+    ----------
+    name : str
+        Name of the operator.
+    **kwargs : type
+        Additional keyworkded arguments to `Operator`.
+
+    """
+    def __init__(self, name: str = None, **kwargs):
         self.__name = name
 
         if name is None:
@@ -19,6 +30,19 @@ class Debug(Operator):
         super().__init__(name=self.__name, **kwargs)
 
     def run(self, X):
+        """Print information about the operator.
+
+        Parameters
+        ----------
+        X : Operator
+            The operator.
+
+        Returns
+        -------
+        Operator
+            Return the self object.
+
+        """
         if hasattr(X, "shape"):
             print("Datashape is:", X.shape)
 
@@ -32,12 +56,35 @@ class Debug(Operator):
 
 
 class VisualizeDaskData(Operator):
-    def __init__(self, filename=None, **kwargs):
+    """Visualize DASK data from an operator.
+
+    Parameters
+    ----------
+    filename : str
+        A path to save the DASK visualization (the default is None).
+    **kwargs : type
+        Additional keyworkded arguments to `Operator`.
+
+    """
+    def __init__(self, filename: str = None, **kwargs):
         super().__init__(name="Visualize Dask Data", **kwargs)
 
         self.filename = filename
 
     def run(self, X):
+        """Visualize information about the operator (image).
+
+        Parameters
+        ----------
+        X : Operator
+            The operator.
+
+        Returns
+        -------
+        Operator
+            Return the self object.
+
+        """
         if not isinstance(X, da.core.Array) and \
            not isinstance(X, ddf.core.DataFrame):
             self.logger.warning("This is not a Dask element.")

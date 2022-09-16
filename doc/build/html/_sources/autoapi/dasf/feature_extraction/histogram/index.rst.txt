@@ -1,0 +1,29 @@
+:py:mod:`dasf.feature_extraction.histogram`
+===========================================
+
+.. py:module:: dasf.feature_extraction.histogram
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.feature_extraction.histogram.Histogram
+
+
+
+
+.. py:class:: Histogram(bins=None, range=None, normed=False, weights=None, density=None)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+

@@ -1,0 +1,121 @@
+:py:mod:`dasf.ml.cluster.kmeans`
+================================
+
+.. py:module:: dasf.ml.cluster.kmeans
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.cluster.kmeans.KMeans
+   dasf.ml.cluster.kmeans.KMeansOp
+   dasf.ml.cluster.kmeans.KMeansFitOp
+   dasf.ml.cluster.kmeans.KMeansFitPredictOp
+   dasf.ml.cluster.kmeans.KMeansPredictOp
+   dasf.ml.cluster.kmeans.KMeansPredict2Op
+
+
+
+
+.. py:class:: KMeans(n_clusters, random_state=0, max_iter=300)
+
+   Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
+   .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _lazy_fit_gpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_gpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _lazy_fit_predict_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _lazy_fit_predict_gpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_predict_gpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _lazy_predict_cpu(X, sample_weight=None)
+
+
+   .. py:method:: _lazy_predict_gpu(X, sample_weight=None)
+
+
+   .. py:method:: _predict_cpu(X, sample_weight=None)
+
+
+   .. py:method:: _predict_gpu(X, sample_weight=None)
+
+
+
+.. py:class:: KMeansOp(n_clusters, random_state=0, max_iter=300, checkpoint=False)
+
+   Bases: :py:obj:`dasf.pipeline.ParameterOperator`
+
+       
+
+   .. py:method:: run()
+
+
+
+.. py:class:: KMeansFitOp(checkpoint=False)
+
+   Bases: :py:obj:`dasf.ml.core.FitInternal`
+
+       
+
+   .. py:method:: dump(model)
+
+
+   .. py:method:: load(model)
+
+
+
+.. py:class:: KMeansFitPredictOp(checkpoint=False)
+
+   Bases: :py:obj:`dasf.ml.core.FitPredictInternal`
+
+       
+
+   .. py:method:: load(model)
+
+
+
+.. py:class:: KMeansPredictOp(checkpoint=False)
+
+   Bases: :py:obj:`dasf.ml.core.PredictInternal`
+
+       
+
+   .. py:method:: load(model)
+
+
+
+.. py:class:: KMeansPredict2Op(checkpoint=False)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: load(model)
+
+
+   .. py:method:: run(model, X)
+
+
+

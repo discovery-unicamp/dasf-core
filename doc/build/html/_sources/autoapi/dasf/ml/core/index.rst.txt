@@ -1,0 +1,147 @@
+:py:mod:`dasf.ml.core`
+======================
+
+.. py:module:: dasf.ml.core
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.core.MLGeneric
+   dasf.ml.core.FitInternal
+   dasf.ml.core.FitPredictInternal
+   dasf.ml.core.FitTransformInternal
+   dasf.ml.core.PredictInternal
+   dasf.ml.core.TransformInternal
+
+
+
+
+.. py:class:: MLGeneric(name, checkpoint=False, **kwargs)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: dump(model)
+
+
+   .. py:method:: load(model)
+
+
+
+.. py:class:: FitInternal(name, checkpoint=False, **kwargs)
+
+   Bases: :py:obj:`MLGeneric`
+
+       
+
+   .. py:method:: run_generic(func, model, X, y=None, sample_weight=None)
+
+
+   .. py:method:: run_lazy_cpu(model, X, y=None, sample_weight=None)
+
+
+   .. py:method:: run_cpu(model, X, y=None, sample_weight=None)
+
+
+   .. py:method:: run_lazy_gpu(model, X, y=None, sample_weight=None)
+
+
+   .. py:method:: run_gpu(model, X, y=None, sample_weight=None)
+
+
+
+.. py:class:: FitPredictInternal(name, checkpoint=False, **kwargs)
+
+   Bases: :py:obj:`MLGeneric`
+
+       
+
+   .. py:method:: run_generic(func, model, X, y=None, sample_weight=None)
+
+
+   .. py:method:: run_lazy_cpu(model, X, y=None, sample_weight=None)
+
+
+   .. py:method:: run_cpu(model, X, y=None, sample_weight=None)
+
+
+   .. py:method:: run_lazy_gpu(model, X, y=None, sample_weight=None)
+
+
+   .. py:method:: run_gpu(model, X, y=None, sample_weight=None)
+
+
+
+.. py:class:: FitTransformInternal(name, checkpoint=False, **kwargs)
+
+   Bases: :py:obj:`MLGeneric`
+
+       
+
+   .. py:method:: run_generic(func, model, X, y=None)
+
+
+   .. py:method:: run_lazy_cpu(model, X, y=None)
+
+
+   .. py:method:: run_cpu(model, X, y=None)
+
+
+   .. py:method:: run_lazy_gpu(model, X, y=None)
+
+
+   .. py:method:: run_gpu(model, X, y=None)
+
+
+
+.. py:class:: PredictInternal(name, checkpoint=False, **kwargs)
+
+   Bases: :py:obj:`MLGeneric`
+
+       
+
+   .. py:method:: run_generic(func, model, X, sample_weight=None)
+
+
+   .. py:method:: run_lazy_cpu(model, X, sample_weight=None)
+
+
+   .. py:method:: run_cpu(model, X, sample_weight=None)
+
+
+   .. py:method:: run_lazy_gpu(model, X, sample_weight=None)
+
+
+   .. py:method:: run_gpu(model, X, sample_weight=None)
+
+
+
+.. py:class:: TransformInternal(name, checkpoint=False, **kwargs)
+
+   Bases: :py:obj:`MLGeneric`
+
+       
+
+   .. py:method:: run_generic(func, model, X, copy=False)
+
+
+   .. py:method:: run_lazy_cpu(model, X, copy=False)
+
+
+   .. py:method:: run_cpu(model, X, copy=False)
+
+
+   .. py:method:: run_lazy_gpu(model, X, copy=False)
+
+
+   .. py:method:: run_gpu(model, X, copy=False)
+
+
+

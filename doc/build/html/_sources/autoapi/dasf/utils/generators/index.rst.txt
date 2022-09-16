@@ -1,0 +1,78 @@
+:py:mod:`dasf.utils.generators`
+===============================
+
+.. py:module:: dasf.utils.generators
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.utils.generators.generate_generic
+   dasf.utils.generators.generate_load
+   dasf.utils.generators.generate_fit
+   dasf.utils.generators.generate_fit_predict
+   dasf.utils.generators.generate_fit_transform
+   dasf.utils.generators.generate_partial_fit
+   dasf.utils.generators.generate_predict
+   dasf.utils.generators.generate_transform
+   dasf.utils.generators.generate_inverse_transform
+   dasf.utils.generators.generate_get_params
+   dasf.utils.generators.generate_set_params
+
+
+
+.. py:function:: generate_generic(cls, func_name)
+
+   Given a method of a class, generate specialized methods depending on
+   the supported architecture and functionalities.
+
+   Parameters
+   ----------
+   cls : type
+       The class to inspect.
+   func_name : str
+       The method of the class to
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
+
+
+.. py:function:: generate_load(cls)
+
+
+.. py:function:: generate_fit(cls)
+
+
+.. py:function:: generate_fit_predict(cls)
+
+
+.. py:function:: generate_fit_transform(cls)
+
+
+.. py:function:: generate_partial_fit(cls)
+
+
+.. py:function:: generate_predict(cls)
+
+
+.. py:function:: generate_transform(cls)
+
+
+.. py:function:: generate_inverse_transform(cls)
+
+
+.. py:function:: generate_get_params(cls)
+
+
+.. py:function:: generate_set_params(cls)
+
+

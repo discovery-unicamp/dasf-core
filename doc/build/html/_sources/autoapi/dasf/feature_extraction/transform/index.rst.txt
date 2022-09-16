@@ -1,0 +1,84 @@
+:py:mod:`dasf.feature_extraction.transform`
+===========================================
+
+.. py:module:: dasf.feature_extraction.transform
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.feature_extraction.transform.Normalize
+   dasf.feature_extraction.transform.ConcatenateToArray
+   dasf.feature_extraction.transform.SampleDataframe
+   dasf.feature_extraction.transform.GetSubeCubeArray
+   dasf.feature_extraction.transform.SliceDataframe
+   dasf.feature_extraction.transform.GetSubDataframe
+
+
+
+
+.. py:class:: Normalize
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+
+.. py:class:: ConcatenateToArray(flatten=False)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(**kwargs)
+
+
+
+.. py:class:: SampleDataframe(percent)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+
+.. py:class:: GetSubeCubeArray(percent)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(data)
+
+
+
+.. py:class:: SliceDataframe(iline_index)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X, y)
+
+
+
+.. py:class:: GetSubDataframe(percent)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(data)
+
+
+

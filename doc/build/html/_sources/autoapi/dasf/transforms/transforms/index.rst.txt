@@ -1,0 +1,71 @@
+:py:mod:`dasf.transforms.transforms`
+====================================
+
+.. py:module:: dasf.transforms.transforms
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.transforms.transforms.Transform
+   dasf.transforms.transforms.ArraysToDataFrame
+   dasf.transforms.transforms.ArraysToDataFrameOp
+
+
+
+
+.. py:class:: Transform
+
+   .. py:method:: fit(X, y=None)
+      :abstractmethod:
+
+
+   .. py:method:: transform(X)
+      :abstractmethod:
+
+
+
+.. py:class:: ArraysToDataFrame
+
+   Bases: :py:obj:`Transform`
+
+   .. py:method:: __transform_generic(X, y)
+
+
+   .. py:method:: _lazy_transform_cpu(X, y)
+
+
+   .. py:method:: _lazy_transform_gpu(X, y)
+
+
+   .. py:method:: _transform_gpu(X, y)
+
+
+   .. py:method:: _transform_cpu(X, y)
+
+
+
+.. py:class:: ArraysToDataFrameOp
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run_lazy_cpu(X, y)
+
+
+   .. py:method:: run_cpu(X, y)
+
+
+   .. py:method:: run_lazy_gpu(X, y)
+
+
+   .. py:method:: run_gpu(X, y)
+
+
+

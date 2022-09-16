@@ -1,0 +1,105 @@
+:py:mod:`dasf.feature_extraction`
+=================================
+
+.. py:module:: dasf.feature_extraction
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   histogram/index.rst
+   transform/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.feature_extraction.ConcatenateToArray
+   dasf.feature_extraction.SampleDataframe
+   dasf.feature_extraction.Normalize
+   dasf.feature_extraction.GetSubeCubeArray
+   dasf.feature_extraction.SliceDataframe
+   dasf.feature_extraction.GetSubDataframe
+   dasf.feature_extraction.Histogram
+
+
+
+
+.. py:class:: ConcatenateToArray(flatten=False)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(**kwargs)
+
+
+
+.. py:class:: SampleDataframe(percent)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+
+.. py:class:: Normalize
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+
+.. py:class:: GetSubeCubeArray(percent)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(data)
+
+
+
+.. py:class:: SliceDataframe(iline_index)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X, y)
+
+
+
+.. py:class:: GetSubDataframe(percent)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(data)
+
+
+
+.. py:class:: Histogram(bins=None, range=None, normed=False, weights=None, density=None)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+

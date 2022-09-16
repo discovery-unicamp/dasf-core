@@ -25,7 +25,7 @@ except ImportError:
     GPU_SUPPORTED = False
 
 
-def human_readable_size(size, decimal=3):
+def human_readable_size(size, decimal=3) -> str:
     for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
         if size < 1024.0:
             break

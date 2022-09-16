@@ -1,0 +1,147 @@
+:py:mod:`dasf.pipeline.pipeline`
+================================
+
+.. py:module:: dasf.pipeline.pipeline
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.pipeline.ParameterOperator
+   dasf.pipeline.pipeline.Operator
+   dasf.pipeline.pipeline.BatchPipeline
+   dasf.pipeline.pipeline.BlockOperator
+   dasf.pipeline.pipeline.WrapperLocalExecutor
+   dasf.pipeline.pipeline.ComputePipeline
+
+
+
+
+.. py:class:: ParameterOperator(name, local=None, gpu=None)
+
+   Bases: :py:obj:`prefect.Parameter`
+
+       
+
+   .. py:method:: set_output(dtype)
+
+
+   .. py:method:: setup_cpu(executor)
+
+
+   .. py:method:: setup_mcpu(executor)
+
+
+   .. py:method:: setup_gpu(executor)
+
+
+   .. py:method:: setup_mgpu(executor)
+
+
+   .. py:method:: setup(executor)
+
+
+
+.. py:class:: Operator(name, slug=None, checkpoint=False, local=None, gpu=None)
+
+   Bases: :py:obj:`prefect.Task`
+
+       
+
+   .. py:method:: set_inputs(**kwargs)
+
+
+   .. py:method:: set_output(dtype)
+
+
+   .. py:method:: set_checkpoint(checkpoint)
+
+
+   .. py:method:: get_checkpoint()
+
+
+   .. py:method:: setup_cpu(executor)
+
+
+   .. py:method:: setup_lazy_cpu(executor)
+
+
+   .. py:method:: setup_gpu(executor)
+
+
+   .. py:method:: setup_lazy_gpu(executor)
+
+
+   .. py:method:: setup(executor)
+
+
+   .. py:method:: run_cpu(**kwargs)
+
+
+   .. py:method:: run_lazy_cpu(**kwargs)
+
+
+   .. py:method:: run_gpu(**kwargs)
+
+
+   .. py:method:: run_lazy_gpu(**kwargs)
+
+
+   .. py:method:: run(**kwargs)
+
+
+
+.. py:class:: BatchPipeline(name, slug=None)
+
+   Bases: :py:obj:`prefect.Task`
+
+   .. py:method:: add_pipeline(pipeline)
+
+
+   .. py:method:: run(data)
+
+
+
+.. py:class:: BlockOperator(name, function, slug=None, checkpoint=False, local=None, gpu=None, depth=None, boundary=None, trim=True, output_chunk=None)
+
+   Bases: :py:obj:`Operator`
+
+       
+
+   .. py:method:: run(X, **kwargs)
+
+
+
+.. py:class:: WrapperLocalExecutor(disable_gpu=False)
+
+   Bases: :py:obj:`prefect.executors.local.LocalExecutor`
+
+
+.. py:class:: ComputePipeline(name, executor=None)
+
+   Bases: :py:obj:`prefect.Flow`
+
+   .. py:method:: __check_task_pipes(task1, task2)
+
+
+   .. py:method:: all_upstream_tasks()
+
+
+   .. py:method:: add_parameters(parameters)
+
+
+   .. py:method:: add_edge(task1, task2, key)
+
+
+   .. py:method:: add(task, **kwargs)
+
+
+   .. py:method:: run(run_on_schedule=None, runner_cls=None, **kwargs)
+
+
+

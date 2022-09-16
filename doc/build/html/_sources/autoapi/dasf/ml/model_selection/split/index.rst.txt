@@ -1,0 +1,39 @@
+:py:mod:`dasf.ml.model_selection.split`
+=======================================
+
+.. py:module:: dasf.ml.model_selection.split
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.model_selection.split.TrainTestSplit
+
+
+
+
+.. py:class:: TrainTestSplit(output='train', test_size=None, train_size=None, random_state=None, shuffle=None, blockwise=True, convert_mixed_types=False, **kwargs)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run_cpu(X)
+
+
+   .. py:method:: run_mcpu(X)
+
+
+   .. py:method:: run_gpu(X)
+
+
+   .. py:method:: run_mgpu(X)
+      :abstractmethod:
+
+
+

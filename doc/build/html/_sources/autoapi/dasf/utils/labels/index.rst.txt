@@ -1,0 +1,99 @@
+:py:mod:`dasf.utils.labels`
+===========================
+
+.. py:module:: dasf.utils.labels
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.utils.labels.DaskLabel
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.utils.labels.get_attributes
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.utils.labels.inside_with
+   dasf.utils.labels.g_hash_attrs
+   dasf.utils.labels.g_func_attrs
+   dasf.utils.labels.g_data_attrs
+
+
+.. py:data:: inside_with
+   
+
+   
+
+.. py:data:: g_hash_attrs
+   
+
+   
+
+.. py:data:: g_func_attrs
+   
+
+   
+
+.. py:data:: g_data_attrs
+   
+
+   
+
+.. py:class:: DaskLabel(start, stop, label=None, color=None)
+
+   Bases: :py:obj:`object`
+
+   .. py:method:: start(start)
+
+
+   .. py:method:: stop(stop)
+
+
+   .. py:method:: __name(x)
+
+
+   .. py:method:: __add_item(key, tag, label=None, color=None, atype='data')
+
+
+   .. py:method:: __add_func(key, tag, label, color)
+
+
+   .. py:method:: __add_data(key, tag, label, color)
+
+
+   .. py:method:: __generate_hashtable(data, delete_dup=False)
+
+
+   .. py:method:: __enter(dsk)
+
+
+   .. py:method:: __enter__()
+
+
+   .. py:method:: __exit(dsk, exc_type, exc_val, exc_tb)
+
+
+   .. py:method:: __exit__(exc_type, exc_val, exc_tb)
+
+
+
+.. py:function:: get_attributes()
+
+

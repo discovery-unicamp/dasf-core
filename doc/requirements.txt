@@ -1,0 +1,6 @@
+sphinx
+sphinx-autoapi
+sphinx_rtd_theme
+nbsphinx
+pandoc
+Ipython

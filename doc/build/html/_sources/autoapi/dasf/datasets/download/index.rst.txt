@@ -1,0 +1,72 @@
+:py:mod:`dasf.datasets.download`
+================================
+
+.. py:module:: dasf.datasets.download
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.datasets.download.DownloadWget
+   dasf.datasets.download.DownloadGDrive
+
+
+
+
+.. py:class:: DownloadWget(url, filename, root, download = True)
+
+   Bases: :py:obj:`dasf.datasets.base.Dataset`
+
+   Dataset downloadable via wget.
+
+   Parameters
+   ----------
+   url : str
+       The url to fetch the resource.
+   filename : str
+       Name of the file.
+   root : str
+       Directory to store the downloaded file.
+   download : bool
+       If it the dataset must be downloaded (the default is True).
+
+
+   .. py:method:: download()
+
+      Download the dataset.
+
+              
+
+
+
+.. py:class:: DownloadGDrive(google_file_id, filename, root, download=True)
+
+   Bases: :py:obj:`dasf.datasets.base.Dataset`
+
+   Dataset downloadable via Google Drive.
+
+   Parameters
+   ----------
+   google_file_id : str
+       Id of the google drive resource.
+   filename : str
+       Name of the file.
+   root : str
+       Directory to store the downloaded file.
+   download : bool
+       If it the dataset must be downloaded (the default is True).
+
+
+   .. py:method:: download()
+
+      Download the dataset.
+
+              
+
+
+

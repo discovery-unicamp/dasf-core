@@ -5,7 +5,25 @@ from dasf.utils.utils import is_dask_supported
 from dasf.utils.utils import is_dask_gpu_supported
 
 
-def generate_generic(cls, func_name):
+# TODO: this will not generate generic function....
+def generate_generic(cls, func_name: str):
+    """Given a method of a class, generate specialized methods depending on
+    the supported architecture and functionalities.
+
+    Parameters
+    ----------
+    cls : type
+        The class to inspect.
+    func_name : str
+        The method of the class to
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
+
     func_type = ""
     arch = "cpu"
 

@@ -1,0 +1,69 @@
+:py:mod:`dasf.ml.cluster.dbscan`
+================================
+
+.. py:module:: dasf.ml.cluster.dbscan
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.cluster.dbscan.DBSCAN
+   dasf.ml.cluster.dbscan.DBSCANOp
+   dasf.ml.cluster.dbscan.DBSCANFitOp
+   dasf.ml.cluster.dbscan.DBSCANFitPredictOp
+
+
+
+
+.. py:class:: DBSCAN(eps=0.5, leaf_size=40, metric='euclidean', min_samples=None, p=None)
+
+   Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
+   .. py:method:: _lazy_fit_gpu(X, y=None, out_dtype='int32')
+
+
+   .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_gpu(X, y=None, out_dtype='int32')
+
+
+   .. py:method:: _lazy_fit_predict_gpu(X, y=None, out_dtype='int32')
+
+
+   .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_predict_gpu(X, y=None, out_dtype='int32')
+
+
+
+.. py:class:: DBSCANOp(eps=0.5, leaf_size=40, metric='euclidean', min_samples=None, p=None, checkpoint=False)
+
+   Bases: :py:obj:`dasf.pipeline.ParameterOperator`
+
+       
+
+   .. py:method:: run()
+
+
+
+.. py:class:: DBSCANFitOp(checkpoint=False)
+
+   Bases: :py:obj:`dasf.ml.core.FitInternal`
+
+       
+
+
+.. py:class:: DBSCANFitPredictOp(checkpoint=False)
+
+   Bases: :py:obj:`dasf.ml.core.FitPredictInternal`
+
+       
+
+

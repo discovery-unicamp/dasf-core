@@ -1,0 +1,40 @@
+:py:mod:`dasf.transforms.memory`
+================================
+
+.. py:module:: dasf.transforms.memory
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.transforms.memory.PersistDaskData
+   dasf.transforms.memory.LoadDaskData
+
+
+
+
+.. py:class:: PersistDaskData
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+
+.. py:class:: LoadDaskData
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: run(data)
+
+
+

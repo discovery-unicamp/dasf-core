@@ -1,0 +1,59 @@
+:py:mod:`dasf.ml.dl.models`
+===========================
+
+.. py:module:: dasf.ml.dl.models
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   devconvnet/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.dl.models.TorchPatchDeConvNet
+   dasf.ml.dl.models.TorchPatchDeConvNetSkip
+   dasf.ml.dl.models.TorchSectionDeConvNet
+   dasf.ml.dl.models.TorchSectionDeConvNetSkip
+
+
+
+
+.. py:class:: TorchPatchDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=False)
+
+   Bases: :py:obj:`dasf.pipeline.ParameterOperator`
+
+       
+
+
+.. py:class:: TorchPatchDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=False)
+
+   Bases: :py:obj:`dasf.pipeline.ParameterOperator`
+
+       
+
+
+.. py:class:: TorchSectionDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=False)
+
+   Bases: :py:obj:`dasf.pipeline.ParameterOperator`
+
+       
+
+
+.. py:class:: TorchSectionDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=False)
+
+   Bases: :py:obj:`dasf.pipeline.ParameterOperator`
+
+       
+
+

@@ -15,6 +15,14 @@ from dasf.utils.utils import is_dask_gpu_supported
 
 
 class make_blobs:
+    """Singleton class used to generate isotropic Gaussian blobs for clustering.
+    It automatically selects the implementation based on hardware and available
+    libraries and return a container suitable for it (cupy, numpy, cupy+dask or
+    numpy+dask).
+
+    The class implements `__call__` being a callable object. 
+    """
+
     def __new__(cls, **kwargs):
         instance = super().__new__(cls)
         if kwargs is None:

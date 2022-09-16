@@ -1,0 +1,46 @@
+:py:mod:`dasf.ml.dl.classifier.pytorch_lightning`
+=================================================
+
+.. py:module:: dasf.ml.dl.classifier.pytorch_lightning
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.dl.classifier.pytorch_lightning.Trainer
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.dl.classifier.pytorch_lightning.trainer
+
+
+
+.. py:function:: trainer(model, epochs, accel, strategy, devices, train, val, metadata, batch_size, auto_scale_batch_size, ngpus)
+
+
+.. py:class:: Trainer(name='PyTorch Lightning Pipeline', num_epochs=100, batch_size=16)
+
+   Bases: :py:obj:`dasf.pipeline.Operator`
+
+       
+
+   .. py:method:: setup(executor)
+
+
+   .. py:method:: __run_clustered(model, train, val, batch_size, auto_scale_batch_size=None)
+
+
+   .. py:method:: run(model, train, val=None)
+
+
+

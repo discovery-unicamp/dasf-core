@@ -1,0 +1,61 @@
+:py:mod:`dasf.transforms.operations`
+====================================
+
+.. py:module:: dasf.transforms.operations
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.transforms.operations.Reshape
+   dasf.transforms.operations.SliceArray
+   dasf.transforms.operations.SliceArrayOperator
+   dasf.transforms.operations.SliceArrayByPercent
+
+
+
+
+.. py:class:: Reshape(shape)
+
+   Bases: :py:obj:`dasf.pipeline.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+
+.. py:class:: SliceArray(output_size)
+
+   .. py:method:: __transform(X)
+
+
+   .. py:method:: transform(X)
+
+
+
+.. py:class:: SliceArrayOperator(x=None, y=None, z=None)
+
+   Bases: :py:obj:`dasf.pipeline.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+
+.. py:class:: SliceArrayByPercent(x=100.0, y=100.0, z=100.0)
+
+   Bases: :py:obj:`dasf.pipeline.pipeline.Operator`
+
+       
+
+   .. py:method:: run(X)
+
+
+
