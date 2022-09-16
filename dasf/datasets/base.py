@@ -121,6 +121,21 @@ class DatasetArray(Dataset):
 
             self._root = os.path.dirname(root)
 
+    def __operator_check__(self, other):
+        assert self._data is not None, ("Data is not loaded yet.")
+        if isinstance(other, DatasetArray):
+            return other._data
+        return other
+
+    def __add__(self, other):
+        return self._data + self.__operator_check__(other)
+
+    def __sub__(self, other):
+        return self._data - self.__operator_check__(other)
+
+    def __mul__(self, other):
+        return self._data * self.__operator_check__(other)
+
     def __npy_header(self):
         with open(self._root_file, 'rb') as fobj:
             version = numpy.lib.format.read_magic(fobj)
