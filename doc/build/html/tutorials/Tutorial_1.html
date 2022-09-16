@@ -23,7 +23,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Programming Reference" href="../api.html" />
+    <link rel="next" title="DASF API Reference" href="../api.html" />
     <link rel="prev" title="Tutorials" href="../tutorials.html" /> 
 </head>
 
@@ -52,7 +52,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial 1 - A Quick Demo</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">Programming Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">DASF API Reference</a></li>
 </ul>
 
         </div>
@@ -368,15 +368,6 @@ specific optimizations for that type and so on so forth.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
 
 <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">500000</span>
@@ -385,8 +376,7 @@ specific optimizations for that type and so on so forth.</p>
 <span class="c1"># Generate 3 blobs with 2 classes where the second blob contains</span>
 <span class="c1"># half positive samples and half negative samples. Probability in this</span>
 <span class="c1"># blob is therefore 0.5.</span>
-<span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
-<span class="n">centers</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -394,7 +384,7 @@ specific optimizations for that type and so on so forth.</p>
 <p>Notice that we are using the same code available in scikit-learn tutorials and demos.</p>
 <p>To have a better view of the data distribution, we can plot the generated dataset.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Only to generate colors</span>
@@ -407,8 +397,8 @@ specific optimizations for that type and so on so forth.</p>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-    <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
-    <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+    <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
     <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span>
     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
@@ -424,13 +414,13 @@ specific optimizations for that type and so on so forth.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_Tutorial_1_4_0.png" src="../_images/tutorials_Tutorial_1_4_0.png" />
+<img alt="../_images/tutorials_Tutorial_1_3_0.png" src="../_images/tutorials_Tutorial_1_3_0.png" />
 </div>
 </div>
 <p>Once, we have the big picture of how our dataset is distributed, let’s run two clustering algorithms to understand how it can be classified.</p>
 <p>For this tutorial, we decided to use KMeans and SOM (Kohonen’s Self-Organized Map) as an example.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.ml.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
@@ -441,10 +431,20 @@ specific optimizations for that type and so on so forth.</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+WARNING: CuPy could not be imported
+WARNING: CuPy could not be imported
+WARNING: CuPy could not be imported
+</pre></div></div>
+</div>
 <p>As we know our dataset defines 3 centers with 2 classes, we set KMeans <code class="docutils literal notranslate"><span class="pre">n_clusters</span></code> parameter with the same number of classes of our dataset. On the other hand, SOM is based on an activation map and it does not necessary needs a 1-D map with 3 activation points, but we want to use here to help the classification algorithm also. See that as we also know that our dataset contains two classes, the parameter <code class="docutils literal notranslate"><span class="pre">input_len</span></code> of SOM needs to be set as <strong>2</strong> (same number of classes).</p>
 <p>Now, it is time to <code class="docutils literal notranslate"><span class="pre">fit_predict</span></code> both classifiers. Let’s analyze KMeans first.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> result_kmeans = kmeans.fit_predict(X)
@@ -456,32 +456,13 @@ specific optimizations for that type and so on so forth.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;timed exec&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-
-<span class="ansi-green-fg">/home/lopani/Documents/Doutorado/UNICAMP/DASF/dasf-core/docs/tutorials/../../dasf/ml/cluster/kmeans.py</span> in <span class="ansi-cyan-fg">_fit_predict_gpu</span><span class="ansi-blue-fg">(self, X, y, sample_weight)</span>
-<span class="ansi-green-intense-fg ansi-bold">     85</span>
-<span class="ansi-green-intense-fg ansi-bold">     86</span>     <span class="ansi-green-fg">def</span> _fit_predict_gpu<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> X<span class="ansi-blue-fg">,</span> y<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> sample_weight<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 87</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>__kmeans_gpu<span class="ansi-blue-fg">.</span>fit_predict<span class="ansi-blue-fg">(</span>X<span class="ansi-blue-fg">,</span> y<span class="ansi-blue-fg">,</span> sample_weight<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     88</span>
-<span class="ansi-green-intense-fg ansi-bold">     89</span>     <span class="ansi-green-fg">def</span> _lazy_predict_cpu<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> X<span class="ansi-blue-fg">,</span> sample_weight<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">/opt/conda/envs/dasf/lib/python3.8/site-packages/cuml/internals/api_decorators.py</span> in <span class="ansi-cyan-fg">inner_get</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    584</span>
-<span class="ansi-green-intense-fg ansi-bold">    585</span>                 <span class="ansi-red-fg"># Call the function</span>
-<span class="ansi-green-fg">--&gt; 586</span><span class="ansi-red-fg">                 </span>ret_val <span class="ansi-blue-fg">=</span> func<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    587</span>
-<span class="ansi-green-intense-fg ansi-bold">    588</span>             <span class="ansi-green-fg">return</span> cm<span class="ansi-blue-fg">.</span>process_return<span class="ansi-blue-fg">(</span>ret_val<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">cuml/cluster/kmeans.pyx</span> in <span class="ansi-cyan-fg">cuml.cluster.kmeans.KMeans.fit_predict</span><span class="ansi-blue-fg">()</span>
-
-<span class="ansi-red-fg">TypeError</span>: fit_predict() takes at most 3 positional arguments (4 given)
+CPU times: user 6.7 s, sys: 6.55 s, total: 13.3 s
+Wall time: 1.86 s
 </pre></div></div>
 </div>
 <p>KMeans is a fast algorithm compared to SOM. For further reference, let’s see the speed of the SOM algorithm.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> result_som = som.fit_predict(X)
@@ -493,13 +474,13 @@ specific optimizations for that type and so on so forth.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 5min 2s, sys: 163 ms, total: 5min 2s
-Wall time: 5min 2s
+CPU times: user 19.2 s, sys: 46.9 ms, total: 19.2 s
+Wall time: 19.3 s
 </pre></div></div>
 </div>
 <p>Now, let’s see the performance of each prediction. The first one is KMeans results.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
@@ -512,8 +493,8 @@ Wall time: 5min 2s
     <span class="k">for</span> <span class="n">this_y</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y_unique</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
         <span class="n">this_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">result</span> <span class="o">==</span> <span class="n">this_y</span><span class="p">]</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-            <span class="n">this_X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
-            <span class="n">this_X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">this_X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">this_X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
             <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
             <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
@@ -529,20 +510,12 @@ Wall time: 5min 2s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">/tmp/ipykernel_153/2909981910.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     18</span>         )
-<span class="ansi-green-intense-fg ansi-bold">     19</span>
-<span class="ansi-green-fg">---&gt; 20</span><span class="ansi-red-fg"> </span>plot_results<span class="ansi-blue-fg">(</span>X<span class="ansi-blue-fg">,</span> result_kmeans<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;result_kmeans&#39; is not defined
-</pre></div></div>
+<img alt="../_images/tutorials_Tutorial_1_11_0.png" src="../_images/tutorials_Tutorial_1_11_0.png" />
+</div>
 </div>
 <p>Now, let’s see how SOM results look like.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_results</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">result_som</span><span class="p">)</span>
@@ -553,7 +526,7 @@ Wall time: 5min 2s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_Tutorial_1_14_0.png" src="../_images/tutorials_Tutorial_1_14_0.png" />
+<img alt="../_images/tutorials_Tutorial_1_13_0.png" src="../_images/tutorials_Tutorial_1_13_0.png" />
 </div>
 </div>
 <p>As we cam see, the results do not seem similar but they are accurated.</p>
@@ -566,7 +539,7 @@ Wall time: 5min 2s
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../tutorials.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../api.html" class="btn btn-neutral float-right" title="Programming Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../api.html" class="btn btn-neutral float-right" title="DASF API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
