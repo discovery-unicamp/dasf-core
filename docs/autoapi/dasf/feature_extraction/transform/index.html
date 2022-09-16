@@ -129,22 +129,22 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.Normalize" title="dasf.feature_extraction.transform.Normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Normalize</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Normalize the data using standard scaler normalizator.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.ConcatenateToArray" title="dasf.feature_extraction.transform.ConcatenateToArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConcatenateToArray</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Concatenate data from different Arrays into a single array.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.SampleDataframe" title="dasf.feature_extraction.transform.SampleDataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleDataframe</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Return a subset with random samples of the original dataset.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.GetSubeCubeArray" title="dasf.feature_extraction.transform.GetSubeCubeArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GetSubeCubeArray</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Get a subcube with x% of samples from the original one.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.SliceDataframe" title="dasf.feature_extraction.transform.SliceDataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SliceDataframe</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Get a slice of a cube. An inline slice is a section over the x-axis.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.GetSubDataframe" title="dasf.feature_extraction.transform.GetSubDataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GetSubDataframe</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Get the first x% samples from the dataset.</p></td>
 </tr>
 </tbody>
 </table>
@@ -152,6 +152,7 @@
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.Normalize">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">Normalize</span></span><a class="headerlink" href="#dasf.feature_extraction.transform.Normalize" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Normalize the data using standard scaler normalizator.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.Normalize.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.Normalize.run" title="Permalink to this definition"></a></dt>
@@ -163,10 +164,32 @@
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.ConcatenateToArray">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">ConcatenateToArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flatten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.ConcatenateToArray" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Concatenate data from different Arrays into a single array.</p>
+<dl class="simple">
+<dt>flatten<span class="classifier">bool</span></dt><dd><p>If the arrays must be flatten prior concatenating. If <cite>False</cite>, the
+arrays must share the shape of last dimansions in order to be
+concatenated (the default is False).</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flatten</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.ConcatenateToArray.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.ConcatenateToArray.run" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Concatenate arrays passed as keyworkded aguments. The key represent
+Array names and the values are the arrays.</p>
+<dl class="simple">
+<dt><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs<span class="classifier">type</span></dt><dd><p>Dictionary with datasets.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>A concatenated Array.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -174,10 +197,29 @@
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.SampleDataframe">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">SampleDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.SampleDataframe" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Return a subset with random samples of the original dataset.</p>
+<dl class="simple">
+<dt>percent<span class="classifier">float</span></dt><dd><p>Percentage of the samples to get from the dataset.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>percent</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.SampleDataframe.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.SampleDataframe.run" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Returns a subset with random samples from the dataset <cite>X</cite>.</p>
+<dl class="simple">
+<dt>X<span class="classifier">Any</span></dt><dd><p>The dataset.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The sampled subset.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -185,10 +227,29 @@
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.GetSubeCubeArray">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">GetSubeCubeArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.GetSubeCubeArray" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Get a subcube with x% of samples from the original one.</p>
+<dl class="simple">
+<dt>percent<span class="classifier">float</span></dt><dd><p>Percentage of the samples to get from the cube.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>percent</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.GetSubeCubeArray.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.GetSubeCubeArray.run" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Returns a subcube from the original one.</p>
+<dl class="simple">
+<dt>data<span class="classifier">Any</span></dt><dd><p>The cube.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>A subcube from the original.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -196,6 +257,16 @@
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.SliceDataframe">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">SliceDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iline_index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.SliceDataframe" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Get a slice of a cube. An inline slice is a section over the x-axis.</p>
+<dl class="simple">
+<dt>iline_index<span class="classifier">int</span></dt><dd><p>The index of the inline to get.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>iline_index</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.SliceDataframe.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.SliceDataframe.run" title="Permalink to this definition"></a></dt>
@@ -207,10 +278,29 @@
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.GetSubDataframe">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">GetSubDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.GetSubDataframe" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Get the first x% samples from the dataset.</p>
+<dl class="simple">
+<dt>percent<span class="classifier">float</span></dt><dd><p>Percentage of the samples to get from the dataframe.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>percent</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.feature_extraction.transform.GetSubDataframe.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.GetSubDataframe.run" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Return x% samples of the dataset.</p>
+<dl class="simple">
+<dt>data<span class="classifier">Any</span></dt><dd><p>A dataframe type data.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>A dataframe with only the x% samples.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

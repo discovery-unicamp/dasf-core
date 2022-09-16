@@ -48,40 +48,170 @@ def generate_generic(cls, func_name: str):
 
 
 def generate_load(cls):
+    """Generate specialized methods for any `load` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "load")
 
 
 def generate_fit(cls):
+    """Generate specialized methods for any `fit` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "fit")
 
 
 def generate_fit_predict(cls):
+    """Generate specialized methods for any `fit_predict` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "fit_predict")
 
 
 def generate_fit_transform(cls):
+    """Generate specialized methods for any `fit_transform` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "fit_transform")
 
 
 def generate_partial_fit(cls):
+    """Generate specialized methods for any `partial_fit` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "partial_fit")
 
 
 def generate_predict(cls):
+    """Generate specialized methods for any `predict` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "predict")
 
 
 def generate_transform(cls):
+    """Generate specialized methods for any `transform` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "transform")
 
 
 def generate_inverse_transform(cls):
+    """Generate specialized methods for any `transform_inverse` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "transform_inverse")
 
 
 def generate_get_params(cls):
+    """Generate specialized methods for any `get_params` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "get_params")
 
 
 def generate_set_params(cls):
+    """Generate specialized methods for any `set_params` method from a given class.
+
+    Parameters
+    ----------
+    cls : Type
+        The class to inspect.
+
+    Returns
+    -------
+    Any
+        The class with new methods.
+
+    """
     return generate_generic(cls, "set_params")

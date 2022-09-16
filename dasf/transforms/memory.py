@@ -7,6 +7,9 @@ from dasf.pipeline import Operator
 
 
 class PersistDaskData(Operator):
+    """Allow persisting a dask array to memory and return a copy of the object.
+    It will gather the data blocks from all workers and resembles locally.
+    """
     def __init__(self):
         super().__init__(name="Persist Dask data")
 
@@ -20,6 +23,9 @@ class PersistDaskData(Operator):
 
 
 class LoadDaskData(Operator):
+    """Allow persisting a dask array to memory. It will gather the data blocks
+    from all workers and resembles locally.
+    """
     def __init__(self):
         super().__init__(name="Load Dask data locally")
 

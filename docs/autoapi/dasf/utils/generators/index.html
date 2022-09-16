@@ -132,34 +132,34 @@
 <td><p>Given a method of a class, generate specialized methods depending on</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_load" title="dasf.utils.generators.generate_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_load</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>load</cite> method from a given class.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_fit" title="dasf.utils.generators.generate_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_fit</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>fit</cite> method from a given class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_fit_predict" title="dasf.utils.generators.generate_fit_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_fit_predict</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>fit_predict</cite> method from a given class.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_fit_transform" title="dasf.utils.generators.generate_fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_fit_transform</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>fit_transform</cite> method from a given class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_partial_fit" title="dasf.utils.generators.generate_partial_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_partial_fit</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>partial_fit</cite> method from a given class.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_predict" title="dasf.utils.generators.generate_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_predict</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>predict</cite> method from a given class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_transform" title="dasf.utils.generators.generate_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_transform</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>transform</cite> method from a given class.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_inverse_transform" title="dasf.utils.generators.generate_inverse_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_inverse_transform</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>transform_inverse</cite> method from a given class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_get_params" title="dasf.utils.generators.generate_get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_get_params</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>get_params</cite> method from a given class.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.generators.generate_set_params" title="dasf.utils.generators.generate_set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_set_params</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Generate specialized methods for any <cite>set_params</cite> method from a given class.</p></td>
 </tr>
 </tbody>
 </table>
@@ -188,52 +188,142 @@ the supported architecture and functionalities.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_load">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_load" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>load</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_fit">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_fit" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>fit</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_fit_predict">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_fit_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_fit_predict" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>fit_predict</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_fit_transform">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_fit_transform" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>fit_transform</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_partial_fit">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_partial_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_partial_fit" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>partial_fit</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_predict">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_predict" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>predict</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_transform">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_transform" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>transform</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_inverse_transform">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_inverse_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_inverse_transform" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>transform_inverse</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_get_params">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_get_params" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>get_params</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.generators.generate_set_params">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.generators.</span></span><span class="sig-name descname"><span class="pre">generate_set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.utils.generators.generate_set_params" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate specialized methods for any <cite>set_params</cite> method from a given class.</p>
+<dl class="simple">
+<dt>cls<span class="classifier">Type</span></dt><dd><p>The class to inspect.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Any</dt><dd><p>The class with new methods.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

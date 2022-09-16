@@ -150,13 +150,13 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.transforms.Reshape" title="dasf.transforms.Reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Reshape</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Reshape data with a new shape.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.transforms.PersistDaskData" title="dasf.transforms.PersistDaskData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PersistDaskData</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Allow persisting a dask array to memory and return a copy of the object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.transforms.LoadDaskData" title="dasf.transforms.LoadDaskData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoadDaskData</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Allow persisting a dask array to memory. It will gather the data blocks</p></td>
 </tr>
 </tbody>
 </table>
@@ -236,6 +236,16 @@
 <dt class="sig sig-object py" id="dasf.transforms.Reshape">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">Reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.transforms.Reshape" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../pipeline/pipeline/index.html#dasf.pipeline.pipeline.Operator" title="dasf.pipeline.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.pipeline.Operator</span></code></a></p>
+<p>Reshape data with a new shape.</p>
+<dl class="simple">
+<dt>shape<span class="classifier">tuple</span></dt><dd><p>The new shape of the data.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>shape</strong> (<em>tuple</em>) – </p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.Reshape.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.transforms.Reshape.run" title="Permalink to this definition"></a></dt>
@@ -247,6 +257,8 @@
 <dt class="sig sig-object py" id="dasf.transforms.PersistDaskData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">PersistDaskData</span></span><a class="headerlink" href="#dasf.transforms.PersistDaskData" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Allow persisting a dask array to memory and return a copy of the object.
+It will gather the data blocks from all workers and resembles locally.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.PersistDaskData.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.transforms.PersistDaskData.run" title="Permalink to this definition"></a></dt>
@@ -258,6 +270,8 @@
 <dt class="sig sig-object py" id="dasf.transforms.LoadDaskData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">LoadDaskData</span></span><a class="headerlink" href="#dasf.transforms.LoadDaskData" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Allow persisting a dask array to memory. It will gather the data blocks
+from all workers and resembles locally.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.LoadDaskData.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.transforms.LoadDaskData.run" title="Permalink to this definition"></a></dt>

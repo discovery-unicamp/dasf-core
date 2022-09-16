@@ -129,10 +129,10 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.transforms.memory.PersistDaskData" title="dasf.transforms.memory.PersistDaskData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PersistDaskData</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Allow persisting a dask array to memory and return a copy of the object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.transforms.memory.LoadDaskData" title="dasf.transforms.memory.LoadDaskData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoadDaskData</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Allow persisting a dask array to memory. It will gather the data blocks</p></td>
 </tr>
 </tbody>
 </table>
@@ -140,6 +140,8 @@
 <dt class="sig sig-object py" id="dasf.transforms.memory.PersistDaskData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.memory.</span></span><span class="sig-name descname"><span class="pre">PersistDaskData</span></span><a class="headerlink" href="#dasf.transforms.memory.PersistDaskData" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Allow persisting a dask array to memory and return a copy of the object.
+It will gather the data blocks from all workers and resembles locally.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.memory.PersistDaskData.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.transforms.memory.PersistDaskData.run" title="Permalink to this definition"></a></dt>
@@ -151,6 +153,8 @@
 <dt class="sig sig-object py" id="dasf.transforms.memory.LoadDaskData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.memory.</span></span><span class="sig-name descname"><span class="pre">LoadDaskData</span></span><a class="headerlink" href="#dasf.transforms.memory.LoadDaskData" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../pipeline/index.html#dasf.pipeline.Operator" title="dasf.pipeline.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.Operator</span></code></a></p>
+<p>Allow persisting a dask array to memory. It will gather the data blocks
+from all workers and resembles locally.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.memory.LoadDaskData.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.transforms.memory.LoadDaskData.run" title="Permalink to this definition"></a></dt>

@@ -88,7 +88,13 @@ Classes
 
    Bases: :py:obj:`dasf.pipeline.pipeline.Operator`
 
-       
+   Reshape data with a new shape.
+
+   Parameters
+   ----------
+   shape : tuple
+       The new shape of the data.
+
 
    .. py:method:: run(X)
 
@@ -98,7 +104,8 @@ Classes
 
    Bases: :py:obj:`dasf.pipeline.Operator`
 
-       
+   Allow persisting a dask array to memory and return a copy of the object.
+   It will gather the data blocks from all workers and resembles locally.
 
    .. py:method:: run(X)
 
@@ -108,7 +115,8 @@ Classes
 
    Bases: :py:obj:`dasf.pipeline.Operator`
 
-       
+   Allow persisting a dask array to memory. It will gather the data blocks
+   from all workers and resembles locally.
 
    .. py:method:: run(data)
 

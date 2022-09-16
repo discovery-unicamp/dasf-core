@@ -23,6 +23,9 @@ except ImportError:
 
 
 class Normalize(Operator):
+    """Normalize the data using standard scaler normalizator.
+
+    """
     def __init__(self):
         super().__init__(name="Normalize Data")
 
@@ -37,7 +40,17 @@ class Normalize(Operator):
 
 
 class ConcatenateToArray(Operator):
-    def __init__(self, flatten=False):
+    """Concatenate data from different Arrays into a single array.
+
+    Parameters
+    ----------
+    flatten : bool
+        If the arrays must be flatten prior concatenating. If `False`, the
+        arrays must share the shape of last dimansions in order to be
+        concatenated (the default is False).
+
+    """
+    def __init__(self, flatten: bool = False):
         super().__init__(name="Concatenate and Flatten Data to Array")
 
         self.flatten = flatten
@@ -49,6 +62,20 @@ class ConcatenateToArray(Operator):
         self.dtype = TaskExecutorType.single_cpu
 
     def run(self, **kwargs):
+        """Concatenate arrays passed as keyworkded aguments. The key represent
+        Array names and the values are the arrays.
+
+        Parameters
+        ----------
+        **kwargs : type
+            Dictionary with datasets.
+
+        Returns
+        -------
+        Any
+            A concatenated Array.
+
+        """
         datas = None
         for key in kwargs:
             if datas is None:
@@ -77,7 +104,15 @@ class ConcatenateToArray(Operator):
 
 
 class SampleDataframe(Operator):
-    def __init__(self, percent):
+    """Return a subset with random samples of the original dataset.
+
+    Parameters
+    ----------
+    percent : float
+        Percentage of the samples to get from the dataset.
+
+    """
+    def __init__(self, percent: float):
         super().__init__(name="Sample DataFrame using " + str(percent) + "%")
 
         self.set_inputs(data=ALL_ARRAY_TYPES)
@@ -87,11 +122,32 @@ class SampleDataframe(Operator):
         self.__percent = float(percent/100.0)
 
     def run(self, X):
+        """Returns a subset with random samples from the dataset `X`.
+
+        Parameters
+        ----------
+        X : Any
+            The dataset.
+
+        Returns
+        -------
+        Any
+            The sampled subset.
+
+        """
         return X.sample(n=int(len(X) * self.__percent))
 
 
 class GetSubeCubeArray(Operator):
-    def __init__(self, percent):
+    """Get a subcube with x% of samples from the original one.
+
+    Parameters
+    ----------
+    percent : float
+        Percentage of the samples to get from the cube.
+
+    """
+    def __init__(self, percent: float):
         super().__init__(name="Get Smaller 3D Data")
 
         self.__percent = float(percent/100.0)
@@ -104,6 +160,19 @@ class GetSubeCubeArray(Operator):
         self.set_output(ALL_ARRAY_TYPES)
 
     def run(self, data):
+        """Returns a subcube from the original one.
+
+        Parameters
+        ----------
+        data : Any
+            The cube.
+
+        Returns
+        -------
+        Any
+            A subcube from the original.
+
+        """
         i_num, x_num, t_num = data.shape
 
         i_start_idx = int((i_num - (i_num * self.__percent)) / 2)
@@ -121,7 +190,15 @@ class GetSubeCubeArray(Operator):
 
 
 class SliceDataframe(Operator):
-    def __init__(self, iline_index):
+    """Get a slice of a cube. An inline slice is a section over the x-axis.
+
+    Parameters
+    ----------
+    iline_index : int
+        The index of the inline to get.
+
+    """
+    def __init__(self, iline_index: int):
         super().__init__(name="Slice Dataframe in " + str(iline_index))
 
         self.iline_index = iline_index
@@ -149,7 +226,15 @@ class SliceDataframe(Operator):
 
 
 class GetSubDataframe(Operator):
-    def __init__(self, percent):
+    """Get the first x% samples from the dataset.
+
+    Parameters
+    ----------
+    percent : float
+        Percentage of the samples to get from the dataframe.
+
+    """
+    def __init__(self, percent: float):
         super().__init__(name="Get Smaller Dataframe")
 
         self.__percent = float(percent/100.0)
@@ -158,6 +243,19 @@ class GetSubDataframe(Operator):
         self.set_output(ALL_ARRAY_TYPES)
 
     def run(self, data):
+        """Return x% samples of the dataset.
+
+        Parameters
+        ----------
+        data : Any
+            A dataframe type data.
+
+        Returns
+        -------
+        Any
+            A dataframe with only the x% samples.
+
+        """
         new_size = int(len(data) * self.__percent)
 
         return data.iloc[0:new_size]

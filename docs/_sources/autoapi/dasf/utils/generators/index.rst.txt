@@ -48,31 +48,161 @@ Functions
 
 .. py:function:: generate_load(cls)
 
+   Generate specialized methods for any `load` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
+
 
 .. py:function:: generate_fit(cls)
+
+   Generate specialized methods for any `fit` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
 
 
 .. py:function:: generate_fit_predict(cls)
 
+   Generate specialized methods for any `fit_predict` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
+
 
 .. py:function:: generate_fit_transform(cls)
+
+   Generate specialized methods for any `fit_transform` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
 
 
 .. py:function:: generate_partial_fit(cls)
 
+   Generate specialized methods for any `partial_fit` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
+
 
 .. py:function:: generate_predict(cls)
+
+   Generate specialized methods for any `predict` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
 
 
 .. py:function:: generate_transform(cls)
 
+   Generate specialized methods for any `transform` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
+
 
 .. py:function:: generate_inverse_transform(cls)
+
+   Generate specialized methods for any `transform_inverse` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
 
 
 .. py:function:: generate_get_params(cls)
 
+   Generate specialized methods for any `get_params` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
+
 
 .. py:function:: generate_set_params(cls)
+
+   Generate specialized methods for any `set_params` method from a given class.
+
+   Parameters
+   ----------
+   cls : Type
+       The class to inspect.
+
+   Returns
+   -------
+   Any
+       The class with new methods.
+
 
 

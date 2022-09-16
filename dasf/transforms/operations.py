@@ -4,7 +4,15 @@ from dasf.pipeline.pipeline import Operator
 
 
 class Reshape(Operator):
-    def __init__(self, shape):
+    """Reshape data with a new shape.
+
+    Parameters
+    ----------
+    shape : tuple
+        The new shape of the data.
+
+    """
+    def __init__(self, shape: tuple):
         super().__init__(name="Reshape Data")
 
         self.shape = shape

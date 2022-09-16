@@ -33,13 +33,35 @@ Classes
 
 
 
-.. py:class:: ConcatenateToArray(flatten=False)
+.. py:class:: ConcatenateToArray(flatten = False)
 
    Bases: :py:obj:`dasf.pipeline.Operator`
 
-       
+   Concatenate data from different Arrays into a single array.
+
+   Parameters
+   ----------
+   flatten : bool
+       If the arrays must be flatten prior concatenating. If `False`, the
+       arrays must share the shape of last dimansions in order to be
+       concatenated (the default is False).
+
 
    .. py:method:: run(**kwargs)
+
+      Concatenate arrays passed as keyworkded aguments. The key represent
+      Array names and the values are the arrays.
+
+      Parameters
+      ----------
+      **kwargs : type
+          Dictionary with datasets.
+
+      Returns
+      -------
+      Any
+          A concatenated Array.
+
 
 
 
@@ -47,15 +69,36 @@ Classes
 
    Bases: :py:obj:`dasf.pipeline.Operator`
 
-       
+   Return a subset with random samples of the original dataset.
+
+   Parameters
+   ----------
+   percent : float
+       Percentage of the samples to get from the dataset.
+
 
    .. py:method:: run(X)
+
+      Returns a subset with random samples from the dataset `X`.
+
+      Parameters
+      ----------
+      X : Any
+          The dataset.
+
+      Returns
+      -------
+      Any
+          The sampled subset.
+
 
 
 
 .. py:class:: Normalize
 
    Bases: :py:obj:`dasf.pipeline.Operator`
+
+   Normalize the data using standard scaler normalizator.
 
        
 
@@ -67,9 +110,28 @@ Classes
 
    Bases: :py:obj:`dasf.pipeline.Operator`
 
-       
+   Get a subcube with x% of samples from the original one.
+
+   Parameters
+   ----------
+   percent : float
+       Percentage of the samples to get from the cube.
+
 
    .. py:method:: run(data)
+
+      Returns a subcube from the original one.
+
+      Parameters
+      ----------
+      data : Any
+          The cube.
+
+      Returns
+      -------
+      Any
+          A subcube from the original.
+
 
 
 
@@ -77,7 +139,13 @@ Classes
 
    Bases: :py:obj:`dasf.pipeline.Operator`
 
-       
+   Get a slice of a cube. An inline slice is a section over the x-axis.
+
+   Parameters
+   ----------
+   iline_index : int
+       The index of the inline to get.
+
 
    .. py:method:: run(X, y)
 
@@ -87,19 +155,82 @@ Classes
 
    Bases: :py:obj:`dasf.pipeline.Operator`
 
-       
+   Get the first x% samples from the dataset.
+
+   Parameters
+   ----------
+   percent : float
+       Percentage of the samples to get from the dataframe.
+
 
    .. py:method:: run(data)
 
+      Return x% samples of the dataset.
+
+      Parameters
+      ----------
+      data : Any
+          A dataframe type data.
+
+      Returns
+      -------
+      Any
+          A dataframe with only the x% samples.
 
 
-.. py:class:: Histogram(bins=None, range=None, normed=False, weights=None, density=None)
+
+
+.. py:class:: Histogram(bins = None, range = None, normed = False, weights=None, density=None)
 
    Bases: :py:obj:`dasf.pipeline.Operator`
 
-       
+   Operator to extract the histogram of a data.
+
+   Parameters
+   ----------
+   bins : Optional[int]
+       Number of bins (the default is None).
+   range : tuple
+       2-element tuple with the lower and upper range of the bins. If not
+       provided, range is simply (X.min(), X.max()) (the default is None).
+   normed : bool
+       If the historgram must be normalized (the default is False).
+   weights : type
+       An array of weights, of the same shape as X. Each value in a only
+       contributes its associated weight towards the bin count
+       (the default is None).
+   density : type
+       If False, the result will contain the number of samples in each bin.
+       If True, the result is the value of the probability density function
+       at the bin, normalized such that the integral over the range is 1
+       (the default is None).
+
+   Attributes
+   ----------
+   bins
+   range
+   normed
+   weights
+   density
+
 
    .. py:method:: run(X)
+
+      Calculates the histogram of data X.
+
+      Parameters
+      ----------
+      X : Any
+          The data.
+
+      Returns
+      -------
+      type
+          2 element tuple, with the following elements (in order):
+
+          - The values of the histogram.
+          - The bin edges.
+
 
 
 

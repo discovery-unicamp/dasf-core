@@ -24,7 +24,13 @@ Classes
 
    Bases: :py:obj:`dasf.pipeline.pipeline.Operator`
 
-       
+   Reshape data with a new shape.
+
+   Parameters
+   ----------
+   shape : tuple
+       The new shape of the data.
+
 
    .. py:method:: run(X)
 
