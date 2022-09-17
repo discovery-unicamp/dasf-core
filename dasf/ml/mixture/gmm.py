@@ -10,7 +10,6 @@ from dasf.utils.generators import generate_fit_predict
 from dasf.utils.generators import generate_get_params
 from dasf.utils.generators import generate_set_params
 from dasf.ml.mixture.classifier import MixtureClassifier
-from dasf.pipeline import ParameterOperator
 
 
 @generate_fit
@@ -71,7 +70,7 @@ class GaussianMixture(MixtureClassifier):
         return self.__gmm_cpu.get_params(deep=deep)
 
 
-class GaussianMixtureOp(ParameterOperator):
+class GaussianMixtureOp:
     def __init__(
         self,
         n_components=1,
@@ -91,8 +90,6 @@ class GaussianMixtureOp(ParameterOperator):
         verbose_interval=10,
         checkpoint=False
     ):
-        super().__init__(name="GaussianMixture")
-
         self._operator = GaussianMixture(
             n_components=n_components,
             covariance_type=covariance_type,

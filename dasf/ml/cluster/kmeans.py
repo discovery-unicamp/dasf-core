@@ -15,7 +15,6 @@ from dasf.utils.utils import is_gpu_supported
 from dasf.utils.generators import generate_fit
 from dasf.utils.generators import generate_predict
 from dasf.utils.generators import generate_fit_predict
-from dasf.pipeline import ParameterOperator
 from dasf.pipeline import Operator
 
 try:
@@ -108,7 +107,7 @@ class KMeans(ClusterClassifier):
         return self.__kmeans_gpu.predict(X, sample_weight)
 
 
-class KMeansOp(ParameterOperator):
+class KMeansOp:
     def __init__(self, n_clusters, random_state=0, max_iter=300, checkpoint=False):
         super().__init__(name="KMeans")
 

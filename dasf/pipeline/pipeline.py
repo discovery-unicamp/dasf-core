@@ -2,6 +2,7 @@
 
 import uuid
 import GPUtil
+import inspect
 import prefect
 
 import numpy as np
@@ -10,8 +11,7 @@ import dask.array as da
 import pandas as pd
 import dask.dataframe as ddf
 
-from prefect import Parameter, Task, Flow
-from prefect.engine.signals import LOOP
+from prefect import Task, Flow
 
 from dasf.utils import utils
 from dasf.pipeline.types import TaskExecutorType
@@ -24,191 +24,44 @@ except ImportError:
     pass
 
 
-class ParameterOperator(Parameter):
-    """ """
+class Pipeline2:
+    def __init__(self, name, executor=None):
+        self._name = name
+        self._executor = executor
 
-    def __init__(self, name, local=None, gpu=None):
-        super().__init__(name=name)
+        self._dag = dict()
 
-        # Starting attributes with task_* avoid
-        # conflicts with parent object.
-        self.task_output = None
-
-        self.local = local
-        self.gpu = gpu
-
-        # helpers
-        self.xp = None
-        self.df = None
-
-    def set_output(self, dtype):
-        self.task_output = {"output": dtype}
-
-    def setup_cpu(self, executor):
-        self.xp = np
-        self.df = pd
-
-    def setup_mcpu(self, executor):
-        self.xp = da
-        self.df = ddf
-
-    def setup_gpu(self, executor):
-        self.xp = cp
-        self.df = cudf
-
-    def setup_mgpu(self, executor):
-        self.xp = da
-        self.df = ddf
-
-    def setup(self, executor):
-        if hasattr(executor, "client"):
-            self.client = executor.client
-
-        self.dtype = utils.return_local_and_gpu(executor, self.local, self.gpu)
-
-        if self.dtype == TaskExecutorType.single_cpu:
-            return self.setup_cpu(executor)
-        elif self.dtype == TaskExecutorType.multi_cpu:
-            return self.setup_mcpu(executor)
-        elif self.dtype == TaskExecutorType.single_gpu:
-            return self.setup_gpu(executor)
-        elif self.dtype == TaskExecutorType.multi_gpu:
-            return self.setup_mgpu(executor)
-
-
-class Operator(Task):
-    """ """
-
-    def __init__(self, name, slug=None, checkpoint=False, local=None, gpu=None):
-
-        if slug is None:
-            slug = str(uuid.uuid4())
-
-        super().__init__(slug=slug, name=name)
-
-        self.__checkpoint = checkpoint
-
-        # Starting attributes with task_* avoid
-        # conflicts with parent object.
-        self.task_inputs = None
-        self.task_output = None
-
-        self.client = None
-        self.dtype = TaskExecutorType.single_cpu
-
-        self.local = local
-        self.gpu = gpu
-
-        # helpers
-        self.xp = None
-        self.df = None
-
-    def set_inputs(self, **kwargs):
-        self.task_inputs = kwargs
-
-    def set_output(self, dtype):
-        self.task_output = {"output": dtype}
-
-    def set_checkpoint(self, checkpoint):
-        self.__checkpoint = checkpoint
-
-    def get_checkpoint(self):
-        return self.__checkpoint
-
-    def setup_cpu(self, executor):
-        self.xp = np
-        self.df = pd
-
-    def setup_lazy_cpu(self, executor):
-        self.xp = da
-        self.df = ddf
-
-    def setup_gpu(self, executor):
-        self.xp = cp
-        self.df = cudf
-
-    def setup_lazy_gpu(self, executor):
-        self.xp = da
-        self.df = ddf
-
-    def setup(self, executor):
-        if hasattr(executor, "client"):
-            self.client = executor.client
-
-        self.dtype = utils.return_local_and_gpu(executor, self.local, self.gpu)
-
-        if self.dtype == TaskExecutorType.single_cpu:
-            return self.setup_cpu(executor)
-        elif self.dtype == TaskExecutorType.multi_cpu:
-            return self.setup_lazy_cpu(executor)
-        elif self.dtype == TaskExecutorType.single_gpu:
-            return self.setup_gpu(executor)
-        elif self.dtype == TaskExecutorType.multi_gpu:
-            return self.setup_lazy_gpu(executor)
-
-    def run_cpu(self, **kwargs):
+    def __call(self, func):
         pass
 
-    def run_lazy_cpu(self, **kwargs):
-        pass
+    def __add_into_dag(self, obj, fn, reqs, itself=None):
+        self._dag[hash(obj)] = dict()
+        self._dag[hash(obj)]["fn"] = fn
+        self._dag[hash(obj)]["reqs"] = reqs
+        if itself:
+            self._dag[hash(obj)]["reqs"]["self"] = itself
 
-    def run_gpu(self, **kwargs):
-        pass
+    def add(self, obj, **kwargs):
+        from dasf.transforms.transforms import Transform
 
-    def run_lazy_gpu(self, **kwargs):
-        pass
+        if inspect.isfunction(obj) and callable(obj):
+            self.__add_into_dag(obj, obj, kwargs)
+        elif inspect.ismethod(obj):
+            self.__add_into_dag(obj, obj, kwargs, obj.__self__)
+        else:
+            if issubclass(obj, Transform) and hasattr(obj, 'transform'):
+                self.__add_into_dag(obj, obj.transform, kwargs, obj)
+            elif hasattr(obj, 'fit'):
+                self.__add_into_dag(obj, obj.fit, kwargs, obj)
+            else:
+                raise ValueError('This object is not a function, method or a '
+                                 'transformer object.')
 
-    def run(self, **kwargs):
-        if self.dtype == TaskExecutorType.single_cpu:
-            return self.run_cpu(**kwargs)
-        elif self.dtype == TaskExecutorType.multi_cpu:
-            return self.run_lazy_cpu(**kwargs)
-        elif self.dtype == TaskExecutorType.single_gpu:
-            return self.run_gpu(**kwargs)
-        elif self.dtype == TaskExecutorType.multi_gpu:
-            return self.run_lazy_gpu(**kwargs)
+        return self
 
 
-class BatchPipeline(Task):
-    def __init__(self, name, slug=None):
-        if slug is None:
-            slug = str(uuid.uuid4())
-
-        super().__init__(slug=slug, name=name)
-
-        self.pipeline = None
-
-    def add_pipeline(self, pipeline):
-        assert self.pipeline is None, "Pipeline is already defined"
-
-        self.pipeline = pipeline
-
-    def run(self, data):
-        assert self.pipeline is not None, "Pipeline is not defined"
-
-        batch_len = len(data)
-
-        iterator = 0
-
-        index = prefect.context.get("task_loop_result", 0)
-
-        tasks = self.pipeline.all_upstream_tasks()
-
-        data_param = Parameter("data")
-        for task in tasks:
-            self.pipeline.add_edge(data_param, task, "data")
-
-        self.pipeline.cparameters["data"] = data[index]
-
-        result = self.pipeline.run()
-
-        iterator += data.batch_size * (index + 1)
-        index += 1
-
-        # Loop
-        if iterator >= batch_len:
-            return result
-        raise LOOP(result=index)
+class Operator:
+    pass
 
 
 class BlockOperator(Operator):

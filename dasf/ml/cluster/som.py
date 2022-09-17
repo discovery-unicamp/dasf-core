@@ -10,7 +10,6 @@ from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_dask_gpu_supported
 from dasf.utils.utils import is_dask_supported
 from dasf.utils.utils import is_gpu_supported
-from dasf.pipeline import ParameterOperator
 from dasf.utils.generators import generate_fit
 from dasf.utils.generators import generate_predict
 from dasf.utils.generators import generate_fit_predict
@@ -208,7 +207,7 @@ class SOM(ClusterClassifier):
             self._quantization_error_cpu(X)
 
 
-class SOMOp(ParameterOperator):
+class SOMOp:
     def __init__(
         self,
         x,
@@ -229,8 +228,6 @@ class SOMOp(ParameterOperator):
         compact_support=False,
         checkpoint=False,
     ):
-        super().__init__(name="SOM")
-
         self._operator = SOM(
             x=x,
             y=y,

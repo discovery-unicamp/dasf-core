@@ -9,7 +9,6 @@ from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
 from dasf.utils.generators import generate_fit
 from dasf.utils.generators import generate_fit_predict
-from dasf.pipeline import ParameterOperator
 
 try:
     from cuml import AgglomerativeClustering as AgglomerativeClustering_GPU
@@ -75,7 +74,7 @@ class AgglomerativeClustering(ClusterClassifier):
         return self.__agg_cluster_gpu.fit_predict(X, y)
 
 
-class AgglomerativeClusteringOp(ParameterOperator):
+class AgglomerativeClusteringOp:
     def __init__(
         self,
         n_clusters=2,
@@ -92,8 +91,6 @@ class AgglomerativeClusteringOp(ParameterOperator):
         output_type=None,
         checkpoint=False,
     ):
-        super().__init__(name="AgglomerativeClustering")
-
         self._operator = AgglomerativeClustering(
             n_clusters=n_clusters,
             affinity=affinity,

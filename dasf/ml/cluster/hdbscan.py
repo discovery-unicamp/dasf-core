@@ -7,7 +7,6 @@ from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
 from dasf.utils.generators import generate_fit
 from dasf.utils.generators import generate_fit_predict
-from dasf.pipeline import ParameterOperator
 
 try:
     from cuml.cluster import HDBSCAN as HDBSCAN_GPU
@@ -71,7 +70,7 @@ class HDBSCAN(ClusterClassifier):
         self.__hdbscan_gpu.fit_predict(X=X, y=y)
 
 
-class HDBSCANOp(ParameterOperator):
+class HDBSCANOp:
     def __init__(
         self,
         alpha=1.0,
@@ -84,8 +83,6 @@ class HDBSCANOp(ParameterOperator):
         checkpoint=False,
         **kwargs
     ):
-        super().__init__(name="HDBSCAN")
-
         self._operator = HDBSCAN(
             alpha=alpha,
             gen_min_span_tree=gen_min_span_tree,
