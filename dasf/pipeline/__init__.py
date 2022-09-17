@@ -5,9 +5,11 @@ from dasf.pipeline.pipeline import BlockOperator
 from dasf.pipeline.pipeline import WrapperLocalExecutor
 from dasf.pipeline.pipeline import BatchPipeline
 
-__all__ = ["BatchPipeline",
-           "ComputePipeline",
-           "ParameterOperator",
-           "Operator",
-           "BlockOperator",
-           "WrapperLocalExecutor"]
+__all__ = [
+    "BatchPipeline",
+    "ComputePipeline",
+    "ParameterOperator",
+    "Operator",
+    "BlockOperator",
+    "WrapperLocalExecutor",
+]

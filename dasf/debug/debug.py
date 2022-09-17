@@ -38,8 +38,7 @@ class VisualizeDaskData(Operator):
         self.filename = filename
 
     def run(self, X):
-        if not isinstance(X, da.core.Array) and \
-           not isinstance(X, ddf.core.DataFrame):
+        if not isinstance(X, da.core.Array) and not isinstance(X, ddf.core.DataFrame):
             self.logger.warning("This is not a Dask element.")
             return X
 

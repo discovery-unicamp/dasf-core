@@ -25,9 +25,8 @@ except ImportError:
 
 
 class ParameterOperator(Parameter):
-    """
+    """ """
 
-    """
     def __init__(self, name, local=None, gpu=None):
         super().__init__(name=name)
 
@@ -78,15 +77,9 @@ class ParameterOperator(Parameter):
 
 
 class Operator(Task):
-    """
+    """ """
 
-    """
-    def __init__(self,
-                 name,
-                 slug=None,
-                 checkpoint=False,
-                 local=None,
-                 gpu=None):
+    def __init__(self, name, slug=None, checkpoint=False, local=None, gpu=None):
 
         if slug is None:
             slug = str(uuid.uuid4())
@@ -201,11 +194,11 @@ class BatchPipeline(Task):
 
         tasks = self.pipeline.all_upstream_tasks()
 
-        data_param = Parameter('data')
+        data_param = Parameter("data")
         for task in tasks:
             self.pipeline.add_edge(data_param, task, "data")
 
-        self.pipeline.cparameters['data'] = data[index]
+        self.pipeline.cparameters["data"] = data[index]
 
         result = self.pipeline.run()
 
@@ -219,20 +212,23 @@ class BatchPipeline(Task):
 
 
 class BlockOperator(Operator):
-    def __init__(self,
-                 name,
-                 function,
-                 slug=None,
-                 checkpoint=False,
-                 local=None,
-                 gpu=None,
-                 depth=None,
-                 boundary=None,
-                 trim=True,
-                 output_chunk=None):
+    def __init__(
+        self,
+        name,
+        function,
+        slug=None,
+        checkpoint=False,
+        local=None,
+        gpu=None,
+        depth=None,
+        boundary=None,
+        trim=True,
+        output_chunk=None,
+    ):
 
-        super().__init__(name=name, slug=slug, checkpoint=checkpoint,
-                         local=local, gpu=gpu)
+        super().__init__(
+            name=name, slug=slug, checkpoint=checkpoint, local=local, gpu=gpu
+        )
 
         self.function = function
         self.depth = depth
@@ -240,10 +236,13 @@ class BlockOperator(Operator):
         self.trim = trim
         self.output_chunk = output_chunk
 
-        if self.boundary is None and self.depth is not None or \
-           self.boundary is not None and self.depth is None:
-            raise Exception("Both boundary and depth should be passed "
-                            "together")
+        if (
+            self.boundary is None
+            and self.depth is not None
+            or self.boundary is not None
+            and self.depth is None
+        ):
+            raise Exception("Both boundary and depth should be passed " "together")
 
     def run(self, X, **kwargs):
         if utils.is_executor_gpu(self.dtype) and utils.is_gpu_supported():
@@ -251,35 +250,43 @@ class BlockOperator(Operator):
         else:
             dtype = np.float32
 
-        if isinstance(X, da.core.Array) or \
-           isinstance(X, ddf.core.DataFrame) and \
-           utils.is_executor_cluster(self.dtype):
-            drop_axis, new_axis = utils.block_chunk_reduce(X,
-                                                           self.output_chunk)
+        if (
+            isinstance(X, da.core.Array)
+            or isinstance(X, ddf.core.DataFrame)
+            and utils.is_executor_cluster(self.dtype)
+        ):
+            drop_axis, new_axis = utils.block_chunk_reduce(X, self.output_chunk)
 
             if self.depth and self.boundary:
                 if self.trim:
-                    new_data = X.map_overlap(self.function,
-                                             **kwargs,
-                                             dtype=dtype,
-                                             depth=self.depth,
-                                             boundary=self.boundary)
+                    new_data = X.map_overlap(
+                        self.function,
+                        **kwargs,
+                        dtype=dtype,
+                        depth=self.depth,
+                        boundary=self.boundary
+                    )
                 else:
-                    data_blocks = da.overlap.overlap(X, depth=self.depth,
-                                                     boundary=self.boundary)
+                    data_blocks = da.overlap.overlap(
+                        X, depth=self.depth, boundary=self.boundary
+                    )
 
-                    new_data = data_blocks.map_blocks(self.function,
-                                                      dtype=dtype,
-                                                      drop_axis=drop_axis,
-                                                      new_axis=new_axis,
-                                                      **kwargs)
+                    new_data = data_blocks.map_blocks(
+                        self.function,
+                        dtype=dtype,
+                        drop_axis=drop_axis,
+                        new_axis=new_axis,
+                        **kwargs
+                    )
             else:
                 if isinstance(X, da.core.Array):
-                    new_data = X.map_blocks(self.function,
-                                            dtype=dtype,
-                                            drop_axis=drop_axis,
-                                            new_axis=new_axis,
-                                            **kwargs)
+                    new_data = X.map_blocks(
+                        self.function,
+                        dtype=dtype,
+                        drop_axis=drop_axis,
+                        new_axis=new_axis,
+                        **kwargs
+                    )
                 elif isinstance(X, ddf.core.DataFrame):
                     new_data = X.map_partitions(self.function, **kwargs)
 
@@ -377,8 +384,10 @@ class ComputePipeline(Flow):
         return self
 
     def run(self, run_on_schedule=None, runner_cls=None, **kwargs):
-        return super().run(executor=self.executor,
-                           parameters=self.cparameters,
-                           run_on_schedule=run_on_schedule,
-                           runner_cls=runner_cls,
-                           **kwargs)
+        return super().run(
+            executor=self.executor,
+            parameters=self.cparameters,
+            run_on_schedule=run_on_schedule,
+            runner_cls=runner_cls,
+            **kwargs
+        )

@@ -25,12 +25,25 @@ except ImportError:
 @generate_predict
 @generate_fit_predict
 class SOM(ClusterClassifier):
-    def __init__(self, x, y, input_len, num_epochs=100, sigma=0, sigmaN=1,
-                 learning_rate=0.5, learning_rateN=0.01,
-                 decay_function='exponential',
-                 neighborhood_function='gaussian', std_coeff=0.5,
-                 topology='rectangular', activation_distance='euclidean',
-                 random_seed=None, n_parallel=0, compact_support=False):
+    def __init__(
+        self,
+        x,
+        y,
+        input_len,
+        num_epochs=100,
+        sigma=0,
+        sigmaN=1,
+        learning_rate=0.5,
+        learning_rateN=0.01,
+        decay_function="exponential",
+        neighborhood_function="gaussian",
+        std_coeff=0.5,
+        topology="rectangular",
+        activation_distance="euclidean",
+        random_seed=None,
+        n_parallel=0,
+        compact_support=False,
+    ):
 
         self.x = x
         self.y = y
@@ -49,74 +62,84 @@ class SOM(ClusterClassifier):
         self.n_parallel = n_parallel
         self.compact_support = compact_support
 
-        self.__som_cpu = \
-            XPySom(x=self.x, y=self.y,
-                   input_len=self.input_len,
-                   sigma=self.sigma,
-                   sigmaN=self.sigmaN,
-                   learning_rate=self.learning_rate,
-                   learning_rateN=self.learning_rateN,
-                   decay_function=self.decay_function,
-                   neighborhood_function=self.neighborhood_function,
-                   std_coeff=self.std_coeff,
-                   topology=self.topology,
-                   activation_distance=self.activation_distance,
-                   random_seed=self.random_seed,
-                   n_parallel=self.n_parallel,
-                   compact_support=self.compact_support,
-                   xp=np)
+        self.__som_cpu = XPySom(
+            x=self.x,
+            y=self.y,
+            input_len=self.input_len,
+            sigma=self.sigma,
+            sigmaN=self.sigmaN,
+            learning_rate=self.learning_rate,
+            learning_rateN=self.learning_rateN,
+            decay_function=self.decay_function,
+            neighborhood_function=self.neighborhood_function,
+            std_coeff=self.std_coeff,
+            topology=self.topology,
+            activation_distance=self.activation_distance,
+            random_seed=self.random_seed,
+            n_parallel=self.n_parallel,
+            compact_support=self.compact_support,
+            xp=np,
+        )
 
-        self.__som_mcpu = \
-            XPySom(x=self.x, y=self.y,
-                   input_len=self.input_len,
-                   sigma=self.sigma,
-                   sigmaN=self.sigmaN,
-                   learning_rate=self.learning_rate,
-                   learning_rateN=self.learning_rateN,
-                   decay_function=self.decay_function,
-                   neighborhood_function=self.neighborhood_function,
-                   std_coeff=self.std_coeff,
-                   topology=self.topology,
-                   activation_distance=self.activation_distance,
-                   random_seed=self.random_seed,
-                   n_parallel=self.n_parallel,
-                   compact_support=self.compact_support,
-                   xp=np, use_dask=True)
+        self.__som_mcpu = XPySom(
+            x=self.x,
+            y=self.y,
+            input_len=self.input_len,
+            sigma=self.sigma,
+            sigmaN=self.sigmaN,
+            learning_rate=self.learning_rate,
+            learning_rateN=self.learning_rateN,
+            decay_function=self.decay_function,
+            neighborhood_function=self.neighborhood_function,
+            std_coeff=self.std_coeff,
+            topology=self.topology,
+            activation_distance=self.activation_distance,
+            random_seed=self.random_seed,
+            n_parallel=self.n_parallel,
+            compact_support=self.compact_support,
+            xp=np,
+            use_dask=True,
+        )
 
         if is_gpu_supported():
-            self.__som_gpu = \
-                XPySom(x=self.x, y=self.y,
-                       input_len=self.input_len,
-                       sigma=self.sigma,
-                       sigmaN=self.sigmaN,
-                       learning_rate=self.learning_rate,
-                       learning_rateN=self.learning_rateN,
-                       decay_function=self.decay_function,
-                       neighborhood_function=self.neighborhood_function,
-                       std_coeff=self.std_coeff,
-                       topology=self.topology,
-                       activation_distance=self.activation_distance,
-                       random_seed=self.random_seed,
-                       n_parallel=self.n_parallel,
-                       compact_support=self.compact_support,
-                       xp=cp)
+            self.__som_gpu = XPySom(
+                x=self.x,
+                y=self.y,
+                input_len=self.input_len,
+                sigma=self.sigma,
+                sigmaN=self.sigmaN,
+                learning_rate=self.learning_rate,
+                learning_rateN=self.learning_rateN,
+                decay_function=self.decay_function,
+                neighborhood_function=self.neighborhood_function,
+                std_coeff=self.std_coeff,
+                topology=self.topology,
+                activation_distance=self.activation_distance,
+                random_seed=self.random_seed,
+                n_parallel=self.n_parallel,
+                compact_support=self.compact_support,
+                xp=cp,
+            )
 
-            self.__som_mgpu = \
-                XPySom(x=self.x, y=self.y,
-                       input_len=self.input_len,
-                       sigma=self.sigma,
-                       sigmaN=self.sigmaN,
-                       learning_rate=self.learning_rate,
-                       learning_rateN=self.learning_rateN,
-                       decay_function=self.decay_function,
-                       neighborhood_function=self.neighborhood_function,
-                       std_coeff=self.std_coeff,
-                       topology=self.topology,
-                       activation_distance=self.activation_distance,
-                       random_seed=self.random_seed,
-                       n_parallel=self.n_parallel,
-                       compact_support=self.compact_support,
-                       xp=cp, use_dask=True)
+            self.__som_mgpu = XPySom(
+                x=self.x,
+                y=self.y,
+                input_len=self.input_len,
+                sigma=self.sigma,
+                sigmaN=self.sigmaN,
+                learning_rate=self.learning_rate,
+                learning_rateN=self.learning_rateN,
+                decay_function=self.decay_function,
+                neighborhood_function=self.neighborhood_function,
+                std_coeff=self.std_coeff,
+                topology=self.topology,
+                activation_distance=self.activation_distance,
+                random_seed=self.random_seed,
+                n_parallel=self.n_parallel,
+                compact_support=self.compact_support,
+                xp=cp,
+                use_dask=True,
+            )
 
     def _lazy_fit_cpu(self, X, y=None, sample_weight=None):
         self.__som = self.__som_mcpu
@@ -186,25 +209,46 @@ class SOM(ClusterClassifier):
 
 
 class SOMOp(ParameterOperator):
-    def __init__(self, x, y, input_len, num_epochs=100, sigma=0, sigmaN=1,
-                 learning_rate=0.5, learning_rateN=0.01,
-                 decay_function='exponential',
-                 neighborhood_function='gaussian', std_coeff=0.5,
-                 topology='rectangular', activation_distance='euclidean',
-                 random_seed=None, n_parallel=0, compact_support=False,
-                 checkpoint=False):
+    def __init__(
+        self,
+        x,
+        y,
+        input_len,
+        num_epochs=100,
+        sigma=0,
+        sigmaN=1,
+        learning_rate=0.5,
+        learning_rateN=0.01,
+        decay_function="exponential",
+        neighborhood_function="gaussian",
+        std_coeff=0.5,
+        topology="rectangular",
+        activation_distance="euclidean",
+        random_seed=None,
+        n_parallel=0,
+        compact_support=False,
+        checkpoint=False,
+    ):
         super().__init__(name="SOM")
 
-        self._operator = SOM(x=x, y=y, input_len=input_len,
-                             num_epochs=num_epochs, sigma=sigma, sigmaN=sigmaN,
-                             learning_rate=learning_rate,
-                             learning_rateN=learning_rateN,
-                             decay_function=decay_function,
-                             neighborhood_function=neighborhood_function,
-                             std_coeff=std_coeff, topology=topology,
-                             activation_distance=activation_distance,
-                             random_seed=random_seed, n_parallel=n_parallel,
-                             compact_support=compact_support)
+        self._operator = SOM(
+            x=x,
+            y=y,
+            input_len=input_len,
+            num_epochs=num_epochs,
+            sigma=sigma,
+            sigmaN=sigmaN,
+            learning_rate=learning_rate,
+            learning_rateN=learning_rateN,
+            decay_function=decay_function,
+            neighborhood_function=neighborhood_function,
+            std_coeff=std_coeff,
+            topology=topology,
+            activation_distance=activation_distance,
+            random_seed=random_seed,
+            n_parallel=n_parallel,
+            compact_support=compact_support,
+        )
 
         self.fit = SOMFitOp(checkpoint=checkpoint)
         self.predict = SOMPredictOp(checkpoint=checkpoint)

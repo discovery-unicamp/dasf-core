@@ -20,13 +20,13 @@ from dasf.pipeline.types import TaskExecutorType
 
 GPU_SUPPORTED = True
 try:
-    import cupy as cp # noqa
+    import cupy as cp  # noqa
 except ImportError:
     GPU_SUPPORTED = False
 
 
 def human_readable_size(size, decimal=3):
-    for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+    for unit in ["B", "KB", "MB", "GB", "TB"]:
         if size < 1024.0:
             break
         size /= 1024.0
@@ -36,9 +36,9 @@ def human_readable_size(size, decimal=3):
 def get_full_qualname(obj):
     klass = obj.__class__
     module = klass.__module__
-    if module == 'builtins':
+    if module == "builtins":
         return klass.__qualname__
-    return module + '.' + klass.__qualname__
+    return module + "." + klass.__qualname__
 
 
 def get_worker_info(client):
@@ -119,8 +119,7 @@ def download_file(url, filename=None, directory=None):
 
 
 def download_file_from_gdrive(file_id, filename=None, directory=None):
-    URL = ("https://drive.google.com/uc?export=download&confirm=9iBg&id=%s"
-           % file_id)
+    URL = "https://drive.google.com/uc?export=download&confirm=9iBg&id=%s" % file_id
 
     return download_file(URL, filename=filename, directory=directory)
 
@@ -138,23 +137,19 @@ def set_executor_gpu():
 
 
 def is_executor_single(dtype):
-    return (dtype == TaskExecutorType.single_cpu or
-            dtype == TaskExecutorType.single_gpu)
+    return dtype == TaskExecutorType.single_cpu or dtype == TaskExecutorType.single_gpu
 
 
 def is_executor_cluster(dtype):
-    return (dtype == TaskExecutorType.multi_cpu or
-            dtype == TaskExecutorType.multi_gpu)
+    return dtype == TaskExecutorType.multi_cpu or dtype == TaskExecutorType.multi_gpu
 
 
 def is_executor_cpu(dtype):
-    return (dtype == TaskExecutorType.single_cpu or
-            dtype == TaskExecutorType.multi_cpu)
+    return dtype == TaskExecutorType.single_cpu or dtype == TaskExecutorType.multi_cpu
 
 
 def is_executor_gpu(dtype):
-    return (dtype == TaskExecutorType.single_gpu or
-            dtype == TaskExecutorType.multi_gpu)
+    return dtype == TaskExecutorType.single_gpu or dtype == TaskExecutorType.multi_gpu
 
 
 def is_gpu_supported():
@@ -207,8 +202,7 @@ def block_chunk_reduce(dask_data, output_chunk):
     drop_axis = np.array([])
     new_axis = None
 
-    if output_chunk is None or \
-       not isinstance(output_chunk, tuple):
+    if output_chunk is None or not isinstance(output_chunk, tuple):
         return drop_axis.tolist(), new_axis
 
     data_chunk_range = len(dask_data.chunksize)

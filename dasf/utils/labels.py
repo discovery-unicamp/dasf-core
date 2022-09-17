@@ -12,6 +12,7 @@ g_hash_attrs = dict()
 g_func_attrs = dict()
 g_data_attrs = dict()
 
+
 class DaskLabel(object):
     def __init__(self, start, stop, label=None, color=None):
         self.__label = label
@@ -82,7 +83,9 @@ class DaskLabel(object):
                     del self.__hash_attrs[func_name]
                     remove.add(func_name)
                 elif func_name not in remove:
-                    self.__add_item(func_name, k, self.__label, self.__color, atype="func")
+                    self.__add_item(
+                        func_name, k, self.__label, self.__color, atype="func"
+                    )
 
                 for dep in get_dependencies(dsk, k):
                     dep_name = self.__name(dep)
@@ -106,7 +109,6 @@ class DaskLabel(object):
 
         return self.__enter(dsk)
 
-
     def __exit(self, dsk, exc_type, exc_val, exc_tb):
         global inside_with, g_hash_attrs, g_func_attrs, g_data_attrs
 
@@ -114,13 +116,19 @@ class DaskLabel(object):
 
         for k in self.__hash_attrs:
             if self.__hash_attrs[k]["type"] == "data":
-                self.__add_data(self.__hash_attrs[k]["comment"], k,
-                                self.__hash_attrs[k]["xlabel"],
-                                self.__hash_attrs[k]["color"])
+                self.__add_data(
+                    self.__hash_attrs[k]["comment"],
+                    k,
+                    self.__hash_attrs[k]["xlabel"],
+                    self.__hash_attrs[k]["color"],
+                )
             elif self.__hash_attrs[k]["type"] == "func":
-                self.__add_func(self.__hash_attrs[k]["comment"], k,
-                                self.__hash_attrs[k]["xlabel"],
-                                self.__hash_attrs[k]["color"])
+                self.__add_func(
+                    self.__hash_attrs[k]["comment"],
+                    k,
+                    self.__hash_attrs[k]["xlabel"],
+                    self.__hash_attrs[k]["color"],
+                )
 
         g_hash_attrs = {**g_hash_attrs, **self.__hash_attrs}
         g_func_attrs = {**g_func_attrs, **self.__func_attrs}
@@ -142,5 +150,4 @@ def get_attributes():
     if inside_with.locked():
         print("WARNING: it cannot reflect all attribute changes.")
 
-    return {"function_attributes": g_func_attrs,
-            "data_attributes": g_data_attrs}
+    return {"function_attributes": g_func_attrs, "data_attributes": g_data_attrs}

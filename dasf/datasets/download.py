@@ -10,17 +10,16 @@ class DownloadWget(Dataset):
         self.__filename = filename
 
         # Set download as false because this class overrides download()
-        Dataset.__init__(self, name="Download Wget",
-                         download=download, root=root)
+        Dataset.__init__(self, name="Download Wget", download=download, root=root)
 
     def download(self):
         if not self._download or self.__url is None:
             return
 
         if hasattr(self, "download") and self._download is True:
-            self._root_file = utils.download_file(self.__url,
-                                                  self.__filename,
-                                                  self._root)
+            self._root_file = utils.download_file(
+                self.__url, self.__filename, self._root
+            )
 
 
 class DownloadGDrive(Dataset):
@@ -29,15 +28,15 @@ class DownloadGDrive(Dataset):
         self.__filename = filename
 
         # Set download as false because this class overrides download()
-        Dataset.__init__(self, name="Download Google Drive",
-                         download=download, root=root)
+        Dataset.__init__(
+            self, name="Download Google Drive", download=download, root=root
+        )
 
     def download(self):
         if not self._download or self.__google_file_id is None:
             return
 
         if hasattr(self, "download") and self._download is True:
-            self._root_file = \
-                utils.download_file_from_gdrive(self.__google_file_id,
-                                                self.__filename,
-                                                self._root)
+            self._root_file = utils.download_file_from_gdrive(
+                self.__google_file_id, self.__filename, self._root
+            )

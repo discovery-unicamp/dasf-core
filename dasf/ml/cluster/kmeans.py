@@ -35,26 +35,33 @@ class KMeans(ClusterClassifier):
         self.random_state = random_state
         self.max_iter = max_iter
 
-        self.__kmeans_cpu = KMeans_CPU(n_clusters=self.n_clusters,
-                                       random_state=self.random_state,
-                                       max_iter=self.max_iter)
+        self.__kmeans_cpu = KMeans_CPU(
+            n_clusters=self.n_clusters,
+            random_state=self.random_state,
+            max_iter=self.max_iter,
+        )
 
-        self.__kmeans_mcpu = KMeans_MCPU(n_clusters=self.n_clusters,
-                                         random_state=self.random_state,
-                                         max_iter=self.max_iter)
+        self.__kmeans_mcpu = KMeans_MCPU(
+            n_clusters=self.n_clusters,
+            random_state=self.random_state,
+            max_iter=self.max_iter,
+        )
 
         if is_gpu_supported():
-            self.__kmeans_gpu = KMeans_GPU(n_clusters=self.n_clusters,
-                                           random_state=self.random_state,
-                                           max_iter=self.max_iter)
+            self.__kmeans_gpu = KMeans_GPU(
+                n_clusters=self.n_clusters,
+                random_state=self.random_state,
+                max_iter=self.max_iter,
+            )
 
             # XXX: KMeans in Multi GPU requires a Client instance,
             # skip if not present.
             try:
-                self.__kmeans_mgpu = \
-                    KMeans_MGPU(n_clusters=self.n_clusters,
-                                random_state=self.random_state,
-                                max_iter=self.max_iter)
+                self.__kmeans_mgpu = KMeans_MGPU(
+                    n_clusters=self.n_clusters,
+                    random_state=self.random_state,
+                    max_iter=self.max_iter,
+                )
             except ValueError:
                 self.__kmeans_mgpu = None
 
@@ -102,13 +109,12 @@ class KMeans(ClusterClassifier):
 
 
 class KMeansOp(ParameterOperator):
-    def __init__(self, n_clusters, random_state=0, max_iter=300,
-                 checkpoint=False):
+    def __init__(self, n_clusters, random_state=0, max_iter=300, checkpoint=False):
         super().__init__(name="KMeans")
 
-        self._operator = KMeans(n_clusters=n_clusters,
-                                random_state=random_state,
-                                max_iter=max_iter)
+        self._operator = KMeans(
+            n_clusters=n_clusters, random_state=random_state, max_iter=max_iter
+        )
 
         self.fit = KMeansFitOp(checkpoint=checkpoint)
         self.fit_predict = KMeansFitPredictOp(checkpoint=checkpoint)
@@ -164,8 +170,7 @@ class KMeansPredict2Op(Operator):
     def __init__(self, checkpoint=False):
         super().__init__(name="KMeansPredict2", checkpoint=checkpoint)
 
-        self._cached_dir = os.path.abspath(str(Path.home()) +
-                                           "/.cache/dasf/ml/")
+        self._cached_dir = os.path.abspath(str(Path.home()) + "/.cache/dasf/ml/")
         os.makedirs(self._cached_dir, exist_ok=True)
 
         self._tmp = os.path.abspath(self._cached_dir + "/kmeans")
@@ -185,5 +190,6 @@ class KMeansPredict2Op(Operator):
         def __predict(block, kmeans_model):
             return kmeans_model.predict(block)
 
-        return X.map_blocks(__predict, model, chunks=(X.chunks[0], ),
-                            drop_axis=[1], dtype=X.dtype)
+        return X.map_blocks(
+            __predict, model, chunks=(X.chunks[0],), drop_axis=[1], dtype=X.dtype
+        )

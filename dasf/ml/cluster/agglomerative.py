@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-from sklearn.cluster import AgglomerativeClustering as AgglomerativeClustering_CPU # noqa
+from sklearn.cluster import (
+    AgglomerativeClustering as AgglomerativeClustering_CPU,
+)  # noqa
 
 from dasf.ml.core import FitInternal, FitPredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
@@ -18,35 +20,47 @@ except ImportError:
 @generate_fit
 @generate_fit_predict
 class AgglomerativeClustering(ClusterClassifier):
-    def __init__(self, n_clusters=2, affinity='euclidean', connectivity=None,
-                 linkage='single', memory=None, compute_full_tree='auto',
-                 distance_threshold=None, compute_distances=False,
-                 handle=None, verbose=False,
-                 n_neighbors=10, output_type=None):
+    def __init__(
+        self,
+        n_clusters=2,
+        affinity="euclidean",
+        connectivity=None,
+        linkage="single",
+        memory=None,
+        compute_full_tree="auto",
+        distance_threshold=None,
+        compute_distances=False,
+        handle=None,
+        verbose=False,
+        n_neighbors=10,
+        output_type=None,
+    ):
 
-        self.__agg_cluster_cpu = \
-            AgglomerativeClustering_CPU(n_clusters=n_clusters,
-                                        affinity=affinity,
-                                        memory=memory,
-                                        connectivity=connectivity,
-                                        compute_full_tree=compute_full_tree,
-                                        linkage=linkage,
-                                        distance_threshold=distance_threshold,
-                                        compute_distances=compute_distances)
+        self.__agg_cluster_cpu = AgglomerativeClustering_CPU(
+            n_clusters=n_clusters,
+            affinity=affinity,
+            memory=memory,
+            connectivity=connectivity,
+            compute_full_tree=compute_full_tree,
+            linkage=linkage,
+            distance_threshold=distance_threshold,
+            compute_distances=compute_distances,
+        )
 
         if is_gpu_supported():
             if connectivity is None:
-                connectivity = 'knn'
+                connectivity = "knn"
 
-            self.__agg_cluster_gpu = \
-                AgglomerativeClustering_GPU(n_clusters=n_clusters,
-                                            affinity=affinity,
-                                            linkage=linkage,
-                                            handle=handle,
-                                            verbose=verbose,
-                                            connectivity=connectivity,
-                                            n_neighbors=n_neighbors,
-                                            output_type=output_type)
+            self.__agg_cluster_gpu = AgglomerativeClustering_GPU(
+                n_clusters=n_clusters,
+                affinity=affinity,
+                linkage=linkage,
+                handle=handle,
+                verbose=verbose,
+                connectivity=connectivity,
+                n_neighbors=n_neighbors,
+                output_type=output_type,
+            )
 
     def _fit_cpu(self, X, y=None, convert_dtype=True):
         return self.__agg_cluster_cpu.fit(X, y)
@@ -62,26 +76,37 @@ class AgglomerativeClustering(ClusterClassifier):
 
 
 class AgglomerativeClusteringOp(ParameterOperator):
-    def __init__(self, n_clusters=2, affinity='euclidean', connectivity=None,
-                 linkage='single', memory=None, compute_full_tree='auto',
-                 distance_threshold=None, compute_distances=False,
-                 handle=None, verbose=False,
-                 n_neighbors=10, output_type=None,
-                 checkpoint=False):
+    def __init__(
+        self,
+        n_clusters=2,
+        affinity="euclidean",
+        connectivity=None,
+        linkage="single",
+        memory=None,
+        compute_full_tree="auto",
+        distance_threshold=None,
+        compute_distances=False,
+        handle=None,
+        verbose=False,
+        n_neighbors=10,
+        output_type=None,
+        checkpoint=False,
+    ):
         super().__init__(name="AgglomerativeClustering")
 
-        self._operator = AgglomerativeClustering(n_clusters=n_clusters,
-                                                 affinity=affinity,
-                                                 linkage=linkage,
-                                                 handle=handle,
-                                                 verbose=verbose,
-                                                 connectivity=connectivity,
-                                                 n_neighbors=n_neighbors,
-                                                 output_type=output_type)
+        self._operator = AgglomerativeClustering(
+            n_clusters=n_clusters,
+            affinity=affinity,
+            linkage=linkage,
+            handle=handle,
+            verbose=verbose,
+            connectivity=connectivity,
+            n_neighbors=n_neighbors,
+            output_type=output_type,
+        )
 
         self.fit = AgglomerativeClusteringFitOp(checkpoint=checkpoint)
-        self.fit_predict = \
-            AgglomerativeClusteringFitPredictOp(checkpoint=checkpoint)
+        self.fit_predict = AgglomerativeClusteringFitPredictOp(checkpoint=checkpoint)
 
     def run(self):
         return self._operator
@@ -89,8 +114,7 @@ class AgglomerativeClusteringOp(ParameterOperator):
 
 class AgglomerativeClusteringFitOp(FitInternal):
     def __init__(self, checkpoint=False):
-        super().__init__(name="AgglomerativeClusteringFit",
-                         checkpoint=checkpoint)
+        super().__init__(name="AgglomerativeClusteringFit", checkpoint=checkpoint)
 
     def dump(self, model):
         # TODO: Check how this algorithm can be saved
@@ -103,8 +127,9 @@ class AgglomerativeClusteringFitOp(FitInternal):
 
 class AgglomerativeClusteringFitPredictOp(FitPredictInternal):
     def __init__(self, checkpoint=False):
-        super().__init__(name="AgglomerativeClusteringFitPredict",
-                         checkpoint=checkpoint)
+        super().__init__(
+            name="AgglomerativeClusteringFitPredict", checkpoint=checkpoint
+        )
 
     def load(self, model):
         # TODO: Check how this algorithm can be restored

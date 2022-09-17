@@ -24,18 +24,18 @@ except ImportError:
 class StantardScaler:
     def __init__(self, copy=True, with_mean=True, with_std=True):
 
-        self.__std_scaler_cpu = StandardScaler_CPU(copy=copy,
-                                                   with_mean=with_mean,
-                                                   with_std=with_std)
+        self.__std_scaler_cpu = StandardScaler_CPU(
+            copy=copy, with_mean=with_mean, with_std=with_std
+        )
 
-        self.__std_scaler_dask = StandardScaler_MCPU(copy=copy,
-                                                     with_mean=with_mean,
-                                                     with_std=with_std)
+        self.__std_scaler_dask = StandardScaler_MCPU(
+            copy=copy, with_mean=with_mean, with_std=with_std
+        )
 
         if is_gpu_supported():
-            self.__std_scaler_gpu = StandardScaler_GPU(copy=copy,
-                                                       with_mean=with_mean,
-                                                       with_std=with_std)
+            self.__std_scaler_gpu = StandardScaler_GPU(
+                copy=copy, with_mean=with_mean, with_std=with_std
+            )
 
     def _lazy_fit_cpu(self, X, y=None):
         return self.__std_scaler_dask.fit(X=X, y=y)

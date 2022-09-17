@@ -13,12 +13,10 @@ class MLGeneric(Operator):
         # Machine Learning Algorithm
         super().__init__(name=name, checkpoint=checkpoint, **kwargs)
 
-        self._cached_dir = os.path.abspath(str(Path.home()) +
-                                           "/.cache/dasf/ml/")
+        self._cached_dir = os.path.abspath(str(Path.home()) + "/.cache/dasf/ml/")
         os.makedirs(self._cached_dir, exist_ok=True)
 
-        self._tmp = os.path.abspath(self._cached_dir + "/" +
-                                    name.lower())
+        self._tmp = os.path.abspath(self._cached_dir + "/" + name.lower())
 
         self.__checkpoint = checkpoint
 
@@ -52,24 +50,24 @@ class FitInternal(MLGeneric):
         return result
 
     def run_lazy_cpu(self, model, X, y=None, sample_weight=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                sample_weight=sample_weight,
-                                func="_lazy_fit_cpu")
+        return self.run_generic(
+            model=model, X=X, y=y, sample_weight=sample_weight, func="_lazy_fit_cpu"
+        )
 
     def run_cpu(self, model, X, y=None, sample_weight=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                sample_weight=sample_weight,
-                                func="_fit_cpu")
+        return self.run_generic(
+            model=model, X=X, y=y, sample_weight=sample_weight, func="_fit_cpu"
+        )
 
     def run_lazy_gpu(self, model, X, y=None, sample_weight=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                sample_weight=sample_weight,
-                                func="_lazy_fit_gpu")
+        return self.run_generic(
+            model=model, X=X, y=y, sample_weight=sample_weight, func="_lazy_fit_gpu"
+        )
 
     def run_gpu(self, model, X, y=None, sample_weight=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                sample_weight=sample_weight,
-                                func="_fit_gpu")
+        return self.run_generic(
+            model=model, X=X, y=y, sample_weight=sample_weight, func="_fit_gpu"
+        )
 
 
 class FitPredictInternal(MLGeneric):
@@ -86,24 +84,32 @@ class FitPredictInternal(MLGeneric):
             return model.fit_predict(X, y, sample_weight)
 
     def run_lazy_cpu(self, model, X, y=None, sample_weight=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                sample_weight=sample_weight,
-                                func="_lazy_fit_predict_cpu")
+        return self.run_generic(
+            model=model,
+            X=X,
+            y=y,
+            sample_weight=sample_weight,
+            func="_lazy_fit_predict_cpu",
+        )
 
     def run_cpu(self, model, X, y=None, sample_weight=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                sample_weight=sample_weight,
-                                func="_fit_predict_cpu")
+        return self.run_generic(
+            model=model, X=X, y=y, sample_weight=sample_weight, func="_fit_predict_cpu"
+        )
 
     def run_lazy_gpu(self, model, X, y=None, sample_weight=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                sample_weight=sample_weight,
-                                func="_lazy_fit_predict_gpu")
+        return self.run_generic(
+            model=model,
+            X=X,
+            y=y,
+            sample_weight=sample_weight,
+            func="_lazy_fit_predict_gpu",
+        )
 
     def run_gpu(self, model, X, y=None, sample_weight=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                sample_weight=sample_weight,
-                                func="_fit_predict_gpu")
+        return self.run_generic(
+            model=model, X=X, y=y, sample_weight=sample_weight, func="_fit_predict_gpu"
+        )
 
 
 class FitTransformInternal(MLGeneric):
@@ -124,20 +130,16 @@ class FitTransformInternal(MLGeneric):
         return result
 
     def run_lazy_cpu(self, model, X, y=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                func="_lazy_fit_transform_cpu")
+        return self.run_generic(model=model, X=X, y=y, func="_lazy_fit_transform_cpu")
 
     def run_cpu(self, model, X, y=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                func="_fit_transform_cpu")
+        return self.run_generic(model=model, X=X, y=y, func="_fit_transform_cpu")
 
     def run_lazy_gpu(self, model, X, y=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                func="_lazy_fit_transform_gpu")
+        return self.run_generic(model=model, X=X, y=y, func="_lazy_fit_transform_gpu")
 
     def run_gpu(self, model, X, y=None):
-        return self.run_generic(model=model, X=X, y=y,
-                                func="_fit_transform_gpu")
+        return self.run_generic(model=model, X=X, y=y, func="_fit_transform_gpu")
 
 
 class PredictInternal(MLGeneric):
@@ -154,20 +156,24 @@ class PredictInternal(MLGeneric):
             return model.predict(X, sample_weight)
 
     def run_lazy_cpu(self, model, X, sample_weight=None):
-        return self.run_generic(model=model, X=X, sample_weight=sample_weight,
-                                func="_lazy_predict_cpu")
+        return self.run_generic(
+            model=model, X=X, sample_weight=sample_weight, func="_lazy_predict_cpu"
+        )
 
     def run_cpu(self, model, X, sample_weight=None):
-        return self.run_generic(model=model, X=X, sample_weight=sample_weight,
-                                func="_predict_cpu")
+        return self.run_generic(
+            model=model, X=X, sample_weight=sample_weight, func="_predict_cpu"
+        )
 
     def run_lazy_gpu(self, model, X, sample_weight=None):
-        return self.run_generic(model=model, X=X, sample_weight=sample_weight,
-                                func="_lazy_predict_gpu")
+        return self.run_generic(
+            model=model, X=X, sample_weight=sample_weight, func="_lazy_predict_gpu"
+        )
 
     def run_gpu(self, model, X, sample_weight=None):
-        return self.run_generic(model=model, X=X, sample_weight=sample_weight,
-                                func="_fit_predict_gpu")
+        return self.run_generic(
+            model=model, X=X, sample_weight=sample_weight, func="_fit_predict_gpu"
+        )
 
 
 class TransformInternal(MLGeneric):
@@ -182,17 +188,13 @@ class TransformInternal(MLGeneric):
             return model.transform(X, copy)
 
     def run_lazy_cpu(self, model, X, copy=False):
-        return self.run_generic(model=model, X=X, copy=copy,
-                                func="_lazy_transform_cpu")
+        return self.run_generic(model=model, X=X, copy=copy, func="_lazy_transform_cpu")
 
     def run_cpu(self, model, X, copy=False):
-        return self.run_generic(model=model, X=X, copy=copy,
-                                func="_transform_cpu")
+        return self.run_generic(model=model, X=X, copy=copy, func="_transform_cpu")
 
     def run_lazy_gpu(self, model, X, copy=False):
-        return self.run_generic(model=model, X=X, copy=copy,
-                                func="_lazy_transform_gpu")
+        return self.run_generic(model=model, X=X, copy=copy, func="_lazy_transform_gpu")
 
     def run_gpu(self, model, X, copy=False):
-        return self.run_generic(model=model, X=X, copy=copy,
-                                func="_transform_gpu")
+        return self.run_generic(model=model, X=X, copy=copy, func="_transform_gpu")

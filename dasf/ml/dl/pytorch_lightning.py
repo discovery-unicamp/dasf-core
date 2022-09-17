@@ -30,17 +30,17 @@ class TorchDataLoader(pl.LightningDataModule):
         self._batch_size = batch_size
 
     def prepare_data(self):
-        if self._train and hasattr(self._train, 'download'):
+        if self._train and hasattr(self._train, "download"):
             self._train.download()
 
-        if self._val and hasattr(self._val, 'download'):
+        if self._val and hasattr(self._val, "download"):
             self._val.download()
 
-        if self._test and hasattr(self._test, 'download'):
+        if self._test and hasattr(self._test, "download"):
             self._test.download()
 
     def train_dataloader(self):
-        if hasattr(self._train, 'load'):
+        if hasattr(self._train, "load"):
             in_train = self._train.load()
         else:
             in_train = self._train
@@ -48,7 +48,7 @@ class TorchDataLoader(pl.LightningDataModule):
         return DataLoader(in_train, batch_size=self._batch_size)
 
     def val_dataloader(self):
-        if hasattr(self._val, 'load'):
+        if hasattr(self._val, "load"):
             in_val = self._val.load()
         else:
             in_val = self._val
@@ -56,7 +56,7 @@ class TorchDataLoader(pl.LightningDataModule):
         return DataLoader(in_val, batch_size=self._batch_size)
 
     def test_dataloader(self):
-        if hasattr(self._test, 'load'):
+        if hasattr(self._test, "load"):
             in_test = self._test.load()
         else:
             in_test = self._test
@@ -76,8 +76,9 @@ def run_dask_clustered(func, client=None, **kwargs):
     utils.sync_future_loop(futures)
 
 
-def fit(model, X, y, max_iter, accel, strategy, devices, ngpus, batch_size,
-        plugins=None):
+def fit(
+    model, X, y, max_iter, accel, strategy, devices, ngpus, batch_size, plugins=None
+):
 
     # Variable world_size is based on the number of Dask workers
     if plugins is not None and isinstance(plugins, list):
@@ -95,9 +96,15 @@ def fit(model, X, y, max_iter, accel, strategy, devices, ngpus, batch_size,
 
     dataloader = TorchDataLoader(train=X, val=y)
 
-    trainer = pl.Trainer(max_epochs=max_iter, accelerator=accel,
-                         strategy=strategy, gpus=ngpus, plugins=plugins,
-                         devices=devices, num_nodes=nodes)
+    trainer = pl.Trainer(
+        max_epochs=max_iter,
+        accelerator=accel,
+        strategy=strategy,
+        gpus=ngpus,
+        plugins=plugins,
+        devices=devices,
+        num_nodes=nodes,
+    )
 
     trainer.fit(model, dataloader)
 
@@ -123,18 +130,24 @@ class NeuralNetClassifier:
 
         plugins = [DaskClusterEnvironment()]
 
-        run_dask_clustered(fit, model=self._model, X=X, y=y,
-                           max_iter=self._max_iter, accel=self._accel,
-                           strategy=self._strategy, ndevices=self._ndevices,
-                           ngpus=self._ngpus, plugins=plugins)
+        run_dask_clustered(
+            fit,
+            model=self._model,
+            X=X,
+            y=y,
+            max_iter=self._max_iter,
+            accel=self._accel,
+            strategy=self._strategy,
+            ndevices=self._ndevices,
+            ngpus=self._ngpus,
+            plugins=plugins,
+        )
 
     def _lazy_fit_gpu(self, X, y=None):
-        self._lazy_fit_generic(X=X, y=y, accel="gpu",
-                               ngpus=len(get_dask_gpu_count()))
+        self._lazy_fit_generic(X=X, y=y, accel="gpu", ngpus=len(get_dask_gpu_count()))
 
     def _lazy_fit_cpu(self, X, y=None):
-        self._lazy_fit_generic(X=X, y=y, accel="cpu",
-                               ngpus=len(get_dask_gpu_count()))
+        self._lazy_fit_generic(X=X, y=y, accel="cpu", ngpus=len(get_dask_gpu_count()))
 
     def __fit_generic(self, X, y, accel, ngpus):
         self._accel = accel
@@ -143,9 +156,9 @@ class NeuralNetClassifier:
 
         dataloader = TorchDataLoader(train=X, val=y)
 
-        self.__trainer = pl.Trainer(max_epochs=self._max_iter,
-                                    accelerator=accel,
-                                    gpus=ngpus)
+        self.__trainer = pl.Trainer(
+            max_epochs=self._max_iter, accelerator=accel, gpus=ngpus
+        )
 
         self.__trainer.fit(self._model, dataloader)
 
@@ -157,7 +170,9 @@ class NeuralNetClassifier:
 
 
 class Trainer(Operator):
-    def __init__(self, name="PyTorch Lightning Pipeline", num_epochs=100, batch_size=16):
+    def __init__(
+        self, name="PyTorch Lightning Pipeline", num_epochs=100, batch_size=16
+    ):
         super().__init__(name)
 
         self.accel = None
@@ -169,7 +184,7 @@ class Trainer(Operator):
 
         self.batch_size_auto = None
         if self.batch_size < 0:
-            self.batch_size_auto = 'binsearch'
+            self.batch_size_auto = "binsearch"
 
     def setup(self, executor):
         self.dtype = executor.dtype
@@ -198,22 +213,51 @@ class Trainer(Operator):
             self.ngpus = executor.ngpus
             self.devices = self.ngpus
 
-    def __run_clustered(self, model, train, val, batch_size, auto_scale_batch_size=None):
+    def __run_clustered(
+        self, model, train, val, batch_size, auto_scale_batch_size=None
+    ):
         all_workers = utils.get_worker_info(self.client)
 
         for worker in all_workers:
             sct = self.client.scatter(train, broadcast=True)
             scv = self.client.scatter(val, broadcast=True)
-            futures = self.client.submit(fit, model, self.epochs, self.accel, self.strategy,
-                                         self.devices, sct, scv, worker, batch_size,
-                                         auto_scale_batch_size, self.ngpus, workers=[worker["worker"]])
+            futures = self.client.submit(
+                fit,
+                model,
+                self.epochs,
+                self.accel,
+                self.strategy,
+                self.devices,
+                sct,
+                scv,
+                worker,
+                batch_size,
+                auto_scale_batch_size,
+                self.ngpus,
+                workers=[worker["worker"]],
+            )
 
         utils.sync_future_loop(futures)
 
     def run(self, model, train, val=None):
         print(len(train), len(val))
         if utils.is_executor_single(self.dtype):
-            trainer = pl.Trainer(max_epochs=self.epochs, accelerator=self.accel, gpus=self.ngpus, auto_scale_batch_size=self.batch_size_auto)
-            trainer.fit(model.model, DataLoader(train, batch_size=self.batch_size), DataLoader(val, batch_size=self.batch_size))
+            trainer = pl.Trainer(
+                max_epochs=self.epochs,
+                accelerator=self.accel,
+                gpus=self.ngpus,
+                auto_scale_batch_size=self.batch_size_auto,
+            )
+            trainer.fit(
+                model.model,
+                DataLoader(train, batch_size=self.batch_size),
+                DataLoader(val, batch_size=self.batch_size),
+            )
         else:
-            self.__run_clustered(model.model, train, val, batch_size=self.batch_size, auto_scale_batch_size=self.batch_size_auto)
+            self.__run_clustered(
+                model.model,
+                train,
+                val,
+                batch_size=self.batch_size,
+                auto_scale_batch_size=self.batch_size_auto,
+            )

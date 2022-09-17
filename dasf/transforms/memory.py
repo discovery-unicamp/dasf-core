@@ -24,8 +24,7 @@ class LoadDaskData(Operator):
         super().__init__(name="Load Dask data locally")
 
     def run(self, data):
-        if isinstance(data, da.core.Array) or \
-           isinstance(data, ddf.core.DataFrame):
+        if isinstance(data, da.core.Array) or isinstance(data, ddf.core.DataFrame):
             new_data = data.compute()
         else:
             new_data = data

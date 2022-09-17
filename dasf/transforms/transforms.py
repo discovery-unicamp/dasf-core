@@ -52,8 +52,7 @@ class ArraysToDataFrame(Transform):
                         dfs = list()
                     dfs.append(flat)
             else:
-                raise Exception("This is not an array. This is a '%s'." %
-                                str(type(x)))
+                raise Exception("This is not an array. This is a '%s'." % str(type(x)))
 
         return dfs
 

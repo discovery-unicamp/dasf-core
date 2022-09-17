@@ -18,13 +18,11 @@ def generate_generic(cls, func_name):
     elif is_gpu_supported():
         arch = "gpu"
 
-    wrapper_func_attr = f'{func_type}_{func_name}_{arch}'
+    wrapper_func_attr = f"{func_type}_{func_name}_{arch}"
 
     # Do not overwrite existing func_name.
     if hasattr(cls, wrapper_func_attr):
-        setattr(cls,
-                func_name,
-                getattr(cls, wrapper_func_attr))
+        setattr(cls, func_name, getattr(cls, wrapper_func_attr))
 
     return cls
 

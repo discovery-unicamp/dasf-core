@@ -11,6 +11,7 @@ class DaskClusterEnvironment(ClusterEnvironment):
 
     metadata -- dictionary containing all data related to workers.
     """
+
     def __init__(self, metadata=None) -> None:
         super().__init__()
 

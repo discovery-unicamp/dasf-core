@@ -33,14 +33,17 @@ class DaskPipelineExecutor(LocalExecutor):
     cluster_kwargs -- extra Dask parameters like memory, processes, etc.
     client_kwargs -- extra Client parameters.
     """
-    def __init__(self,
-                 address=None,
-                 port=8786,
-                 local=False,
-                 use_cuda=False,
-                 profiler=None,
-                 cluster_kwargs=None,
-                 client_kwargs=None):
+
+    def __init__(
+        self,
+        address=None,
+        port=8786,
+        local=False,
+        use_cuda=False,
+        profiler=None,
+        cluster_kwargs=None,
+        client_kwargs=None,
+    ):
 
         self.address = address
         self.port = port
@@ -49,14 +52,14 @@ class DaskPipelineExecutor(LocalExecutor):
         local = local or address is None
 
         if address:
-            self.client = Client(f'{address}:{port}')
+            self.client = Client(f"{address}:{port}")
         elif local:
             if use_cuda:
-                self.client = Client(LocalCUDACluster(**cluster_kwargs),
-                                     **client_kwargs)
+                self.client = Client(
+                    LocalCUDACluster(**cluster_kwargs), **client_kwargs
+                )
             else:
-                self.client = Client(LocalCluster(**cluster_kwargs),
-                                     **client_kwargs)
+                self.client = Client(LocalCluster(**cluster_kwargs), **client_kwargs)
 
         # Ask workers for GPUs
         if local and not use_cuda:
@@ -69,12 +72,13 @@ class DaskPipelineExecutor(LocalExecutor):
                 self.dtype = TaskExecutorType.multi_cpu
 
         if profiler == "memusage":
-            profiler_dir = os.path.abspath(str(Path.home()) +
-                                           "/.cache/dasf/profiler/")
+            profiler_dir = os.path.abspath(str(Path.home()) + "/.cache/dasf/profiler/")
             os.makedirs(profiler_dir, exist_ok=True)
 
-            dmem.install(self.client.cluster.scheduler,
-                         os.path.abspath(profiler_dir + "/dask-memusage"))
+            dmem.install(
+                self.client.cluster.scheduler,
+                os.path.abspath(profiler_dir + "/dask-memusage"),
+            )
 
     @property
     def ngpus(self):
@@ -100,20 +104,27 @@ class DaskPrefectPipelineExecutor(DaskExecutor):
     performance_report_path -- An optional path for the dask performance
                                report (default None).
     """
-    def __init__(self,
-                 address=None,
-                 cluster_class=None,
-                 cluster_kwargs=None,
-                 adapt_kwargs=None,
-                 client_kwargs=None,
-                 debug=False,
-                 performance_report_path=None):
 
-        super().__init__(address=address, cluster_class=cluster_class,
-                         cluster_kwargs=cluster_kwargs,
-                         adapt_kwargs=adapt_kwargs,
-                         client_kwargs=client_kwargs, debug=debug,
-                         performance_report_path=performance_report_path)
+    def __init__(
+        self,
+        address=None,
+        cluster_class=None,
+        cluster_kwargs=None,
+        adapt_kwargs=None,
+        client_kwargs=None,
+        debug=False,
+        performance_report_path=None,
+    ):
+
+        super().__init__(
+            address=address,
+            cluster_class=cluster_class,
+            cluster_kwargs=cluster_kwargs,
+            adapt_kwargs=adapt_kwargs,
+            client_kwargs=client_kwargs,
+            debug=debug,
+            performance_report_path=performance_report_path,
+        )
 
         # Ask workers for GPUs
         if is_dask_gpu_supported():
@@ -130,9 +141,8 @@ class LocalDaskPrefectPipelineExecutor(LocalDaskExecutor):
                  "threads", "processes", and "synchronous" (default "threads").
     **kwargs -- Additional keyword arguments to pass to dask config.
     """
-    def __init__(self,
-                 scheduler="threads",
-                 **kwargs):
+
+    def __init__(self, scheduler="threads", **kwargs):
         super().__init__(scheduler=scheduler, **kwargs)
 
     @property

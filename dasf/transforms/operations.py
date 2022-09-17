@@ -73,22 +73,23 @@ class SliceArrayByPercent(Operator):
     def __init__(self, x=100.0, y=100.0, z=100.0):
         super().__init__(name="Slice Array")
 
-        self.x = float(x/100.0)
-        self.y = float(y/100.0)
-        self.z = float(z/100.0)
+        self.x = float(x / 100.0)
+        self.y = float(y / 100.0)
+        self.z = float(z / 100.0)
 
     def run(self, X):
         if self.x > 1 or self.y > 1 or self.z > 1:
             raise Exception("Percentages cannot be higher than 100% (1.0)")
 
         if X.ndim == 1:
-            return X[0:int(self.x*X.shape[0])]
+            return X[0:int(self.x * X.shape[0])]
         elif X.ndim == 2:
-            return X[0:int(self.x*X.shape[0]),
-                     0:int(self.y*X.shape[1])]
+            return X[0:int(self.x * X.shape[0]), 0:int(self.y * X.shape[1])]
         elif X.ndim == 3:
-            return X[0:int(self.x*X.shape[0]),
-                     0:int(self.y*X.shape[1]),
-                     0:int(self.z*X.shape[2])]
+            return X[
+                0:int(self.x * X.shape[0]),
+                0:int(self.y * X.shape[1]),
+                0:int(self.z * X.shape[2]),
+            ]
         else:
             raise Exception("The dimmension is not known")

@@ -4,12 +4,7 @@ from dasf.pipeline import Operator
 
 
 class Histogram(Operator):
-    def __init__(self,
-                 bins=None,
-                 range=None,
-                 normed=False,
-                 weights=None,
-                 density=None):
+    def __init__(self, bins=None, range=None, normed=False, weights=None, density=None):
 
         super().__init__(name="Histogram")
         self.bins = bins
@@ -24,5 +19,6 @@ class Histogram(Operator):
             range_max = self.xp.max(X)
             self.range = [range_min, range_max]
 
-        return self.xp.histogram(X, self.bins, self.range, self.normed,
-                                 self.weights, self.density)
+        return self.xp.histogram(
+            X, self.bins, self.range, self.normed, self.weights, self.density
+        )
