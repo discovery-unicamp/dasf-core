@@ -40,7 +40,7 @@ sklearn = "*"
 torchvision = "*"
 wget = "*"
 
-xpysom = { git = "https://github.com/jcfaracco/xpysom/", branch = "dask2" }
+#xpysom = { git = "https://github.com/jcfaracco/xpysom/", branch = "dask2" }
 
 [tool.poetry.dev-dependencies]
 flake8 = "*"

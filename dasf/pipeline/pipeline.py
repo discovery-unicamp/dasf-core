@@ -24,40 +24,112 @@ except ImportError:
     pass
 
 
+class DAG:
+    key = None
+    fn = None
+    parameters = []
+    itself = None
+
+    def set(self, fn, parameters={}, itself=None):
+        self.key = hash(fn)
+        self.fn = fn
+        for k, v in parameters.items():
+            self.parameters.append((k, v))
+        self.itself = itself
+
+    def set_parameters(self, parameters):
+        for k, v in parameters.items():
+            self.parameters.append((k, v))
+
+
 class Pipeline2:
     def __init__(self, name, executor=None):
         self._name = name
         self._executor = executor
 
-        self._dag = dict()
+        self._dag = []
 
     def __call(self, func):
         pass
 
-    def __add_into_dag(self, obj, fn, reqs, itself=None):
-        self._dag[hash(obj)] = dict()
-        self._dag[hash(obj)]["fn"] = fn
-        self._dag[hash(obj)]["reqs"] = reqs
-        if itself:
-            self._dag[hash(obj)]["reqs"]["self"] = itself
+    def __dag_exists(self, item):
+        for dag in self._dag:
+            if item.key == dag.key:
+                return True
+        return False
+
+    def __add_parameters_into_dag(self, fn, itself=None):
+        item = DAG()
+        item.set(fn=fn, itself=itself)
+        self._dag.append(item)
+
+    def __add_into_dag(self, fn, parameters={}, itself=None):
+        item = DAG()
+        item.set(fn=fn, parameters=parameters, itself=itself)
+        if not self.__dag_exists(item):
+            self._dag.append(item)
+        else:
+            
+
+    def __recursive_call(self, dag):
+        key = hash(dag["fn"])
+
+        for key, value in self._dag.items()
+            if len(self._dag[key]["parameters"]) == 0:
+                self._dag[key]["return"] = self._dag[key]["fn"]()
+                return
+            else:
+                new_kwargs = dict()
+                for parameter in self._dag[key]["parameters"]:
+                    parameter_fn = self._dag[key]["parameters"][parameter]
+                    print(parameter_fn)
+                    if not hash(parameter_fn) in self._dag:
+                        raise Exception('Did you include all the parameters '
+                                        'or defined the DAG properly?')
+
+    def add_parameters(self, parameters):
+        if isinstance(parameters, list):
+            for parameter in parameters:
+                if inspect.isfunction(parameter) and callable(parameter):
+                    self.__add_into_dag(parameter)
+                elif inspect.ismethod(parameter):
+                    self.__add_into_dag(parameter, itself=parameter.__self__)
+                elif hasattr(parameter, 'load'):
+                    self.__add_into_dag(parameter.load, itself=parameter)
+                else:
+                    raise ValueError('This object is not a parameter object.')
+        else:
+            if inspect.isfunction(parameters) and callable(parameters):
+                self.__add_into_dag(parameters)
+            elif inspect.ismethod(parameters):
+                self.__add_into_dag(parameters, itself=parameter.__self__)
+            elif hasattr(parameters, 'load'):
+                self.__add_into_dag(parameters.load, itself=parameters)
+            else:
+                raise ValueError('This object is not a parameter object.')
 
     def add(self, obj, **kwargs):
         from dasf.transforms.transforms import Transform
 
         if inspect.isfunction(obj) and callable(obj):
-            self.__add_into_dag(obj, obj, kwargs)
+            self.__add_into_dag(obj, kwargs)
         elif inspect.ismethod(obj):
-            self.__add_into_dag(obj, obj, kwargs, obj.__self__)
+            self.__add_into_dag(obj, kwargs, obj.__self__)
+        elif issubclass(obj.__class__, Transform) and hasattr(obj, 'transform'):
+            self.__add_into_dag(obj.transform, kwargs, obj)
+        elif hasattr(obj, 'fit'):
+            self.__add_into_dag(obj.fit, kwargs, obj)
         else:
-            if issubclass(obj, Transform) and hasattr(obj, 'transform'):
-                self.__add_into_dag(obj, obj.transform, kwargs, obj)
-            elif hasattr(obj, 'fit'):
-                self.__add_into_dag(obj, obj.fit, kwargs, obj)
-            else:
-                raise ValueError('This object is not a function, method or a '
-                                 'transformer object.')
+            raise ValueError('This object is not a function, method or a '
+                             'transformer object.')
 
         return self
+
+    def run(self):
+        self.__recursive_call(list(self._dag.values())[0])
+
+        print(self._dag)
+
 
 
 class Operator:
