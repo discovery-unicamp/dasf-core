@@ -11,11 +11,12 @@ import dask.array as da
 import pandas as pd
 import dask.dataframe as ddf
 
-from prefect import Task, Flow
+import networkx as nx
+
+from prefect import flow
 
 from dasf.utils import utils
 from dasf.pipeline.types import TaskExecutorType
-from prefect.executors.local import LocalExecutor
 
 try:
     import cupy as cp
@@ -24,91 +25,38 @@ except ImportError:
     pass
 
 
-class DAG:
-    key = None
-    fn = None
-    parameters = []
-    itself = None
-
-    def set(self, fn, parameters={}, itself=None):
-        self.key = hash(fn)
-        self.fn = fn
-        for k, v in parameters.items():
-            self.parameters.append((k, v))
-        self.itself = itself
-
-    def set_parameters(self, parameters):
-        for k, v in parameters.items():
-            self.parameters.append((k, v))
-
-
 class Pipeline2:
     def __init__(self, name, executor=None):
         self._name = name
         self._executor = executor
 
-        self._dag = []
+        self._dag = nx.DiGraph()
+        self._dag_table = dict()
 
-    def __call(self, func):
-        pass
+    def __add_into_dag(self, obj, parameters=None, itself=None):
+        key = hash(obj)
 
-    def __dag_exists(self, item):
-        for dag in self._dag:
-            if item.key == dag.key:
-                return True
-        return False
+        if not key in self._dag_table:
+            self._dag.add_node(key)
+            self._dag_table[key] = dict()
+            self._dag_table[key]["fn"] = obj
+            self._dag_table[key]["parameters"] = None
 
-    def __add_parameters_into_dag(self, fn, itself=None):
-        item = DAG()
-        item.set(fn=fn, itself=itself)
-        self._dag.append(item)
-
-    def __add_into_dag(self, fn, parameters={}, itself=None):
-        item = DAG()
-        item.set(fn=fn, parameters=parameters, itself=itself)
-        if not self.__dag_exists(item):
-            self._dag.append(item)
-        else:
-            
-
-    def __recursive_call(self, dag):
-        key = hash(dag["fn"])
-
-        for key, value in self._dag.items()
-            if len(self._dag[key]["parameters"]) == 0:
-                self._dag[key]["return"] = self._dag[key]["fn"]()
-                return
+        if parameters and isinstance(parameters, dict):
+            if self._dag_table[key]["parameters"] is None:
+                self._dag_table[key]["parameters"] = parameters
             else:
-                new_kwargs = dict()
-                for parameter in self._dag[key]["parameters"]:
-                    parameter_fn = self._dag[key]["parameters"][parameter]
-                    print(parameter_fn)
-                    if not hash(parameter_fn) in self._dag:
-                        raise Exception('Did you include all the parameters '
-                                        'or defined the DAG properly?')
+                self._dag_table[key]["parameters"].update(parameters)
 
-    def add_parameters(self, parameters):
-        if isinstance(parameters, list):
-            for parameter in parameters:
-                if inspect.isfunction(parameter) and callable(parameter):
-                    self.__add_into_dag(parameter)
-                elif inspect.ismethod(parameter):
-                    self.__add_into_dag(parameter, itself=parameter.__self__)
-                elif hasattr(parameter, 'load'):
-                    self.__add_into_dag(parameter.load, itself=parameter)
-                else:
-                    raise ValueError('This object is not a parameter object.')
-        else:
-            if inspect.isfunction(parameters) and callable(parameters):
-                self.__add_into_dag(parameters)
-            elif inspect.ismethod(parameters):
-                self.__add_into_dag(parameters, itself=parameter.__self__)
-            elif hasattr(parameters, 'load'):
-                self.__add_into_dag(parameters.load, itself=parameters)
-            else:
-                raise ValueError('This object is not a parameter object.')
+            # If we are adding a object which require parameters,
+            # we need to make sure they are mapped into DAG.
+            for k, v in parameters.items():
+                self.add(v)
+                self._dag.add_edge(hash(v), key)
+
 
     def add(self, obj, **kwargs):
+        from dasf.datasets.base import Dataset
         from dasf.transforms.transforms import Transform
 
         if inspect.isfunction(obj) and callable(obj):
@@ -117,6 +65,8 @@ class Pipeline2:
             self.__add_into_dag(obj, kwargs, obj.__self__)
         elif issubclass(obj.__class__, Transform) and hasattr(obj, 'transform'):
             self.__add_into_dag(obj.transform, kwargs, obj)
+        elif issubclass(obj.__class__, Dataset) and hasattr(obj, 'load'):
+            self.__add_into_dag(obj.load, kwargs, obj)
         elif hasattr(obj, 'fit'):
             self.__add_into_dag(obj.fit, kwargs, obj)
         else:
@@ -126,10 +76,14 @@ class Pipeline2:
         return self
 
     def run(self):
-        self.__recursive_call(list(self._dag.values())[0])
+        if not nx.is_directed_acyclic_graph(self._dag):
+            raise Exception("Pipeline has not a DAG format. Review it.")
 
-        print(self._dag)
+        @flow
+        def run_flow():
+            func_keys = list(nx.topological_sort(self._dag))
 
+            for fn_key in func_keys:
 
 
 class Operator:
@@ -218,101 +172,3 @@ class BlockOperator(Operator):
             return new_data
         else:
             return self.function(X, **kwargs)
-
-
-class WrapperLocalExecutor(LocalExecutor):
-    def __init__(self, disable_gpu=False):
-        super().__init__()
-
-        self.ngpus = len(GPUtil.getGPUs())
-        self.client = None
-
-        if self.ngpus > 0 and not disable_gpu:
-            self.dtype = utils.set_executor_gpu()
-        else:
-            self.dtype = utils.set_executor_default()
-
-
-class ComputePipeline(Flow):
-    def __init__(self, name, executor=None):
-        super().__init__(name)
-
-        self.cparameters = dict()
-
-        self.executor = executor
-
-        if self.executor is None:
-            self.executor = WrapperLocalExecutor()
-
-    def __check_task_pipes(self, task1, task2):
-        if not task2.task_inputs:
-            raise NotImplementedError
-
-        for key2 in task2.task_inputs:
-            key1 = next(iter(task1.task_output))
-            value1 = task1.task_output[key1]
-            if key1 == key2 and value1 == task2.task_inputs[key2]:
-                return key2
-        return None
-
-    def all_upstream_tasks(self):
-        tasks = list()
-        for k, v in self.all_upstream_edges().items():
-            if not v and not issubclass(k.__class__, Parameter):
-                tasks.append(k)
-        return tasks
-
-    def add_parameters(self, parameters):
-        if isinstance(parameters, list):
-            for parameter in parameters:
-                self.cparameters[parameter.name] = parameter
-        else:
-            self.cparameters[parameters.name] = parameters
-
-    def add_edge(self, task1, task2, key):
-        # key = self.__check_task_pipes(task1, task2)
-
-        if self.executor and hasattr(self.executor, "dtype"):
-            # Check if they have setup method.
-            # The tasks can be Parameters, Stages and Multi tasks.
-            if hasattr(task1, "setup"):
-                task1.setup(self.executor)
-            if hasattr(task2, "setup"):
-                task2.setup(self.executor)
-
-        super().add_edge(task1, task2, key=key)
-
-    def add(self, task, **kwargs):
-        if isinstance(task, list):
-            for t in task:
-                if hasattr(t, "setup"):
-                    t.setup(self.executor)
-
-                for arg in kwargs:
-                    if hasattr(kwargs[arg], "setup"):
-                        kwargs[arg].setup(self.executor)
-
-                    super().add_edge(kwargs[arg], t, key=arg)
-        else:
-            if self.executor and hasattr(self.executor, "dtype"):
-                # Check if they have setup method.
-                # The tasks can be Parameters, Stages and Multi tasks.
-                if hasattr(task, "setup"):
-                    task.setup(self.executor)
-
-            for arg in kwargs:
-                if hasattr(kwargs[arg], "setup"):
-                    kwargs[arg].setup(self.executor)
-
-                super().add_edge(kwargs[arg], task, key=arg)
-
-        return self
-
-    def run(self, run_on_schedule=None, runner_cls=None, **kwargs):
-        return super().run(
-            executor=self.executor,
-            parameters=self.cparameters,
-            run_on_schedule=run_on_schedule,
-            runner_cls=runner_cls,
-            **kwargs
-        )
