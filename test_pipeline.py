@@ -8,7 +8,7 @@ from dasf.pipeline.pipeline import Pipeline2
 
 
 def loader():
-    return X
+    return 4
 
 def segarr(X):
     return X + 1
@@ -52,8 +52,11 @@ pipeline.add(segarr, X=loader) \
         .add(normalize, X=concat_df) \
         .add(kmeans.fit, X=normalize)
 
-pipeline.run()
+ret = pipeline.run()
+
+print(ret)
 
 nx.draw_networkx(pipeline._dag, arrows=True)
+
 plt.savefig("dag.png", format="PNG")
 plt.clf()

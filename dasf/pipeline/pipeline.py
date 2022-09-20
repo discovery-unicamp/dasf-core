@@ -13,8 +13,6 @@ import dask.dataframe as ddf
 
 import networkx as nx
 
-from prefect import flow
-
 from dasf.utils import utils
 from dasf.pipeline.types import TaskExecutorType
 
@@ -26,9 +24,10 @@ except ImportError:
 
 
 class Pipeline2:
-    def __init__(self, name, executor=None):
+    def __init__(self, name, executor=None, verbose=False):
         self._name = name
         self._executor = executor
+        self._verbose = verbose
 
         self._dag = nx.DiGraph()
         self._dag_table = dict()
@@ -54,7 +53,6 @@ class Pipeline2:
                 self.add(v)
                 self._dag.add_edge(hash(v), key)
 
-
     def add(self, obj, **kwargs):
         from dasf.datasets.base import Dataset
         from dasf.transforms.transforms import Transform
@@ -63,15 +61,16 @@ class Pipeline2:
             self.__add_into_dag(obj, kwargs)
         elif inspect.ismethod(obj):
             self.__add_into_dag(obj, kwargs, obj.__self__)
-        elif issubclass(obj.__class__, Transform) and hasattr(obj, 'transform'):
+        elif issubclass(obj.__class__, Transform) and hasattr(obj, "transform"):
             self.__add_into_dag(obj.transform, kwargs, obj)
-        elif issubclass(obj.__class__, Dataset) and hasattr(obj, 'load'):
+        elif issubclass(obj.__class__, Dataset) and hasattr(obj, "load"):
             self.__add_into_dag(obj.load, kwargs, obj)
-        elif hasattr(obj, 'fit'):
+        elif hasattr(obj, "fit"):
             self.__add_into_dag(obj.fit, kwargs, obj)
         else:
-            raise ValueError('This object is not a function, method or a '
-                             'transformer object.')
+            raise ValueError(
+                "This object is not a function, method or a " "transformer object."
+            )
 
         return self
 
@@ -79,11 +78,37 @@ class Pipeline2:
         if not nx.is_directed_acyclic_graph(self._dag):
             raise Exception("Pipeline has not a DAG format. Review it.")
 
-        @flow
-        def run_flow():
-            func_keys = list(nx.topological_sort(self._dag))
+        if self._executor and not hasattr(self._executor, "call"):
+            raise Exception(
+                f"Executor {self._executor.__name__} has not a " "call() method."
+            )
 
-            for fn_key in func_keys:
+        fn_keys = list(nx.topological_sort(self._dag))
+
+        ret = None
+
+        for fn_key in fn_keys:
+            func = self._dag_table[fn_key]["fn"]
+            params = self._dag_table[fn_key]["parameters"]
+
+            new_params = dict()
+            if params:
+                for k, v in params.items():
+                    req_key = hash(v)
+
+                    new_params[k] = self._dag_table[req_key]["ret"]
+
+            if self._executor:
+                pass
+            else:
+                if len(new_params) > 0:
+                    ret = func(**new_params)
+                else:
+                    ret = func()
+
+                self._dag_table[fn_key]["ret"] = ret
+
+        return ret
 
 
 class Operator:
@@ -143,7 +168,7 @@ class BlockOperator(Operator):
                         **kwargs,
                         dtype=dtype,
                         depth=self.depth,
-                        boundary=self.boundary
+                        boundary=self.boundary,
                     )
                 else:
                     data_blocks = da.overlap.overlap(
@@ -155,7 +180,7 @@ class BlockOperator(Operator):
                         dtype=dtype,
                         drop_axis=drop_axis,
                         new_axis=new_axis,
-                        **kwargs
+                        **kwargs,
                     )
             else:
                 if isinstance(X, da.core.Array):
@@ -164,7 +189,7 @@ class BlockOperator(Operator):
                         dtype=dtype,
                         drop_axis=drop_axis,
                         new_axis=new_axis,
-                        **kwargs
+                        **kwargs,
                     )
                 elif isinstance(X, ddf.core.DataFrame):
                     new_data = X.map_partitions(self.function, **kwargs)
