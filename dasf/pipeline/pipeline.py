@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import uuid
+import time
 import GPUtil
 import inspect
 import prefect
@@ -14,6 +15,7 @@ import dask.dataframe as ddf
 import networkx as nx
 
 from dasf.utils import utils
+from dasf.utils.logging import init_logging
 from dasf.pipeline.types import TaskExecutorType
 
 try:
@@ -32,6 +34,8 @@ class Pipeline2:
         self._dag = nx.DiGraph()
         self._dag_table = dict()
 
+        self._logger = init_logging()
+
     def __add_into_dag(self, obj, parameters=None, itself=None):
         key = hash(obj)
 
@@ -39,6 +43,7 @@ class Pipeline2:
             self._dag.add_node(key)
             self._dag_table[key] = dict()
             self._dag_table[key]["fn"] = obj
+            self._dag_table[key]["name"] = obj.__qualname__
             self._dag_table[key]["parameters"] = None
 
         if parameters and isinstance(parameters, dict):
@@ -83,13 +88,23 @@ class Pipeline2:
                 f"Executor {self._executor.__name__} has not a " "call() method."
             )
 
+        if self._executor:
+            while True:
+                if self._executor.is_connected:
+                    break
+                time.sleep(2)
+
         fn_keys = list(nx.topological_sort(self._dag))
 
         ret = None
+        failed = False
+
+        self._logger.info(f'Beginning pipeline run for \'{self._name}\'')
 
         for fn_key in fn_keys:
             func = self._dag_table[fn_key]["fn"]
             params = self._dag_table[fn_key]["parameters"]
+            name = self._dag_table[fn_key]["name"]
 
             new_params = dict()
             if params:
@@ -99,14 +114,34 @@ class Pipeline2:
                     new_params[k] = self._dag_table[req_key]["ret"]
 
             if self._executor:
-                pass
-            else:
-                if len(new_params) > 0:
-                    ret = func(**new_params)
-                else:
-                    ret = func()
+                self._executor.pre_run()
 
-                self._dag_table[fn_key]["ret"] = ret
+            self._logger.info(f'Task \'{name}\': Starting task run...')
+
+            try:
+                if len(new_params) > 0:
+                    if self._executor:
+                        ret = self._executor.call(fn=func, **kwargs)
+                    else:
+                        ret = func(**new_params)
+                else:
+                    if self._executor:
+                        ret = self._executor.call(fn=func)
+                    else:
+                        ret = func()
+            except Exception as e:
+                self._logger.exception(str(e))
+                failed = True
+                break
+
+            self._logger.info(f'Task \'{name}\': Finished task run')
+
+            self._dag_table[fn_key]["ret"] = ret
+
+        if failed:
+            self._logger.info(f'Pipeline failed at \'{name}\'')
+        else:
+            self._logger.info('Pipeline run successfully')
 
         return ret
 

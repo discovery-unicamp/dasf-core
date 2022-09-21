@@ -84,6 +84,15 @@ class DaskPipelineExecutor(LocalExecutor):
     def ngpus(self):
         return len(self.client.ncores())
 
+    @preperty
+    def is_connected(self):
+        if 'running' in self.client.status:
+            return True
+        return False
+
+    def call(self, fn, **kwargs):
+        return fn(**kwargs)
+
 
 class DaskPrefectPipelineExecutor(DaskExecutor):
     """
