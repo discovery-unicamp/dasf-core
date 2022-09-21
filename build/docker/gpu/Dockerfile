@@ -19,33 +19,16 @@ RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machi
 
 COPY environment.yml /tmp/
 
-RUN apt-get update && apt-get install git wget bzip2 graphviz gcc python3-dev g++ -y
-
-RUN conda create --clone rapids --name dasf
-
-RUN conda env update -n dasf --file /tmp/environment.yml
-
-RUN conda init --system -q bash \
-    && grep -v '[ -z "\$PS1" ] && return' /root/.bashrc  > /opt/conda/bashrc   # this line has been modified
-
-RUN apt-get clean autoremove --yes \
+RUN apt-get update && apt-get install git graphviz gcc python3-dev g++ -y \
+    && apt-get clean autoremove --yes \
     && rm -rf /var/lib/apt/lists/*
 
-COPY .bashrc /root/
-
-COPY entrypoint.sh /usr/local/bin/
+RUN conda run -n rapids pip3 install git+https://github.com/discovery-unicamp/dasf-core.git
 
 RUN mkdir /dasf
 
 WORKDIR /dasf
 
-ENV CONDA_PREFIX /opt/conda/envs/dasf
-ENV CONDA_PROMPT_MODIFIER (dasf)
-ENV CONDA_DEFAULT_ENV dasf
-
 # Update jupyter environment with ipympl extension
-RUN conda run -n dasf jupyter nbextension install --py --symlink --sys-prefix --overwrite ipympl
-RUN conda run -n dasf jupyter nbextension enable --py --sys-prefix ipympl
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
+RUN conda run -n rapids jupyter nbextension install --py --symlink --sys-prefix --overwrite ipympl
+RUN conda run -n rapids jupyter nbextension enable --py --sys-prefix ipympl
