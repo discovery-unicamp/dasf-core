@@ -43,11 +43,15 @@ wget = "*"
 xpysom = { git = "https://github.com/jcfaracco/xpysom/", branch = "dask2" }
 
 [tool.poetry.dev-dependencies]
+black = "*"
 flake8 = "*"
 mock = "*"
 parameterized = "*"
 pytest = "*"
 wheel = "*"
+
+[tool.isort]
+profile = "black"
 
 [build-system]
 requires = ["poetry>=0.12"]
