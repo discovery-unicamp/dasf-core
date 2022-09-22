@@ -39,13 +39,13 @@ def fetch_args_from_dask(func):
         new_args = []
 
         for k, v in kwargs.items():
-            if is_gpu_array(v):
+            if is_dask_array(v):
                 new_kwargs[k] = v.compute()
             else:
                 new_kwargs[k] = v
 
         for v in args:
-            if is_gpu_array(v):
+            if is_dask_array(v):
                 new_args.append(v.compute())
             else:
                 new_args.append(v)
