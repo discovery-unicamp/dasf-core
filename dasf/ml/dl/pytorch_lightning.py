@@ -16,7 +16,7 @@ from dasf.utils.utils import get_gpu_count
 from dasf.utils.utils import get_dask_gpu_count
 from dasf.utils.utils import get_worker_info
 from dasf.utils.utils import get_dask_running_client
-from dasf.utils.generators import generate_fit
+from dasf.utils.decorators import task_handler
 
 
 class TorchDataLoader(pl.LightningDataModule):
@@ -109,7 +109,6 @@ def fit(
     trainer.fit(model, dataloader)
 
 
-@generate_fit
 class NeuralNetClassifier:
     def __init__(self, model, max_iter=100):
         self._model = model
@@ -167,6 +166,10 @@ class NeuralNetClassifier:
 
     def _fit_cpu(self, X, y=None):
         self.__fit_generic(X, y, "cpu", 0)
+
+    @task_handler
+    def fit(self, X, y=None):
+        ...
 
 
 class Trainer(Operator):

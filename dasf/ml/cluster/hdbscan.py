@@ -5,8 +5,7 @@ from hdbscan import HDBSCAN as HDBSCAN_CPU
 from dasf.ml.core import FitInternal, FitPredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
-from dasf.utils.generators import generate_fit
-from dasf.utils.generators import generate_fit_predict
+from dasf.utils.decorators import task_handler
 from dasf.pipeline import ParameterOperator
 
 try:
@@ -15,8 +14,6 @@ except ImportError:
     pass
 
 
-@generate_fit
-@generate_fit_predict
 class HDBSCAN(ClusterClassifier):
     def __init__(
         self,
@@ -69,6 +66,14 @@ class HDBSCAN(ClusterClassifier):
 
     def _fit_predict_gpu(self, X, y=None):
         self.__hdbscan_gpu.fit_predict(X=X, y=y)
+
+    @task_handler
+    def fit(self, X, y=None):
+        ...
+
+    @task_handler
+    def fit_predict(self, X, y=None):
+        ...
 
 
 class HDBSCANOp(ParameterOperator):

@@ -4,20 +4,11 @@ from sklearn.mixture import GaussianMixture as GaussianMixture_CPU
 
 from dasf.ml.core import FitInternal, FitPredictInternal
 from dasf.ml.core import PredictInternal
-from dasf.utils.generators import generate_fit
-from dasf.utils.generators import generate_predict
-from dasf.utils.generators import generate_fit_predict
-from dasf.utils.generators import generate_get_params
-from dasf.utils.generators import generate_set_params
+from dasf.utils.decorators import task_handler
 from dasf.ml.mixture.classifier import MixtureClassifier
 from dasf.pipeline import ParameterOperator
 
 
-@generate_fit
-@generate_predict
-@generate_fit_predict
-@generate_get_params
-@generate_set_params
 class GaussianMixture(MixtureClassifier):
     def __init__(
         self,
@@ -55,7 +46,7 @@ class GaussianMixture(MixtureClassifier):
             verbose_interval=verbose_interval,
         )
 
-    def _fit_gpu(self, X, y=None):
+    def _fit_cpu(self, X, y=None):
         return self.__gmm_cpu.fit(X=X, y=y)
 
     def _fit_predict_cpu(self, X, y=None):
@@ -69,6 +60,26 @@ class GaussianMixture(MixtureClassifier):
 
     def _get_params_cpu(self, deep=True):
         return self.__gmm_cpu.get_params(deep=deep)
+
+    @task_handler
+    def fit(self, X, y=None):
+        ...
+
+    @task_handler
+    def predict(self, X, y=None):
+        ...
+
+    @task_handler
+    def fit_predict(self, X, y=None):
+        ...
+
+    @task_handler
+    def get_params(self, deep=True):
+        ...
+
+    @task_handler
+    def set_params(self, **params):
+        ...
 
 
 class GaussianMixtureOp(ParameterOperator):

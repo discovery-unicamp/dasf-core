@@ -7,13 +7,9 @@ from xpysom import XPySom
 
 from dasf.ml.core import FitInternal, PredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
-from dasf.utils.utils import is_dask_gpu_supported
-from dasf.utils.utils import is_dask_supported
 from dasf.utils.utils import is_gpu_supported
 from dasf.pipeline import ParameterOperator
-from dasf.utils.generators import generate_fit
-from dasf.utils.generators import generate_predict
-from dasf.utils.generators import generate_fit_predict
+from dasf.utils.decorators import task_handler
 
 try:
     import cupy as cp
@@ -21,9 +17,6 @@ except ImportError:
     pass
 
 
-@generate_fit
-@generate_predict
-@generate_fit_predict
 class SOM(ClusterClassifier):
     def __init__(
         self,
@@ -197,15 +190,21 @@ class SOM(ClusterClassifier):
     def _quantization_error_gpu(self, X):
         return self.__som_gpu.quantization_error(X)
 
+    @task_handler
+    def fit(self, X, y=None, sample_weight=None):
+        ...
+
+    @task_handler
+    def fit_predict(self, X, y=None, sample_weight=None):
+        ...
+
+    @task_handler
+    def predict(self, X, sample_weight=None):
+        ...
+
+    @task_handler
     def quantization_error(self, X):
-        if is_dask_gpu_supported():
-            self._lazy_quantization_error_gpu(X)
-        elif is_dask_supported():
-            self._lazy_quantization_error_cpu
-        elif is_gpu_supported():
-            self._quantization_error_gpu(X)
-        else:
-            self._quantization_error_cpu(X)
+        ...
 
 
 class SOMOp(ParameterOperator):

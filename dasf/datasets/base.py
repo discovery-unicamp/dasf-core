@@ -15,7 +15,7 @@ except ImportError:
 from pathlib import Path
 
 from dasf.utils import utils
-from dasf.utils.generators import generate_load
+from dasf.utils.decorators import task_handler
 from dasf.pipeline import ParameterOperator
 
 
@@ -95,7 +95,6 @@ class DatasetLoader(ParameterOperator):
             return self.__dataset
 
 
-@generate_load
 class DatasetArray(Dataset):
     def __init__(self, name, download=False, root=None, chunks="auto"):
 
@@ -171,6 +170,10 @@ class DatasetArray(Dataset):
         self._metadata = self._load_meta()
         self._data = self._load(np)
 
+    @task_handler
+    def load(self):
+        ...
+
     @property
     def shape(self):
         return self.__npy_header()[0]
@@ -190,7 +193,6 @@ class DatasetArray(Dataset):
         }
 
 
-@generate_load
 class DatasetLabeled(Dataset):
     def __init__(self, name, download=False, root=None, chunks="auto"):
 
@@ -262,6 +264,10 @@ class DatasetLabeled(Dataset):
     def _load_cpu(self):
         self._metadata = self._load_meta()
         self._data, self._labels = self._load(np)
+
+    @task_handler
+    def load(self):
+        ...
 
     def __getitem__(self, idx):
         return (self._data.__getitem__(idx), self._labels.__getitem__(idx))

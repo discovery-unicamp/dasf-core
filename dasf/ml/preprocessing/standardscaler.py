@@ -4,11 +4,7 @@ from sklearn.preprocessing import StandardScaler as StandardScaler_CPU
 from dask_ml.preprocessing import StandardScaler as StandardScaler_MCPU
 
 from dasf.utils.utils import is_gpu_supported
-from dasf.utils.generators import generate_fit
-from dasf.utils.generators import generate_transform
-from dasf.utils.generators import generate_fit_transform
-from dasf.utils.generators import generate_partial_fit
-from dasf.utils.generators import generate_inverse_transform
+from dasf.utils.decorators import task_handler
 
 try:
     from cuml.preprocessing import StandardScaler as StandardScaler_GPU
@@ -16,11 +12,6 @@ except ImportError:
     pass
 
 
-@generate_fit
-@generate_transform
-@generate_fit_transform
-@generate_partial_fit
-@generate_inverse_transform
 class StantardScaler:
     def __init__(self, copy=True, with_mean=True, with_std=True):
 
@@ -97,3 +88,23 @@ class StantardScaler:
 
     def _inverse_transform_gpu(self, X, copy=None):
         return self.__std_scaler_gpu.inverse_transform(X=X, copy=copy)
+
+    @task_handler
+    def fit(self, X, y=None):
+        ...
+
+    @task_handler
+    def transform(self, X, copy=None):
+        ...
+
+    @task_handler
+    def fit_transform(self, X, y=None):
+        ...
+
+    @task_handler
+    def partial_fit(self, X, y=None):
+        ...
+
+    @task_handler
+    def inverse_transform(self, X, copy=None):
+        ...

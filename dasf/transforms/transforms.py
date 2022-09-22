@@ -8,7 +8,7 @@ import pandas as pd
 from dasf.pipeline import Operator
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dask_array
-from dasf.utils.generators import generate_transform
+from dasf.utils.decorators import task_handler
 
 
 try:
@@ -26,7 +26,6 @@ class Transform:
         raise NotImplementedError
 
 
-@generate_transform
 class ArraysToDataFrame(Transform):
     def __transform_generic(self, X, y):
         assert len(X) == len(y), "Data and labels should have the same length."
@@ -83,6 +82,10 @@ class ArraysToDataFrame(Transform):
             datas = dfs
 
         return datas
+
+    @task_handler
+    def transform(self, X, y):
+        ...
 
 
 class ArraysToDataFrameOp(Operator):
