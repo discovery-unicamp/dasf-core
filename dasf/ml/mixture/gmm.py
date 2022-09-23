@@ -4,7 +4,6 @@ from sklearn.mixture import GaussianMixture as GaussianMixture_CPU
 
 from dasf.ml.core import FitInternal, FitPredictInternal
 from dasf.ml.core import PredictInternal
-from dasf.utils.decorators import task_handler
 from dasf.ml.mixture.classifier import MixtureClassifier
 from dasf.pipeline import ParameterOperator
 
@@ -60,26 +59,6 @@ class GaussianMixture(MixtureClassifier):
 
     def _get_params_cpu(self, deep=True):
         return self.__gmm_cpu.get_params(deep=deep)
-
-    @task_handler
-    def fit(self, X, y=None):
-        ...
-
-    @task_handler
-    def predict(self, X, y=None):
-        ...
-
-    @task_handler
-    def fit_predict(self, X, y=None):
-        ...
-
-    @task_handler
-    def get_params(self, deep=True):
-        ...
-
-    @task_handler
-    def set_params(self, **params):
-        ...
 
 
 class GaussianMixtureOp(ParameterOperator):

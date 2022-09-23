@@ -4,7 +4,6 @@ from sklearn.preprocessing import StandardScaler as StandardScaler_CPU
 from dask_ml.preprocessing import StandardScaler as StandardScaler_MCPU
 
 from dasf.utils.utils import is_gpu_supported
-from dasf.utils.decorators import task_handler
 
 try:
     from cuml.preprocessing import StandardScaler as StandardScaler_GPU
@@ -88,23 +87,3 @@ class StantardScaler:
 
     def _inverse_transform_gpu(self, X, copy=None):
         return self.__std_scaler_gpu.inverse_transform(X=X, copy=copy)
-
-    @task_handler
-    def fit(self, X, y=None):
-        ...
-
-    @task_handler
-    def transform(self, X, copy=None):
-        ...
-
-    @task_handler
-    def fit_transform(self, X, y=None):
-        ...
-
-    @task_handler
-    def partial_fit(self, X, y=None):
-        ...
-
-    @task_handler
-    def inverse_transform(self, X, copy=None):
-        ...

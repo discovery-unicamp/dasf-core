@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import numpy as np
 
 from xpysom import XPySom
@@ -9,7 +8,6 @@ from dasf.ml.core import FitInternal, PredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
 from dasf.pipeline import ParameterOperator
-from dasf.utils.decorators import task_handler
 
 try:
     import cupy as cp
@@ -189,22 +187,6 @@ class SOM(ClusterClassifier):
 
     def _quantization_error_gpu(self, X):
         return self.__som_gpu.quantization_error(X)
-
-    @task_handler
-    def fit(self, X, y=None, sample_weight=None):
-        ...
-
-    @task_handler
-    def fit_predict(self, X, y=None, sample_weight=None):
-        ...
-
-    @task_handler
-    def predict(self, X, sample_weight=None):
-        ...
-
-    @task_handler
-    def quantization_error(self, X):
-        ...
 
 
 class SOMOp(ParameterOperator):

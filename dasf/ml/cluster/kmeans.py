@@ -12,7 +12,6 @@ from dask_ml.cluster import KMeans as KMeans_MCPU
 from dasf.ml.core import FitInternal, FitPredictInternal, PredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
-from dasf.utils.decorators import task_handler
 from dasf.pipeline import ParameterOperator
 from dasf.pipeline import Operator
 
@@ -101,18 +100,6 @@ class KMeans(ClusterClassifier):
 
     def _predict_gpu(self, X, sample_weight=None):
         return self.__kmeans_gpu.predict(X, sample_weight)
-
-    @task_handler
-    def fit(self, X, y=None, sample_weight=None):
-        ...
-
-    @task_handler
-    def fit_predict(self, X, y=None, sample_weight=None):
-        ...
-
-    @task_handler
-    def predict(self, X, sample_weight=None):
-        ...
 
 
 class KMeansOp(ParameterOperator):
