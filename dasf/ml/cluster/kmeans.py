@@ -12,8 +12,7 @@ from dask_ml.cluster import KMeans as KMeans_MCPU
 from dasf.ml.core import FitInternal, FitPredictInternal, PredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
-from dasf.pipeline import ParameterOperator
-from dasf.pipeline import Operator
+from dasf.utils.decorators import task_handler
 
 try:
     from cuml.cluster import KMeans as KMeans_GPU
@@ -101,89 +100,28 @@ class KMeans(ClusterClassifier):
     def _predict_gpu(self, X, sample_weight=None):
         return self.__kmeans_gpu.predict(X, sample_weight)
 
-
-class KMeansOp(ParameterOperator):
-    def __init__(self, n_clusters, random_state=0, max_iter=300, checkpoint=False):
-        super().__init__(name="KMeans")
-
-        self._operator = KMeans(
-            n_clusters=n_clusters, random_state=random_state, max_iter=max_iter
-        )
-
-        self.fit = KMeansFitOp(checkpoint=checkpoint)
-        self.fit_predict = KMeansFitPredictOp(checkpoint=checkpoint)
-        self.predict = KMeansPredictOp(checkpoint=checkpoint)
-        self.predict2 = KMeansPredict2Op(checkpoint=checkpoint)
-
-    def run(self):
-        return self._operator
-
-
-class KMeansFitOp(FitInternal):
-    def __init__(self, checkpoint=False):
-        super().__init__(name="KMeansFit", checkpoint=checkpoint)
-
-    def dump(self, model):
-        if self.get_checkpoint():
-            with open(self._tmp, "wb") as fh:
-                pickle.dump(model.cluster_centers_, fh)
-
-    def load(self, model):
-        if self.get_checkpoint() and os.path.exists(self._tmp):
-            with open(self._tmp, "rb") as fh:
-                model.cluster_centers_ = pickle.load(fh)
-
-        return model
-
-
-class KMeansFitPredictOp(FitPredictInternal):
-    def __init__(self, checkpoint=False):
-        super().__init__(name="KMeansFitPredict", checkpoint=checkpoint)
-
-    def load(self, model):
-        if self.get_checkpoint() and os.path.exists(self._tmp):
-            with open(self._tmp, "rb") as fh:
-                model.cluster_centers_ = pickle.load(fh)
-
-        return model
-
-
-class KMeansPredictOp(PredictInternal):
-    def __init__(self, checkpoint=False):
-        super().__init__(name="KMeansPredict", checkpoint=checkpoint)
-
-    def load(self, model):
-        if self.get_checkpoint() and os.path.exists(self._tmp):
-            with open(self._tmp, "rb") as fh:
-                model.cluster_centers_ = pickle.load(fh)
-
-        return model
-
-
-class KMeansPredict2Op(Operator):
-    def __init__(self, checkpoint=False):
-        super().__init__(name="KMeansPredict2", checkpoint=checkpoint)
-
-        self._cached_dir = os.path.abspath(str(Path.home()) + "/.cache/dasf/ml/")
-        os.makedirs(self._cached_dir, exist_ok=True)
-
-        self._tmp = os.path.abspath(self._cached_dir + "/kmeans")
-
-        self.__checkpoint = checkpoint
-
-    def load(self, model):
-        if self.get_checkpoint() and os.path.exists(self._tmp):
-            with open(self._tmp, "rb") as fh:
-                model.cluster_centers_ = pickle.load(fh)
-
-        return model
-
-    def run(self, model, X):
-        model = self.load(model)
-
-        def __predict(block, kmeans_model):
-            return kmeans_model.predict(block)
+    def _lazy_predict2_cpu(self, X, sample_weight=None):
+        def __predict(block):
+            return self._predict_cpu.predict(block, sample_weight=sample_weight)
 
         return X.map_blocks(
-            __predict, model, chunks=(X.chunks[0],), drop_axis=[1], dtype=X.dtype
+            __predict, chunks=(X.chunks[0],), drop_axis=[1], dtype=X.dtype
         )
+
+    def _lazy_predict2_gpu(self, X, sample_weight=None):
+        def __predict(block):
+            return self._predict_gpu.predict(block, sample_weight=sample_weight)
+
+        return X.map_blocks(
+            __predict, chunks=(X.chunks[0],), drop_axis=[1], dtype=X.dtype
+        )
+
+    def _predict_cpu(self, X, sample_weight=None):
+        raise NotImplementedError("Method available only for Dask.")
+
+    def _predict_gpu(self, X, sample_weight=None):
+        raise NotImplementedError("Method available only for Dask.")
+
+    @task_handler
+    def predict2(self, sample_weight=None):
+        ...

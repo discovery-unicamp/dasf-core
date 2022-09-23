@@ -16,7 +16,6 @@ from pathlib import Path
 
 from dasf.utils import utils
 from dasf.utils.decorators import task_handler
-from dasf.pipeline import ParameterOperator
 
 
 class Dataset(object):
@@ -60,10 +59,8 @@ class Dataset(object):
         return self._data.__getitem__(idx)
 
 
-class DatasetLoader(ParameterOperator):
+class DatasetLoader:
     def __init__(self, dataset, replicate=False):
-        ParameterOperator.__init__(self, name=dataset._name)
-
         self.__dataset = dataset
 
     def run_lazy_cpu(self):

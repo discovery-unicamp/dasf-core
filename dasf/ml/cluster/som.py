@@ -7,7 +7,7 @@ from xpysom import XPySom
 from dasf.ml.core import FitInternal, PredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
-from dasf.pipeline import ParameterOperator
+from dasf.utils.decorators import task_handler
 
 try:
     import cupy as cp
@@ -188,73 +188,6 @@ class SOM(ClusterClassifier):
     def _quantization_error_gpu(self, X):
         return self.__som_gpu.quantization_error(X)
 
-
-class SOMOp(ParameterOperator):
-    def __init__(
-        self,
-        x,
-        y,
-        input_len,
-        num_epochs=100,
-        sigma=0,
-        sigmaN=1,
-        learning_rate=0.5,
-        learning_rateN=0.01,
-        decay_function="exponential",
-        neighborhood_function="gaussian",
-        std_coeff=0.5,
-        topology="rectangular",
-        activation_distance="euclidean",
-        random_seed=None,
-        n_parallel=0,
-        compact_support=False,
-        checkpoint=False,
-    ):
-        super().__init__(name="SOM")
-
-        self._operator = SOM(
-            x=x,
-            y=y,
-            input_len=input_len,
-            num_epochs=num_epochs,
-            sigma=sigma,
-            sigmaN=sigmaN,
-            learning_rate=learning_rate,
-            learning_rateN=learning_rateN,
-            decay_function=decay_function,
-            neighborhood_function=neighborhood_function,
-            std_coeff=std_coeff,
-            topology=topology,
-            activation_distance=activation_distance,
-            random_seed=random_seed,
-            n_parallel=n_parallel,
-            compact_support=compact_support,
-        )
-
-        self.fit = SOMFitOp(checkpoint=checkpoint)
-        self.predict = SOMPredictOp(checkpoint=checkpoint)
-
-    def run(self):
-        return self._operator
-
-
-class SOMFitOp(FitInternal):
-    def __init__(self, checkpoint=False):
-        super().__init__(name="SOMFit", checkpoint=checkpoint)
-
-    def dump(self, model):
-        # TODO: Check how this algorithm can be saved
-        return model
-
-    def load(self, model):
-        # TODO: Check how this algorithm can be restored
-        return model
-
-
-class SOMPredictOp(PredictInternal):
-    def __init__(self, checkpoint=False):
-        super().__init__(name="SOMPredict", checkpoint=checkpoint)
-
-    def load(self, model):
-        # TODO: Check how this algorithm can be restored
-        return model
+    @task_handler
+    def quantization_error(self, X):
+        ...

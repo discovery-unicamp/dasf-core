@@ -5,7 +5,6 @@ from sklearn.mixture import GaussianMixture as GaussianMixture_CPU
 from dasf.ml.core import FitInternal, FitPredictInternal
 from dasf.ml.core import PredictInternal
 from dasf.ml.mixture.classifier import MixtureClassifier
-from dasf.pipeline import ParameterOperator
 
 
 class GaussianMixture(MixtureClassifier):
@@ -61,7 +60,7 @@ class GaussianMixture(MixtureClassifier):
         return self.__gmm_cpu.get_params(deep=deep)
 
 
-class GaussianMixtureOp(ParameterOperator):
+class GaussianMixtureOp:
     def __init__(
         self,
         n_components=1,
@@ -81,8 +80,6 @@ class GaussianMixtureOp(ParameterOperator):
         verbose_interval=10,
         checkpoint=False
     ):
-        super().__init__(name="GaussianMixture")
-
         self._operator = GaussianMixture(
             n_components=n_components,
             covariance_type=covariance_type,
