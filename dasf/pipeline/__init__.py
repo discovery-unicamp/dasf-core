@@ -1,7 +1,7 @@
-from dasf.pipeline.pipeline import Operator
-from dasf.pipeline.pipeline import BlockOperator
+#!/usr/bin/env python3
+
+from dasf.pipeline.pipeline import Pipeline
 
 __all__ = [
-    "Operator",
-    "BlockOperator",
+    "Pipeline",
 ]

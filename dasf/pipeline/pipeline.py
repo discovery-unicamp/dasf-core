@@ -58,7 +58,7 @@ class Pipeline:
             for k, v in parameters.items():
                 self.add(v)
                 self._dag.add_edge(hash(v), key)
-                self._dag_g.edge(v.__name__, obj.__name__)
+                self._dag_g.edge(v.__qualname__, obj.__qualname__)
 
     def add(self, obj, **kwargs):
         from dasf.datasets.base import Dataset
@@ -82,6 +82,8 @@ class Pipeline:
         return self
 
     def visualize(self, filename=None):
+        if utils.is_notebook():
+            return self._dag_g
         return self._dag_g.view(filename)
 
     def run(self):
@@ -151,7 +153,7 @@ class Pipeline:
         return ret
 
 
-class BlockOperator(Operator):
+class BlockOperator:
     def __init__(
         self,
         name,
@@ -165,10 +167,6 @@ class BlockOperator(Operator):
         trim=True,
         output_chunk=None,
     ):
-
-        super().__init__(
-            name=name, slug=slug, checkpoint=checkpoint, local=local, gpu=gpu
-        )
 
         self.function = function
         self.depth = depth

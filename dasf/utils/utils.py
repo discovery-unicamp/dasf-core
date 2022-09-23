@@ -270,3 +270,17 @@ def get_dask_mem_usage(profiler):
         return mem["max_memory_mb"][max_index]
     else:
         return 0.0
+
+
+def is_notebook() -> bool:
+    try:
+        shell = get_ipython().__class__.__name__
+        if shell == 'ZMQInteractiveShell':
+            return True
+        elif shell == 'TerminalInteractiveShell':
+            return False
+        else:
+            return False
+    except NameError:
+        return False
+

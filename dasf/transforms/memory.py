@@ -3,30 +3,38 @@
 import dask.array as da
 import dask.dataframe as ddf
 
-from dasf.pipeline import Operator
+from dasf.utils.types import is_dask_array
+from dasf.utils.types import is_dask_dataframe
+from dasf.transforms.transforms import _Transform
 
 
-class PersistDaskData(Operator):
-    def __init__(self):
-        super().__init__(name="Persist Dask data")
-
-    def run(self, X):
-        if isinstance(X, da.core.Array) or isinstance(X, ddf.core.DataFrame):
+class PersistDaskData(_Transform):
+    def __lazy_transform_generic(self, X):
+        if is_dask_array(X) or is_dask_dataframe(X):
             new_data = X.persist()
         else:
             new_data = X
 
         return new_data
 
+    def _lazy_transform_cpu(self, X):
+        return self.__lazy_transform_generic(X)
 
-class LoadDaskData(Operator):
-    def __init__(self):
-        super().__init__(name="Load Dask data locally")
+    def _lazy_transform_gpu(self, X):
+        return self.__lazy_transform_generic(X)
 
-    def run(self, data):
-        if isinstance(data, da.core.Array) or isinstance(data, ddf.core.DataFrame):
-            new_data = data.compute()
+
+class LoadDaskData(_Transform):
+    def __lazy_transform_generic(self, X):
+        if is_dask_array(X) or is_dask_dataframe(X):
+            new_data = X.compute()
         else:
-            new_data = data
+            new_data = X
 
         return new_data
+
+    def _lazy_transform_cpu(self, X):
+        return self.__lazy_transform_generic(X)
+
+    def _lazy_transform_gpu(self, X):
+        return self.__lazy_transform_generic(X)
