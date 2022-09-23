@@ -4,7 +4,7 @@ import uuid
 import time
 import GPUtil
 import inspect
-import prefect
+import graphviz
 
 import numpy as np
 import dask.array as da
@@ -25,7 +25,7 @@ except ImportError:
     pass
 
 
-class Pipeline2:
+class Pipeline:
     def __init__(self, name, executor=None, verbose=False):
         self._name = name
         self._executor = executor
@@ -33,6 +33,7 @@ class Pipeline2:
 
         self._dag = nx.DiGraph()
         self._dag_table = dict()
+        self._dag_g = graphviz.Digraph(name, format="png")
 
         self._logger = init_logging()
 
@@ -57,6 +58,7 @@ class Pipeline2:
             for k, v in parameters.items():
                 self.add(v)
                 self._dag.add_edge(hash(v), key)
+                self._dag_g.edge(v.__name__, obj.__name__)
 
     def add(self, obj, **kwargs):
         from dasf.datasets.base import Dataset
@@ -78,6 +80,9 @@ class Pipeline2:
             )
 
         return self
+
+    def visualize(self, filename=None):
+        return self._dag_g.view(filename)
 
     def run(self):
         if not nx.is_directed_acyclic_graph(self._dag):
@@ -144,10 +149,6 @@ class Pipeline2:
             self._logger.info('Pipeline run successfully')
 
         return ret
-
-
-class Operator:
-    pass
 
 
 class BlockOperator(Operator):
