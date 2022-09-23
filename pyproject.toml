@@ -45,6 +45,7 @@ wget = "*"
 
 [tool.poetry.dev-dependencies]
 black = "*"
+coverage = "*"
 flake8 = "*"
 mock = "*"
 parameterized = "*"
