@@ -58,7 +58,7 @@ class Pipeline:
             for k, v in parameters.items():
                 self.add(v)
                 self._dag.add_edge(hash(v), key)
-                self._dag_g.edge(v.__qualname__, obj.__qualname__)
+                self._dag_g.edge(v.__qualname__, obj.__qualname__, label=k)
 
     def add(self, obj, **kwargs):
         from dasf.datasets.base import Dataset
@@ -90,9 +90,9 @@ class Pipeline:
         if not nx.is_directed_acyclic_graph(self._dag):
             raise Exception("Pipeline has not a DAG format. Review it.")
 
-        if self._executor and not hasattr(self._executor, "call"):
+        if self._executor and not hasattr(self._executor, "run"):
             raise Exception(
-                f"Executor {self._executor.__name__} has not a " "call() method."
+                f"Executor {self._executor.__name__} has not a run() method."
             )
 
         if self._executor:
@@ -128,12 +128,12 @@ class Pipeline:
             try:
                 if len(new_params) > 0:
                     if self._executor:
-                        ret = self._executor.call(fn=func, **kwargs)
+                        ret = self._executor.run(fn=func, **new_params)
                     else:
                         ret = func(**new_params)
                 else:
                     if self._executor:
-                        ret = self._executor.call(fn=func)
+                        ret = self._executor.run(fn=func)
                     else:
                         ret = func()
             except Exception as e:
