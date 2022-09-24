@@ -401,7 +401,7 @@ class TorchPatchDeConvNetModule(NNModule):
         i_layer = 0
         # copy convolutional filters from vgg16
         for idx, conv_block in enumerate(blocks):
-            for l1, l2 in zip(features[ranges[idx][0]:ranges[idx][1]], conv_block):
+            for l1, l2 in zip(features[ranges[idx][0] : ranges[idx][1]], conv_block):
                 if isinstance(l1, Conv2d) and isinstance(l2, Conv2d):
                     if i_layer == 0:
                         l2.weight.data = (
@@ -702,7 +702,7 @@ class TorchPatchDeConvNetSkipModule(NNModule):
         i_layer = 0
         # copy convolutional filters from vgg16
         for idx, conv_block in enumerate(blocks):
-            for l1, l2 in zip(features[ranges[idx][0]:ranges[idx][1]], conv_block):
+            for l1, l2 in zip(features[ranges[idx][0] : ranges[idx][1]], conv_block):
                 if isinstance(l1, Conv2d) and isinstance(l2, Conv2d):
                     if i_layer == 0:
                         l2.weight.data = (
@@ -1003,7 +1003,7 @@ class TorchSectionDeConvNetModule(NNModule):
         i_layer = 0
         # copy convolutional filters from vgg16
         for idx, conv_block in enumerate(blocks):
-            for l1, l2 in zip(features[ranges[idx][0]:ranges[idx][1]], conv_block):
+            for l1, l2 in zip(features[ranges[idx][0] : ranges[idx][1]], conv_block):
                 if isinstance(l1, Conv2d) and isinstance(l2, Conv2d):
                     if i_layer == 0:
                         l2.weight.data = (
@@ -1304,7 +1304,7 @@ class TorchSectionDeConvNetSkipModule(NNModule):
         i_layer = 0
         # copy convolutional filters from vgg16
         for idx, conv_block in enumerate(blocks):
-            for l1, l2 in zip(features[ranges[idx][0]:ranges[idx][1]], conv_block):
+            for l1, l2 in zip(features[ranges[idx][0] : ranges[idx][1]], conv_block):
                 if isinstance(l1, Conv2d) and isinstance(l2, Conv2d):
                     if i_layer == 0:
                         l2.weight.data = (

@@ -7,10 +7,12 @@ from dasf.ml.cluster.dbscan import DBSCAN  # noqa
 from dasf.ml.cluster.som import SOM  # noqa
 
 
-cluster_methods = ["AgglomerativeClustering",
-                   "KMeans",
-                   "HDBSCAN",
-                   "DBSCAN",
-                   "SOM"]
+cluster_methods = [
+    "AgglomerativeClustering",
+    "KMeans",
+    "HDBSCAN",
+    "DBSCAN",
+    "SOM"
+]
 
 __all__ = cluster_methods

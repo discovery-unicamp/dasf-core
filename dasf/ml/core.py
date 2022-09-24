@@ -9,10 +9,13 @@ from pathlib import Path
 class MLGeneric:
     def __init__(self, name, checkpoint=False, **kwargs):
         # Machine Learning Algorithm
-        self._cached_dir = os.path.abspath(str(Path.home()) + "/.cache/dasf/ml/")
+        self._cached_dir = os.path.abspath(
+            os.path.join(str(Path.home()),
+                         "/.cache/dasf/ml/"))
         os.makedirs(self._cached_dir, exist_ok=True)
 
-        self._tmp = os.path.abspath(self._cached_dir + "/" + name.lower())
+        self._tmp = os.path.abspath(os.path.join(self._cached_dir,
+                                                 name.lower()))
 
         self.__checkpoint = checkpoint
 

@@ -106,7 +106,7 @@ class Pipeline:
         ret = None
         failed = False
 
-        self._logger.info(f'Beginning pipeline run for \'{self._name}\'')
+        self._logger.info(f"Beginning pipeline run for '{self._name}'")
 
         for fn_key in fn_keys:
             func = self._dag_table[fn_key]["fn"]
@@ -123,7 +123,7 @@ class Pipeline:
             if self._executor:
                 self._executor.pre_run()
 
-            self._logger.info(f'Task \'{name}\': Starting task run...')
+            self._logger.info(f"Task '{name}': Starting task run...")
 
             try:
                 if len(new_params) > 0:
@@ -141,14 +141,14 @@ class Pipeline:
                 failed = True
                 break
 
-            self._logger.info(f'Task \'{name}\': Finished task run')
+            self._logger.info(f"Task '{name}': Finished task run")
 
             self._dag_table[fn_key]["ret"] = ret
 
         if failed:
-            self._logger.info(f'Pipeline failed at \'{name}\'')
+            self._logger.info(f"Pipeline failed at '{name}'")
         else:
-            self._logger.info('Pipeline run successfully')
+            self._logger.info("Pipeline run successfully")
 
         return ret
 

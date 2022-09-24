@@ -13,9 +13,8 @@ except ImportError:
 
 
 class DBSCAN(ClusterClassifier):
-    def __init__(
-        self, eps=0.5, leaf_size=40, metric="euclidean", min_samples=None, p=None
-    ):
+    def __init__(self, eps=0.5, leaf_size=40, metric="euclidean",
+                 min_samples=None, p=None):
 
         self.eps = eps
         self.leaf_size = leaf_size

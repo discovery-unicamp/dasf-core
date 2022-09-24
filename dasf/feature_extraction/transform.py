@@ -30,7 +30,8 @@ class ConcatenateToArray:
             else:
                 if self.flatten:
                     flat = kwargs[key].flatten()
-                    datas = self.xp.append(datas, self.xp.asarray([flat]), axis=0)
+                    datas = self.xp.append(datas, self.xp.asarray([flat]),
+                                           axis=0)
                 else:
                     data = self.xp.asarray(kwargs[key])
                     datas = self.xp.append(datas, data, axis=len(data.shape))
@@ -71,7 +72,9 @@ class GetSubeCubeArray:
         t_start_idx = int((t_num - (t_num * self.__percent)) / 2)
         t_end_idx = int(t_start_idx + (self.__percent * t_num))
 
-        return X[i_start_idx:i_end_idx, x_start_idx:x_end_idx, t_start_idx:t_end_idx]
+        return X[i_start_idx:i_end_idx,
+                 x_start_idx:x_end_idx,
+                 t_start_idx:t_end_idx]
 
 
 class SliceDataframe:
@@ -81,13 +84,13 @@ class SliceDataframe:
     def run(self, X, y):
         cube_shape = y.shape
 
-        #        slice_idx = (self.iline_index * cube_shape[1] * cube_shape[2],
-        #                    (self.iline_index + 1) * cube_shape[1] * cube_shape[2])
+#       slice_idx = (self.iline_index * cube_shape[1] * cube_shape[2],
+#                   (self.iline_index + 1) * cube_shape[1] * cube_shape[2])
 
-        #        slice_array = X[slice_idx[0] : slice_idx[1]]
-        #        slice_array = slice_array.reshape(cube_shape[1], cube_shape[2])
+#       slice_array = X[slice_idx[0] : slice_idx[1]]
+#       slice_array = slice_array.reshape(cube_shape[1], cube_shape[2])
 
-        #        return slice_array.T
+#       return slice_array.T
         if isinstance(X, da.core.Array):
             slice_array = X
         elif isinstance(X, ddf.core.DataFrame):

@@ -10,7 +10,7 @@ from dasf.transforms.transforms import _SetParams
 
 # We don't need to extend _FitLazy, _FitLocal because they are already
 # extended by both _TransformLazy, _TransformLocal.
-class ClusterClassifier(_FitPredict, _FitTransform,
-                        _Predict, _Transform,
-                        _GetParams, _SetParams):
+class ClusterClassifier(
+    _FitPredict, _FitTransform, _Predict, _Transform, _GetParams, _SetParams
+):
     pass

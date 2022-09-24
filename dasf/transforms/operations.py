@@ -2,6 +2,7 @@
 
 from dasf.transforms.transforms import _Transform
 
+
 class Reshape:
     def __init__(self, shape):
         self.shape = shape
@@ -17,11 +18,11 @@ class SliceArray:
 
     def transform(self, X):
         if len(self.x) == 1:
-            return X[0:self.x[0]]
+            return X[0 : self.x[0]]
         elif len(self.x) == 2:
-            return X[0:self.x[0], 0:self.x[1]]
+            return X[0 : self.x[0], 0 : self.x[1]]
         elif len(self.x) == 3:
-            return X[0:self.x[0], 0:self.x[0], 0:self.x[0]]
+            return X[0 : self.x[0], 0 : self.x[0], 0 : self.x[0]]
         else:
             raise Exception("The dimmension is not known")
 
@@ -37,14 +38,14 @@ class SliceArrayByPercent:
             raise Exception("Percentages cannot be higher than 100% (1.0)")
 
         if X.ndim == 1:
-            return X[0:int(self.x * X.shape[0])]
+            return X[0 : int(self.x * X.shape[0])]
         elif X.ndim == 2:
-            return X[0:int(self.x * X.shape[0]), 0:int(self.y * X.shape[1])]
+            return X[0 : int(self.x * X.shape[0]), 0 : int(self.y * X.shape[1])]
         elif X.ndim == 3:
             return X[
-                0:int(self.x * X.shape[0]),
-                0:int(self.y * X.shape[1]),
-                0:int(self.z * X.shape[2]),
+                0 : int(self.x * X.shape[0]),
+                0 : int(self.y * X.shape[1]),
+                0 : int(self.z * X.shape[2]),
             ]
         else:
             raise Exception("The dimmension is not known")

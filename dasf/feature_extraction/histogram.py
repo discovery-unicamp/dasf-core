@@ -12,7 +12,8 @@ from dasf.transforms.transforms import _Transform
 
 
 class Histogram(_Transform):
-    def __init__(self, bins=None, range=None, normed=False, weights=None, density=None):
+    def __init__(self, bins=None, range=None, normed=False, weights=None,
+                 density=None):
         self._bins = bins
         self._range = range
         self._normed = normed
@@ -20,18 +21,24 @@ class Histogram(_Transform):
         self._density = density
 
     def __lazy_transform_generic(self, X):
-        return da.histogram(X, bins=self._bins,
-                            range=self._range,
-                            normed=self._normed,
-                            weights=self._weights,
-                            density=self._density)
+        return da.histogram(
+            X,
+            bins=self._bins,
+            range=self._range,
+            normed=self._normed,
+            weights=self._weights,
+            density=self._density,
+        )
 
     def __transform_generic(self, X, xp):
-        return xp.histogram(X, bins=self._bins,
-                            range=self._range,
-                            normed=self._normed,
-                            weights=self._weights,
-                            density=self._density)
+        return xp.histogram(
+            X,
+            bins=self._bins,
+            range=self._range,
+            normed=self._normed,
+            weights=self._weights,
+            density=self._density,
+        )
 
     def _lazy_transform_cpu(self, X):
         return self.__lazy_transform_generic(X)
