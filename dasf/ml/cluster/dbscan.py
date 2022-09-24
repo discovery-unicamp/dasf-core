@@ -2,7 +2,6 @@
 
 from sklearn.cluster import DBSCAN as DBSCAN_CPU
 
-from dasf.ml.core import FitInternal, FitPredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
 
@@ -66,34 +65,3 @@ class DBSCAN(ClusterClassifier):
 
     def _fit_predict_gpu(self, X, y=None, out_dtype="int32"):
         self.__dbscan_gpu.fit_predict(X=X, out_dtype=out_dtype)
-
-
-class DBSCANOp:
-    def __init__(
-        self,
-        eps=0.5,
-        leaf_size=40,
-        metric="euclidean",
-        min_samples=None,
-        p=None,
-        checkpoint=False,
-    ):
-        self._operator = DBSCAN(
-            eps=eps, leaf_size=leaf_size, metric=metric, min_samples=min_samples, p=p
-        )
-
-        self.fit = DBSCANFitOp(checkpoint=checkpoint)
-        self.fit_predict = DBSCANFitPredictOp(checkpoint=checkpoint)
-
-    def run(self):
-        return self._operator
-
-
-class DBSCANFitOp(FitInternal):
-    def __init__(self, checkpoint=False):
-        super().__init__(name="DBSCANFit", checkpoint=checkpoint)
-
-
-class DBSCANFitPredictOp(FitPredictInternal):
-    def __init__(self, checkpoint=False):
-        super().__init__(name="DBSCANFitPredict", checkpoint=checkpoint)

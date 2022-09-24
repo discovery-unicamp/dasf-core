@@ -2,9 +2,10 @@
 
 from hdbscan import HDBSCAN as HDBSCAN_CPU
 
-from dasf.ml.core import FitInternal, FitPredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
+
+try:
     from cuml.cluster import HDBSCAN as HDBSCAN_GPU
 except ImportError:
     pass

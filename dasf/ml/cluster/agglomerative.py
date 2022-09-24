@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-from sklearn.cluster import (
-    AgglomerativeClustering as AgglomerativeClustering_CPU,
-)  # noqa
+from sklearn.cluster import AgglomerativeClustering as AgglomerativeClustering_CPU # noqa
 
-from dasf.ml.core import FitInternal, FitPredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
+
+try:
     from cuml import AgglomerativeClustering as AgglomerativeClustering_GPU
 except ImportError:
     pass

@@ -1,15 +1,8 @@
 #!/usr/bin/env python3
 
-
-import os
-import pickle
-
-from pathlib import Path
-
 from sklearn.cluster import KMeans as KMeans_CPU
 from dask_ml.cluster import KMeans as KMeans_MCPU
 
-from dasf.ml.core import FitInternal, FitPredictInternal, PredictInternal
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.utils import is_gpu_supported
 from dasf.utils.decorators import task_handler
@@ -116,10 +109,10 @@ class KMeans(ClusterClassifier):
             __predict, chunks=(X.chunks[0],), drop_axis=[1], dtype=X.dtype
         )
 
-    def _predict_cpu(self, X, sample_weight=None):
+    def _predict2_cpu(self, X, sample_weight=None):
         raise NotImplementedError("Method available only for Dask.")
 
-    def _predict_gpu(self, X, sample_weight=None):
+    def _predict2_gpu(self, X, sample_weight=None):
         raise NotImplementedError("Method available only for Dask.")
 
     @task_handler

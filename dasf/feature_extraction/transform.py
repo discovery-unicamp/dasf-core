@@ -3,24 +3,16 @@
 import dask.array as da
 import dask.dataframe as ddf
 
-from dasf.pipeline import Operator
 from dasf.pipeline.types import TaskExecutorType
 
 
-class Normalize(Operator):
-    def __init__(self):
-        super().__init__(name="Normalize Data")
-
-    def run(self, X):
-        ret = (X - X.mean()) / (X.std(ddof=0))
-
-        return ret
+class Normalize:
+    def transform(self, X):
+        return (X - X.mean()) / (X.std(ddof=0))
 
 
-class ConcatenateToArray(Operator):
+class ConcatenateToArray:
     def __init__(self, flatten=False):
-        super().__init__(name="Concatenate and Flatten Data to Array")
-
         self.flatten = flatten
 
         self.dtype = TaskExecutorType.single_cpu
@@ -51,28 +43,24 @@ class ConcatenateToArray(Operator):
         return data.rechunk({1: data.shape[1]})
 
 
-class SampleDataframe(Operator):
+class SampleDataframe:
     def __init__(self, percent):
-        super().__init__(name="Sample DataFrame using " + str(percent) + "%")
-
         self.__percent = float(percent / 100.0)
 
     def run(self, X):
         return X.sample(n=int(len(X) * self.__percent))
 
 
-class GetSubeCubeArray(Operator):
+class GetSubeCubeArray:
     def __init__(self, percent):
-        super().__init__(name="Get Smaller 3D Data")
-
         self.__percent = float(percent / 100.0)
 
         assert (
             self.__percent > 0 and self.__percent <= 1.0
         ), "Percent must be in [0,1] range."
 
-    def run(self, data):
-        i_num, x_num, t_num = data.shape
+    def transform(self, X):
+        i_num, x_num, t_num = X.shape
 
         i_start_idx = int((i_num - (i_num * self.__percent)) / 2)
         i_end_idx = int(i_start_idx + (self.__percent * i_num))
@@ -83,13 +71,11 @@ class GetSubeCubeArray(Operator):
         t_start_idx = int((t_num - (t_num * self.__percent)) / 2)
         t_end_idx = int(t_start_idx + (self.__percent * t_num))
 
-        return data[i_start_idx:i_end_idx, x_start_idx:x_end_idx, t_start_idx:t_end_idx]
+        return X[i_start_idx:i_end_idx, x_start_idx:x_end_idx, t_start_idx:t_end_idx]
 
 
-class SliceDataframe(Operator):
+class SliceDataframe:
     def __init__(self, iline_index):
-        super().__init__(name="Slice Dataframe in " + str(iline_index))
-
         self.iline_index = iline_index
 
     def run(self, X, y):
@@ -110,13 +96,11 @@ class SliceDataframe(Operator):
         return slice_array.reshape(cube_shape)
 
 
-class GetSubDataframe(Operator):
+class GetSubDataframe:
     def __init__(self, percent):
-        super().__init__(name="Get Smaller Dataframe")
-
         self.__percent = float(percent / 100.0)
 
-    def run(self, data):
-        new_size = int(len(data) * self.__percent)
+    def transform(self, X):
+        new_size = int(len(X) * self.__percent)
 
-        return data.iloc[0:new_size]
+        return X.iloc[0:new_size]
