@@ -75,8 +75,9 @@ class Pipeline:
         elif hasattr(obj, "fit"):
             self.__add_into_dag(obj.fit, kwargs, obj)
         else:
-            raise ValueError(
-                "This object is not a function, method or a " "transformer object."
+            raise NotImplementedError(
+                f"There is no implementation of {wrapper_func_attr} nor "
+                 "{func_name}"
             )
 
         return self
