@@ -31,6 +31,8 @@ GPUtil = "*"
 graphviz = "*"
 hdbscan = "*"
 ipympl = "*"
+# TODO: https://github.com/scikit-learn-contrib/hdbscan/issues/565
+joblib = "1.1.0"
 matplotlib = "*"
 networkx = "*"
 protobuf = "~=3.20.1"
