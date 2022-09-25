@@ -1,26 +1,20 @@
 #!/usr/bin/env python3
 
-import uuid
-import time
-import GPUtil
 import inspect
 import graphviz
 
 import numpy as np
 import dask.array as da
 
-import pandas as pd
 import dask.dataframe as ddf
 
 import networkx as nx
 
 from dasf.utils import utils
 from dasf.utils.logging import init_logging
-from dasf.pipeline.types import TaskExecutorType
 
 try:
     import cupy as cp
-    import cudf
 except ImportError:
     pass
 
@@ -40,7 +34,7 @@ class Pipeline:
     def __add_into_dag(self, obj, func_name, parameters=None, itself=None):
         key = hash(obj)
 
-        if not key in self._dag_table:
+        if key not in self._dag_table:
             self._dag.add_node(key)
             self._dag_table[key] = dict()
             self._dag_table[key]["fn"] = obj
@@ -95,7 +89,7 @@ class Pipeline:
         else:
             raise ValueError(
                 f"This object {obj.__name__} is not a function, method "
-                 "or a transformer object."
+                "or a transformer object."
             )
 
     def add(self, obj, **kwargs):
@@ -109,70 +103,82 @@ class Pipeline:
             return self._dag_g
         return self._dag_g.view(filename)
 
+    def __execute(self, func, params, name):
+        ret = None
+
+        new_params = dict()
+        if params:
+            for k, v in params.items():
+                dep_obj, *_ = self.__inspect_element(v)
+                req_key = hash(dep_obj)
+
+                new_params[k] = self._dag_table[req_key]["ret"]
+
+        if len(new_params) > 0:
+            if self._executor:
+                ret = self._executor.execute(fn=func, **new_params)
+            else:
+                ret = func(**new_params)
+        else:
+            if self._executor:
+                ret = self._executor.execute(fn=func)
+            else:
+                ret = func()
+
+        return ret
+
     def run(self):
         if not nx.is_directed_acyclic_graph(self._dag):
-            raise Exception("Pipeline has not a DAG format. Review it.")
+            raise Exception("Pipeline has not a DAG format.")
 
-        if self._executor and not hasattr(self._executor, "run"):
+        if self._executor and not hasattr(self._executor, "execute"):
             raise Exception(
-                f"Executor {self._executor.__name__} has not a run() method."
+                f"Executor {self._executor.__name__} has not a execute() "
+                "method."
             )
 
         if self._executor:
-            while True:
-                if self._executor.is_connected:
-                    break
-                time.sleep(2)
+            if not self._executor.is_connected:
+                raise Exception("Executor is not connected.")
 
         fn_keys = list(nx.topological_sort(self._dag))
-
-        ret = None
-        failed = False
 
         self._logger.info(f"Beginning pipeline run for '{self._name}'")
 
         if self._executor:
-            self._executor.pre_run()
+            self._executor.pre_run(self)
+
+        ret = None
+        failed = False
 
         for fn_key in fn_keys:
             func = self._dag_table[fn_key]["fn"]
             params = self._dag_table[fn_key]["parameters"]
             name = self._dag_table[fn_key]["name"]
 
-            new_params = dict()
-            if params:
-                for k, v in params.items():
-                    dep_obj, *_ = self.__inspect_element(v)
-                    req_key = hash(dep_obj)
-
-                    new_params[k] = self._dag_table[req_key]["ret"]
-
             self._logger.info(f"Task '{name}': Starting task run...")
 
             try:
-                if len(new_params) > 0:
-                    if self._executor:
-                        ret = self._executor.run(fn=func, **new_params)
-                    else:
-                        ret = func(**new_params)
-                else:
-                    if self._executor:
-                        ret = self._executor.run(fn=func)
-                    else:
-                        ret = func()
+                if not failed:
+                    # Execute DAG node only if there is no error during the
+                    # execution. Otherwise, skip it.
+                    self._dag_table[fn_key]["ret"] = self.__execute(func,
+                                                                    params,
+                                                                    name)
             except Exception as e:
-                self._logger.exception(str(e))
                 failed = True
-                break
+                err = str(e)
+                self._logger.error(f"Task '{name}': Failed with:\n{err}")
 
             self._logger.info(f"Task '{name}': Finished task run")
-
-            self._dag_table[fn_key]["ret"] = ret
 
         if failed:
             self._logger.info(f"Pipeline failed at '{name}'")
         else:
             self._logger.info("Pipeline run successfully")
+
+        if self._executor:
+            self._executor.post_run(self)
 
         return ret
 
@@ -204,7 +210,8 @@ class BlockOperator:
             or self.boundary is not None
             and self.depth is None
         ):
-            raise Exception("Both boundary and depth should be passed " "together")
+            raise Exception("Both boundary and depth should be passed "
+                            "together")
 
     def run(self, X, **kwargs):
         if utils.is_executor_gpu(self.dtype) and utils.is_gpu_supported():

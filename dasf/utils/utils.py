@@ -168,9 +168,15 @@ def get_dask_running_client():
     return Client.current()
 
 
+def get_dask_tasks_from_env():
+    return os.getenv("DASK_TASKS", 'False').lower() in ('true', '1', 't')
+
+
 def is_dask_supported():
     try:
-        if is_dask_local_supported():
+        if get_dask_tasks_from_env():
+            return False
+        elif is_dask_local_supported():
             return True
         else:
             cur = get_dask_running_client()
