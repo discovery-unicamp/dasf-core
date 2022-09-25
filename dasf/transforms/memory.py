@@ -23,6 +23,14 @@ class PersistDaskData(_Transform):
     def _lazy_transform_gpu(self, X):
         return self.__lazy_transform_generic(X)
 
+    def _transform_cpu(self, X):
+        # Bypass because the data is local
+        return X
+
+    def _transform_gpu(self, X):
+        # Bypass because the data is local
+        return X
+
 
 class LoadDaskData(_Transform):
     def __lazy_transform_generic(self, X):
@@ -38,3 +46,11 @@ class LoadDaskData(_Transform):
 
     def _lazy_transform_gpu(self, X):
         return self.__lazy_transform_generic(X)
+
+    def _transform_cpu(self, X):
+        # Bypass because the data is local
+        return X
+
+    def _transform_gpu(self, X):
+        # Bypass because the data is local
+        return X

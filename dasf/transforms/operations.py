@@ -27,13 +27,13 @@ class SliceArray:
             raise Exception("The dimmension is not known")
 
 
-class SliceArrayByPercent:
+class SliceArrayByPercent(_Transform):
     def __init__(self, x=100.0, y=100.0, z=100.0):
         self.x = float(x / 100.0)
         self.y = float(y / 100.0)
         self.z = float(z / 100.0)
 
-    def run(self, X):
+    def transform(self, X):
         if self.x > 1 or self.y > 1 or self.z > 1:
             raise Exception("Percentages cannot be higher than 100% (1.0)")
 

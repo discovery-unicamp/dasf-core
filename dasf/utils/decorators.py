@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from functools import wraps
+
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.utils import is_gpu_supported
@@ -8,6 +10,7 @@ from dasf.utils.utils import is_dask_gpu_supported
 
 
 def task_handler(func):
+    @wraps(func)
     def wrapper(*args):
         cls = args[0]
         new_args = args[1:]

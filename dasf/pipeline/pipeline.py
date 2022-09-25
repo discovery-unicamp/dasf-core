@@ -37,14 +37,14 @@ class Pipeline:
 
         self._logger = init_logging()
 
-    def __add_into_dag(self, obj, parameters=None, itself=None):
+    def __add_into_dag(self, obj, func_name, parameters=None, itself=None):
         key = hash(obj)
 
         if not key in self._dag_table:
             self._dag.add_node(key)
             self._dag_table[key] = dict()
             self._dag_table[key]["fn"] = obj
-            self._dag_table[key]["name"] = obj.__qualname__
+            self._dag_table[key]["name"] = func_name
             self._dag_table[key]["parameters"] = None
 
         if parameters and isinstance(parameters, dict):
@@ -56,29 +56,51 @@ class Pipeline:
             # If we are adding a object which require parameters,
             # we need to make sure they are mapped into DAG.
             for k, v in parameters.items():
-                self.add(v)
-                self._dag.add_edge(hash(v), key)
-                self._dag_g.edge(v.__qualname__, obj.__qualname__, label=k)
+                dep_obj, dep_func_name, _ = self.__inspect_element(v)
+                self.add(dep_obj)
+                self._dag.add_edge(hash(dep_obj), key)
+                self._dag_g.edge(dep_func_name, func_name, label=k)
 
-    def add(self, obj, **kwargs):
+    def __inspect_element(self, obj):
         from dasf.datasets.base import Dataset
-        from dasf.transforms.transforms import Transform
+        from dasf.transforms.transforms import _Transform, _Fit
+
+        def generate_name(class_name, func_name):
+            return ("%s.%s" % (class_name, func_name))
 
         if inspect.isfunction(obj) and callable(obj):
-            self.__add_into_dag(obj, kwargs)
+            return (obj,
+                    obj.__qualname__,
+                    None)
         elif inspect.ismethod(obj):
-            self.__add_into_dag(obj, kwargs, obj.__self__)
-        elif issubclass(obj.__class__, Transform) and hasattr(obj, "transform"):
-            self.__add_into_dag(obj.transform, kwargs, obj)
+            return (obj,
+                    generate_name(obj.__self__.__class__.__name__,
+                                  obj.__name__),
+                    obj.__self__)
+        elif issubclass(obj.__class__, _Transform) and hasattr(obj, "transform"):
+            return (obj.transform,
+                    generate_name(obj.__class__.__name__,
+                                  "transform"),
+                    obj)
         elif issubclass(obj.__class__, Dataset) and hasattr(obj, "load"):
-            self.__add_into_dag(obj.load, kwargs, obj)
-        elif hasattr(obj, "fit"):
-            self.__add_into_dag(obj.fit, kwargs, obj)
+            return (obj.load,
+                    generate_name(obj.__class__.__name__,
+                                  "load"),
+                    obj)
+        elif issubclass(obj.__class__, _Fit) and hasattr(obj, "fit"):
+            return (obj.fit,
+                    generate_name(obj.__class__.__name__,
+                                  "fit"),
+                    obj)
         else:
             raise ValueError(
                 f"This object {obj.__name__} is not a function, method "
                  "or a transformer object."
             )
+
+    def add(self, obj, **kwargs):
+        obj, func_name, objref = self.__inspect_element(obj)
+        self.__add_into_dag(obj, func_name, kwargs, objref)
 
         return self
 
@@ -117,7 +139,8 @@ class Pipeline:
             new_params = dict()
             if params:
                 for k, v in params.items():
-                    req_key = hash(v)
+                    dep_obj, *_ = self.__inspect_element(v)
+                    req_key = hash(dep_obj)
 
                     new_params[k] = self._dag_table[req_key]["ret"]
 
@@ -131,6 +154,7 @@ class Pipeline:
                     if self._executor:
                         ret = self._executor.run(fn=func, **new_params)
                     else:
+                        print(new_params)
                         ret = func(**new_params)
                 else:
                     if self._executor:

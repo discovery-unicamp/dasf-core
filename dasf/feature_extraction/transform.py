@@ -4,20 +4,19 @@ import dask.array as da
 import dask.dataframe as ddf
 
 from dasf.pipeline.types import TaskExecutorType
+from dasf.transforms.transforms import _Transform
 
 
-class Normalize:
+class Normalize(_Transform):
     def transform(self, X):
         return (X - X.mean()) / (X.std(ddof=0))
 
 
-class ConcatenateToArray:
+class ConcatenateToArray(_Transform):
     def __init__(self, flatten=False):
         self.flatten = flatten
 
-        self.dtype = TaskExecutorType.single_cpu
-
-    def run(self, **kwargs):
+    def transform(self, **kwargs):
         datas = None
         for key in kwargs:
             if datas is None:

@@ -125,7 +125,7 @@ class _SetParams:
         ...
 
 
-class _Transform(_Fit):
+class _Transform:
     def _lazy_transform_cpu(self, X, **kwargs):
         raise NotImplementedError
 
@@ -139,15 +139,15 @@ class _Transform(_Fit):
         raise NotImplementedError
 
     @task_handler
-    def transform_gpu(self, X, **kwargs):
+    def transform(self, X, **kwargs):
         ...
 
 
-class Transform(_Transform):
+class Transform(_Transform, _Fit):
     pass
 
 
-class ArraysToDataFrame(Transform):
+class ArraysToDataFrame(_Transform):
     def __transform_generic(self, X, y):
         assert len(X) == len(y), "Data and labels should have the same length."
 
