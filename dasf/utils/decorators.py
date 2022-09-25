@@ -11,7 +11,7 @@ from dasf.utils.utils import is_dask_gpu_supported
 
 def task_handler(func):
     @wraps(func)
-    def wrapper(*args):
+    def wrapper(*args, **kwargs):
         cls = args[0]
         new_args = args[1:]
         func_name = func.__name__
@@ -31,7 +31,7 @@ def task_handler(func):
 
         if (not hasattr(cls, wrapper_func_attr) and
             hasattr(cls, func_name)):
-            return func(*new_args)
+            return func(*new_args, **kwargs)
         elif (not hasattr(cls, wrapper_func_attr) and
               not hasattr(cls, func_name)):
             raise NotImplementedError(
@@ -39,7 +39,7 @@ def task_handler(func):
                  "{func_name}"
             )
         else:
-            return getattr(cls, wrapper_func_attr)(*new_args)
+            return getattr(cls, wrapper_func_attr)(*new_args, **kwargs)
 
     return wrapper
 

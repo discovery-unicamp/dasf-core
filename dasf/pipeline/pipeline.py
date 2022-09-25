@@ -131,6 +131,9 @@ class Pipeline:
 
         self._logger.info(f"Beginning pipeline run for '{self._name}'")
 
+        if self._executor:
+            self._executor.pre_run()
+
         for fn_key in fn_keys:
             func = self._dag_table[fn_key]["fn"]
             params = self._dag_table[fn_key]["parameters"]
@@ -144,9 +147,6 @@ class Pipeline:
 
                     new_params[k] = self._dag_table[req_key]["ret"]
 
-            if self._executor:
-                self._executor.pre_run()
-
             self._logger.info(f"Task '{name}': Starting task run...")
 
             try:
@@ -154,7 +154,6 @@ class Pipeline:
                     if self._executor:
                         ret = self._executor.run(fn=func, **new_params)
                     else:
-                        print(new_params)
                         ret = func(**new_params)
                 else:
                     if self._executor:

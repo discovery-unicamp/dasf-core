@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 
+import numpy as np
 import dask.array as da
 import dask.dataframe as ddf
+
+try:
+    import cupy as cp
+except ImportError:
+    pass
 
 from dasf.pipeline.types import TaskExecutorType
 from dasf.transforms.base import Transform
@@ -16,31 +22,38 @@ class ConcatenateToArray(Transform):
     def __init__(self, flatten=False):
         self.flatten = flatten
 
-    def transform(self, **kwargs):
+    def __transform_generic(self, xp, **kwargs):
         datas = None
         for key in kwargs:
             if datas is None:
                 if self.flatten:
                     flat = kwargs[key].flatten()
-                    datas = self.xp.asarray([flat])
+                    datas = xp.asarray([flat])
                 else:
-                    data = self.xp.asarray(kwargs[key])
-                    datas = self.xp.expand_dim(data, axis=len(data.shape))
+                    data = xp.asarray(kwargs[key])
+                    datas = xp.expand_dim(data, axis=len(data.shape))
             else:
                 if self.flatten:
                     flat = kwargs[key].flatten()
-                    datas = self.xp.append(datas, self.xp.asarray([flat]),
-                                           axis=0)
+                    datas = xp.append(datas, xp.asarray([flat]),
+                                      axis=0)
                 else:
-                    data = self.xp.asarray(kwargs[key])
-                    datas = self.xp.append(datas, data, axis=len(data.shape))
+                    data = xp.asarray(kwargs[key])
+                    datas = xp.append(datas, data, axis=len(data.shape))
 
         if self.flatten:
-            data = self.xp.transpose(datas)
+            data = xp.transpose(datas)
         else:
             data = datas
 
-        return data.rechunk({1: data.shape[1]})
+        return data
+#        return data.rechunk({1: data.shape[1]})
+
+    def _transform_cpu(self, **kwargs):
+        return self.__transform_generic(np, **kwargs)
+
+    def _transform_gpu(self, **kwargs):
+        return self.__transform_generic(cp, **kwargs)
 
 
 class SampleDataframe:
