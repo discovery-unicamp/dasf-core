@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from dasf.transforms import Fit
-from dasf.transforms import FitPredict
-from dasf.transforms import FitTransform
-from dasf.transforms import GetParams
-from dasf.transforms import SetParams
+from dasf.transforms.base import Fit
+from dasf.transforms.base import FitPredict
+from dasf.transforms.base import FitTransform
+from dasf.transforms.base import GetParams
+from dasf.transforms.base import SetParams
 
 
 class MixtureClassifier(Fit, FitPredict, FitTransform,

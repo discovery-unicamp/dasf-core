@@ -4,7 +4,7 @@ import dask.array as da
 import dask.dataframe as ddf
 
 from dasf.pipeline.types import TaskExecutorType
-from dasf.transforms import Transform
+from dasf.transforms.base import Transform
 
 
 class Normalize(Transform):

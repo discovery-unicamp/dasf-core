@@ -6,7 +6,7 @@ from dask_ml.decomposition import PCA as PCA_MCPU
 from dasf.utils.utils import get_full_qualname
 from dasf.utils.utils import is_gpu_supported
 from dasf.pipeline.types import TaskExecutorType
-from dasf.transforms import Fit, FitTransform
+from dasf.transforms.base import Fit, FitTransform
 
 try:
     from cuml.decomposition import PCA as PCA_GPU

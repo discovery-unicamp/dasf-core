@@ -63,7 +63,7 @@ class Pipeline:
 
     def __inspect_element(self, obj):
         from dasf.datasets.base import Dataset
-        from dasf.transforms import Transform, Fit
+        from dasf.transforms.base import Transform, Fit
 
         def generate_name(class_name, func_name):
             return ("%s.%s" % (class_name, func_name))

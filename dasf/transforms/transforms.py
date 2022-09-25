@@ -7,7 +7,7 @@ import pandas as pd
 
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dask_array
-from dasf.transforms import Transform
+from dasf.transforms.base import Transform
 
 try:
     import cupy as cp

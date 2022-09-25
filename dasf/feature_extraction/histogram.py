@@ -8,7 +8,7 @@ try:
 except ImportError:
     pass
 
-from dasf.transforms import Transform
+from dasf.transforms.base import Transform
 
 
 class Histogram(Transform):

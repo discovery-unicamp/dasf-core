@@ -17,7 +17,7 @@ from dasf.utils.utils import get_dask_gpu_count
 from dasf.utils.utils import get_worker_info
 from dasf.utils.utils import get_dask_running_client
 from dasf.utils.decorators import task_handler
-from dasf.transforms import Fit
+from dasf.transforms.base import Fit
 
 
 class TorchDataLoader(pl.LightningDataModule):

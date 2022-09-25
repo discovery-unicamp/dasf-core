@@ -5,7 +5,7 @@ import dask.dataframe as ddf
 
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_dask_dataframe
-from dasf.transforms import Transform
+from dasf.transforms.base import Transform
 
 
 class PersistDaskData(Transform):

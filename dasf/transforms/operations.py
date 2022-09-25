@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from dasf.transforms import Transform
+from dasf.transforms.base import Transform
 
 
 class Reshape:
