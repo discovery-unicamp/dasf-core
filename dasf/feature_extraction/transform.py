@@ -4,15 +4,15 @@ import dask.array as da
 import dask.dataframe as ddf
 
 from dasf.pipeline.types import TaskExecutorType
-from dasf.transforms.transforms import _Transform
+from dasf.transforms import Transform
 
 
-class Normalize(_Transform):
+class Normalize(Transform):
     def transform(self, X):
         return (X - X.mean()) / (X.std(ddof=0))
 
 
-class ConcatenateToArray(_Transform):
+class ConcatenateToArray(Transform):
     def __init__(self, flatten=False):
         self.flatten = flatten
 

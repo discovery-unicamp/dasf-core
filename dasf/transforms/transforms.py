@@ -7,8 +7,7 @@ import pandas as pd
 
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dask_array
-from dasf.utils.decorators import task_handler
-
+from dasf.transforms import Transform
 
 try:
     import cupy as cp
@@ -17,137 +16,7 @@ except ImportError:
     pass
 
 
-class _Fit:
-    def _lazy_fit_cpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    def _lazy_fit_gpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    def _fit_cpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    def _fit_gpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    @task_handler
-    def fit(self, X, y, sample_weight=None, **kwargs):
-        ...
-
-
-class _FitPredict:
-    def _lazy_fit_predict_cpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    def _lazy_fit_predict_gpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    def _fit_predict_cpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    def _fit_predict_gpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    @task_handler
-    def fit_predict(self, X, y, **kwargs):
-        ...
-
-
-class _FitTransform:
-    def _lazy_fit_transform_cpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    def _lazy_fit_transform_gpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    def _fit_transform_cpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    def _fit_transform_gpu(self, X, y=None, **kwargs):
-        raise NotImplementedError
-
-    @task_handler
-    def fit_transform(self, X, y=None, **kwargs):
-        ...
-
-
-class _Predict:
-    def _lazy_predict_cpu(self, X, sample_weight=None, **kwargs):
-        raise NotImplementedError
-
-    def _lazy_predict_gpu(self, X, sample_weight=None, **kwargs):
-        raise NotImplementedError
-
-    def _predict_cpu(self, X, sample_weight=None, **kwargs):
-        raise NotImplementedError
-
-    def _predict_gpu(self, X, sample_weight=None, **kwargs):
-        raise NotImplementedError
-
-    @task_handler
-    def predict(self, X, sample_weight=None, **kwargs):
-        ...
-
-
-class _GetParams:
-    def _lazy_get_params_cpu(self, deep=True, **kwargs):
-        raise NotImplementedError
-
-    def _lazy_get_params_gpu(self, deep=True, **kwargs):
-        raise NotImplementedError
-
-    def _get_params_cpu(self, deep=True, **kwargs):
-        raise NotImplementedError
-
-    def _get_params_gpu(self, deep=True, **kwargs):
-        raise NotImplementedError
-
-    @task_handler
-    def get_params(self, deep=True, **kwargs):
-        ...
-
-
-class _SetParams:
-    def _lazy_set_params_cpu(self, **params):
-        raise NotImplementedError
-
-    def _lazy_set_params_gpu(self, **params):
-        raise NotImplementedError
-
-    def _set_params_cpu(self, **params):
-        raise NotImplementedError
-
-    def _set_params_gpu(self, **params):
-        raise NotImplementedError
-
-    @task_handler
-    def set_params(self, **params):
-        ...
-
-
-class _Transform:
-    def _lazy_transform_cpu(self, X, **kwargs):
-        raise NotImplementedError
-
-    def _lazy_transform_gpu(self, X, **kwargs):
-        raise NotImplementedError
-
-    def _transform_cpu(self, X, **kwargs):
-        raise NotImplementedError
-
-    def _transform_gpu(self, X, **kwargs):
-        raise NotImplementedError
-
-    @task_handler
-    def transform(self, X, **kwargs):
-        ...
-
-
-class Transform(_Transform, _Fit):
-    pass
-
-
-class ArraysToDataFrame(_Transform):
+class ArraysToDataFrame(Transform):
     def __transform_generic(self, X, y):
         assert len(X) == len(y), "Data and labels should have the same length."
 

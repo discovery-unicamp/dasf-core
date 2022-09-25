@@ -63,7 +63,7 @@ class Pipeline:
 
     def __inspect_element(self, obj):
         from dasf.datasets.base import Dataset
-        from dasf.transforms.transforms import _Transform, _Fit
+        from dasf.transforms import Transform, Fit
 
         def generate_name(class_name, func_name):
             return ("%s.%s" % (class_name, func_name))
@@ -77,7 +77,7 @@ class Pipeline:
                     generate_name(obj.__self__.__class__.__name__,
                                   obj.__name__),
                     obj.__self__)
-        elif issubclass(obj.__class__, _Transform) and hasattr(obj, "transform"):
+        elif issubclass(obj.__class__, Transform) and hasattr(obj, "transform"):
             return (obj.transform,
                     generate_name(obj.__class__.__name__,
                                   "transform"),
@@ -87,7 +87,7 @@ class Pipeline:
                     generate_name(obj.__class__.__name__,
                                   "load"),
                     obj)
-        elif issubclass(obj.__class__, _Fit) and hasattr(obj, "fit"):
+        elif issubclass(obj.__class__, Fit) and hasattr(obj, "fit"):
             return (obj.fit,
                     generate_name(obj.__class__.__name__,
                                   "fit"),

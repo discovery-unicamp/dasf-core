@@ -8,10 +8,10 @@ try:
 except ImportError:
     pass
 
-from dasf.transforms.transforms import _Transform
+from dasf.transforms import Transform
 
 
-class Histogram(_Transform):
+class Histogram(Transform):
     def __init__(self, bins=None, range=None, normed=False, weights=None,
                  density=None):
         self._bins = bins

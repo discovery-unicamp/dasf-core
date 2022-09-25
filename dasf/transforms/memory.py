@@ -5,10 +5,10 @@ import dask.dataframe as ddf
 
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_dask_dataframe
-from dasf.transforms.transforms import _Transform
+from dasf.transforms import Transform
 
 
-class PersistDaskData(_Transform):
+class PersistDaskData(Transform):
     def __lazy_transform_generic(self, X):
         if is_dask_array(X) or is_dask_dataframe(X):
             new_data = X.persist()
@@ -32,7 +32,7 @@ class PersistDaskData(_Transform):
         return X
 
 
-class LoadDaskData(_Transform):
+class LoadDaskData(Transform):
     def __lazy_transform_generic(self, X):
         if is_dask_array(X) or is_dask_dataframe(X):
             new_data = X.compute()

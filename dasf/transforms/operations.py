@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from dasf.transforms.transforms import _Transform
+from dasf.transforms import Transform
 
 
 class Reshape:
@@ -27,7 +27,7 @@ class SliceArray:
             raise Exception("The dimmension is not known")
 
 
-class SliceArrayByPercent(_Transform):
+class SliceArrayByPercent(Transform):
     def __init__(self, x=100.0, y=100.0, z=100.0):
         self.x = float(x / 100.0)
         self.y = float(y / 100.0)

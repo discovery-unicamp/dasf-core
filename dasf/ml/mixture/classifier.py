@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-from dasf.transforms.transforms import _Fit
-from dasf.transforms.transforms import _FitPredict
-from dasf.transforms.transforms import _FitTransform
-from dasf.transforms.transforms import _GetParams
-from dasf.transforms.transforms import _SetParams
+from dasf.transforms import Fit
+from dasf.transforms import FitPredict
+from dasf.transforms import FitTransform
+from dasf.transforms import GetParams
+from dasf.transforms import SetParams
 
 
-class MixtureClassifier(_Fit, _FitPredict, _FitTransform,
-                        _GetParams, _SetParams):
+class MixtureClassifier(Fit, FitPredict, FitTransform,
+                        GetParams, SetParams):
     def fit(self, X, y=None, sample_weight=None):
         raise NotImplementedError
 

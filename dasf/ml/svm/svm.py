@@ -14,13 +14,13 @@ except ImportError:
     pass
 
 from dasf.utils.utils import is_gpu_supported
-from dasf.transforms.transforms import _Fit
-from dasf.transforms.transforms import _Predict
-from dasf.transforms.transforms import _GetParams
-from dasf.transforms.transforms import _SetParams
+from dasf.transforms import Fit
+from dasf.transforms import Predict
+from dasf.transforms import GetParams
+from dasf.transforms import SetParams
 
 
-class SVC(_Fit, _Predict, _GetParams, _SetParams):
+class SVC(Fit, Predict, GetParams, SetParams):
     def __init__(
         self,
         C=1.0,
@@ -96,7 +96,7 @@ class SVC(_Fit, _Predict, _GetParams, _SetParams):
         return self.__svc_cpu.set_params(**params)
 
 
-class SVR(_Fit, _Predict):
+class SVR(Fit, Predict):
     def __init__(
         self,
         kernel="rbf",
@@ -157,7 +157,7 @@ class SVR(_Fit, _Predict):
         return self.__svr_gpu.predict(X)
 
 
-class LinearSVC(_Fit, _Predict, _GetParams, _SetParams):
+class LinearSVC(Fit, Predict, GetParams, SetParams):
     def __init__(
         self,
         epsilon=0.0,
@@ -227,7 +227,7 @@ class LinearSVC(_Fit, _Predict, _GetParams, _SetParams):
         return self.__linear_svc_gpu.predict(X)
 
 
-class LinearSVR(_Fit, _Predict):
+class LinearSVR(Fit, Predict):
     def __init__(
         self,
         epsilon=0.0,
