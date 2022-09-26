@@ -54,6 +54,7 @@ mkdir -p $DOCKERFILE_DIR
 hpccm --recipe hpccm/build_docker.py \
       --userarg device-target=$DEVICE_TARGET \
                 devel=$IS_DEVEL \
+                rapids-version=$RAPIDS_VERSION \
                 cuda-version=$CUDA_VERSION \
                 ubuntu-version=$UBUNTU_VERSION \
       --format $FORMAT > $DOCKERFILE_DIR/$OUTPUT_FILE

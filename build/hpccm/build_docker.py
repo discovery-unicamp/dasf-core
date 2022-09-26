@@ -11,7 +11,7 @@ if is_devel:
 else:
     cuda_version = USERARG.get('cuda-version', '11.2')
 
-rapidsai_version = USERARG.get('cuda-version', '22.08')
+rapidsai_version = USERARG.get('rapids-version', '22.08')
 ubuntu_version = USERARG.get('ubuntu-version', '20.04')
 
 gpu_image_devel = f"rapidsai/rapidsai-core-dev:{rapidsai_version}-cuda{cuda_version}-devel-ubuntu{ubuntu_version}-py3.9"
