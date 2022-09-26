@@ -21,10 +21,11 @@ cpu_image = f"ubuntu:{ubuntu_version}"
 if device_target.lower() == "cpu":
     Stage0 += baseimage(image=cpu_image)
 elif device_target.lower() == "gpu":
-    if is_devel:
-        Stage0 += baseimage(image=gpu_image_devel)
-    else:
-        Stage0 += baseimage(image=gpu_image)
+    # XXX: There is no way to use old GPUs with 11.5 CUDA.
+    #if is_devel:
+    #    Stage0 += baseimage(image=gpu_image_devel)
+    #else:
+    Stage0 += baseimage(image=gpu_image)
 else:
     raise RuntimeError(f"Device target {device_target} is not known.")
 
