@@ -37,19 +37,33 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-CONTAINER_CMD=$(GET_CONTAINER_CMD)
+DEVICE_TARGET=$ARCH_TYPE
 
-DOCKERFILE_DIR=$DOCKERFILE_DIR/$ARCH_TYPE
+function FIND_CMD() {
+    if ! command -v $1 &> /dev/null
+    then
+        echo $2
+        exit -1
+    fi
+}
 
-# Copy respective conda settings
-cp conda/$ARCH_TYPE/*.yml $DOCKERFILE_DIR
-cp scripts/$ARCH_TYPE/.bashrc $DOCKERFILE_DIR
-cp scripts/$ARCH_TYPE/entrypoint.sh $DOCKERFILE_DIR
+FIND_CMD hpccm "Binary 'hpccm' could not be found: install HPC container maker first."
 
-pushd $DOCKERFILE_DIR
-$CONTAINER_CMD build -t $IMAGE . 
+mkdir -p $DOCKERFILE_DIR
 
-# Clean up
-echo "Cleaning up..."
-popd
-rm -rf $DOCKERFILE_DIR/*.yml $DOCKERFILE_DIR/.bashrc $DOCKERFILE_DIR/entrypoint.sh
+hpccm --recipe hpccm/build_docker.py \
+      --userarg device-target=$DEVICE_TARGET \
+                devel=$IS_DEVEL \
+                cuda-version=$CUDA_VERSION \
+                ubuntu-version=$UBUNTU_VERSION \
+      --format $FORMAT > $DOCKERFILE_DIR/$OUTPUT_FILE
+
+if [[ "$FORMAT" == "docker" ]]; then
+    FIND_CMD docker "Docker binaries are not found."
+    docker build $DOCKERFILE_DIR
+else
+    FIND_CMD singularity "Singularity binaries are not found."
+    singularity build dasf.sif $DOCKERFILE_DIR/$OUTPUT_FILE
+fi
+
+rm -rf $DOCKERFILE_DIR
