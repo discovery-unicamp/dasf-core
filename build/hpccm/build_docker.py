@@ -50,6 +50,9 @@ elif device_target.lower() == "gpu":
 
     pip_package_install = ("conda run -n rapids %s" % pip_package_install)
 
+    if is_devel:
+        pip_package_install = ("%s %s" % (pip_package_install, "git+https://github.com/cupy/cupy.git"))
+
 Stage0 += shell(commands=[pip_package_install])
 
 Stage0 += workdir(directory='/dasf')
