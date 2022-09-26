@@ -58,6 +58,6 @@ Stage0 += shell(commands=[pip_package_install])
 Stage0 += workdir(directory='/dasf')
 
 if is_devel:
-    Stage0 += label(metadata={'dasf': 'latest'})
-else:
     Stage0 += label(metadata={'dasf-devel': 'latest'})
+else:
+    Stage0 += label(metadata={'dasf': 'latest'})
