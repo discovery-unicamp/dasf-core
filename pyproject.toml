@@ -49,6 +49,7 @@ xpysom = { git = "https://github.com/jcfaracco/xpysom/", branch = "dask2" }
 black = "*"
 coverage = "*"
 flake8 = "*"
+hpccm = "*"
 mock = "*"
 parameterized = "*"
 pytest = "*"
