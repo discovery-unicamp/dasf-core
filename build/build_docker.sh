@@ -1,18 +1,42 @@
-source vars.sh
+#!/bin/bash
+
+# Default variables
+ARCH_TYPE="gpu"
+FORMAT="docker"
+OUTPUT_FILE="Dockerfile"
+IS_DEVEL="False"
+RAPIDS_VERSION="22.08"
+CUDA_VERSION="11.2"
+UBUNTU_VERSION="20.04"
+DOCKERFILE_DIR=docker/
 
 function print_help() {
     echo "Usage: ./build_docker.sh [ARCH_TYPE]"
     echo ""
     echo "Standard options:"
-    echo "    -h or -help     Display this help and exit"
-    echo "    ARCH_TYPE:      Build a container based on arch type."
-    echo "                    Use 'gpu' for GPU container-based architecture (default)."
-    echo "                    Use 'cpu' for CPU container-based architecture."
+    echo "    -h or -help                      Display this help and exit"
+    echo "    --device ARCH_TYPE:              Build a container based on arch type."
+    echo "                                     Use 'gpu' for GPU container-based architecture."
+    echo "                                     Use 'cpu' for CPU container-based architecture (default='$ARCH_TYPE')."
+    echo "    --rapids-version RAPIDS_VERSION  Defines which version of RAPIDS AI will be used (default='$RAPIDS_VERSION')."
+    echo "    --cuda-version CUDA_VERSION      Defines which version of CUDA will be used (default='$CUDA_VERSION')."
+    echo "    --os-version OS_VERSION          Defines which version of the container will be used (default='$UBUNTU_VERSION')."
+    echo "    --format FORMAT                  Select the container backend for this build."
+    echo "                                     Use 'docker' for Docker images."
+    echo "                                     Use 'singularity' for SIF images (default='$FORMAT')."
     echo ""
 }
 
-# Default architecture
+# Default variables
 ARCH_TYPE="gpu"
+FORMAT="docker"
+OUTPUT_FILE="Dockerfile"
+IS_DEVEL="False"
+RAPIDS_VERSION="22.08"
+CUDA_VERSION="11.2"
+UBUNTU_VERSION="20.04"
+DOCKERFILE_DIR=docker/
+PORT=8891
 
 POSITIONAL_ARGS=()
 
@@ -22,13 +46,34 @@ while [[ $# -gt 0 ]]; do
       print_help
       exit 0
       ;;
-    cpu)
-      ARCH_TYPE="cpu"
+    --device)
+      ARCH_TYPE="$2"
+      shift
       shift
       ;;
-    gpu)
-      ARCH_TYPE="gpu"
+    --rapids-version)
+      RAPIDS_VERSION="$2"
       shift
+      shift
+      ;;
+    --cuda-version)
+      CUDA_VERSION="$2"
+      shift
+      shift
+      ;;
+    --os-version)
+      UBUNTU_VERSION="$2"
+      shift
+      shift
+      ;;
+    --format)
+      FORMAT="$2"
+      shift
+      shift
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      exit 1
       ;;
     *)
       POSITIONAL_ARGS+=("$1") # save positional arg
@@ -37,7 +82,15 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-DEVICE_TARGET=$ARCH_TYPE
+if [[ "$ARCH_TYPE" != "cpu" && "$ARCH_TYPE" != "gpu" ]];
+    echo "Invalid '--device' type. Check -h|--help for further details."
+    exit 1
+fi
+
+if [[ "$FORMAT" != "docker" && "$FORMAT" != "singularity" ]];
+    echo "Invalid container backend for '--format'. Check -h|--help for further details."
+    exit 1
+fi
 
 function FIND_CMD() {
     if ! command -v $1 &> /dev/null
@@ -52,7 +105,7 @@ FIND_CMD hpccm "Binary 'hpccm' could not be found: install HPC container maker f
 mkdir -p $DOCKERFILE_DIR
 
 hpccm --recipe hpccm/build_docker.py \
-      --userarg device-target=$DEVICE_TARGET \
+      --userarg device-target=$ARCH_TYPE \
                 devel=$IS_DEVEL \
                 rapids-version=$RAPIDS_VERSION \
                 cuda-version=$CUDA_VERSION \

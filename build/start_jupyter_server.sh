@@ -1,4 +1,4 @@
-source vars.sh
+PORT=8891
 
 function GET_CONTAINER_CMD() {
     OLDIFS="$IFS"
@@ -22,4 +22,4 @@ CONTAINER_CMD=$(GET_CONTAINER_CMD)
 
 EXTRA_ARGS=$@
 
-$CONTAINER_CMD run --gpus all -it --rm  -p $PORT:$PORT -e SHELL="/bin/bash" --network=host $EXTRA_ARGS $IMAGE python -m jupyterlab --allow-root --ServerApp.port $PORT --no-browser --ServerApp.ip='0.0.0.0'
+$CONTAINER_CMD run --gpus all -it --rm  -p $PORT:$PORT -e SHELL="/bin/bash" --network=host $EXTRA_ARGS dasf:latest python -m jupyterlab --allow-root --ServerApp.port $PORT --no-browser --ServerApp.ip='0.0.0.0'
