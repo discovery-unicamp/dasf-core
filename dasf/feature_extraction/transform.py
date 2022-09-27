@@ -9,8 +9,10 @@ try:
 except ImportError:
     pass
 
+from dasf.utils.types import is_array
+from dasf.utils.types import is_dataframe
 from dasf.pipeline.types import TaskExecutorType
-from dasf.transforms.base import Transform
+from dasf.transforms.base import Transform, Fit
 
 
 class Normalize(Transform):
@@ -89,24 +91,19 @@ class GetSubeCubeArray:
                  t_start_idx:t_end_idx]
 
 
-class SliceDataframe:
+class SliceDataframe(Fit):
     def __init__(self, iline_index):
         self.iline_index = iline_index
 
-    def run(self, X, y):
+    def fit(self, X, y):
         cube_shape = y.shape
 
-#       slice_idx = (self.iline_index * cube_shape[1] * cube_shape[2],
-#                   (self.iline_index + 1) * cube_shape[1] * cube_shape[2])
-
-#       slice_array = X[slice_idx[0] : slice_idx[1]]
-#       slice_array = slice_array.reshape(cube_shape[1], cube_shape[2])
-
-#       return slice_array.T
-        if isinstance(X, da.core.Array):
+        if is_array(X):
             slice_array = X
-        elif isinstance(X, ddf.core.DataFrame):
+        elif is_dataframe(X):
             slice_array = X.values
+        else:
+            raise ValueError("X is not a known datatype.")
 
         return slice_array.reshape(cube_shape)
 

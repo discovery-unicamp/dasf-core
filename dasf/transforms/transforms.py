@@ -21,9 +21,7 @@ class ArraysToDataFrame(Transform):
         assert len(X) == len(y), "Data and labels should have the same length."
 
         dfs = None
-        for x in X:
-            i = X.index(x)
-
+        for i, x in enumerate(X):
             if is_array(x):
                 # Dask has some facilities to convert to DataFrame
                 if is_dask_array(x):
@@ -46,13 +44,22 @@ class ArraysToDataFrame(Transform):
 
         return dfs
 
-    def _lazy_transform_cpu(self, X, y):
+    def _lazy_transform_cpu(self, X=None, **kwargs):
+        X = list(kwargs.values())
+        y = list(kwargs.keys())
+
         return self.__transform_generic(X, y)
 
-    def _lazy_transform_gpu(self, X, y):
+    def _lazy_transform_gpu(self, X=None, **kwargs):
+        X = list(kwargs.values())
+        y = list(kwargs.keys())
+
         return self.__transform_generic(X, y)
 
-    def _transform_gpu(self, X, y):
+    def _transform_gpu(self, X=None, **kwargs):
+        X = list(kwargs.values())
+        y = list(kwargs.keys())
+
         dfs = self.__transform_generic(X, y)
 
         if is_array(dfs) and not is_dask_array(dfs):
@@ -63,7 +70,10 @@ class ArraysToDataFrame(Transform):
 
         return datas
 
-    def _transform_cpu(self, X, y):
+    def _transform_cpu(self, X=None, **kwargs):
+        X = list(kwargs.values())
+        y = list(kwargs.keys())
+
         dfs = self.__transform_generic(X, y)
 
         if is_array(dfs) and not is_dask_array(dfs):
