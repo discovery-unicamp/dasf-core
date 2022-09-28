@@ -168,7 +168,7 @@ class Pipeline:
             except Exception as e:
                 failed = True
                 err = str(e)
-                self._logger.error(f"Task '{name}': Failed with:\n{err}")
+                self._logger.exception(f"Task '{name}': Failed with:\n{err}")
 
             self._logger.info(f"Task '{name}': Finished task run")
 

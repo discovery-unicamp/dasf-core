@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import inspect
+
 from dasf.utils.decorators import task_handler
 
 
@@ -20,6 +22,10 @@ class Fit:
     def fit(self, X, y, sample_weight=None, **kwargs):
         ...
 
+    @staticmethod
+    def fit_from_model(model, X, y, sample_weight=None, **kwargs):
+        return model.fit(X=X, y=y, sample_weight=sample_weight, **kwargs)
+
 
 class FitPredict:
     def _lazy_fit_predict_cpu(self, X, y=None, **kwargs):
@@ -35,8 +41,12 @@ class FitPredict:
         raise NotImplementedError
 
     @task_handler
-    def fit_predict(self, X, y, **kwargs):
+    def fit_predict(self, X, y=None, **kwargs):
         ...
+
+    @staticmethod
+    def fit_predict_from_model(model, X, y, sample_weight=None, **kwargs):
+        return model.fit_predict(X=X, y=y, sample_weight=sample_weight, **kwargs)
 
 
 class FitTransform:
@@ -56,6 +66,10 @@ class FitTransform:
     def fit_transform(self, X, y=None, **kwargs):
         ...
 
+    @staticmethod
+    def fit_transform_from_model(model, X, y, sample_weight=None, **kwargs):
+        return model.fit_transform(X=X, y=y, sample_weight=sample_weight, **kwargs)
+
 
 class Predict:
     def _lazy_predict_cpu(self, X, sample_weight=None, **kwargs):
@@ -73,6 +87,12 @@ class Predict:
     @task_handler
     def predict(self, X, sample_weight=None, **kwargs):
         ...
+
+    @staticmethod
+    def predict_from_model(model, X, sample_weight=None, **kwargs):
+        if 'sample_weight' not in inspect.signature(model.predict):
+            return model.predict(X=X, **kwargs)
+        return model.predict(X=X, sample_weight=sample_weight, **kwargs)
 
 
 class GetParams:
@@ -127,3 +147,7 @@ class Transform:
     @task_handler
     def transform(self, X, **kwargs):
         ...
+
+    @staticmethod
+    def transform_from_model(model, X, **kwargs):
+        return model.transform(X=X, **kwargs)
