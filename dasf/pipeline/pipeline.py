@@ -156,7 +156,10 @@ class Pipeline:
             params = self._dag_table[fn_key]["parameters"]
             name = self._dag_table[fn_key]["name"]
 
-            self._logger.info(f"Task '{name}': Starting task run...")
+            if not failed:
+                self._logger.info(f"Task '{name}': Starting task run...")
+            else:
+                self._logger.error(f"Task '{name}': Starting task run...")
 
             try:
                 if not failed:
@@ -170,7 +173,10 @@ class Pipeline:
                 err = str(e)
                 self._logger.exception(f"Task '{name}': Failed with:\n{err}")
 
-            self._logger.info(f"Task '{name}': Finished task run")
+            if not failed:
+                self._logger.info(f"Task '{name}': Finished task run")
+            else:
+                self._logger.error(f"Task '{name}': Finished task run")
 
         if failed:
             self._logger.info(f"Pipeline failed at '{name}'")
@@ -181,84 +187,3 @@ class Pipeline:
             self._executor.post_run(self)
 
         return ret
-
-
-class BlockOperator:
-    def __init__(
-        self,
-        name,
-        function,
-        slug=None,
-        checkpoint=False,
-        local=None,
-        gpu=None,
-        depth=None,
-        boundary=None,
-        trim=True,
-        output_chunk=None,
-    ):
-
-        self.function = function
-        self.depth = depth
-        self.boundary = boundary
-        self.trim = trim
-        self.output_chunk = output_chunk
-
-        if (
-            self.boundary is None
-            and self.depth is not None
-            or self.boundary is not None
-            and self.depth is None
-        ):
-            raise Exception("Both boundary and depth should be passed "
-                            "together")
-
-    def run(self, X, **kwargs):
-        if utils.is_executor_gpu(self.dtype) and utils.is_gpu_supported():
-            dtype = cp.float32
-        else:
-            dtype = np.float32
-
-        if (
-            isinstance(X, da.core.Array)
-            or isinstance(X, ddf.core.DataFrame)
-            and utils.is_executor_cluster(self.dtype)
-        ):
-            drop_axis, new_axis = utils.block_chunk_reduce(X, self.output_chunk)
-
-            if self.depth and self.boundary:
-                if self.trim:
-                    new_data = X.map_overlap(
-                        self.function,
-                        **kwargs,
-                        dtype=dtype,
-                        depth=self.depth,
-                        boundary=self.boundary,
-                    )
-                else:
-                    data_blocks = da.overlap.overlap(
-                        X, depth=self.depth, boundary=self.boundary
-                    )
-
-                    new_data = data_blocks.map_blocks(
-                        self.function,
-                        dtype=dtype,
-                        drop_axis=drop_axis,
-                        new_axis=new_axis,
-                        **kwargs,
-                    )
-            else:
-                if isinstance(X, da.core.Array):
-                    new_data = X.map_blocks(
-                        self.function,
-                        dtype=dtype,
-                        drop_axis=drop_axis,
-                        new_axis=new_axis,
-                        **kwargs,
-                    )
-                elif isinstance(X, ddf.core.DataFrame):
-                    new_data = X.map_partitions(self.function, **kwargs)
-
-            return new_data
-        else:
-            return self.function(X, **kwargs)
