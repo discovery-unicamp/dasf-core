@@ -7,6 +7,7 @@ from dasf.transforms.memory import PersistDaskData, LoadDaskData  # noqa
 from dasf.transforms.base import Fit, FitPredict, FitTransform  # noqa
 from dasf.transforms.base import Predict, GetParams, SetParams  # noqa
 from dasf.transforms.base import Transform  # noqa
+from dasf.transforms.base import MappedTransform
 
 
 __all__ = [
@@ -17,6 +18,7 @@ __all__ = [
     "GetParams",
     "SetParams"
     "Transform",
+    "MappedTransform",
     "ArraysToDataFrame",
     "SliceArray",
     "SliceArrayByPercent",

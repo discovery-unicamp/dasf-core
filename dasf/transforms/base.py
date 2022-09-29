@@ -162,7 +162,6 @@ class Transform:
 class MappedTransform(Transform):
     def __init__(
         self,
-        name,
         function,
         depth=None,
         boundary=None,
