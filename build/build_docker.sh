@@ -82,12 +82,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ "$ARCH_TYPE" != "cpu" && "$ARCH_TYPE" != "gpu" ]];
+if [[ "$ARCH_TYPE" != "cpu" && "$ARCH_TYPE" != "gpu" ]]; then
     echo "Invalid '--device' type. Check -h|--help for further details."
     exit 1
 fi
 
-if [[ "$FORMAT" != "docker" && "$FORMAT" != "singularity" ]];
+if [[ "$FORMAT" != "docker" && "$FORMAT" != "singularity" ]]; then
     echo "Invalid container backend for '--format'. Check -h|--help for further details."
     exit 1
 fi
@@ -100,7 +100,8 @@ function FIND_CMD() {
     fi
 }
 
-FIND_CMD hpccm "Binary 'hpccm' could not be found: install HPC container maker first."
+FIND_CMD hpccm "Binary 'hpccm' could not be found: install HPC container maker first.
+    Check https://github.com/NVIDIA/hpc-container-maker for more details"
 
 mkdir -p $DOCKERFILE_DIR
 
