@@ -10,8 +10,12 @@ try:
 except ImportError:
     pass
 
+from dasf.transforms.base import Fit
+from dasf.transforms.base import Transform
+from dasf.transforms.base import FitTransform
 
-class StantardScaler:
+
+class StantardScaler(Fit, Transform, FitTransform):
     def __init__(self, copy=True, with_mean=True, with_std=True):
 
         self.__std_scaler_cpu = StandardScaler_CPU(

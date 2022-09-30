@@ -40,6 +40,7 @@ class Pipeline:
             self._dag_table[key]["fn"] = obj
             self._dag_table[key]["name"] = func_name
             self._dag_table[key]["parameters"] = None
+            self._dag_table[key]["ret"] = None
 
         if parameters and isinstance(parameters, dict):
             if self._dag_table[key]["parameters"] is None:
@@ -126,6 +127,17 @@ class Pipeline:
                 ret = func()
 
         return ret
+
+    def get_result_from(self, obj):
+        _, obj_name, *_ = self.__inspect_element(obj)
+
+        for key in self._dag_table:
+            if self._dag_table[key]["name"] == obj_name:
+                if not self._dag_table[key]["ret"]:
+                    raise Exception("Pipeline was not executed yet.")
+                return self._dag_table[key]["ret"]
+
+        raise Exception(f"Function {obj_name} was not added into pipeline.")
 
     def run(self):
         if not nx.is_directed_acyclic_graph(self._dag):

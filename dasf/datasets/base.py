@@ -154,18 +154,22 @@ class DatasetArray(Dataset):
     def _lazy_load_gpu(self):
         self._metadata = self._load_meta()
         self._data = self._lazy_load(cp)
+        return self
 
     def _lazy_load_cpu(self):
         self._metadata = self._load_meta()
         self._data = self._lazy_load(np)
+        return self
 
     def _load_gpu(self):
         self._metadata = self._load_meta()
         self._data = self._load(cp)
+        return self
 
     def _load_cpu(self):
         self._metadata = self._load_meta()
         self._data = self._load(np)
+        return self
 
     @task_handler
     def load(self):

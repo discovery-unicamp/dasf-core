@@ -16,6 +16,11 @@ except ImportError:
     pass
 
 
+class Normalize(Transform):
+    def transform(self, X):
+        return (X - X.mean()) / (X.std(ddof=0))
+
+
 class ArraysToDataFrame(Transform):
     def __transform_generic(self, X, y):
         assert len(X) == len(y), "Data and labels should have the same length."

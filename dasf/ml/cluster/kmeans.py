@@ -80,7 +80,6 @@ class KMeans(ClusterClassifier):
         return self.__kmeans_gpu.fit_predict(X, y, sample_weight)
 
     def _lazy_predict_cpu(self, X, sample_weight=None):
-        print("Here 2")
         return self.__kmeans_mcpu.predict(X)
 
     def _lazy_predict_gpu(self, X, sample_weight=None):
@@ -89,7 +88,6 @@ class KMeans(ClusterClassifier):
         return self.__kmeans_mgpu.predict(X, sample_weight)
 
     def _predict_cpu(self, X, sample_weight=None):
-        print("Here I go again")
         return self.__kmeans_cpu.predict(X, sample_weight)
 
     def _predict_gpu(self, X, sample_weight=None):

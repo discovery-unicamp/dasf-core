@@ -253,15 +253,6 @@ def return_local_and_gpu(executor, local, gpu):
     return executor.dtype
 
 
-def get_pipeline_result_by_name(result, name):
-    results = result.result
-
-    for key in results:
-        if key.name == name:
-            return result.result[key]._result.value
-    return None
-
-
 def get_dask_mem_usage(profiler):
     profiler_dir = os.path.abspath(str(Path.home()) + "/.cache/dasf/profiler/")
 

@@ -15,11 +15,6 @@ from dasf.pipeline.types import TaskExecutorType
 from dasf.transforms.base import Transform, Fit
 
 
-class Normalize(Transform):
-    def transform(self, X):
-        return (X - X.mean()) / (X.std(ddof=0))
-
-
 class ConcatenateToArray(Transform):
     def __init__(self, flatten=False):
         self.flatten = flatten

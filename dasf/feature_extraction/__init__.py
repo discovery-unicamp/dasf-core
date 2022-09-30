@@ -15,7 +15,6 @@ __all__ = [
     "ConcatenateToArray",
     #   "ConcatenateToDataframe",
     "SampleDataframe",
-    "Normalize",
     "GetSubeCubeArray",
     "SliceDataframe",
     "GetSubDataframe",
