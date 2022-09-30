@@ -17,8 +17,11 @@ execute the command below directory according to your build type: `cpu` or
 `gpu`.
 
 ```bash
-./build_docker.sh <cpu|gpu>
+./build_docker.sh --device <cpu|gpu>
 ```
+
+You can also configure other parameters of the container if you want. Run `-h`
+for further information.
 
 The `dasf` image will be created and be ready to use. Once it is ready, you 
 can start a jupyter instance by executing the command:
