@@ -50,10 +50,9 @@ class XGBoost(Fit, FitPredict, Predict):
         eval_metric=None,
         early_stopping_rounds=None,
         callbacks=None,
-        gpu_id=-1,
         **kwargs
     ):
-    
+
         self.__xgb_cpu = xgb.XGBRegressor(
             n_estimators=n_estimators,
             max_depth=max_depth,
@@ -80,7 +79,7 @@ class XGBoost(Fit, FitPredict, Predict):
             base_score=base_score,
             random_state=random_state,
         )
-        
+
         self.__xgb_mcpu = xgb.dask.DaskXGBClassifier(
             n_estimators=n_estimators,
             max_depth=max_depth,
@@ -107,9 +106,9 @@ class XGBoost(Fit, FitPredict, Predict):
             base_score=base_score,
             random_state=random_state,
         )
-        
+
         if is_gpu_supported():
-            if gpu_id < 0:
+            if gpu_id is None:
                 gpus = GPUtil.getGPUs()
                 if len(gpus) > 0:
                     gpu_id = gpus[0].id
@@ -141,7 +140,7 @@ class XGBoost(Fit, FitPredict, Predict):
                 random_state=random_state,
                 gpu_id=gpu_id
             )
-        
+
             self.__xgb_mgpu = xgb.dask.DaskXGBClassifier(
                 n_estimators=n_estimators,
                 max_depth=max_depth,
@@ -168,10 +167,10 @@ class XGBoost(Fit, FitPredict, Predict):
                 base_score=base_score,
                 random_state=random_state,
             )
-            
+
             self.__xgb_gpu.set_param({'predictor': 'gpu_predictor'})
             self.__xgb_mgpu.set_param({'predictor': 'gpu_predictor'})
-            
+
     def _lazy_fit_cpu(self, X, y=None, sample_weight=None):
         return self.__xgb_mcpu.fit(X=X, y=y)
 
@@ -183,7 +182,7 @@ class XGBoost(Fit, FitPredict, Predict):
 
     def _fit_gpu(self, X, y=None, sample_weight=None):
         return self.__xgb_gpu.fit(X=X, y=y)
-        
+
     def _lazy_predict_cpu(self, X, sample_weight=None, **kwargs):
         return self.__kmeans_mcpu.predict(data=X, **kwargs)
 

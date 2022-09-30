@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
 import numpy as np
-import dask.array as da
-import dask.dataframe as ddf
 
 try:
     import cupy as cp
@@ -11,7 +9,6 @@ except ImportError:
 
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dataframe
-from dasf.pipeline.types import TaskExecutorType
 from dasf.transforms.base import Transform, Fit
 
 

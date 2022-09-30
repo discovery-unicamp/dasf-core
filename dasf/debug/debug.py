@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-import dask.array as da
-import dask.dataframe as ddf
-
 from IPython.core.display import HTML as iHTML
 from IPython.core.display import display as idisplay
 
