@@ -30,16 +30,6 @@ can start a jupyter instance by executing the command:
 ./start_jupyter_server.sh
 ```
 
-### Conda
-
-If you just want to create a base Conda environment for DASF, you need to 
-create it, using the respective YAML file based on architecture: for CPUs 
-or GPUs. The environment name is always `dasf`.
-
-```bash
-conda env create -f build/conda/{cpu,gpu}/environment.yml
-```
-
 ### Install
 
 To install this development version, all you need to do is run `pip` from the 
