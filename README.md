@@ -61,12 +61,13 @@ pytest tests/
 
 The table below is a list of supported machine learning algorithms by DASF framework.
 
-|     **ML Algorithm**     | **CPU** | **GPU** | **Multi-CPU** | **Multi-GPU** |
-|--------------------------|:-------:|:-------:|:-------------:|:-------------:|
-| K-Means                  |    X    |    X    |       X       |       X       |
-| SOM                      |    X    |    X    |       X       |       X       |
-| Agglomerative Clustering |    X    |    X    |               |               |
-| DBSCAN                   |    X    |    X    |               |       X       |
-| HDBSCAN                  |    X    |    X    |               |               |
-| Gaussian Mixture Models  |    X    |         |               |               |
-| PCA                      |    X    |    X    |       X       |       X       |
+|     **ML Algorithm**     | **CPU** | **GPU** | **Multi-CPU** | **Multi-GPU** |       **Path**        |
+|--------------------------|:-------:|:-------:|:-------------:|:-------------:|:---------------------:|
+| K-Means                  |    X    |    X    |       X       |       X       |    dasf.ml.cluster    |
+| SOM                      |    X    |    X    |       X       |       X       |    dasf.ml.cluster    |
+| Agglomerative Clustering |    X    |    X    |               |               |    dasf.ml.cluster    |
+| DBSCAN                   |    X    |    X    |               |       X       |    dasf.ml.cluster    |
+| HDBSCAN                  |    X    |    X    |               |               |    dasf.ml.cluster    |
+| Gaussian Mixture Models  |    X    |         |               |               |    dasf.ml.mixture    |
+| PCA                      |    X    |    X    |       X       |       X       | dasf.ml.decomposition |
+
