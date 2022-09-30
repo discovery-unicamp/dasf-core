@@ -63,4 +63,5 @@ The table below is a list of supported machine learning algorithms by DASF frame
 | HDBSCAN                  |    X    |    X    |               |               |    dasf.ml.cluster    |
 | Gaussian Mixture Models  |    X    |         |               |               |    dasf.ml.mixture    |
 | PCA                      |    X    |    X    |       X       |       X       | dasf.ml.decomposition |
-
+| SVM                      |    X    |    X    |               |               |      dasf.ml.svm      |
+| Boosted Trees            |    X    |    X    |       X       |       X       |    dasf.ml.xgboost    |
