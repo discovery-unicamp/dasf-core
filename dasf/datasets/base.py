@@ -62,7 +62,7 @@ class Dataset(object):
         return self._data.__getitem__(idx)
 
 
-class DatasetArray(Dataset, NDArrayOperatorsMixin):
+class DatasetArray(Dataset):
     def __init__(self, name, download=False, root=None, chunks="auto"):
 
         Dataset.__init__(self, name, download, root)
@@ -109,6 +109,12 @@ class DatasetArray(Dataset, NDArrayOperatorsMixin):
         else:
             return NotImplemented
 
+    def __copy_attrs_from_data(self):
+        attrs = dir(self._data)
+        for attr in attrs:
+            if not attr.startswith("__") and callable(getattr(self._data, attr)):
+                self.__dict__[attr] = getattr(self._data, attr)
+
     def __npy_header(self):
         with open(self._root_file, "rb") as fobj:
             version = numpy.lib.format.read_magic(fobj)
@@ -141,21 +147,25 @@ class DatasetArray(Dataset, NDArrayOperatorsMixin):
     def _lazy_load_gpu(self):
         self._metadata = self._load_meta()
         self._data = self._lazy_load(cp)
+        self.__copy_attrs_from_data()
         return self
 
     def _lazy_load_cpu(self):
         self._metadata = self._load_meta()
         self._data = self._lazy_load(np)
+        self.__copy_attrs_from_data()
         return self
 
     def _load_gpu(self):
         self._metadata = self._load_meta()
         self._data = self._load(cp)
+        self.__copy_attrs_from_data()
         return self
 
     def _load_cpu(self):
         self._metadata = self._load_meta()
         self._data = self._load(np)
+        self.__copy_attrs_from_data()
         return self
 
     @task_handler
