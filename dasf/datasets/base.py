@@ -126,7 +126,6 @@ class DatasetArray(Dataset, NDArrayOperatorsMixin):
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
         assert self._data is not None, "Data is not loaded yet."
         if method == '__call__':
-            N = None
             scalars = []
 
             for input in inputs:
@@ -134,12 +133,6 @@ class DatasetArray(Dataset, NDArrayOperatorsMixin):
                     scalars.append(input)
                 elif isinstance(input, self.__class__):
                     scalars.append(input._data)
-
-                    if N is not None:
-                        if N != len(self._data):
-                            raise TypeError("inconsistent sizes")
-                    else:
-                        N = len(self._data)
                 else:
                     return NotImplemented
 

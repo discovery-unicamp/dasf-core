@@ -30,13 +30,13 @@ def task_handler(func):
         wrapper_func_attr = f"{func_type}_{func_name}_{arch}"
 
         if (not hasattr(cls, wrapper_func_attr) and
-            hasattr(cls, func_name)):
+           hasattr(cls, func_name)):
             return func(*new_args, **kwargs)
         elif (not hasattr(cls, wrapper_func_attr) and
               not hasattr(cls, func_name)):
             raise NotImplementedError(
                 f"There is no implementation of {wrapper_func_attr} nor "
-                 "{func_name}"
+                "{func_name}"
             )
         else:
             return getattr(cls, wrapper_func_attr)(*new_args, **kwargs)

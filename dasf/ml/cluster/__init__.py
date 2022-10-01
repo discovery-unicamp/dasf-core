@@ -14,8 +14,8 @@ cluster_methods = [
 ]
 
 # XXX: Import due to CVE-2022-21797
-import joblib
-from packaging import version
+import joblib  # noqa
+from packaging import version  # noqa
 
 if version.parse(joblib.__version__) < version.parse("1.2.0"):
     # Do not include HDBSCAN while it is not safe
