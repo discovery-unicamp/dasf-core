@@ -62,39 +62,6 @@ class Dataset(object):
         return self._data.__getitem__(idx)
 
 
-class DatasetLoader:
-    def __init__(self, dataset, replicate=False):
-        self.__dataset = dataset
-
-    def run_lazy_cpu(self):
-        self.__dataset.download()
-
-        if hasattr(self.__dataset, "lazy_load_cpu"):
-            self.__dataset.lazy_load_cpu()
-            return self.__dataset
-
-    def run_cpu(self):
-        self.__dataset.download()
-
-        if hasattr(self.__dataset, "load_cpu"):
-            self.__dataset.load_cpu()
-            return self.__dataset
-
-    def run_lazy_gpu(self):
-        self.__dataset.download()
-
-        if hasattr(self.__dataset, "lazy_load_gpu"):
-            self.__dataset.lazy_load_gpu()
-            return self.__dataset
-
-    def run_gpu(self):
-        self.__dataset.download()
-
-        if hasattr(self.__dataset, "load_gpu"):
-            self.__dataset.load_gpu()
-            return self.__dataset
-
-
 class DatasetArray(Dataset, NDArrayOperatorsMixin):
     def __init__(self, name, download=False, root=None, chunks="auto"):
 
