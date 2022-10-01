@@ -7,6 +7,9 @@ import numpy as np
 import numpy.lib.format
 import dask.array as da
 
+from numbers import Number
+from numpy.lib.mixins import NDArrayOperatorsMixin
+
 try:
     import cupy as cp
 except ImportError:
@@ -44,7 +47,7 @@ class Dataset(object):
 
     def download(self):
         if self._download:
-            raise NotImplementedError("Function download() needs to be " "defined")
+            raise NotImplementedError("Function download() needs to be defined")
 
     def __len__(self):
         if self._data is None:
@@ -92,7 +95,7 @@ class DatasetLoader:
             return self.__dataset
 
 
-class DatasetArray(Dataset):
+class DatasetArray(Dataset, NDArrayOperatorsMixin):
     def __init__(self, name, download=False, root=None, chunks="auto"):
 
         Dataset.__init__(self, name, download, root)
@@ -113,14 +116,38 @@ class DatasetArray(Dataset):
             return other._data
         return other
 
-    def __add__(self, other):
-        return self._data + self.__operator_check__(other)
+    def __repr__(self):
+        return repr(self._data)
 
-    def __sub__(self, other):
-        return self._data - self.__operator_check__(other)
+    def __array__(self, dtype=None):
+        assert self._data is not None, "Data is not loaded yet."
+        return self._data
 
-    def __mul__(self, other):
-        return self._data * self.__operator_check__(other)
+    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        assert self._data is not None, "Data is not loaded yet."
+        if method == '__call__':
+            N = None
+            scalars = []
+
+            for input in inputs:
+                if isinstance(input, Number):
+                    scalars.append(input)
+                elif isinstance(input, self.__class__):
+                    scalars.append(input._data)
+
+                    if N is not None:
+                        if N != len(self._data):
+                            raise TypeError("inconsistent sizes")
+                    else:
+                        N = len(self._data)
+                else:
+                    return NotImplemented
+
+            self.__class__(name=self._name, chunks=self.__chunks)
+            self._data = ufunc(*scalars, **kwargs)
+            return self
+        else:
+            return NotImplemented
 
     def __npy_header(self):
         with open(self._root_file, "rb") as fobj:
