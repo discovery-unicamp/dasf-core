@@ -78,6 +78,10 @@ class DaskPipelineExecutor(Executor):
             else:
                 self.dtype = TaskExecutorType.multi_cpu
 
+        # Share dtype attribute to client
+        if not hasattr(self.client, "dtype"):
+            setattr(self.client, "dtype", self.dtype)
+
         if profiler == "memusage":
             profiler_dir = os.path.abspath(
                 os.path.join(str(Path.home()),
@@ -138,7 +142,15 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
             client_kwargs=client_kwargs,
         )
 
-        os.environ["DASK_TASKS"] = "True"
+        # Ask workers for GPUs
+        if is_dask_gpu_supported():
+            self.dtype = TaskExecutorType.single_gpu
+        else:
+            self.dtype = TaskExecutorType.single_cpu
+
+        # Share dtype attribute to client
+        if not hasattr(self.client, "dtype"):
+            setattr(self.client, "dtype", self.dtype)
 
         self._tasks_map = dict()
 
