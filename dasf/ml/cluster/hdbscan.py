@@ -2,7 +2,7 @@
 
 # XXX: Import due to CVE-2022-21797
 import joblib
-import packaging
+from packaging import version
 
 from hdbscan import HDBSCAN as HDBSCAN_CPU
 
@@ -36,7 +36,7 @@ class HDBSCAN(ClusterClassifier):
         self.min_samples = min_samples
         self.p = p
 
-        if version.parse(joblib.__version__) >= version.parse("1.2.0")
+        if version.parse(joblib.__version__) >= version.parse("1.2.0"):
             self.__hdbscan_cpu = HDBSCAN_CPU(
                 alpha=self.alpha,
                 gen_min_span_tree=self.gen_min_span_tree,
