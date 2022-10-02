@@ -19,6 +19,8 @@ from pathlib import Path
 
 from dasf.utils import utils
 from dasf.utils.decorators import task_handler
+from dasf.utils.types import is_array
+from dasf.utils.types import is_dask_array
 
 
 class Dataset(object):
@@ -109,11 +111,39 @@ class DatasetArray(Dataset):
         else:
             return NotImplemented
 
+    def __check_op_input(self, in_data):
+        if is_array(in_data) or is_dask_array(in_data):
+            return in_data
+        elif isinstance(in_data, self.__class__):
+            return in_data._data
+        raise TypeError("Data is incompatible with Array")
+
+    def __add__(self, other):
+        assert self._data is not None, "Data is not loaded yet."
+        data = self.__check_op_input(other)
+        return self._data + data
+
+    def __sub__(self, other):
+        assert self._data is not None, "Data is not loaded yet."
+        data = self.__check_op_input(other)
+        return self._data - data
+
+    def __mul__(self, other):
+        assert self._data is not None, "Data is not loaded yet."
+        data = self.__check_op_input(other)
+        return self._data * data
+
+    def __div__(self, other):
+        assert self._data is not None, "Data is not loaded yet."
+        data = self.__check_op_input(other)
+        return self._data / data
+
     def __copy_attrs_from_data(self):
         attrs = dir(self._data)
         for attr in attrs:
             if not attr.startswith("__") and callable(getattr(self._data, attr)):
-                self.__dict__[attr] = getattr(self._data, attr)
+                if not hasattr(self, attr):
+                    self.__dict__[attr] = getattr(self._data, attr)
 
     def __npy_header(self):
         with open(self._root_file, "rb") as fobj:

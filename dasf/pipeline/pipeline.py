@@ -123,7 +123,7 @@ class Pipeline:
 
         for key in self._dag_table:
             if self._dag_table[key]["name"] == obj_name:
-                if not self._dag_table[key]["ret"]:
+                if self._dag_table[key]["ret"] is None:
                     raise Exception("Pipeline was not executed yet.")
                 return self._dag_table[key]["ret"]
 

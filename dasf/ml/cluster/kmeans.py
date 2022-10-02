@@ -66,7 +66,8 @@ class KMeans(ClusterClassifier):
         return self.__kmeans_gpu.fit(X=X, sample_weight=sample_weight)
 
     def _lazy_fit_predict_cpu(self, X, y=None, sample_weight=None):
-        return self.__kmeans_mcpu.fit_predict(X, y, sample_weight)
+        local_kmeans = self.__kmeans_mcpu.fit(X=X, y=y)
+        return local_kmeans.predict(X=X)
 
     def _lazy_fit_predict_gpu(self, X, y=None, sample_weight=None):
         if self.__kmeans_mgpu is None:
