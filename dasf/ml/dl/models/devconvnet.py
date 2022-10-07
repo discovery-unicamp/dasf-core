@@ -14,8 +14,6 @@ from torchmetrics import Metric
 
 from pytorch_lightning import LightningModule
 
-from dasf.pipeline import ParameterOperator
-
 
 class MyAccuracy(Metric):
     def __init__(self, dist_sync_on_step=False):
@@ -1325,45 +1323,42 @@ class TorchSectionDeConvNetSkipModule(NNModule):
                         i_layer = i_layer + 1
 
 
-class TorchPatchDeConvNet(ParameterOperator):
+class ModelLoad:
+    def load(self):
+        return self
+
+
+class TorchPatchDeConvNet(ModelLoad):
     def __init__(
         self, n_classes=4, learned_billinear=False, clip=0.1, class_weights=False
     ):
-        super().__init__(name=type(self).__name__)
-
         self.model = TorchPatchDeConvNetModule(
             n_classes, learned_billinear, clip, class_weights
         )
 
 
-class TorchPatchDeConvNetSkip(ParameterOperator):
+class TorchPatchDeConvNetSkip(ModelLoad):
     def __init__(
         self, n_classes=4, learned_billinear=False, clip=0.1, class_weights=False
     ):
-        super().__init__(name=type(self).__name__)
-
         self.model = TorchPatchDeConvNetSkipModule(
             n_classes, learned_billinear, clip, class_weights
         )
 
 
-class TorchSectionDeConvNet(ParameterOperator):
+class TorchSectionDeConvNet(ModelLoad):
     def __init__(
         self, n_classes=4, learned_billinear=False, clip=0.1, class_weights=False
     ):
-        super().__init__(name=type(self).__name__)
-
         self.model = TorchSectionDeConvNetModule(
             n_classes, learned_billinear, clip, class_weights
         )
 
 
-class TorchSectionDeConvNetSkip(ParameterOperator):
+class TorchSectionDeConvNetSkip(ModelLoad):
     def __init__(
         self, n_classes=4, learned_billinear=False, clip=0.1, class_weights=False
     ):
-        super().__init__(name=type(self).__name__)
-
         self.model = TorchSectionDeConvNetSkipModule(
             n_classes, learned_billinear, clip, class_weights
         )
