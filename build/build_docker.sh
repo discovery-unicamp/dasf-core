@@ -27,17 +27,6 @@ function print_help() {
     echo ""
 }
 
-# Default variables
-ARCH_TYPE="gpu"
-FORMAT="docker"
-OUTPUT_FILE="Dockerfile"
-IS_DEVEL="False"
-RAPIDS_VERSION="22.08"
-CUDA_VERSION="11.2"
-UBUNTU_VERSION="20.04"
-DOCKERFILE_DIR=docker/
-PORT=8891
-
 POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -112,6 +101,8 @@ hpccm --recipe hpccm/build_docker.py \
                 cuda-version=$CUDA_VERSION \
                 ubuntu-version=$UBUNTU_VERSION \
       --format $FORMAT > $DOCKERFILE_DIR/$OUTPUT_FILE
+
+exit 1
 
 if [[ "$FORMAT" == "docker" ]]; then
     FIND_CMD docker "Docker binaries are not found."
