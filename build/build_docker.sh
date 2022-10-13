@@ -102,8 +102,6 @@ hpccm --recipe hpccm/build_docker.py \
                 ubuntu-version=$UBUNTU_VERSION \
       --format $FORMAT > $DOCKERFILE_DIR/$OUTPUT_FILE
 
-exit 1
-
 if [[ "$FORMAT" == "docker" ]]; then
     FIND_CMD docker "Docker binaries are not found."
     docker build $DOCKERFILE_DIR
