@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Default variables
+
 ARCH_TYPE="gpu"
 FORMAT="docker"
 OUTPUT_FILE="Dockerfile"
@@ -70,6 +71,13 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if [[ "${#POSITIONAL_ARGS[@]}" -gt 1 ]]; then
+  echo "Invalid number of positional arguments"
+  exit 1
+elif [[ "${#POSITIONAL_ARGS[@]}" -eq 1 ]]; then
+  ARCH_TYPE="${POSITIONAL_ARGS[0]}"
+fi
 
 if [[ "$ARCH_TYPE" != "cpu" && "$ARCH_TYPE" != "gpu" ]]; then
     echo "Invalid '--device' type. Check -h|--help for further details."
