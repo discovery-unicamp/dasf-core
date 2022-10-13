@@ -67,3 +67,4 @@ The table below is a list of supported machine learning algorithms by DASF frame
 | PCA                      |    X    |    X    |       X       |       X       | dasf.ml.decomposition |
 | SVM                      |    X    |    X    |               |               |      dasf.ml.svm      |
 | Boosted Trees            |    X    |    X    |       X       |       X       |    dasf.ml.xgboost    |
+| KNN                      |    X    |    X    |               |               |   dasf.ml.neighbors   |
