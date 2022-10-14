@@ -30,38 +30,33 @@ class TorchDataLoader(pl.LightningDataModule):
         self._batch_size = batch_size
 
     def prepare_data(self):
-        if self._train and hasattr(self._train, "download"):
+        if self._train is not None and hasattr(self._train, "download"):
             self._train.download()
 
-        if self._val and hasattr(self._val, "download"):
+        if self._val is not None and hasattr(self._val, "download"):
             self._val.download()
 
-        if self._test and hasattr(self._test, "download"):
+        if self._test is not None and hasattr(self._test, "download"):
             self._test.download()
 
-    def train_dataloader(self):
-        if hasattr(self._train, "load"):
-            in_train = self._train.load()
-        else:
-            in_train = self._train
+    def setup(self, stage=None):
+        if self._train is not None and hasattr(self._train, "load"):
+            self._train.load()
 
-        return DataLoader(in_train, batch_size=self._batch_size)
+        if self._val is not None and hasattr(self._val, "load"):
+            self._val.load()
+
+        if self._test is not None and hasattr(self._test, "load"):
+            self._test.load()
+
+    def train_dataloader(self):
+        return DataLoader(self._train, batch_size=self._batch_size)
 
     def val_dataloader(self):
-        if hasattr(self._val, "load"):
-            in_val = self._val.load()
-        else:
-            in_val = self._val
-
-        return DataLoader(in_val, batch_size=self._batch_size)
+        return DataLoader(self._val, batch_size=self._batch_size)
 
     def test_dataloader(self):
-        if hasattr(self._test, "load"):
-            in_test = self._test.load()
-        else:
-            in_test = self._test
-
-        return DataLoader(in_test, batch_size=self._batch_size)
+        return DataLoader(self._test, batch_size=self._batch_size)
 
 
 def run_dask_clustered(func, client=None, **kwargs):
@@ -106,7 +101,7 @@ def fit(
         num_nodes=nodes,
     )
 
-    trainer.fit(model, dataloader)
+    trainer.fit(model, datamodule=dataloader)
 
 
 class NeuralNetClassifier(Fit):
@@ -161,7 +156,7 @@ class NeuralNetClassifier(Fit):
             max_epochs=self._max_iter, accelerator=accel, gpus=ngpus
         )
 
-        self.__trainer.fit(self._model, dataloader)
+        self.__trainer.fit(self._model, datamodule=dataloader)
 
     def _fit_gpu(self, X, y=None):
         self.__fit_generic(X, y, "gpu", len(get_gpu_count()))
