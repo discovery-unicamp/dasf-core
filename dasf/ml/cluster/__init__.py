@@ -4,13 +4,15 @@ from dasf.ml.cluster.agglomerative import AgglomerativeClustering  # noqa
 from dasf.ml.cluster.kmeans import KMeans  # noqa
 from dasf.ml.cluster.dbscan import DBSCAN  # noqa
 from dasf.ml.cluster.som import SOM  # noqa
+from dasf.ml.cluster.spectral import SpectralClustering  # noqa
 
 
 cluster_methods = [
     "AgglomerativeClustering",
     "KMeans",
     "DBSCAN",
-    "SOM"
+    "SOM",
+    "SpectralClustering"
 ]
 
 # XXX: Import due to CVE-2022-21797
