@@ -177,7 +177,7 @@ def is_dask_supported():
             if hasattr(cur, 'dtype'):
                 return is_executor_cluster(cur.dtype)
             return cur is not None
-    except:
+    except Exception:
         return False
 
 

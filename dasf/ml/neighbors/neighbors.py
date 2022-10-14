@@ -48,6 +48,6 @@ class NearestNeighbors(Fit, GetParams, SetParams):
 
     def _get_params_cpu(self, deep=True, **kwargs):
         return self.__nn_cpu.get_params(deep=deep)
-        
+
     def _set_params_cpu(self, **params):
         return self.__nn_cpu.set_params(**params)

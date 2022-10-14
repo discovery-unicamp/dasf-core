@@ -17,9 +17,9 @@ from pytorch_lightning import LightningModule
 
 class MyAccuracy(Metric):
     def __init__(self, dist_sync_on_step=False):
-        # call `self.add_state`for every internal state that is needed for the metrics computations
-        # dist_reduce_fx indicates the function that should be used to reduce
-        # state from multiple processes
+        # call `self.add_state`for every internal state that is needed for the
+        # metrics computations dist_reduce_fx indicates the function that
+        # should be used to reduce state from multiple processes
         super().__init__(dist_sync_on_step=dist_sync_on_step)
 
         self.add_state("correct", default=torch.tensor(0), dist_reduce_fx="sum")
@@ -392,7 +392,7 @@ class TorchPatchDeConvNet(NNModule):
         i_layer = 0
         # copy convolutional filters from vgg16
         for idx, conv_block in enumerate(blocks):
-            for l1, l2 in zip(features[ranges[idx][0] : ranges[idx][1]], conv_block):
+            for l1, l2 in zip(features[ranges[idx][0]:ranges[idx][1]], conv_block):
                 if isinstance(l1, Conv2d) and isinstance(l2, Conv2d):
                     if i_layer == 0:
                         l2.weight.data = (
@@ -697,7 +697,7 @@ class TorchPatchDeConvNetSkip(NNModule):
         i_layer = 0
         # copy convolutional filters from vgg16
         for idx, conv_block in enumerate(blocks):
-            for l1, l2 in zip(features[ranges[idx][0] : ranges[idx][1]], conv_block):
+            for l1, l2 in zip(features[ranges[idx][0]:ranges[idx][1]], conv_block):
                 if isinstance(l1, Conv2d) and isinstance(l2, Conv2d):
                     if i_layer == 0:
                         l2.weight.data = (
@@ -1002,7 +1002,7 @@ class TorchSectionDeConvNet(NNModule):
         i_layer = 0
         # copy convolutional filters from vgg16
         for idx, conv_block in enumerate(blocks):
-            for l1, l2 in zip(features[ranges[idx][0] : ranges[idx][1]], conv_block):
+            for l1, l2 in zip(features[ranges[idx][0]:ranges[idx][1]], conv_block):
                 if isinstance(l1, Conv2d) and isinstance(l2, Conv2d):
                     if i_layer == 0:
                         l2.weight.data = (
@@ -1307,7 +1307,7 @@ class TorchSectionDeConvNetSkip(NNModule):
         i_layer = 0
         # copy convolutional filters from vgg16
         for idx, conv_block in enumerate(blocks):
-            for l1, l2 in zip(features[ranges[idx][0] : ranges[idx][1]], conv_block):
+            for l1, l2 in zip(features[ranges[idx][0]:ranges[idx][1]], conv_block):
                 if isinstance(l1, Conv2d) and isinstance(l2, Conv2d):
                     if i_layer == 0:
                         l2.weight.data = (

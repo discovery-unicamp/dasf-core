@@ -8,7 +8,6 @@ import numpy.lib.format
 import dask.array as da
 
 from numbers import Number
-from numpy.lib.mixins import NDArrayOperatorsMixin
 
 try:
     import cupy as cp
