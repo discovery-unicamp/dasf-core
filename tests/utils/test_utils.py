@@ -62,12 +62,9 @@ class TestArchitetures(unittest.TestCase):
         self.assertTrue(is_dask_supported())
 
     @patch('dask.distributed.Client.current', return_value=Mock())
-    def test_is_dask_supported_remote_true(self, client_current):
+    @patch('dasf.utils.utils.is_executor_cluster', return_value=True)
+    def test_is_dask_supported_remote_true(self, client_current, is_executor_cluster):
         self.assertTrue(is_dask_supported())
-
-    def test_is_dask_tasks_supported_false(self):
-        os.environ["DASK_TASKS"] = "1"
-        self.assertFalse(is_dask_supported())
 
     @patch('dask.config.get', side_effect=Exception('Test'))
     @patch('dask.distributed.Client.current', side_effect=Exception('Test'))

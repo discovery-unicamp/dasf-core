@@ -175,12 +175,9 @@ def is_dask_supported():
         else:
             cur = get_dask_running_client()
             if hasattr(cur, 'dtype'):
-                if is_executor_cluster(cur.dtype):
-                    return True
-                return False
-            else:
-                return cur is not None
-    except Exception:
+                return is_executor_cluster(cur.dtype)
+            return cur is not None
+    except:
         return False
 
 
