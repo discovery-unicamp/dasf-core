@@ -159,6 +159,12 @@ class Transform:
         return model.transform(X=X, **kwargs)
 
 
+class TargeteredTransform:
+    def __init__(self, run_local=None, run_gpu=None):
+        self._run_local = run_local
+        self._run_gpu = run_gpu
+
+
 class MappedTransform(Transform):
     def __init__(
         self,

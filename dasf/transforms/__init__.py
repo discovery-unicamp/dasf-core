@@ -8,6 +8,7 @@ from dasf.transforms.memory import PersistDaskData, LoadDaskData  # noqa
 from dasf.transforms.base import Fit, FitPredict, FitTransform  # noqa
 from dasf.transforms.base import Predict, GetParams, SetParams  # noqa
 from dasf.transforms.base import Transform  # noqa
+from dasf.transforms.base import TargeteredTransform  # noqa
 from dasf.transforms.base import MappedTransform  # noqa
 
 
@@ -19,6 +20,7 @@ __all__ = [
     "GetParams",
     "SetParams"
     "Transform",
+    "TargeteredTransform",
     "MappedTransform",
     "Normalize",
     "ArraysToDataFrame",

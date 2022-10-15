@@ -18,7 +18,17 @@ def task_handler(func):
         func_type = ""
         arch = "cpu"
 
-        if is_dask_gpu_supported():
+        if hasattr(cls, "_run_local") and cls._run_local is not None:
+            if hasattr(cls, "_run_gpu") and cls._run_gpu is not None:
+                if cls._run_gpu is False:
+                    arch = "cpu"
+                elif cls._run_gpu is True:
+                    arch = "gpu"
+
+            if cls._run_local is False:
+                func_type = "_lazy"
+
+        elif is_dask_gpu_supported():
             arch = "gpu"
             func_type = "_lazy"
         elif is_dask_supported():
@@ -26,6 +36,12 @@ def task_handler(func):
             func_type = "_lazy"
         elif is_gpu_supported():
             arch = "gpu"
+
+        print(hasattr(cls, "_run_local") and cls._run_local is not None)
+        print(hasattr(cls, "_run_gpu") and cls._run_gpu is not None)
+        print(is_dask_gpu_supported())
+        print(is_dask_supported())
+        print(is_gpu_supported())
 
         wrapper_func_attr = f"{func_type}_{func_name}_{arch}"
 
