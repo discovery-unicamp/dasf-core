@@ -14,7 +14,7 @@ except ImportError:
 
 from typing import Union, get_args
 
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 
 
 ArrayCPU = Union[list, np.ndarray]

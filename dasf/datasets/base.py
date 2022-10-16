@@ -16,7 +16,7 @@ except ImportError:
 
 from pathlib import Path
 
-from dasf.utils import utils
+from dasf.utils.funcs import human_readable_size
 from dasf.utils.decorators import task_handler
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dask_array
@@ -206,7 +206,7 @@ class DatasetArray(Dataset):
         return self.__npy_header()[0]
 
     def inspect_metadata(self):
-        array_file_size = utils.human_readable_size(
+        array_file_size = human_readable_size(
             os.path.getsize(self._root_file), decimal=2
         )
 

@@ -5,7 +5,6 @@ import graphviz
 
 import networkx as nx
 
-from dasf.utils import utils
 from dasf.utils.logging import init_logging
 
 
@@ -90,7 +89,9 @@ class Pipeline:
         return self
 
     def visualize(self, filename=None):
-        if utils.is_notebook():
+        from dasf.utils.funcs import is_notebook
+
+        if is_notebook():
             return self._dag_g
         return self._dag_g.view(filename)
 

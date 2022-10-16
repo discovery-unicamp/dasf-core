@@ -15,9 +15,9 @@ from dask_jobqueue import PBSCluster
 
 from dasf.pipeline.types import TaskExecutorType
 from dasf.pipeline.executors.base import Executor
-from dasf.utils.utils import is_dask_gpu_supported
-from dasf.utils.utils import get_dask_gpu_count
-from dasf.utils.utils import get_worker_info
+from dasf.utils.funcs import is_dask_gpu_supported
+from dasf.utils.funcs import get_dask_gpu_count
+from dasf.utils.funcs import get_worker_info
 
 
 class DaskPipelineExecutor(Executor):

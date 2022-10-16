@@ -6,7 +6,7 @@ import dask.array as da
 from dasf.utils.decorators import task_handler
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_dask_dataframe
-from dasf.utils.utils import block_chunk_reduce
+from dasf.utils.funcs import block_chunk_reduce
 
 
 class Fit:

@@ -19,7 +19,7 @@ from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
 from dasf.utils.types import is_dask_gpu_array
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 
 
 class TestKMeans(unittest.TestCase):
