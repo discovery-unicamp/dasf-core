@@ -20,10 +20,12 @@ from dasf.utils.funcs import human_readable_size
 from dasf.utils.decorators import task_handler
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dask_array
+from dasf.transforms.base import TargeteredTransform
 
 
-class Dataset(object):
-    def __init__(self, name, download=False, root=None):
+class Dataset(TargeteredTransform):
+    def __init__(self, name, download=False, root=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         # Dataset internals
         self._name = name

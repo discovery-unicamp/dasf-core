@@ -42,8 +42,6 @@ class SpectralClustering(ClusterClassifier):
             kernel_params=kernel_params,
             n_jobs=n_jobs,
             n_components=n_components,
-            persist_embedding=persist_embedding,
-            kmeans_params=kmeans_params,
         )
 
         self.__sc_mcpu = SpectralClustering_MCPU(
@@ -66,7 +64,7 @@ class SpectralClustering(ClusterClassifier):
         )
 
     def _fit_cpu(self, X, y=None, sample_weight=None):
-        return self.__sc_cpu.fit(X=X, y=y, sample_weight=sample_weight)
+        return self.__sc_cpu.fit(X=X, y=y)
 
     def _lazy_fit_predict_cpu(self, X, y=None, sample_weight=None):
         return self.__sc_mcpu.fit_predict(X=X)

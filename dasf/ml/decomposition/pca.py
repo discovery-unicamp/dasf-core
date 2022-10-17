@@ -5,6 +5,7 @@ from dask_ml.decomposition import PCA as PCA_MCPU
 
 from dasf.utils.funcs import is_gpu_supported
 from dasf.transforms.base import Fit, FitTransform
+from dasf.transforms.base import TargeteredTransform
 
 try:
     from cuml.decomposition import PCA as PCA_GPU
@@ -13,7 +14,7 @@ except ImportError:
     pass
 
 
-class PCA(Fit, FitTransform):
+class PCA(Fit, FitTransform, TargeteredTransform):
     def __init__(
         self,
         n_components=None,
@@ -24,7 +25,11 @@ class PCA(Fit, FitTransform):
         tol=0.0,
         iterated_power="auto",
         random_state=None
+        *args,
+        **kwargs
     ):
+        TargeteredTransform.__init__(self, *args, **kwargs)
+
         self.__pca_cpu = PCA_CPU(
             n_components=n_components,
             copy=copy,

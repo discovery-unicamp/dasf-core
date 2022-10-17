@@ -13,7 +13,6 @@ from mock import patch, Mock
 
 from dasf.utils.decorators import fetch_args_from_dask
 from dasf.utils.decorators import fetch_args_from_gpu
-from dasf.utils.decorators import what
 from dasf.utils.funcs import is_gpu_supported
 from dasf.utils.funcs import is_dask_supported
 from dasf.utils.funcs import is_dask_gpu_supported
@@ -117,7 +116,7 @@ class TestTaskHandler(unittest.TestCase):
         self.assertEqual(simple_transform.transform(X), 1)
 
     @patch('dasf.utils.decorators.is_dask_supported', Mock(return_value=True))
-    @patch('dasf.utils.decorators.is_dask_gpu_supported', Mock(return_value=True))
+    @patch('dasf.utils.decorators.is_dask_gpu_supported', Mock(return_value=False))
     def test_task_handler_cpu(self):
         simple_transform = self.generate_simple_transform()
 

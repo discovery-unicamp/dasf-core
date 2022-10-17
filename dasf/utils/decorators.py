@@ -9,9 +9,16 @@ from dasf.utils.funcs import is_dask_supported
 from dasf.utils.funcs import is_dask_gpu_supported
 
 
-def what():
-    print(is_dask_supported())
-    return 1
+def is_forced_local(cls):
+    if hasattr(cls, "_run_local") and cls._run_local is not None:
+        return cls._run_local
+    return None
+
+
+def is_forced_gpu(cls):
+    if hasattr(cls, "_run_gpu") and cls._run_gpu is not None:
+        return cls._run_gpu
+    return None
 
 
 def task_handler(func):
@@ -23,27 +30,10 @@ def task_handler(func):
         func_type = ""
         arch = "cpu"
 
-        if (hasattr(cls, "_run_local") and cls._run_local is not None) or \
-           (hasattr(cls, "_run_gpu") and cls._run_gpu is not None):
-            if hasattr(cls, "_run_local") and cls._run_local is not None:
-                if cls._run_local is True:
-                    func_type = ""
-                elif cls._run_local is False:
-                    func_type = "_lazy"
-
-            if hasattr(cls, "_run_gpu") and cls._run_gpu is not None:
-                if cls._run_gpu is False:
-                    arch = "cpu"
-                elif cls._run_gpu is True:
-                    arch = "gpu"
-
-        elif is_dask_gpu_supported():
-            arch = "gpu"
+        if not is_forced_local(cls) and (is_dask_gpu_supported() or is_dask_supported()):
             func_type = "_lazy"
-        elif is_dask_supported():
-            arch = "cpu"
-            func_type = "_lazy"
-        elif is_gpu_supported():
+
+        if is_forced_gpu(cls) or is_dask_gpu_supported() or is_gpu_supported():
             arch = "gpu"
 
         wrapper_func_attr = f"{func_type}_{func_name}_{arch}"
