@@ -6,7 +6,8 @@ files = [
     "DatasetType",
     "Dataset",
     "DatasetArray",
-    "DatasetLoader",
+    "DatasetZarr",
+    "DatasetLabeled",
     # Others
     "make_blobs",
 ]

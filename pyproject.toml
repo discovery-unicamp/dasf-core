@@ -41,6 +41,7 @@ pytorch-lightning = "*"
 sklearn = "*"
 torchvision = "*"
 xgboost = "*"
+zarr = "*"
 wget = "*"
 
 xpysom = { git = "https://github.com/jcfaracco/xpysom/", branch = "dask2" }

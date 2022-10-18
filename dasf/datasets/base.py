@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import zarr
 import dask
 
 import numpy as np
@@ -218,6 +219,40 @@ class DatasetArray(Dataset):
             "shape": npy_shape,
             "block": {"chunks": self.__chunks},
         }
+
+
+class DatasetZarr(Dataset):
+    def __init__(self, name, download=False, root=None, chunks=True):
+
+        Dataset.__init__(self, name, download, root)
+
+        self.__chunks = chunks
+
+        self._root_file = root
+
+        if root is not None:
+            if not os.path.isfile(root):
+                raise Exception("Zarr requires a root=filename.")
+
+            self._root = os.path.dirname(root)
+
+    def _lazy_load(self):
+        return da.from_zarr(self._root_file, chunks=self.__chunks)
+
+    def _load(self):
+        return zarr.open(self._root_file, mode='r')
+
+    def _lazy_load_cpu(self):
+        self._data = self._lazy_load(np)
+        return self
+
+    def _load_cpu(self):
+        self._data = self._load(cp)
+        return self
+
+    @task_handler
+    def load(self):
+        ...
 
 
 class DatasetLabeled(Dataset):
