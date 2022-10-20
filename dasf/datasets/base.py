@@ -232,27 +232,60 @@ class DatasetZarr(Dataset):
 
         if root is not None:
             if not os.path.isfile(root):
-                raise Exception("Zarr requires a root=filename.")
+                self._root = root
+            else:
+                self._root = os.path.dirname(root)
 
-            self._root = os.path.dirname(root)
-
-    def _lazy_load(self):
-        return da.from_zarr(self._root_file, chunks=self.__chunks)
+    def _lazy_load(self, xp):
+        return da.from_zarr(self._root_file, chunks=self.__chunks).map_blocks(xp.asarray)
 
     def _load(self):
         return zarr.open(self._root_file, mode='r')
 
     def _lazy_load_cpu(self):
+        self._metadata = self._load_meta()
         self._data = self._lazy_load(np)
         return self
 
+    def _lazy_load_gpu(self):
+        self._metadata = self._load_meta()
+        self._data = self._lazy_load(cp)
+        return self
+
     def _load_cpu(self):
-        self._data = self._load(cp)
+        self._metadata = self._load_meta()
+        self._data = self._load()
         return self
 
     @task_handler
     def load(self):
         ...
+
+    def _load_meta(self):
+        assert self._root_file is not None, "There is no temporary file to inspect"
+
+        return self.inspect_metadata()
+
+    def inspect_metadata(self):
+        z = zarr.open(self._root_file, mode='r')
+
+        info = dict()
+        for k, v in z.info_items():
+            info[k] = v
+
+        if isinstance(self.__chunks, bool) and self.__chunks:
+            self.__chunks = info["Chunk shape"]
+
+        return {
+            "size": utils.human_readable_size(
+                int(info["No. bytes"].split(' ')[0])
+            ),
+            "compressor": info["Compressor"],
+            "type": info["Store type"],
+            "file": self._root_file,
+            "shape": info["Shape"],
+            "block": {"chunks": self.__chunks},
+        }
 
 
 class DatasetLabeled(Dataset):
