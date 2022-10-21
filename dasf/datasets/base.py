@@ -2,6 +2,7 @@
 
 import os
 import zarr
+import h5py
 import dask
 
 import numpy as np
@@ -284,6 +285,76 @@ class DatasetZarr(Dataset):
             "type": info["Store type"],
             "file": self._root_file,
             "shape": info["Shape"],
+            "block": {"chunks": self.__chunks},
+        }
+
+
+class DatasetHDF5(Dataset):
+    def __init__(self, name, download=False, root=None, chunks="auto", path=None):
+
+        Dataset.__init__(self, name, download, root)
+
+        self.__chunks = chunks
+
+        self._root_file = root
+
+        self._path = path
+
+        if root is not None:
+            if not os.path.isfile(root):
+                raise Exception("HDF5 requires a root=filename.")
+
+            self._root = os.path.dirname(root)
+
+        if path is None:
+            raise Exception("HDF5 requires a path.")
+
+    def _lazy_load(self, xp):
+        f = h5py.File(self._root_file)
+        data = f[self._path]
+        return da.from_array(self._root_file, chunks=self.__chunks, meta=xp.array(()))
+
+    def _load(self):
+        f = h5py.File(self._root_file)
+        return f[self._path]
+
+    def _lazy_load_cpu(self):
+        self._metadata = self._load_meta()
+        self._data = self._lazy_load(np)
+        return self
+
+    def _lazy_load_gpu(self):
+        self._metadata = self._load_meta()
+        self._data = self._lazy_load(cp)
+        return self
+
+    def _load_cpu(self):
+        self._metadata = self._load_meta()
+        self._data = self._load()
+        return self
+
+    @task_handler
+    def load(self):
+        ...
+
+    def _load_meta(self):
+        assert self._root_file is not None, "There is no temporary file to inspect"
+        assert self._path is not None, "There is no path to fetch data"
+
+        return self.inspect_metadata()
+
+    def inspect_metadata(self):
+        f = h5py.File(self._root_file)
+        data = f[self._path]
+
+        array_file_size = utils.human_readable_size(
+            data.size, decimal=2
+        )
+
+        return {
+            "size": array_file_size,
+            "file": self._root_file,
+            "shape": data.shape,
             "block": {"chunks": self.__chunks},
         }
 
