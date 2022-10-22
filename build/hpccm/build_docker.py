@@ -2,8 +2,11 @@
 HPC Container Maker for DASF core
 """
 
+def str2bool(string):
+    return string.lower() in ['true', '1', 't', 'y', 'yes']
+
 device_target = USERARG.get('device-target', 'gpu')
-is_devel = USERARG.get('devel', False)
+is_devel = str2bool(USERARG.get('devel', 'False'))
 
 if is_devel:
     # Devel packages always use the latest CUDA version

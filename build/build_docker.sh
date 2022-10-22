@@ -11,6 +11,10 @@ CUDA_VERSION="11.2"
 UBUNTU_VERSION="20.04"
 DOCKERFILE_DIR=docker/
 
+# For local hpccm installs
+OLD_PATH=$PATH
+export PATH=$PATH:$HOME/.local/bin/
+
 function print_help() {
     echo "Usage: ./build_docker.sh [ARCH_TYPE]"
     echo ""
@@ -112,10 +116,12 @@ hpccm --recipe hpccm/build_docker.py \
 
 if [[ "$FORMAT" == "docker" ]]; then
     FIND_CMD docker "Docker binaries are not found."
-    docker build $DOCKERFILE_DIR
+    docker build $DOCKERFILE_DIR -t dasf:latest
 else
     FIND_CMD singularity "Singularity binaries are not found."
     singularity build dasf.sif $DOCKERFILE_DIR/$OUTPUT_FILE
 fi
 
 rm -rf $DOCKERFILE_DIR
+
+export PATH=$OLD_PATH
