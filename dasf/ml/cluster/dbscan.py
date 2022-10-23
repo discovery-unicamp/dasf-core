@@ -3,7 +3,7 @@
 from sklearn.cluster import DBSCAN as DBSCAN_CPU
 
 from dasf.ml.cluster.classifier import ClusterClassifier
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 
 try:
     from cuml.cluster import DBSCAN as DBSCAN_GPU

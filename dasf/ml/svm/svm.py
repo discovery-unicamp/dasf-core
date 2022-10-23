@@ -13,7 +13,7 @@ try:
 except ImportError:
     pass
 
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 from dasf.transforms.base import Fit
 from dasf.transforms.base import Predict
 from dasf.transforms.base import GetParams

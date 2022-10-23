@@ -9,9 +9,9 @@ try:
 except ImportError:
     pass
 
-from dasf.utils.utils import is_gpu_supported
-from dasf.utils.utils import is_dask_supported
-from dasf.utils.utils import is_dask_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
+from dasf.utils.funcs import is_dask_supported
+from dasf.utils.funcs import is_dask_gpu_supported
 
 
 class make_blobs:

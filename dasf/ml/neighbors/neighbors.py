@@ -2,7 +2,7 @@
 
 from sklearn.neighbors import NearestNeighbors as NearestNeighbors_CPU
 
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 from dasf.transforms.base import Fit
 from dasf.transforms.base import GetParams
 from dasf.transforms.base import SetParams

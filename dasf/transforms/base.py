@@ -6,7 +6,7 @@ import dask.array as da
 from dasf.utils.decorators import task_handler
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_dask_dataframe
-from dasf.utils.utils import block_chunk_reduce
+from dasf.utils.funcs import block_chunk_reduce
 
 
 class Fit:
@@ -157,6 +157,14 @@ class Transform:
     @staticmethod
     def transform_from_model(model, X, **kwargs):
         return model.transform(X=X, **kwargs)
+
+
+class TargeteredTransform(Transform):
+    def __init__(self, run_local=None, run_gpu=None):
+        super().__init__()
+
+        self._run_local = run_local
+        self._run_gpu = run_gpu
 
 
 class MappedTransform(Transform):

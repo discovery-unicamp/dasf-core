@@ -8,7 +8,7 @@ from dasf.transforms import Fit
 from dasf.transforms import Predict
 from dasf.transforms import FitPredict
 
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 
 
 class XGBoost(Fit, FitPredict, Predict):

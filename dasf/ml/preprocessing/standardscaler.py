@@ -3,7 +3,7 @@
 from sklearn.preprocessing import StandardScaler as StandardScaler_CPU
 from dask_ml.preprocessing import StandardScaler as StandardScaler_MCPU
 
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 
 try:
     from cuml.preprocessing import StandardScaler as StandardScaler_GPU

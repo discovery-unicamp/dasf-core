@@ -4,9 +4,21 @@ from functools import wraps
 
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_gpu_array
-from dasf.utils.utils import is_gpu_supported
-from dasf.utils.utils import is_dask_supported
-from dasf.utils.utils import is_dask_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
+from dasf.utils.funcs import is_dask_supported
+from dasf.utils.funcs import is_dask_gpu_supported
+
+
+def is_forced_local(cls):
+    if hasattr(cls, "_run_local") and cls._run_local is not None:
+        return cls._run_local
+    return None
+
+
+def is_forced_gpu(cls):
+    if hasattr(cls, "_run_gpu") and cls._run_gpu is not None:
+        return cls._run_gpu
+    return None
 
 
 def task_handler(func):
@@ -18,13 +30,10 @@ def task_handler(func):
         func_type = ""
         arch = "cpu"
 
-        if is_dask_gpu_supported():
-            arch = "gpu"
+        if not is_forced_local(cls) and (is_dask_gpu_supported() or is_dask_supported()):
             func_type = "_lazy"
-        elif is_dask_supported():
-            arch = "cpu"
-            func_type = "_lazy"
-        elif is_gpu_supported():
+
+        if is_forced_gpu(cls) or is_dask_gpu_supported() or is_gpu_supported():
             arch = "gpu"
 
         wrapper_func_attr = f"{func_type}_{func_name}_{arch}"

@@ -8,12 +8,14 @@ try:
 except ImportError:
     pass
 
-from dasf.transforms.base import Transform
+from dasf.transforms.base import TargeteredTransform
 
 
-class Histogram(Transform):
+class Histogram(TargeteredTransform):
     def __init__(self, bins=None, range=None, normed=False, weights=None,
-                 density=None):
+                 density=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         self._bins = bins
         self._range = range
         self._normed = normed

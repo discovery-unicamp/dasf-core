@@ -28,7 +28,7 @@ from dasf.utils.types import is_dask_gpu_dataframe
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_dask_dataframe
 from dasf.utils.types import is_dask
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 
 
 class TestTypes(unittest.TestCase):

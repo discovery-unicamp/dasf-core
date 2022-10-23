@@ -8,12 +8,12 @@ import pytorch_lightning as pl
 
 from dask_pytorch_ddp.results import DaskResultsHandler
 
-from dasf.utils import utils
 from dasf.ml.dl.clusters import DaskClusterEnvironment
-from dasf.utils.utils import get_gpu_count
-from dasf.utils.utils import get_dask_gpu_count
-from dasf.utils.utils import get_worker_info
-from dasf.utils.utils import get_dask_running_client
+from dasf.utils.funcs import get_gpu_count
+from dasf.utils.funcs import get_dask_gpu_count
+from dasf.utils.funcs import get_worker_info
+from dasf.utils.funcs import get_dask_running_client
+from dasf.utils.funcs import sync_future_loop
 from dasf.transforms.base import Fit
 
 
@@ -66,7 +66,7 @@ def run_dask_clustered(func, client=None, **kwargs):
     for worker in all_workers:
         futures = client.submit(func, **kwargs, workers=[worker["worker"]])
 
-    utils.sync_future_loop(futures)
+    sync_future_loop(futures)
 
 
 def fit(
