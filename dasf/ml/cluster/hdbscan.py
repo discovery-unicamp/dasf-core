@@ -53,13 +53,13 @@ class HDBSCAN(ClusterClassifier):
             )
 
     def _fit_cpu(self, X, y=None):
-        self.__hdbscan_cpu.fit(X=X, y=y)
+        return self.__hdbscan_cpu.fit(X=X, y=y)
 
     def _fit_gpu(self, X, y=None, convert_dtype=True):
-        self.__hdbscan_gpu.fit(X=X, y=y, convert_dtype=convert_dtype)
+        return self.__hdbscan_gpu.fit(X=X, y=y, convert_dtype=convert_dtype)
 
     def _fit_predict_cpu(self, X, y=None):
-        self.__hdbscan_cpu.fit_predict(X=X, y=y)
+        return self.__hdbscan_cpu.fit_predict(X=X, y=y)
 
     def _fit_predict_gpu(self, X, y=None):
-        self.__hdbscan_gpu.fit_predict(X=X, y=y)
+        return self.__hdbscan_gpu.fit_predict(X=X, y=y)

@@ -14,7 +14,7 @@ except ImportError:
 
 from sklearn.datasets import make_blobs
 
-from dasf.ml.cluster import KMeans
+from dasf.ml.cluster import DBSCAN
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
@@ -22,7 +22,7 @@ from dasf.utils.types import is_dask_gpu_array
 from dasf.utils.funcs import is_gpu_supported
 
 
-class TestKMeans(unittest.TestCase):
+class TestDBSCAN(unittest.TestCase):
     def setUp(self):
         self.size = 1000
         self.centers = 3
@@ -46,67 +46,48 @@ class TestKMeans(unittest.TestCase):
 
         return y1, y2
 
-    def test_kmeans_cpu(self):
-        kmeans = KMeans(n_clusters=self.centers, max_iter=300)
+    def test_dbscan_cpu(self):
+        sc = DBSCAN()
 
-        kmeans._fit_cpu(self.X)
-
-        y = kmeans._predict_cpu(self.X)
-
+        y = sc._fit_predict_cpu(self.X)
+        
         self.assertTrue(is_cpu_array(y))
 
         y1, y2 = self.__match_randomly_labels_created(y, self.y)
 
-        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
-
-    def test_kmeans_mcpu(self):
-        kmeans = KMeans(n_clusters=self.centers, max_iter=300)
-
-        da_X = da.from_array(self.X)
-
-        kmeans._lazy_fit_cpu(da_X)
-
-        y = kmeans._lazy_predict_cpu(da_X)
-
-        self.assertTrue(is_dask_cpu_array(y))
-
-        y1, y2 = self.__match_randomly_labels_created(y.compute(), self.y)
-
-        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+        self.assertTrue(float(len(np.where(y1 != y2)[0])/len(y1))*100 < 5.0)
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
-    def test_kmeans_gpu(self):
-        kmeans = KMeans(n_clusters=self.centers, max_iter=100)
+    def test_dbscan_gpu(self):
+        # For GPUs we need to specify which data we are handling with `output_type`.
+        sc = DBSCAN(output_type='cupy')
 
-        cp_X = cp.asarray(self.X)
-
-        kmeans._fit_gpu(cp_X)
-
-        y = kmeans._predict_gpu(cp_X)
+        y = sc._fit_predict_gpu(self.X)
 
         self.assertTrue(is_gpu_array(y))
 
         y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
-
-        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+        
+        self.assertTrue(float(len(np.where(y1 != y2)[0])/len(y1))*100 < 5.0)
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
-    def test_kmeans_mgpu(self):
+    def test_dbscan_mgpu(self):
         # KMeans for Multi GPUs requires a client
         client = Client(LocalCUDACluster())
 
-        kmeans = KMeans(n_clusters=self.centers, max_iter=100)
+        # For GPUs we need to specify which data we are handling with `output_type`.
+        sc = DBSCAN(output_type='cupy')
 
-        da_X = da.from_array(cp.asarray(self.X))
+        cp_X = cp.asarray(self.X)
 
-        kmeans._lazy_fit_gpu(da_X)
+        y = sc._lazy_fit_predict_gpu(cp_X)
+        
+        print(type(y))
 
-        y = kmeans._lazy_predict_gpu(da_X)
+        self.assertTrue(is_gpu_array(y))
 
-        self.assertTrue(is_dask_gpu_array(y))
-
-        y1, y2 = self.__match_randomly_labels_created(y.compute().get(), self.y)
-
-        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+        y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
+        
+        self.assertTrue(float(len(np.where(y1 != y2)[0])/len(y1))*100 < 5.0)     

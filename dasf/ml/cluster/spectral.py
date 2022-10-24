@@ -21,10 +21,11 @@ class SpectralClustering(ClusterClassifier):
         degree=3,
         coef0=1,
         kernel_params=None,
-        n_jobs=1,
-        n_components=100,
+        n_jobs=None,
+        n_components=None,
         persist_embedding=False,
         kmeans_params=None,
+        verbose=False
     ):
 
         self.__sc_cpu = SpectralClustering_CPU(
@@ -42,7 +43,11 @@ class SpectralClustering(ClusterClassifier):
             kernel_params=kernel_params,
             n_jobs=n_jobs,
             n_components=n_components,
+            verbose=verbose
         )
+
+        # If n_components is set to None, use default
+        n_components = 100 if n_components is None else n_components
 
         self.__sc_mcpu = SpectralClustering_MCPU(
             n_clusters=n_clusters,

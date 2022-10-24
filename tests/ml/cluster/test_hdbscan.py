@@ -14,7 +14,7 @@ except ImportError:
 
 from sklearn.datasets import make_blobs
 
-from dasf.ml.cluster import SpectralClustering
+from dasf.ml.cluster import HDBSCAN
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
@@ -22,17 +22,17 @@ from dasf.utils.types import is_dask_gpu_array
 from dasf.utils.funcs import is_gpu_supported
 
 
-class TestSpectralClustering(unittest.TestCase):
+class TestHDBSCAN(unittest.TestCase):
     def setUp(self):
         self.size = 1000
         self.centers = 3
-        self.random_state = 42
+        random_state = 42
 
         self.X, self.y, self.centroids = make_blobs(n_samples=self.size,
                                                     centers=self.centers,
                                                     n_features=2,
                                                     return_centers=True,
-                                                    random_state=self.random_state)
+                                                    random_state=random_state)
 
     def __match_randomly_labels_created(self, y1, y2):
         y2 = (y2 * -1) - 1
@@ -46,29 +46,28 @@ class TestSpectralClustering(unittest.TestCase):
 
         return y1, y2
 
-    def test_spectral_cpu(self):
-        sc = SpectralClustering(n_clusters=self.centers, random_state=self.random_state)
+    def test_hdbscan_cpu(self):
+        sc = HDBSCAN()
 
         y = sc._fit_predict_cpu(self.X)
-
+        
         self.assertTrue(is_cpu_array(y))
 
         y1, y2 = self.__match_randomly_labels_created(y, self.y)
 
-        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+        self.assertTrue(float(len(np.where(y1 != y2)[0])/len(y1))*100 < 5.0)
 
-    def test_spectral_mcpu(self):
-        sc = SpectralClustering(n_clusters=self.centers, random_state=self.random_state)
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_hdbscan_gpu(self):
+        sc = HDBSCAN()
 
-        da_X = da.from_array(self.X)
+        cp_X = cp.asarray(self.X)
 
-        try:
-            y = sc._lazy_fit_predict_cpu(da_X)
-        except TypeError as te:
-            self.skipTest("BUG - SpectralClustering Dask Type Error:", str(te))
+        y = sc._fit_predict_gpu(cp_X)
 
-        self.assertTrue(is_dask_cpu_array(y))
+        self.assertTrue(is_gpu_array(y))
 
-        y1, y2 = self.__match_randomly_labels_created(y.compute(), self.y)
-
-        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+        y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
+        
+        self.assertTrue(float(len(np.where(y1 != y2)[0])/len(y1))*100 < 5.0)

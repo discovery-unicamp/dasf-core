@@ -21,17 +21,15 @@ from dasf.utils.funcs import is_gpu_supported
 
 class TestSOM(unittest.TestCase):
     def setUp(self):
-        self.centers = 6
-        self.size = 300
-
-        # Lets use distant samples for algorithm coherence check
-        cluster_std = np.ones(self.centers) * 0.075
+        self.size = 1000
+        self.centers = 3
+        random_state = 42
 
         self.X, self.y, self.centroids = make_blobs(n_samples=self.size,
-                                                    n_features=2,
-                                                    cluster_std=cluster_std,
                                                     centers=self.centers,
-                                                    return_centers=True)
+                                                    n_features=2,
+                                                    return_centers=True,
+                                                    random_state=random_state)
 
         # We use a fixed seed to avoid outliers between test stanzas
         np.random.seed(1234)
