@@ -18,7 +18,6 @@ class PCA(Fit, FitTransform, TargeteredTransform):
     def __init__(
         self,
         n_components=None,
-        *,
         copy=True,
         whiten=False,
         svd_solver="auto",
