@@ -80,5 +80,5 @@ class TrainTestSplit(Operator):
 
     def run_mgpu(self, X):
         raise NotImplementedError(
-            "Function train_test_split() is not " "implemented for Dask and CuML"
+            "Function train_test_split() is not implemented for Dask and CuML"
         )

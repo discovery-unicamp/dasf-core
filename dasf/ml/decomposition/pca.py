@@ -24,9 +24,9 @@ class PCA(Fit, FitTransform, TargeteredTransform):
         svd_solver="auto",
         tol=0.0,
         iterated_power="auto",
-        random_state=None
+        random_state=None,
         *args,
-        **kwargs
+        **kwargs,
     ):
         TargeteredTransform.__init__(self, *args, **kwargs)
 

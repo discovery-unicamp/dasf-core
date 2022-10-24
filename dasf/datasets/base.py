@@ -170,9 +170,9 @@ class DatasetArray(Dataset):
         return xp.load(self._root_file, **kwargs)
 
     def _load_meta(self):
-        assert self._root_file is not None, "There is no temporary file to " "inspect"
+        assert self._root_file is not None, "There is no temporary file to inspect"
         assert os.path.isfile(self._root_file), (
-            "The root variable should " "be a NPY file"
+            "The root variable should be a NPY file"
         )
 
         return self.inspect_metadata()
@@ -280,7 +280,7 @@ class DatasetZarr(Dataset):
             self.__chunks = info["Chunk shape"]
 
         return {
-            "size": utils.human_readable_size(
+            "size": human_readable_size(
                 int(info["No. bytes"].split(' ')[0])
             ),
             "compressor": info["Compressor"],
@@ -314,7 +314,7 @@ class DatasetHDF5(Dataset):
     def _lazy_load(self, xp):
         f = h5py.File(self._root_file)
         data = f[self._path]
-        return da.from_array(self._root_file, chunks=self.__chunks, meta=xp.array(()))
+        return da.from_array(data, chunks=self.__chunks, meta=xp.array(()))
 
     def _load(self):
         f = h5py.File(self._root_file)
@@ -349,7 +349,7 @@ class DatasetHDF5(Dataset):
         f = h5py.File(self._root_file)
         data = f[self._path]
 
-        array_file_size = utils.human_readable_size(
+        array_file_size = human_readable_size(
             data.size, decimal=2
         )
 
@@ -381,7 +381,7 @@ class DatasetLabeled(Dataset):
 
         assert (
             metadata_train["shape"] == metadata_val["shape"]
-        ), "Train and Labels should have same " "shape: " + str(
+        ), "Train and Labels should have same shape: " + str(
             metadata_train["shape"]
         ) + " != " + str(
             metadata_val["shape"]
@@ -403,16 +403,16 @@ class DatasetLabeled(Dataset):
 
     def _load_meta(self):
         assert self._train._root_file is not None, (
-            "There is no temporary " "file to inspect"
+            "There is no temporary file to inspect"
         )
         assert self._val._root_file is not None, (
-            "There is no temporary " "file to inspect"
+            "There is no temporary file to inspect"
         )
         assert os.path.isfile(self._train._root_file), (
-            "The root variable " "should be a file"
+            "The root variable should be a file"
         )
         assert os.path.isfile(self._val._root_file), (
-            "The root variable " "should be a file"
+            "The root variable should be a file"
         )
 
         return self.inspect_metadata()
