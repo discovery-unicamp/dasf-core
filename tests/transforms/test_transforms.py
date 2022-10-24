@@ -9,7 +9,7 @@ try:
 except ImportError:
     pass
 
-from dasf.ml.preprocessing import StantardScaler
+from dasf.transforms import Normalize
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
@@ -17,7 +17,7 @@ from dasf.utils.types import is_dask_gpu_array
 from dasf.utils.funcs import is_gpu_supported
 
 
-class TestStandardScaler(unittest.TestCase):
+class TestNormalize(unittest.TestCase):
     def setUp(self):
         size = 20
         self.X = np.array([np.arange(size)])
@@ -28,38 +28,38 @@ class TestStandardScaler(unittest.TestCase):
 
         self.y = (self.X - mean) / std
 
-    def test_standardscaler_cpu(self):
-        ss = StantardScaler()
+    def test_normalize_cpu(self):
+        norm = Normalize()
 
-        y = ss._fit_transform_cpu(self.X)
+        y = norm.transform(self.X)
 
         self.assertTrue(is_cpu_array(y))
         self.assertTrue(np.array_equal(self.y, y, equal_nan=True))
 
-    def test_standardscaler_mcpu(self):
-        ss = StantardScaler()
+    def test_normalize_mcpu(self):
+        norm = Normalize()
 
-        y = ss._lazy_fit_transform_cpu(da.from_array(self.X))
+        y = norm.transform(da.from_array(self.X))
 
         self.assertTrue(is_dask_cpu_array(y))
         self.assertTrue(np.array_equal(self.y, y.compute(), equal_nan=True))
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
-    def test_standardscaler_gpu(self):
-        ss = StantardScaler()
+    def test_normalize_gpu(self):
+        norm = Normalize()
 
-        y = ss._fit_transform_gpu(cp.asarray(self.X))
+        y = norm.transform(cp.asarray(self.X))
 
         self.assertTrue(is_gpu_array(y))
         self.assertTrue(np.array_equal(self.y, y.get(), equal_nan=True))
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
-    def test_standardscaler_mgpu(self):
-        ss = StantardScaler()
+    def test_normalize_mgpu(self):
+        norm = Normalize()
 
-        y = ss._lazy_fit_transform_gpu(da.from_array(cp.asarray(self.X)))
+        y = norm.transform(da.from_array(cp.asarray(self.X)))
 
         self.assertTrue(is_dask_gpu_array(y))
         self.assertTrue(np.array_equal(self.y, y.compute().get(), equal_nan=True))
