@@ -18,6 +18,15 @@ try:
 except ImportError:
     pass
 
+from sklearn.datasets import make_regression as make_regression_CPU
+from dask_ml.datasets import make_regression as make_regression_MCPU
+
+try:
+    from cuml.datasets import make_regression as make_regression_GPU
+    from cuml.dask.datasets import make_regression as make_regression_MGPU
+except ImportError:
+    pass
+
 from dasf.utils.funcs import is_gpu_supported
 from dasf.utils.funcs import is_dask_supported
 from dasf.utils.funcs import is_dask_gpu_supported
@@ -83,3 +92,34 @@ class make_classification:
             return self._make_classification_gpu(**kwargs)
         else:
             return self._make_classification_cpu(**kwargs)
+
+
+class make_regression:
+    def __new__(cls, **kwargs):
+        instance = super().__new__(cls)
+        if kwargs is None:
+            return instance
+        else:
+            return instance(**kwargs)
+
+    def _lazy_make_regression_cpu(self, **kwargs):
+        return make_regression_MCPU(**kwargs)
+
+    def _lazy_make_regression_gpu(self, **kwargs):
+        return make_regression_MGPU(**kwargs)
+
+    def _make_regression_cpu(self, **kwargs):
+        return make_regression_CPU(**kwargs)
+
+    def _make_regression_gpu(self, **kwargs):
+        return make_regression_GPU(**kwargs)
+
+    def __call__(self, **kwargs):
+        if is_dask_gpu_supported():
+            return self._lazy_make_regression_gpu(**kwargs)
+        elif is_dask_supported():
+            return self._lazy_make_regression_cpu(**kwargs)
+        elif is_gpu_supported():
+            return self._make_regression_gpu(**kwargs)
+        else:
+            return self._make_regression_cpu(**kwargs)
