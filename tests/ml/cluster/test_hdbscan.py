@@ -14,7 +14,11 @@ except ImportError:
 
 from sklearn.datasets import make_blobs
 
-from dasf.ml.cluster import HDBSCAN
+try:
+    from dasf.ml.cluster import HDBSCAN
+except ImportError:
+    raise unittest.SkipTest("HDBSCAN is probably affected by CVE-2022-21797")
+
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
