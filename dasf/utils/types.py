@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import dask.array as da
 import dask.dataframe as ddf
+import xarray as xr
 
 try:
     import cupy as cp
@@ -25,7 +26,9 @@ DataCPU = Union[ArrayCPU, DataFrameCPU]
 DaskArray = Union[da.core.Array]
 DaskDataFrameCPU = Union[ddf.core.DataFrame]
 
-Array = Union[ArrayCPU, DaskArray]
+XDataArray = Union[xr.DataArray]
+
+Array = Union[ArrayCPU, DaskArray, XDataArray]
 DaskDataFrame = Union[DaskDataFrameCPU]
 DataFrame = Union[DataFrameCPU, DaskDataFrameCPU]
 DataDask = Union[DaskArray, DaskDataFrameCPU]
@@ -124,3 +127,7 @@ def is_dask_dataframe(data):
 
 def is_dask(data):
     return isinstance(data, get_args(DataDask))
+
+
+def is_xarray_array(data):
+    return isinstance(data, XDataArray)

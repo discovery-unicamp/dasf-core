@@ -8,6 +8,7 @@ files = [
     "DatasetArray",
     "DatasetZarr",
     "DatasetHDF5",
+    "DatasetXarray",
     "DatasetLabeled",
     # Others
     "make_blobs",

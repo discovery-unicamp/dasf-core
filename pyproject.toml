@@ -21,6 +21,7 @@ readme="README.md"
 exclude = ["tests/*", "docs/*"]
 
 [tool.poetry.dependencies]
+cupy_xarray = "*"
 dask = "*"
 dask_cuda = "*"
 dask_jobqueue = "*"
@@ -41,6 +42,7 @@ python = "^3.8"
 pytorch-lightning = "*"
 sklearn = "*"
 torchvision = "*"
+xarray = "*"
 xgboost = "*"
 zarr = "*"
 wget = "*"

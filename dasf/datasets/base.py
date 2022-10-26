@@ -8,11 +8,14 @@ import dask
 import numpy as np
 import numpy.lib.format
 import dask.array as da
+import xarray as xr
 
 from numbers import Number
 
 try:
     import cupy as cp
+    # This is just to enable Xarray Cupy capabilities
+    import cupy_xarray as cx   # noqa
 except ImportError:
     pass
 
@@ -361,6 +364,105 @@ class DatasetHDF5(Dataset):
         }
 
 
+class DatasetXarray(Dataset):
+    def __init__(self, name, download=False, root=None, chunks=None, data_var=None):
+        Dataset.__init__(self, name, download, root)
+
+        self.__chunks = chunks
+
+        self._root_file = root
+
+        self._data_var = data_var
+
+        if chunks and not isinstance(chunks, dict):
+            raise Exception("Chunks should be a dict.")
+
+        if root is not None:
+            if not os.path.isfile(root):
+                raise Exception("HDF5 requires a root=filename.")
+
+            self._root = os.path.dirname(root)
+
+    def _lazy_load_cpu(self):
+        assert self.__chunks is not None, "Lazy operations require chunks"
+
+        if self._data_var:
+            self._data = xr.open_dataset(self._root_file,
+                                         chunks=self.__chunks)
+        else:
+            self._data = xr.open_dataarray(self._root_file,
+                                           chunks=self.__chunks)
+        self._metadata = self._load_meta()
+
+    def _lazy_load_gpu(self):
+        assert self.__chunks is not None, "Lazy operations require chunks"
+
+        if self._data_var:
+            self._data = xr.open_dataset(self._root_file,
+                                         chunks=self.__chunks).as_cupy()
+        else:
+            self._data = xr.open_dataarray(self._root_file,
+                                           chunks=self.__chunks).as_cupy()
+        self._metadata = self._load_meta()
+
+    def _load_cpu(self):
+        if self._data_var:
+            self._data = xr.open_dataset(self._root_file)
+        else:
+            self._data = xr.open_dataarray(self._root_file)
+        self._data.load()
+        self._metadata = self._load_meta()
+
+    def _load_gpu(self):
+        if self._data_var:
+            self._data = xr.open_dataset(self._root_file).as_cupy()
+        else:
+            self._data = xr.open_dataarray(self._root_file).as_cupy()
+        self._data.load()
+        self._metadata = self._load_meta()
+
+    @task_handler
+    def load(self):
+        ...
+
+    def _load_meta(self):
+        assert self._root_file is not None, "There is no temporary file to inspect"
+
+        return self.inspect_metadata()
+
+    def inspect_metadata(self):
+        array_file_size = human_readable_size(
+            os.path.getsize(self._root_file), decimal=2
+        )
+
+        return {
+            "size": array_file_size,
+            "file": self._root_file,
+            "coords": tuple(self._data.coords),
+            "attrs": self._data.attrs,
+            "block": {"chunks": self.__chunks},
+        }
+
+    def __len__(self):
+        if self._data is None:
+            raise Exception("Data is not loaded yet")
+
+        if self._data_var:
+            return len(self._data[self._data_var])
+
+        return len(self._data)
+
+    def __getitem__(self, idx):
+        if self._data is None:
+            raise Exception("Data is not loaded yet")
+
+        # Always slice a DataArray
+        if self._data_var:
+            return self._data[self._data_var].data[idx]
+
+        return self._data.data[idx]
+
+
 class DatasetLabeled(Dataset):
     def __init__(self, name, download=False, root=None, chunks="auto"):
 
@@ -438,4 +540,7 @@ class DatasetLabeled(Dataset):
         ...
 
     def __getitem__(self, idx):
+        if self._data is None:
+            raise Exception("Data is not loaded yet")
+
         return (self._data.__getitem__(idx), self._labels.__getitem__(idx))
