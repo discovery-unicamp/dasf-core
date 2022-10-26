@@ -8,13 +8,13 @@ extend the support to GPUs as well.
 
 ## Installation
 
-The installation can be done using conda or docker
+For now, the installation can be done using docker or singularity (if available).
 
 ### Docker
 
-To install DASF using docker, you must in the go to the `build/` directory and 
-execute the command below directory according to your build type: `cpu` or 
-`gpu`. Notice that DASF uses [HPC Container Maker](https://github.com/NVIDIA/hpc-container-maker)
+To install DASF using docker or singularity, you must in the go to the `build/`
+directory and execute the command below directory according to your build type:
+`cpu` or `gpu`. Notice that DASF uses [HPC Container Maker](https://github.com/NVIDIA/hpc-container-maker)
 (HPCCM) to generate recipes for all sort of container types. You should install
 HPCCM first, in order to generate them.
 
@@ -23,7 +23,8 @@ HPCCM first, in order to generate them.
 ```
 
 You can also configure other parameters of the container if you want. Run `-h`
-for further information.
+for further information. It includes the container backend: docker or
+singularity.
 
 The `dasf` image will be created and be ready to use. Once it is ready, you 
 can start a jupyter instance by executing the command:
