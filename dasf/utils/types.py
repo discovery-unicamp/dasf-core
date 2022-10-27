@@ -77,7 +77,7 @@ def is_gpu_dataframe(data):
 
 
 def is_gpu_datatype(data):
-    return is_gpu_supported() and isinstance(data, get_args(DataPU))
+    return is_gpu_supported() and isinstance(data, get_args(DataGPU))
 
 
 def is_dask_cpu_array(data):
