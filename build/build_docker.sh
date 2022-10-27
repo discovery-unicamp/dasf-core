@@ -116,10 +116,10 @@ hpccm --recipe hpccm/build_docker.py \
 
 if [[ "$FORMAT" == "docker" ]]; then
     FIND_CMD docker "Docker binaries are not found."
-    docker build $DOCKERFILE_DIR -t dasf:latest
+    docker build $DOCKERFILE_DIR -t dasf:$ARCH_TYPE
 else
     FIND_CMD singularity "Singularity binaries are not found."
-    singularity build dasf.sif $DOCKERFILE_DIR/$OUTPUT_FILE
+    singularity build dasf_$ARCH_TYPE.sif $DOCKERFILE_DIR/$OUTPUT_FILE
 fi
 
 rm -rf $DOCKERFILE_DIR
