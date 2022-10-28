@@ -2,8 +2,10 @@
 HPC Container Maker for DASF core
 """
 
+
 def str2bool(string):
     return string.lower() in ['true', '1', 't', 'y', 'yes']
+
 
 device_target = USERARG.get('device-target', 'gpu')
 is_devel = str2bool(USERARG.get('devel', 'False'))
@@ -25,9 +27,9 @@ if device_target.lower() == "cpu":
     Stage0 += baseimage(image=cpu_image)
 elif device_target.lower() == "gpu":
     # XXX: There is no way to use old GPUs with 11.5 CUDA.
-    #if is_devel:
-    #    Stage0 += baseimage(image=gpu_image_devel)
-    #else:
+    # if is_devel:
+    #     Stage0 += baseimage(image=gpu_image_devel)
+    # else:
     Stage0 += baseimage(image=gpu_image)
 else:
     raise RuntimeError(f"Device target {device_target} is not known.")
@@ -52,7 +54,7 @@ if device_target.lower() == "cpu":
 elif device_target.lower() == "gpu":
     Stage0 += apt_get(keys=apt_keys, ospackages=packages_list)
 
-    pip_package_install = ("conda run -n rapids %s" % pip_package_install)
+    pip_package_install = ("conda run -n rapids %s cupy_xarray" % pip_package_install)
 
     if is_devel:
         pip_package_install = ("%s %s" % (pip_package_install, "git+https://github.com/cupy/cupy.git"))
