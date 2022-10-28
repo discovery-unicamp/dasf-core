@@ -14,8 +14,6 @@ from mock import patch, Mock
 from dasf.utils.decorators import fetch_args_from_dask
 from dasf.utils.decorators import fetch_args_from_gpu
 from dasf.utils.funcs import is_gpu_supported
-from dasf.utils.funcs import is_dask_supported
-from dasf.utils.funcs import is_dask_gpu_supported
 from dasf.transforms.base import Transform
 
 
