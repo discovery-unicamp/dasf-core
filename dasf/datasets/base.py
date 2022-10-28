@@ -7,13 +7,17 @@ import dask
 
 import numpy as np
 import numpy.lib.format
+import pandas as pd
 import dask.array as da
+import dask.dataframe as ddf
 import xarray as xr
 
 from numbers import Number
 
 try:
     import cupy as cp
+    import cudf
+    import dask_cudf as dcudf
     # This is just to enable Xarray Cupy capabilities
     import cupy_xarray as cx   # noqa
 except ImportError:
@@ -145,6 +149,8 @@ class DatasetArray(Dataset):
         return self._data / data
 
     def __copy_attrs_from_data(self):
+        self._metadata["type"] = type(self._data)
+
         attrs = dir(self._data)
         for attr in attrs:
             if not attr.startswith("__") and callable(getattr(self._data, attr)):
@@ -544,3 +550,101 @@ class DatasetLabeled(Dataset):
             raise Exception("Data is not loaded yet")
 
         return (self._data.__getitem__(idx), self._labels.__getitem__(idx))
+
+
+class DatasetDataFrame(Dataset):
+    def __init__(self, name, download=True, root=None, chunks="auto"):
+
+        Dataset.__init__(self, name, download, root)
+
+        self.__chunks = chunks
+
+        self._root_file = root
+
+        if root is not None:
+            if not os.path.isfile(root):
+                raise Exception("DataFrame requires a root=filename.")
+
+            self._root = os.path.dirname(root)
+
+    def _load_meta(self):
+        assert self._root_file is not None, (
+            "There is no temporary file to inspect"
+        )
+
+        return self.inspect_metadata()
+
+    def inspect_metadata(self):
+        df_file_size = human_readable_size(
+            os.stat(self._root_file).st_size, decimal=2
+        )
+
+        return {
+            "size": df_file_size,
+            "file": self._root_file,
+            "type": type(self._data),
+            "shape": self.shape,
+            "columns": list(self._data.columns),
+            "block": {"chunks": self.__chunks},
+        }
+
+    def _lazy_load_gpu(self):
+        self._data = dcudf.read_csv(self._root_file)
+        self._metadata = self._load_meta()
+        return self
+
+    def _lazy_load_cpu(self):
+        self._data = ddf.read_csv(self._root_file)
+        self._metadata = self._load_meta()
+        return self
+
+    def _load_gpu(self):
+        self._data = cudf.read_csv(self._root_file)
+        self._metadata = self._load_meta()
+        return self
+
+    def _load_cpu(self):
+        self._data = pd.read_csv(self._root_file)
+        self._metadata = self._load_meta()
+        return self
+
+    @task_handler
+    def load(self):
+        ...
+
+    @property
+    def shape(self):
+        if self._data is None:
+            raise Exception("Data is not loaded yet")
+
+        return self._data.shape
+
+    def __len__(self):
+        if self._data is None:
+            raise Exception("Data is not loaded yet")
+
+        return len(self._data)
+
+    def __getitem__(self, idx):
+        if self._data is None:
+            raise Exception("Data is not loaded yet")
+
+        return self._data.iloc[idx]
+
+
+class DatasetParquet(DatasetDataFrame):
+    def __init__(self, name, download=True, root=None, chunks="auto"):
+
+        DatasetDataFrame.__init__(self, name, download, root, chunks)
+
+    def _lazy_load_gpu(self):
+        self._data = dcudf.read_parquet(self._root_file)
+
+    def _lazy_load_cpu(self):
+        self._data = ddf.read_parquet(self._root_file)
+
+    def _load_gpu(self):
+        self._data = cudf.read_parquet(self._root_file)
+
+    def _load_cpu(self):
+        self._data = pd.read_parquet(self._root_file)
