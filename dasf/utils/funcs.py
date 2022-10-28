@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 import os
+import time
 import dask
 import wget
 import psutil
 import pandas
 import GPUtil
+import threading
 import numpy as np
 
 from pathlib import Path
@@ -17,6 +19,9 @@ from distributed.client import wait, FIRST_COMPLETED
 from distributed.utils import TimeoutError as DistributedTimeoutError
 
 from dasf.pipeline.types import TaskExecutorType
+
+from IPython import display as disp
+from ipywidgets import HBox, FloatProgress, Label
 
 GPU_SUPPORTED = True
 try:
@@ -96,24 +101,98 @@ def sync_future_loop(futures):
         futures = result.not_done
 
 
+class NotebookProgressBar(threading.Thread):
+    MIN_CUR = -2
+    MIN_TOTAL = -1
+
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+        self.bar = FloatProgress(value=0, min=0, max=100)
+        self.percentage = Label(value='0 %')
+        self.data = Label(value='')
+        box = HBox((self.percentage, self.bar, self.data))
+        disp.display(box)
+
+        self.__lock = threading.Lock()
+        self.__current = self.MIN_CUR
+        self.__total = self.MIN_TOTAL
+        self.__error = False
+
+    def set_current(self, current, total):
+        self.__lock.acquire()
+
+        self.__current = current
+        self.__total = total
+
+        self.__lock.release()
+
+    def set_error(self, error):
+        self.__error = error
+
+    def run(self):
+        while (not self.__error and self.__current < self.__total):
+            time.sleep(1)
+
+            if self.__current != self.MIN_CUR and self.__total != self.MIN_TOTAL:
+                progress = (self.__current / self.__total) * 100
+                self.bar.value = progress
+                self.percentage.value = ("%d %%" % int(self.bar.value))
+                self.data.value = ("%d / %d" % (int(self.__current), int(self.__total)))
+
+        if not self.__error:
+            self.bar.style.bar_color = '#03c04a'
+        else:
+            self.bar.style.bar_color = '#ff0000'
+
+
 def download_file(url, filename=None, directory=None):
     if directory is not None:
         os.makedirs(os.path.dirname(directory), exist_ok=True)
 
-    if filename and directory:
-        output = os.path.abspath(os.path.join(directory, filename))
+    if is_notebook():
+        progressbar = NotebookProgressBar()
+        progressbar.start()
 
-        if not os.path.exists(output):
-            wget.download(url, out=output)
-    elif filename:
-        output = os.path.abspath(os.path.join(os.getcwd(), filename))
+        def update_notebook_bar(current, total, width=80):
+            progressbar.set_current(current, total)
 
-        if not os.path.exists(output):
-            wget.download(url, out=output)
-    elif directory:
-        output = os.path.abspath(os.path.join(directory, wget.download(url)))
-    else:
-        output = os.path.abspath(os.path.join(os.getcwd(), wget.download(url)))
+    try:
+        if filename and directory:
+            output = os.path.abspath(os.path.join(directory, filename))
+
+            if not os.path.exists(output):
+                if is_notebook():
+                    wget.download(url, out=output, bar=update_notebook_bar)
+                else:
+                    wget.download(url, out=output)
+        elif filename:
+            output = os.path.abspath(os.path.join(os.getcwd(), filename))
+
+            if not os.path.exists(output):
+                if is_notebook():
+                    wget.download(url, out=output, bar=update_notebook_bar)
+                else:
+                    wget.download(url, out=output)
+        elif directory:
+            if is_notebook():
+                output = \
+                    os.path.abspath(os.path.join(directory,
+                                                 wget.download(url,
+                                                               bar=update_notebook_bar)))
+            else:
+                output = os.path.abspath(os.path.join(directory, wget.download(url)))
+        else:
+            if is_notebook():
+                output = \
+                    os.path.abspath(os.path.join(os.getcwd(),
+                                                 wget.download(url,
+                                                               bar=update_notebook_bar)))
+            else:
+                output = os.path.abspath(os.path.join(os.getcwd(), wget.download(url)))
+    except Exception as e:
+        print(str(e))
+        progressbar.set_error(True)
 
     return output
 
