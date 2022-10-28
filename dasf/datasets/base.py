@@ -269,6 +269,11 @@ class DatasetZarr(Dataset):
         self._data = self._load()
         return self
 
+    def _load_gpu(self):
+        self._metadata = self._load_meta()
+        self._data = cp.asarray(self._load())
+        return self
+
     @task_handler
     def load(self):
         ...
@@ -342,6 +347,11 @@ class DatasetHDF5(Dataset):
     def _load_cpu(self):
         self._metadata = self._load_meta()
         self._data = self._load()
+        return self
+
+    def _load_gpu(self):
+        self._metadata = self._load_meta()
+        self._data = cp.asarray(self._load())
         return self
 
     @task_handler

@@ -10,6 +10,8 @@ files = [
     "DatasetHDF5",
     "DatasetXarray",
     "DatasetLabeled",
+    "DatasetDataFrame",
+    "DatasetParquet",
     # Others
     "make_blobs",
     "make_classification",
