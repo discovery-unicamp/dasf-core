@@ -44,3 +44,6 @@ class TestTypes(unittest.TestCase):
 
         dataset = eval(self.cls)(name=self.name, root=raw_path, download=False, **self.extra_args)
         dataset.load()
+
+        self.assertTrue(hasattr(dataset, '_metadata'))
+        self.assertTrue("size" in dataset._metadata)
