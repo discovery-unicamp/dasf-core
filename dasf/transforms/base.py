@@ -159,7 +159,7 @@ class Transform:
         return model.transform(X=X, **kwargs)
 
 
-class TargeteredTransform(Transform):
+class TargeteredTransform:
     def __init__(self, run_local=None, run_gpu=None):
         super().__init__()
 
