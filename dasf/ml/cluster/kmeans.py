@@ -214,7 +214,6 @@ class KMeans(ClusterClassifier):
             verbose=verbose,
             copy_x=copy_x,
             algorithm=algorithm,
-            n_jobs=n_jobs,
         )
 
         self.__kmeans_mcpu = KMeans_MCPU(
