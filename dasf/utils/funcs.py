@@ -108,16 +108,21 @@ class NotebookProgressBar(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
-        self.bar = FloatProgress(value=0, min=0, max=100)
-        self.percentage = Label(value='0 %')
-        self.data = Label(value='')
-        box = HBox((self.percentage, self.bar, self.data))
-        disp.display(box)
+        self.bar = None
+        self.percentage = None
+        self.data = None
 
         self.__lock = threading.Lock()
         self.__current = self.MIN_CUR
         self.__total = self.MIN_TOTAL
         self.__error = False
+
+    def show(self):
+        self.bar = FloatProgress(value=0, min=0, max=100)
+        self.percentage = Label(value='0 %')
+        self.data = Label(value='')
+        box = HBox((self.percentage, self.bar, self.data))
+        disp.display(box)
 
     def set_current(self, current, total):
         self.__lock.acquire()
@@ -152,7 +157,6 @@ def download_file(url, filename=None, directory=None):
 
     if is_notebook():
         progressbar = NotebookProgressBar()
-        progressbar.start()
 
         def update_notebook_bar(current, total, width=80):
             progressbar.set_current(current, total)
@@ -163,6 +167,10 @@ def download_file(url, filename=None, directory=None):
 
             if not os.path.exists(output):
                 if is_notebook():
+                    # Activate the notebook progress bar
+                    progressbar.show()
+                    progressbar.start()
+
                     wget.download(url, out=output, bar=update_notebook_bar)
                 else:
                     wget.download(url, out=output)
@@ -171,11 +179,19 @@ def download_file(url, filename=None, directory=None):
 
             if not os.path.exists(output):
                 if is_notebook():
+                    # Activate the notebook progress bar
+                    progressbar.show()
+                    progressbar.start()
+
                     wget.download(url, out=output, bar=update_notebook_bar)
                 else:
                     wget.download(url, out=output)
         elif directory:
             if is_notebook():
+                # Activate the notebook progress bar
+                progressbar.show()
+                progressbar.start()
+
                 output = \
                     os.path.abspath(os.path.join(directory,
                                                  wget.download(url,
@@ -184,6 +200,10 @@ def download_file(url, filename=None, directory=None):
                 output = os.path.abspath(os.path.join(directory, wget.download(url)))
         else:
             if is_notebook():
+                # Activate the notebook progress bar
+                progressbar.show()
+                progressbar.start()
+
                 output = \
                     os.path.abspath(os.path.join(os.getcwd(),
                                                  wget.download(url,
