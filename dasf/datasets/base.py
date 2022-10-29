@@ -649,12 +649,20 @@ class DatasetParquet(DatasetDataFrame):
 
     def _lazy_load_gpu(self):
         self._data = dcudf.read_parquet(self._root_file)
+        self._metadata = self._load_meta()
+        return self
 
     def _lazy_load_cpu(self):
         self._data = ddf.read_parquet(self._root_file)
+        self._metadata = self._load_meta()
+        return self
 
     def _load_gpu(self):
         self._data = cudf.read_parquet(self._root_file)
+        self._metadata = self._load_meta()
+        return self
 
     def _load_cpu(self):
         self._data = pd.read_parquet(self._root_file)
+        self._metadata = self._load_meta()
+        return self
