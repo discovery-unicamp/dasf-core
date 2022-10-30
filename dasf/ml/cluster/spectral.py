@@ -25,8 +25,28 @@ class SpectralClustering(ClusterClassifier):
         n_components=None,
         persist_embedding=False,
         kmeans_params=None,
-        verbose=False
+        verbose=False,
+        **kwargs
     ):
+        super().__init__(**kwargs)
+
+        self.n_clusters = n_clusters
+        self.eigen_solver = eigen_solver
+        self.random_state = random_state
+        self.n_init = n_init
+        self.gamma = gamma
+        self.affinity = affinity
+        self.n_neighbors = n_neighbors
+        self.eigen_tol = eigen_tol
+        self.assign_labels = assign_labels
+        self.degree = degree
+        self.coef0 = coef0
+        self.kernel_params = kernel_params
+        self.n_jobs = n_jobs
+        self.n_components = n_components
+        self.persist_embedding = persist_embedding
+        self.kmeans_params = kmeans_params
+        self.verbose = verbose
 
         self.__sc_cpu = SpectralClustering_CPU(
             n_clusters=n_clusters,

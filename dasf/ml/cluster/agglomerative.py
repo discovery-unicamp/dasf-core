@@ -28,7 +28,22 @@ class AgglomerativeClustering(ClusterClassifier):
         verbose=False,
         n_neighbors=10,
         output_type=None,
+        **kwargs
     ):
+        super().__init__(**kwargs)
+
+        self.n_clusters = n_clusters
+        self.affinity = affinity
+        self.connectivity = connectivity
+        self.linkage = linkage
+        self.memory = memory
+        self.compute_full_tree = compute_full_tree
+        self.distance_threshold = distance_threshold
+        self.compute_distances = compute_distances
+        self.handle = handle
+        self.verbose = verbose
+        self.n_neighbors = n_neighbors
+        self.output_type = output_type
 
         self.__agg_cluster_cpu = AgglomerativeClustering_CPU(
             n_clusters=n_clusters,

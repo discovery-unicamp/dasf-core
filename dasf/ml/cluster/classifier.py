@@ -5,12 +5,15 @@ from dasf.transforms.base import FitPredict
 from dasf.transforms.base import FitTransform
 from dasf.transforms.base import Predict
 from dasf.transforms.base import Transform
+from dasf.transforms.base import TargeteredTransform
 from dasf.transforms.base import GetParams
 from dasf.transforms.base import SetParams
 
 
 class ClusterClassifier(
     Fit, FitPredict, FitTransform, Predict,
-    Transform, GetParams, SetParams
+    Transform, GetParams, SetParams,
+    TargeteredTransform
 ):
-    pass
+    def __init__(self, **kwargs):
+        TargeteredTransform.__init__(self, **kwargs)

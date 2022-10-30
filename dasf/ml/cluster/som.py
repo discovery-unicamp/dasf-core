@@ -33,7 +33,9 @@ class SOM(ClusterClassifier):
         random_seed=None,
         n_parallel=0,
         compact_support=False,
+        **kwargs
     ):
+        super().__init__(**kwargs)
 
         self.x = x
         self.y = y

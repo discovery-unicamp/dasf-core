@@ -23,6 +23,7 @@ class HDBSCAN(ClusterClassifier):
         p=None,
         **kwargs
     ):
+        super().__init__(**kwargs)
 
         self.alpha = alpha
         self.gen_min_span_tree = gen_min_span_tree

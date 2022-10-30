@@ -9,6 +9,8 @@ try:
 except ImportError:
     pass
 
+from mock import patch, Mock
+
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import SOM
@@ -101,4 +103,24 @@ class TestSOM(unittest.TestCase):
         q2 = som._lazy_quantization_error_gpu(da_X)
 
         self.assertTrue(is_dask_gpu_array(y))
+        self.assertTrue(q1 > q2)
+
+    @patch('dasf.utils.decorators.is_gpu_supported', Mock(return_value=False))
+    @patch('dasf.utils.decorators.is_dask_supported', Mock(return_value=True))
+    @patch('dasf.utils.decorators.is_dask_gpu_supported', Mock(return_value=False))
+    def test_som_mcpu_local(self):
+        som = SOM(x=3, y=2, input_len=2, num_epochs=300, run_local=True)
+
+        da_X = da.from_array(self.X, meta=np.array((), dtype=np.float32))
+
+        q1 = som.quantization_error(da_X)
+
+        som.fit(da_X)
+
+        y = som.predict(da_X)
+
+        self.assertTrue(is_cpu_array(y))
+
+        q2 = som.quantization_error(da_X)
+
         self.assertTrue(q1 > q2)

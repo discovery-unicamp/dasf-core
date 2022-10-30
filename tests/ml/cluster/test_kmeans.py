@@ -12,6 +12,8 @@ try:
 except ImportError:
     pass
 
+from mock import patch, Mock    
+
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import KMeans
@@ -110,3 +112,17 @@ class TestKMeans(unittest.TestCase):
         y1, y2 = self.__match_randomly_labels_created(y.compute().get(), self.y)
 
         self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+
+    @patch('dasf.utils.decorators.is_gpu_supported', Mock(return_value=False))
+    @patch('dasf.utils.decorators.is_dask_supported', Mock(return_value=True))
+    @patch('dasf.utils.decorators.is_dask_gpu_supported', Mock(return_value=False))
+    def test_kmeans_mcpu_local(self):
+        kmeans = KMeans(n_clusters=self.centers, max_iter=300, run_local=True)
+
+        da_X = da.from_array(self.X)
+
+        kmeans.fit(da_X)
+
+        y = kmeans.predict(da_X)
+
+        self.assertTrue(is_cpu_array(y))

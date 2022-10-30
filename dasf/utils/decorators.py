@@ -21,6 +21,62 @@ def is_forced_gpu(cls):
     return None
 
 
+def fetch_from_dask(*args, **kwargs):
+    new_kwargs = dict()
+    new_args = []
+
+    for k, v in kwargs.items():
+        if is_dask_array(v):
+            new_kwargs[k] = v.compute()
+        else:
+            new_kwargs[k] = v
+
+    for v in args:
+        if is_dask_array(v):
+            new_args.append(v.compute())
+        else:
+            new_args.append(v)
+
+    return new_args, new_kwargs
+
+
+def fetch_from_gpu(*args, **kwargs):
+    new_kwargs = dict()
+    new_args = []
+
+    for k, v in kwargs.items():
+        if is_gpu_array(v):
+            new_kwargs[k] = v.get()
+        else:
+            new_kwargs[k] = v
+
+    for v in args:
+        if is_gpu_array(v):
+            new_args.append(v.get())
+        else:
+            new_args.append(v)
+
+    return new_args, new_kwargs
+
+
+def fetch_args_from_dask(func):
+    def wrapper(*args, **kwargs):
+        new_args, new_kwargs = fetch_from_dask(*args, **kwargs)
+
+        return func(*new_args, **new_kwargs)
+
+    return wrapper
+
+
+def fetch_args_from_gpu(func):
+    def wrapper(*args, **kwargs):
+        new_args, new_kwargs = fetch_from_gpu(*args, **kwargs)
+
+        return func(*new_args, **new_kwargs)
+
+    return wrapper
+
+
 def task_handler(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -30,10 +86,19 @@ def task_handler(func):
         func_type = ""
         arch = "cpu"
 
+        if is_forced_local(cls):
+            new_args, kwargs = fetch_from_dask(*new_args, **kwargs)
+
         if not is_forced_local(cls) and (is_dask_gpu_supported() or is_dask_supported()):
             func_type = "_lazy"
 
-        if is_forced_gpu(cls) or is_dask_gpu_supported() or is_gpu_supported():
+        if is_forced_gpu(cls) is not None:
+            if is_forced_gpu(cls):
+                arch = "gpu"
+            else:
+                new_args, kwargs = fetch_from_gpu(*new_args, **kwargs)
+                arch = "cpu"
+        elif is_dask_gpu_supported() or is_gpu_supported():
             arch = "gpu"
 
         wrapper_func_attr = f"{func_type}_{func_name}_{arch}"
@@ -49,49 +114,5 @@ def task_handler(func):
             )
         else:
             return getattr(cls, wrapper_func_attr)(*new_args, **kwargs)
-
-    return wrapper
-
-
-def fetch_args_from_dask(func):
-    def wrapper(*args, **kwargs):
-        new_kwargs = dict()
-        new_args = []
-
-        for k, v in kwargs.items():
-            if is_dask_array(v):
-                new_kwargs[k] = v.compute()
-            else:
-                new_kwargs[k] = v
-
-        for v in args:
-            if is_dask_array(v):
-                new_args.append(v.compute())
-            else:
-                new_args.append(v)
-
-        return func(*new_args, **new_kwargs)
-
-    return wrapper
-
-
-def fetch_args_from_gpu(func):
-    def wrapper(*args, **kwargs):
-        new_kwargs = dict()
-        new_args = []
-
-        for k, v in kwargs.items():
-            if is_gpu_array(v):
-                new_kwargs[k] = v.get()
-            else:
-                new_kwargs[k] = v
-
-        for v in args:
-            if is_gpu_array(v):
-                new_args.append(v.get())
-            else:
-                new_args.append(v)
-
-        return func(*new_args, **new_kwargs)
 
     return wrapper

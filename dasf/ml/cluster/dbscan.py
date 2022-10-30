@@ -13,16 +13,28 @@ except ImportError:
 
 
 class DBSCAN(ClusterClassifier):
-    def __init__(self, eps=0.5, leaf_size=40, metric="euclidean",
-                 min_samples=5, p=None, output_type=None,
-                 calc_core_sample_indices=True,
-                 verbose=False):
+    def __init__(
+        self,
+        eps=0.5,
+        leaf_size=40,
+        metric="euclidean",
+        min_samples=5,
+        p=None,
+        output_type=None,
+        calc_core_sample_indices=True,
+        verbose=False,
+        **kwargs
+    ):
+        super().__init__(**kwargs)
 
         self.eps = eps
         self.leaf_size = leaf_size
         self.metric = metric
         self.min_samples = min_samples
         self.p = p
+        self.output_type = output_type
+        self.calc_core_sample_indices = calc_core_sample_indices
+        self.verbose = verbose
 
         self.__dbscan_cpu = DBSCAN_CPU(
             eps=self.eps,

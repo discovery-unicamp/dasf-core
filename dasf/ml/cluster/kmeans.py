@@ -182,11 +182,26 @@ class KMeans(ClusterClassifier):
     - https://docs.rapids.ai/api/cuml/stable/api.html#cuml.dask.cluster.KMeans
 
     """
-    def __init__(self, n_clusters=8, init=None, n_init=None, max_iter=300,
-                 tol=0.0001, verbose=0, random_state=None, copy_x=True,
-                 algorithm='full', oversampling_factor=2.0, n_jobs=1,
-                 init_max_iter=None, max_samples_per_batch=32768,
-                 precompute_distances='auto', output_type=None):
+    def __init__(
+        self,
+        n_clusters=8,
+        init=None,
+        n_init=None,
+        max_iter=300,
+        tol=0.0001,
+        verbose=0,
+        random_state=None,
+        copy_x=True,
+        algorithm='full',
+        oversampling_factor=2.0,
+        n_jobs=1,
+        init_max_iter=None,
+        max_samples_per_batch=32768,
+        precompute_distances='auto',
+        output_type=None,
+        **kwargs
+    ):
+        super().__init__(**kwargs)
 
         self.n_clusters = n_clusters
         self.random_state = random_state
