@@ -167,15 +167,10 @@ class KMeans(ClusterClassifier):
     >>> X = np.array([[1, 2], [1, 4], [1, 0],
     ...               [10, 2], [10, 4], [10, 0]])
     >>> kmeans = KMeans(n_clusters=2, random_state=0).fit(X)
-    >>> kmeans.labels_
-    array([1, 1, 1, 0, 0, 0], dtype=int32)
     >>> kmeans.predict([[0, 0], [12, 3]])
     array([1, 0], dtype=int32)
-    >>> kmeans.cluster_centers_
-    array([[10.,  2.],
-           [ 1.,  2.]])
 
-    For further informations see the Scikit version:
+    For further informations see:
     - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
     - https://ml.dask.org/modules/generated/dask_ml.cluster.KMeans.html
     - https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering
