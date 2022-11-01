@@ -214,6 +214,7 @@ class KMeans(ClusterClassifier):
         self.precompute_distances = precompute_distances
         self.output_type = output_type
 
+        # Estimator for CPU operations
         self.__kmeans_cpu = KMeans_CPU(
             n_clusters=n_clusters,
             random_state=random_state,
@@ -226,6 +227,7 @@ class KMeans(ClusterClassifier):
             algorithm=algorithm,
         )
 
+        # Estimator for Dask ML operations
         self.__kmeans_mcpu = KMeans_MCPU(
             n_clusters=n_clusters,
             random_state=random_state,
@@ -241,6 +243,7 @@ class KMeans(ClusterClassifier):
         )
 
         if is_gpu_supported():
+            # Estimator for CuML operations
             self.__kmeans_gpu = KMeans_GPU(
                 n_clusters=n_clusters,
                 random_state=(1 if random_state is None else random_state),
@@ -269,49 +272,348 @@ class KMeans(ClusterClassifier):
                 self.__kmeans_mgpu = None
 
     def _lazy_fit_cpu(self, X, y=None, sample_weight=None):
+        """
+        Compute Dask k-means clustering.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            Training instances to cluster. It must be noted that the data
+            will be converted to C ordering, which will cause a memory
+            copy if the given data is not C-contiguous.
+            If a sparse matrix is passed, a copy will be made if it&apos;s not in
+            CSR format.
+      
+        y : Ignored
+            Not used, present here for API consistency by convention.
+      
+        sample_weight : Ignored
+            Not used, present here for API consistency by convention.
+
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         return self.__kmeans_mcpu.fit(X=X, y=y)
 
     def _lazy_fit_gpu(self, X, y=None, sample_weight=None):
+        """
+        Compute Dask CuML k-means clustering.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            Training instances to cluster. It must be noted that the data
+            will be converted to C ordering, which will cause a memory
+            copy if the given data is not C-contiguous.
+            If a sparse matrix is passed, a copy will be made if it&apos;s not in
+            CSR format.
+      
+        y : Ignored
+            Not used, present here for API consistency by convention.
+      
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         if self.__kmeans_mgpu is None:
             raise NotImplementedError
         return self.__kmeans_mgpu.fit(X=X, sample_weight=sample_weight)
 
     def _fit_cpu(self, X, y=None, sample_weight=None):
+        """
+        Compute Scikit Learn k-means clustering.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            Training instances to cluster. It must be noted that the data
+            will be converted to C ordering, which will cause a memory
+            copy if the given data is not C-contiguous.
+            If a sparse matrix is passed, a copy will be made if it&apos;s not in
+            CSR format.
+      
+        y : Ignored
+            Not used, present here for API consistency by convention.
+      
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         return self.__kmeans_cpu.fit(X=X, y=y, sample_weight=sample_weight)
 
     def _fit_gpu(self, X, y=None, sample_weight=None):
+        """
+        Compute CuML k-means clustering.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            Training instances to cluster. It must be noted that the data
+            will be converted to C ordering, which will cause a memory
+            copy if the given data is not C-contiguous.
+            If a sparse matrix is passed, a copy will be made if it&apos;s not in
+            CSR format.
+      
+        y : Ignored
+            Not used, present here for API consistency by convention.
+      
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         return self.__kmeans_gpu.fit(X=X, sample_weight=sample_weight)
 
     def _lazy_fit_predict_cpu(self, X, y=None, sample_weight=None):
+        """
+        Compute cluster centers and predict cluster index for each sample using
+        Dask ML.
+
+        Convenience method; equivalent to calling fit(X) followed by
+        predict(X).
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to transform.
+
+        y : Ignored
+            Not used, present here for API consistency by convention.
+
+        sample_weight : Ignored
+            Not used, present here for API consistency by convention.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         local_kmeans = self.__kmeans_mcpu.fit(X=X, y=y)
         return local_kmeans.predict(X=X)
 
     def _lazy_fit_predict_gpu(self, X, y=None, sample_weight=None):
+        """
+        Compute cluster centers and predict cluster index for each sample using
+        Dask CuML.
+
+        Convenience method; equivalent to calling fit(X) followed by
+        predict(X).
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to transform.
+
+        y : Ignored
+            Not used, present here for API consistency by convention.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         if self.__kmeans_mgpu is None:
             raise NotImplementedError
         return self.__kmeans_mgpu.fit_predict(X, y, sample_weight)
 
     def _fit_predict_cpu(self, X, y=None, sample_weight=None):
+        """
+        Compute cluster centers and predict cluster index for each sample using
+        Scikit Learn.
+
+        Convenience method; equivalent to calling fit(X) followed by
+        predict(X).
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to transform.
+
+        y : Ignored
+            Not used, present here for API consistency by convention.
+
+        sample_weight : Ignored
+            Not used, present here for API consistency by convention.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         return self.__kmeans_cpu.fit_predict(X)
 
     def _fit_predict_gpu(self, X, y=None, sample_weight=None):
+        """
+        Compute cluster centers and predict cluster index for each sample using
+        CuML.
+
+        Convenience method; equivalent to calling fit(X) followed by
+        predict(X).
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to transform.
+
+        y : Ignored
+            Not used, present here for API consistency by convention.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         return self.__kmeans_gpu.fit_predict(X, y, sample_weight)
 
     def _lazy_predict_cpu(self, X, sample_weight=None):
+        """
+        Predict the closest cluster each sample in X belongs to using Dask ML.
+
+        In the vector quantization literature, `cluster_centers_` is called
+        the code book and each value returned by `predict` is the index of
+        the closest code in the code book.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to predict.
+
+        sample_weight : Ignored
+            Not used, present here for API consistency by convention.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         return self.__kmeans_mcpu.predict(X)
 
     def _lazy_predict_gpu(self, X, sample_weight=None):
+        """
+        Predict the closest cluster each sample in X belongs to using Dask
+        CuML.
+
+        In the vector quantization literature, `cluster_centers_` is called
+        the code book and each value returned by `predict` is the index of
+        the closest code in the code book.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to predict.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         if self.__kmeans_mgpu is None:
             raise NotImplementedError
         return self.__kmeans_mgpu.predict(X, sample_weight)
 
     def _predict_cpu(self, X, sample_weight=None):
+        """
+        Predict the closest cluster each sample in X belongs to using Scikit
+        Learn.
+
+        In the vector quantization literature, `cluster_centers_` is called
+        the code book and each value returned by `predict` is the index of
+        the closest code in the code book.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to predict.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         return self.__kmeans_cpu.predict(X, sample_weight)
 
     def _predict_gpu(self, X, sample_weight=None):
+        """
+        Predict the closest cluster each sample in X belongs to using CuML.
+
+        In the vector quantization literature, `cluster_centers_` is called
+        the code book and each value returned by `predict` is the index of
+        the closest code in the code book.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to predict.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         return self.__kmeans_gpu.predict(X, sample_weight)
 
     def _lazy_predict2_cpu(self, X, sample_weight=None):
+        """
+        A block predict using Scikit Learn variant but for Dask.
+
+        In the vector quantization literature, `cluster_centers_` is called
+        the code book and each value returned by `predict` is the index of
+        the closest code in the code book.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to predict.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         def __predict(block):
             return self._predict_cpu.predict(block, sample_weight=sample_weight)
 
@@ -320,6 +622,27 @@ class KMeans(ClusterClassifier):
         )
 
     def _lazy_predict2_gpu(self, X, sample_weight=None):
+        """
+        A block predict using CuML variant but for Dask.
+
+        In the vector quantization literature, `cluster_centers_` is called
+        the code book and each value returned by `predict` is the index of
+        the closest code in the code book.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to predict.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
         def __predict(block):
             return self._predict_gpu.predict(block, sample_weight=sample_weight)
 
