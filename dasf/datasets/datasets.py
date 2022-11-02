@@ -4,6 +4,8 @@ from sklearn.datasets import make_blobs as make_blobs_CPU
 from dask_ml.datasets import make_blobs as make_blobs_MCPU
 
 try:
+    import cupy as cp
+
     from cuml.datasets import make_blobs as make_blobs_GPU
     from cuml.dask.datasets import make_blobs as make_blobs_MGPU
 except ImportError:
@@ -27,6 +29,7 @@ try:
 except ImportError:
     pass
 
+from dasf.utils.types import is_cpu_array
 from dasf.utils.funcs import is_gpu_supported
 from dasf.utils.funcs import is_dask_supported
 from dasf.utils.funcs import is_dask_gpu_supported
@@ -58,6 +61,8 @@ class make_blobs:
         elif is_dask_supported():
             return self._lazy_make_blobs_cpu(**kwargs)
         elif is_gpu_supported():
+            if "centers" in kwargs and is_cpu_array(kwargs["centers"]):
+                kwargs["centers"] = cp.asarray(kwargs["centers"])
             return self._make_blobs_gpu(**kwargs)
         else:
             return self._make_blobs_cpu(**kwargs)

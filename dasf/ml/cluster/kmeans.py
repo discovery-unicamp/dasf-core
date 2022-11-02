@@ -491,7 +491,7 @@ class KMeans(ClusterClassifier):
         labels : ndarray of shape (n_samples,)
             Index of the cluster each sample belongs to.
         """
-        return self.__kmeans_gpu.fit_predict(X, y, sample_weight)
+        return self.__kmeans_gpu.fit_predict(X=X, sample_weight=sample_weight)
 
     def _lazy_predict_cpu(self, X, sample_weight=None):
         """
