@@ -30,8 +30,10 @@ The `dasf` image will be created and be ready to use. Once it is ready, you
 can start a jupyter instance by executing the command:
 
 ```bash
-./start_jupyter_server.sh
+./start_jupyter_server.sh --device <cpu|gpu>
 ```
+
+You can also define a different port by using `--port PORT` argument.
 
 ### Install
 
