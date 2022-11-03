@@ -72,3 +72,12 @@ The table below is a list of supported machine learning algorithms by DASF frame
 | SVM                      |    X    |    X    |               |               |      dasf.ml.svm      |
 | Boosted Trees            |    X    |    X    |       X       |       X       |    dasf.ml.xgboost    |
 | KNN                      |    X    |    X    |               |               |   dasf.ml.neighbors   |
+
+
+### Authors
+
+For further reference, below the authors list:
+
+* Julio Faracco
+* Otavio Napoli
+* Edson Borin
