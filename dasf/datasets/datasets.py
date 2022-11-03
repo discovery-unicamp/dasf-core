@@ -57,6 +57,8 @@ class make_blobs:
 
     def __call__(self, **kwargs):
         if is_dask_gpu_supported():
+            if "centers" in kwargs and is_cpu_array(kwargs["centers"]):
+                kwargs["centers"] = cp.asarray(kwargs["centers"])
             return self._lazy_make_blobs_gpu(**kwargs)
         elif is_dask_supported():
             return self._lazy_make_blobs_cpu(**kwargs)

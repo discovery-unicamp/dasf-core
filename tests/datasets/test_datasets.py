@@ -1,49 +1,81 @@
 #!/usr/bin/env python3
 
-import os
 import unittest
 
-from pytest import fixture
-from parameterized import parameterized_class
+from mock import patch, Mock
+
+try:
+    from dask.distributed import Client
+    from dask_cuda import LocalCUDACluster
+except ImportError:
+    pass
 
 from dasf.utils.funcs import is_gpu_supported
-from dasf.datasets import DatasetArray
-from dasf.datasets import DatasetZarr
-from dasf.datasets import DatasetHDF5
-from dasf.datasets import DatasetXarray
-from dasf.datasets import DatasetLabeled
-from dasf.datasets import DatasetDataFrame
-from dasf.datasets import DatasetParquet
+from dasf.utils.types import is_cpu_array
+from dasf.utils.types import is_gpu_array
+from dasf.utils.types import is_dask_array
+from dasf.utils.types import is_dask_gpu_array
+
+from dasf.datasets import make_blobs
 
 
-def parameterize_dataset_type():
-    datasets = [
-        {"name": "Array", "cls": "DatasetArray", "file": "Array.npy", "extra_args": {}},
-        {"name": "Zarr", "cls": "DatasetZarr", "file": "Zarr.zarr", "extra_args": {}},
-        {"name": "HDF5", "cls": "DatasetHDF5", "file": "HDF5.h5", "extra_args": {"path": "dataset"}},
-        {"name": "Xarray", "cls": "DatasetXarray", "file": "Xarray.nc", "extra_args": {}},
-        {"name": "DataFrame", "cls": "DatasetDataFrame", "file": "DataFrame.csv", "extra_args": {}},
-        {"name": "Parquet", "cls": "DatasetParquet", "file": "Parquet.parquet", "extra_args": {}},
-    ]
-    
-    return datasets
-    
+class TestDatasets(unittest.TestCase):
+    @patch('dasf.datasets.datasets.is_gpu_supported', Mock(return_value=False))
+    @patch('dasf.datasets.datasets.is_dask_supported', Mock(return_value=False))
+    @patch('dasf.datasets.datasets.is_dask_gpu_supported', Mock(return_value=False))
+    def test_make_blobs_cpu(self):
+        n_samples = 500000
+        n_bins = 3
 
-@parameterized_class(parameterize_dataset_type())
-class TestTypes(unittest.TestCase):
-    @fixture(autouse=True)
-    def data_dir(self, request):
-        filename = request.module.__file__
-        self.test_dir, _ = os.path.splitext(filename)
+        centers = [(-6, -6), (0, 0), (9, 1)]
+        X, y = make_blobs(n_samples=n_samples, centers=centers, shuffle=False, random_state=42)
+
+        self.assertTrue(is_cpu_array(X))
+        self.assertTrue(is_cpu_array(y))
+
+    @patch('dasf.datasets.datasets.is_gpu_supported', Mock(return_value=False))
+    @patch('dasf.datasets.datasets.is_dask_supported', Mock(return_value=True))
+    @patch('dasf.datasets.datasets.is_dask_gpu_supported', Mock(return_value=False))
+    def test_make_blobs_mcpu(self):
+        n_samples = 500000
+        n_bins = 3
+
+        centers = [(-6, -6), (0, 0), (9, 1)]
+        X, y = make_blobs(n_samples=n_samples, centers=centers, shuffle=False, random_state=42, chunks=(5000))
+
+        self.assertTrue(is_dask_array(X))
+        self.assertTrue(is_dask_array(y))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    @patch('dasf.datasets.datasets.is_gpu_supported', Mock(return_value=True))
+    @patch('dasf.datasets.datasets.is_dask_supported', Mock(return_value=False))
+    @patch('dasf.datasets.datasets.is_dask_gpu_supported', Mock(return_value=False))
+    def test_make_blobs_gpu(self):
+        n_samples = 500000
+        n_bins = 3
+
+        centers = [(-6, -6), (0, 0), (9, 1)]
+        X, y = make_blobs(n_samples=n_samples, centers=centers, shuffle=False, random_state=42)
         
-    def test_dataset_load(self):
-        raw_path = os.path.join(self.test_dir, "simple",
-                                self.file)
-                                
-        print(raw_path)
+        self.assertTrue(is_gpu_array(X))
+        self.assertTrue(is_gpu_array(y))
 
-        dataset = eval(self.cls)(name=self.name, root=raw_path, download=False, **self.extra_args)
-        dataset.load()
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    @patch('dasf.datasets.datasets.is_gpu_supported', Mock(return_value=False))
+    @patch('dasf.datasets.datasets.is_dask_supported', Mock(return_value=False))
+    @patch('dasf.datasets.datasets.is_dask_gpu_supported', Mock(return_value=True))
+    def test_make_blobs_mgpu(self):
+        client = Client(LocalCUDACluster())
 
-        self.assertTrue(hasattr(dataset, '_metadata'))
-        self.assertTrue("size" in dataset._metadata)
+        n_samples = 500000
+        n_bins = 3
+
+        centers = [(-6, -6), (0, 0), (9, 1)]
+        X, y = make_blobs(n_samples=n_samples, centers=centers, shuffle=False, random_state=42)
+
+        print(type(X))
+
+        self.assertTrue(is_dask_gpu_array(X))
+        self.assertTrue(is_dask_gpu_array(y))
