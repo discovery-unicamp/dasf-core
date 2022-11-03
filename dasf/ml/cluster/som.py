@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from xpysom import XPySom
+from xpysom_dask import XPySom
 
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.funcs import is_gpu_supported

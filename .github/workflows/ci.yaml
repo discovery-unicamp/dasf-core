@@ -21,6 +21,7 @@ jobs:
           poetry config virtualenvs.create false
           poetry build
           pip install dist/*.whl flake8 pytest mock parameterized
+          pip install -i https://test.pypi.org/simple/ XPySom-dask
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
