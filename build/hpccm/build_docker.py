@@ -42,7 +42,7 @@ apt_keys = [
 ]
 
 packages_list = ["git", "graphviz", "gcc", "python3-dev", "g++"]
-pip_package_install = "pip3 install git+https://github.com/discovery-unicamp/dasf-core.git"
+pip_package_install = "pip3 install --extra-index-url https://test.pypi.org/simple/ XPySom-dask git+https://github.com/discovery-unicamp/dasf-core.git"
 
 if device_target.lower() == "cpu":
     packages_list.extend(["python3-pip"])
