@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 PORT=8891
 TYPE="gpu"
