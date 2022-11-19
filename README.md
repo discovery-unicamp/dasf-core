@@ -10,7 +10,7 @@ extend the support to GPUs as well.
 
 For now, the installation can be done using docker or singularity (if available).
 
-### Docker
+### Containers
 
 To install DASF using docker or singularity, you must in the go to the `build/`
 directory and execute the command below directory according to your build type:
@@ -19,7 +19,7 @@ directory and execute the command below directory according to your build type:
 HPCCM first, in order to generate them.
 
 ```bash
-./build_docker.sh --device <cpu|gpu>
+./build_container.sh --device <cpu|gpu>
 ```
 
 You can also configure other parameters of the container if you want. Run `-h`
