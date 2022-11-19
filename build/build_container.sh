@@ -93,6 +93,26 @@ if [[ "$FORMAT" != "docker" && "$FORMAT" != "singularity" ]]; then
     exit 1
 fi
 
+function GET_CONTAINER_CMD() {
+    OLDIFS="$IFS"
+    IFS=":"
+
+    for P in $PATH; do
+        if test -f "$P/podman"; then
+            CONTAINER_CMD=podman
+            break
+        else
+            CONTAINER_CMD=docker
+        fi
+    done
+
+    IFS=$OLDIFS
+
+    echo $CONTAINER_CMD
+}
+
+CONTAINER_CMD=$(GET_CONTAINER_CMD)
+
 function FIND_CMD() {
     if ! command -v $1 &> /dev/null
     then
@@ -115,8 +135,8 @@ hpccm --recipe hpccm/build_docker.py \
       --format $FORMAT > $DOCKERFILE_DIR/$OUTPUT_FILE
 
 if [[ "$FORMAT" == "docker" ]]; then
-    FIND_CMD docker "Docker binaries are not found."
-    docker build $DOCKERFILE_DIR -t dasf:$ARCH_TYPE
+    FIND_CMD $CONTAINER_CMD "Docker binaries are not found."
+    $CONTAINER_CMD build $DOCKERFILE_DIR -t dasf:$ARCH_TYPE
 else
     FIND_CMD singularity "Singularity binaries are not found."
     singularity build dasf_$ARCH_TYPE.sif $DOCKERFILE_DIR/$OUTPUT_FILE

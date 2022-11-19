@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/bash -x
 
 PORT=8891
 TYPE="gpu"
+FORMAT="docker"
 
 function print_help() {
     echo "Usage: ./build_docker.sh [ARCH_TYPE]"
@@ -12,6 +13,9 @@ function print_help() {
     echo "                                     Use 'gpu' for GPU container-based architecture."
     echo "                                     Use 'cpu' for CPU container-based architecture (default='$TYPE')."
     echo "    --port PORT                      Use the prefered port to start the server (default='$PORT')."
+    echo "    --format FORMAT                  Select the container backend for this service."
+    echo "                                     Use 'docker' for Docker images."
+    echo "                                     Use 'singularity' for SIF images (default='$FORMAT')."
     echo ""
 }
 
@@ -23,6 +27,11 @@ while [[ $# -gt 0 ]]; do
       ;;
     --device)
       TYPE="$2"
+      shift
+      shift
+      ;;
+    --format)
+      FORMAT="$2"
       shift
       shift
       ;;
@@ -58,4 +67,16 @@ CONTAINER_CMD=$(GET_CONTAINER_CMD)
 
 EXTRA_ARGS=$@
 
-$CONTAINER_CMD run --gpus all -it --rm  -p $PORT:$PORT -e SHELL="/bin/bash" --network=host $EXTRA_ARGS dasf:$TYPE python -m jupyterlab --allow-root --ServerApp.port $PORT --no-browser --ServerApp.ip='0.0.0.0'
+if [[ "$FORMAT" == "docker" ]]; then
+    if [[ "$TYPE" == "gpu" ]]; then
+        EXTRA_ARGS="$EXTRA_ARGS --gpus all"
+    fi
+
+    $CONTAINER_CMD run -it --rm  -p $PORT:$PORT -e SHELL="/bin/bash" --network=host $EXTRA_ARGS dasf:$TYPE python3 -m jupyterlab --allow-root --ServerApp.port $PORT --no-browser --ServerApp.ip='0.0.0.0'
+elif [[ "$FORMAT" == "singularity" ]]; then
+    if [[ "$TYPE" == "gpu" ]]; then
+        EXTRA_ARGS="$EXTRA_ARGS --nv"
+    fi
+
+    singularity exec $EXTRA_ARGS dasf_$TYPE.sif python3 -m jupyterlab --allow-root --ServerApp.port $PORT --no-browser --ServerApp.ip=0.0.0.0
+fi
