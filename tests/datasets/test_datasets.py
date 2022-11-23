@@ -75,7 +75,5 @@ class TestDatasets(unittest.TestCase):
         centers = [(-6, -6), (0, 0), (9, 1)]
         X, y = make_blobs(n_samples=n_samples, centers=centers, shuffle=False, random_state=42)
 
-        print(type(X))
-
         self.assertTrue(is_dask_gpu_array(X))
         self.assertTrue(is_dask_gpu_array(y))

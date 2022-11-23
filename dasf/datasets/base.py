@@ -234,7 +234,7 @@ class DatasetArray(Dataset):
 
 
 class DatasetZarr(Dataset):
-    def __init__(self, name, download=False, root=None, chunks=True):
+    def __init__(self, name, download=False, root=None, chunks=None):
 
         Dataset.__init__(self, name, download, root)
 

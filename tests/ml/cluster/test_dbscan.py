@@ -84,8 +84,6 @@ class TestDBSCAN(unittest.TestCase):
 
         y = sc._lazy_fit_predict_gpu(cp_X)
         
-        print(type(y))
-
         self.assertTrue(is_gpu_array(y))
 
         y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
