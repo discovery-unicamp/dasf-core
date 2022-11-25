@@ -42,8 +42,15 @@ class Pipeline:
             for k, v in parameters.items():
                 dep_obj, dep_func_name, _ = self.__inspect_element(v)
                 self.add(dep_obj)
+                if not self._dag.has_node(str(key)):
+                    self._dag_g.node(str(key), func_name)
+
+                if not self._dag.has_node(str(hash(dep_obj))):
+                    self._dag_g.node(str(hash(dep_obj)), dep_func_name)
+
                 self._dag.add_edge(hash(dep_obj), key)
-                self._dag_g.edge(dep_func_name, func_name, label=k)
+
+                self._dag_g.edge(str(hash(dep_obj)), str(key), label=k)
 
     def __inspect_element(self, obj):
         from dasf.datasets.base import Dataset
