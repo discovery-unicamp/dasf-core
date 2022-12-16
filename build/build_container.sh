@@ -9,6 +9,7 @@ IS_DEVEL="False"
 RAPIDS_VERSION="22.08"
 CUDA_VERSION="11.2"
 UBUNTU_VERSION="20.04"
+PYTHON_VERSION="3.9"
 DOCKERFILE_DIR=docker/
 
 # For local hpccm installs
@@ -26,6 +27,7 @@ function print_help() {
     echo "    --rapids-version RAPIDS_VERSION  Defines which version of RAPIDS AI will be used (default='$RAPIDS_VERSION')."
     echo "    --cuda-version CUDA_VERSION      Defines which version of CUDA will be used (default='$CUDA_VERSION')."
     echo "    --os-version OS_VERSION          Defines which version of the container will be used (default='$UBUNTU_VERSION')."
+    echo "    --python-version PYTHON_VERSION  Defines which version of the python interpreter will be used (default='$PYTHON_VERSION')."
     echo "    --format FORMAT                  Select the container backend for this build."
     echo "                                     Use 'docker' for Docker images."
     echo "                                     Use 'singularity' for SIF images (default='$FORMAT')."
@@ -57,6 +59,11 @@ while [[ $# -gt 0 ]]; do
       ;;
     --os-version)
       UBUNTU_VERSION="$2"
+      shift
+      shift
+      ;;
+    --python-version)
+      PYTHON_VERSION="$2"
       shift
       shift
       ;;
@@ -132,6 +139,7 @@ hpccm --recipe hpccm/build_docker.py \
                 rapids-version=$RAPIDS_VERSION \
                 cuda-version=$CUDA_VERSION \
                 ubuntu-version=$UBUNTU_VERSION \
+                python-version=$PYTHON_VERSION \
       --format $FORMAT > $DOCKERFILE_DIR/$OUTPUT_FILE
 
 if [[ "$FORMAT" == "docker" ]]; then
