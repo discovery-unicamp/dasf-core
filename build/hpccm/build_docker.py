@@ -21,7 +21,7 @@ ubuntu_version = USERARG.get('ubuntu-version', '20.04')
 python_version = USERARG.get('python-version', '3.9')
 
 if python_version:
-    python_version = f"-py{python-version}"
+    python_version = f"-py{python_version}"
 
 gpu_image_devel = f"rapidsai/rapidsai-core-dev:{rapidsai_version}-cuda{cuda_version}-devel-ubuntu{ubuntu_version}{python_version}"
 gpu_image = f"rapidsai/rapidsai-core:{rapidsai_version}-cuda{cuda_version}-runtime-ubuntu{ubuntu_version}{python_version}"
