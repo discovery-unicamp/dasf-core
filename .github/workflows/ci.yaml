@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: docker.io/jcfaracco/dasf
+      image: docker.io/jcfaracco/dasf:cpu
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
