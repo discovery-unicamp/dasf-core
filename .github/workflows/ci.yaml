@@ -1,6 +1,10 @@
 name: Continuous Test
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request: {}
 
 jobs:
   build:
@@ -12,8 +16,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install poetry
+          poetry self update
           poetry config virtualenvs.create false
           poetry build
+          # Installing test dependencies
           pip install dist/*.whl flake8 pytest mock parameterized
           pip install -i https://test.pypi.org/simple/ XPySom-dask
       - name: Lint with flake8
