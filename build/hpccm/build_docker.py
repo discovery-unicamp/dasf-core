@@ -65,6 +65,9 @@ elif device_target.lower() == "gpu":
 
 Stage0 += shell(commands=[pip_package_install])
 
+# TODO: fix numpy issue with version 1.24
+Stage0 += shell(commands=["pip install \"numpy<1.24\""])
+
 Stage0 += workdir(directory='/dasf')
 
 if is_devel:
