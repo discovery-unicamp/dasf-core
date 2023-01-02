@@ -42,9 +42,7 @@ class Dataset(TargeteredTransform):
         self._root = root
         self._metadata = dict()
         self._data = None
-
-        # Internal chunks division (for Dask Types)
-        self.__chunks = None
+        self._chunks = None
 
         self.__set_dataset_cache_dir()
 
@@ -79,7 +77,7 @@ class DatasetArray(Dataset):
 
         Dataset.__init__(self, name, download, root)
 
-        self.__chunks = chunks
+        self._chunks = chunks
 
         self._root_file = root
 
@@ -115,7 +113,7 @@ class DatasetArray(Dataset):
                 else:
                     return NotImplemented
 
-            self.__class__(name=self._name, chunks=self.__chunks)
+            self.__class__(name=self._name, chunks=self._chunks)
             self._data = ufunc(*scalars, **kwargs)
             return self
         else:
@@ -170,8 +168,8 @@ class DatasetArray(Dataset):
         local_data = dask.delayed(xp.load)(self._root_file, **kwargs)
 
         local_data = da.from_delayed(local_data, shape=npy_shape, dtype=xp.float32)
-        if isinstance(self.__chunks, tuple):
-            local_data = local_data.rechunk(self.__chunks)
+        if isinstance(self._chunks, tuple):
+            local_data = local_data.rechunk(self._chunks)
 
         return local_data
 
@@ -229,7 +227,7 @@ class DatasetArray(Dataset):
             "size": array_file_size,
             "file": self._root_file,
             "shape": npy_shape,
-            "block": {"chunks": self.__chunks},
+            "block": {"chunks": self._chunks},
         }
 
 
@@ -238,7 +236,7 @@ class DatasetZarr(Dataset):
 
         Dataset.__init__(self, name, download, root)
 
-        self.__chunks = chunks
+        self._chunks = chunks
 
         self._root_file = root
 
@@ -249,7 +247,7 @@ class DatasetZarr(Dataset):
                 self._root = os.path.dirname(root)
 
     def _lazy_load(self, xp):
-        return da.from_zarr(self._root_file, chunks=self.__chunks).map_blocks(xp.asarray)
+        return da.from_zarr(self._root_file, chunks=self._chunks).map_blocks(xp.asarray)
 
     def _load(self):
         return zarr.open(self._root_file, mode='r')
@@ -290,8 +288,8 @@ class DatasetZarr(Dataset):
         for k, v in z.info_items():
             info[k] = v
 
-        if isinstance(self.__chunks, bool) and self.__chunks:
-            self.__chunks = info["Chunk shape"]
+        if isinstance(self._chunks, bool) and self._chunks:
+            self._chunks = info["Chunk shape"]
 
         return {
             "size": human_readable_size(
@@ -301,7 +299,7 @@ class DatasetZarr(Dataset):
             "type": info["Store type"],
             "file": self._root_file,
             "shape": info["Shape"],
-            "block": {"chunks": self.__chunks},
+            "block": {"chunks": self._chunks},
         }
 
 
@@ -310,7 +308,7 @@ class DatasetHDF5(Dataset):
 
         Dataset.__init__(self, name, download, root)
 
-        self.__chunks = chunks
+        self._chunks = chunks
 
         self._root_file = root
 
@@ -328,7 +326,7 @@ class DatasetHDF5(Dataset):
     def _lazy_load(self, xp):
         f = h5py.File(self._root_file)
         data = f[self._path]
-        return da.from_array(data, chunks=self.__chunks, meta=xp.array(()))
+        return da.from_array(data, chunks=self._chunks, meta=xp.array(()))
 
     def _load(self):
         f = h5py.File(self._root_file)
@@ -376,7 +374,7 @@ class DatasetHDF5(Dataset):
             "size": array_file_size,
             "file": self._root_file,
             "shape": data.shape,
-            "block": {"chunks": self.__chunks},
+            "block": {"chunks": self._chunks},
         }
 
 
@@ -384,7 +382,7 @@ class DatasetXarray(Dataset):
     def __init__(self, name, download=False, root=None, chunks=None, data_var=None):
         Dataset.__init__(self, name, download, root)
 
-        self.__chunks = chunks
+        self._chunks = chunks
 
         self._root_file = root
 
@@ -400,25 +398,25 @@ class DatasetXarray(Dataset):
             self._root = os.path.dirname(root)
 
     def _lazy_load_cpu(self):
-        assert self.__chunks is not None, "Lazy operations require chunks"
+        assert self._chunks is not None, "Lazy operations require chunks"
 
         if self._data_var:
             self._data = xr.open_dataset(self._root_file,
-                                         chunks=self.__chunks)
+                                         chunks=self._chunks)
         else:
             self._data = xr.open_dataarray(self._root_file,
-                                           chunks=self.__chunks)
+                                           chunks=self._chunks)
         self._metadata = self._load_meta()
 
     def _lazy_load_gpu(self):
-        assert self.__chunks is not None, "Lazy operations require chunks"
+        assert self._chunks is not None, "Lazy operations require chunks"
 
         if self._data_var:
             self._data = xr.open_dataset(self._root_file,
-                                         chunks=self.__chunks).as_cupy()
+                                         chunks=self._chunks).as_cupy()
         else:
             self._data = xr.open_dataarray(self._root_file,
-                                           chunks=self.__chunks).as_cupy()
+                                           chunks=self._chunks).as_cupy()
         self._metadata = self._load_meta()
 
     def _load_cpu(self):
@@ -456,7 +454,7 @@ class DatasetXarray(Dataset):
             "file": self._root_file,
             "coords": tuple(self._data.coords),
             "attrs": self._data.attrs,
-            "block": {"chunks": self.__chunks},
+            "block": {"chunks": self._chunks},
         }
 
     def __len__(self):
@@ -484,7 +482,7 @@ class DatasetLabeled(Dataset):
 
         Dataset.__init__(self, name, download, root)
 
-        self.__chunks = chunks
+        self._chunks = chunks
 
     def download(self):
         if hasattr(self, "_train") and hasattr(self._train, "download"):
@@ -567,7 +565,7 @@ class DatasetDataFrame(Dataset):
 
         Dataset.__init__(self, name, download, root)
 
-        self.__chunks = chunks
+        self._chunks = chunks
 
         self._root_file = root
 
@@ -595,7 +593,7 @@ class DatasetDataFrame(Dataset):
             "type": type(self._data),
             "shape": self.shape,
             "columns": list(self._data.columns),
-            "block": {"chunks": self.__chunks},
+            "block": {"chunks": self._chunks},
         }
 
     def _lazy_load_gpu(self):
