@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 from dasf.transforms.transforms import ArraysToDataFrame  # noqa
+from dasf.transforms.transforms import ArrayToZarr  # noqa
+from dasf.transforms.transforms import ArrayToHDF5  # noqa
 from dasf.transforms.transforms import Normalize  # noqa
 from dasf.transforms.operations import SliceArray, SliceArrayByPercent  # noqa
 from dasf.transforms.operations import Reshape  # noqa
@@ -23,6 +25,8 @@ __all__ = [
     "TargeteredTransform",
     "MappedTransform",
     "Normalize",
+    "ArrayToZarr",
+    "ArrayToHDF5",
     "ArraysToDataFrame",
     "SliceArray",
     "SliceArrayByPercent",

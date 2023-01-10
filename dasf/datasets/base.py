@@ -304,7 +304,7 @@ class DatasetZarr(Dataset):
 
 
 class DatasetHDF5(Dataset):
-    def __init__(self, name, download=False, root=None, chunks="auto", path=None):
+    def __init__(self, name, download=False, root=None, chunks="auto", dataset_path=None):
 
         Dataset.__init__(self, name, download, root)
 
@@ -312,7 +312,7 @@ class DatasetHDF5(Dataset):
 
         self._root_file = root
 
-        self._path = path
+        self._dataset_path = dataset_path
 
         if root is not None:
             if not os.path.isfile(root):
@@ -320,17 +320,17 @@ class DatasetHDF5(Dataset):
 
             self._root = os.path.dirname(root)
 
-        if path is None:
+        if dataset_path is None:
             raise Exception("HDF5 requires a path.")
 
     def _lazy_load(self, xp):
         f = h5py.File(self._root_file)
-        data = f[self._path]
+        data = f[self._dataset_path]
         return da.from_array(data, chunks=self._chunks, meta=xp.array(()))
 
     def _load(self):
         f = h5py.File(self._root_file)
-        return f[self._path]
+        return f[self._dataset_path]
 
     def _lazy_load_cpu(self):
         self._metadata = self._load_meta()
@@ -358,13 +358,13 @@ class DatasetHDF5(Dataset):
 
     def _load_meta(self):
         assert self._root_file is not None, "There is no temporary file to inspect"
-        assert self._path is not None, "There is no path to fetch data"
+        assert self._dataset_path is not None, "There is no path to fetch data"
 
         return self.inspect_metadata()
 
     def inspect_metadata(self):
         f = h5py.File(self._root_file)
-        data = f[self._path]
+        data = f[self._dataset_path]
 
         array_file_size = human_readable_size(
             data.size, decimal=2
