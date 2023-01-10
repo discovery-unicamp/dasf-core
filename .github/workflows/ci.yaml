@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install poetry
-          # poetry self update
+          # Skip this command due to issues: poetry self update
           poetry config virtualenvs.create false
           poetry build
           # Installing test dependencies
