@@ -58,7 +58,7 @@ class TestSpectralClustering(unittest.TestCase):
         self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
 
     def test_spectral_mcpu(self):
-        sc = SpectralClustering(n_clusters=self.centers, random_state=self.random_state)
+        sc = SpectralClustering(n_clusters=self.centers, random_state=self.random_state, n_components=250)
 
         da_X = da.from_array(self.X)
 
