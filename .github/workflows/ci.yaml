@@ -21,7 +21,11 @@ jobs:
           poetry build
           # Installing test dependencies
           pip install -i https://test.pypi.org/simple/ XPySom-dask
-          pip install --force-reinstall dist/*.whl flake8 pytest mock parameterized
+          # Uninstall any stanza of dasf
+          pip uninstall dasf -y
+          # Install requirements
+          pip install dist/*.whl
+          pip install flake8 pytest mock parameterized
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
