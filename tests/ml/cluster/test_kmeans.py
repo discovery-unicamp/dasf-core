@@ -12,6 +12,8 @@ try:
 except ImportError:
     pass
 
+from mock import patch, Mock    
+
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import KMeans
@@ -19,22 +21,20 @@ from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
 from dasf.utils.types import is_dask_gpu_array
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 
 
 class TestKMeans(unittest.TestCase):
     def setUp(self):
-        self.centers = 6
         self.size = 1000
-
-        # Lets use distant samples for algorithm coherence check
-        cluster_std = np.ones(self.centers) * 0.075
+        self.centers = 3
+        random_state = 42
 
         self.X, self.y, self.centroids = make_blobs(n_samples=self.size,
-                                                    n_features=2,
-                                                    cluster_std=cluster_std,
                                                     centers=self.centers,
-                                                    return_centers=True)
+                                                    n_features=2,
+                                                    return_centers=True,
+                                                    random_state=random_state)
 
     def __match_randomly_labels_created(self, y1, y2):
         y2 = (y2 * -1) - 1
@@ -112,3 +112,17 @@ class TestKMeans(unittest.TestCase):
         y1, y2 = self.__match_randomly_labels_created(y.compute().get(), self.y)
 
         self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+
+    @patch('dasf.utils.decorators.is_gpu_supported', Mock(return_value=False))
+    @patch('dasf.utils.decorators.is_dask_supported', Mock(return_value=True))
+    @patch('dasf.utils.decorators.is_dask_gpu_supported', Mock(return_value=False))
+    def test_kmeans_mcpu_local(self):
+        kmeans = KMeans(n_clusters=self.centers, max_iter=300, run_local=True)
+
+        da_X = da.from_array(self.X)
+
+        kmeans.fit(da_X)
+
+        y = kmeans.predict(da_X)
+
+        self.assertTrue(is_cpu_array(y))

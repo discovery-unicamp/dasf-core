@@ -3,39 +3,33 @@
 from sklearn.preprocessing import StandardScaler as StandardScaler_CPU
 from dask_ml.preprocessing import StandardScaler as StandardScaler_MCPU
 
-from dasf.utils.utils import is_gpu_supported
-from dasf.utils.generators import generate_fit
-from dasf.utils.generators import generate_transform
-from dasf.utils.generators import generate_fit_transform
-from dasf.utils.generators import generate_partial_fit
-from dasf.utils.generators import generate_inverse_transform
+from dasf.utils.funcs import is_gpu_supported
 
 try:
     from cuml.preprocessing import StandardScaler as StandardScaler_GPU
 except ImportError:
     pass
 
+from dasf.transforms.base import Fit
+from dasf.transforms.base import Transform
+from dasf.transforms.base import FitTransform
 
-@generate_fit
-@generate_transform
-@generate_fit_transform
-@generate_partial_fit
-@generate_inverse_transform
-class StantardScaler:
+
+class StantardScaler(Fit, Transform, FitTransform):
     def __init__(self, copy=True, with_mean=True, with_std=True):
 
-        self.__std_scaler_cpu = StandardScaler_CPU(copy=copy,
-                                                   with_mean=with_mean,
-                                                   with_std=with_std)
+        self.__std_scaler_cpu = StandardScaler_CPU(
+            copy=copy, with_mean=with_mean, with_std=with_std
+        )
 
-        self.__std_scaler_dask = StandardScaler_MCPU(copy=copy,
-                                                     with_mean=with_mean,
-                                                     with_std=with_std)
+        self.__std_scaler_dask = StandardScaler_MCPU(
+            copy=copy, with_mean=with_mean, with_std=with_std
+        )
 
         if is_gpu_supported():
-            self.__std_scaler_gpu = StandardScaler_GPU(copy=copy,
-                                                       with_mean=with_mean,
-                                                       with_std=with_std)
+            self.__std_scaler_gpu = StandardScaler_GPU(
+                copy=copy, with_mean=with_mean, with_std=with_std
+            )
 
     def _lazy_fit_cpu(self, X, y=None):
         return self.__std_scaler_dask.fit(X=X, y=y)

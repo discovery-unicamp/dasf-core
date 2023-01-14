@@ -1,24 +1,19 @@
 #!/usr/bin/env python3
 
+from dasf.transforms.base import Fit
+from dasf.transforms.base import FitPredict
+from dasf.transforms.base import FitTransform
+from dasf.transforms.base import Predict
+from dasf.transforms.base import Transform
+from dasf.transforms.base import TargeteredTransform
+from dasf.transforms.base import GetParams
+from dasf.transforms.base import SetParams
 
-class ClusterClassifier:
-    def fit(self, X, y=None, sample_weight=None):
-        raise NotImplementedError
 
-    def fit_predict(self, X, y=None, sample_weight=None):
-        raise NotImplementedError
-
-    def fit_transform(self, X, y=None):
-        raise NotImplementedError
-
-    def predict(self, X, sample_weight=None):
-        raise NotImplementedError
-
-    def transform(self, X):
-        raise NotImplementedError
-
-    def get_params(deep=True):
-        raise NotImplementedError
-
-    def set_params(**params):
-        raise NotImplementedError
+class ClusterClassifier(
+    Fit, FitPredict, FitTransform, Predict,
+    Transform, GetParams, SetParams,
+    TargeteredTransform
+):
+    def __init__(self, **kwargs):
+        TargeteredTransform.__init__(self, **kwargs)

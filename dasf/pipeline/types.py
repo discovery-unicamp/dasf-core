@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from enum import Enum
+from enum import IntEnum, auto
 
 
-class TaskExecutorType(Enum):
-    single_cpu = 0
-    multi_cpu = 1
-    single_gpu = 2
-    multi_gpu = 3
+class TaskExecutorType(IntEnum):
+    single_cpu = auto()
+    multi_cpu = auto()
+    single_gpu = auto()
+    multi_gpu = auto()

@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
 
-from dasf.pipeline import Operator
+import numpy as np
+import dask.array as da
+
+try:
+    import cupy as cp
+except ImportError:
+    pass
+
+from dasf.transforms.base import Transform
+from dasf.transforms.base import TargeteredTransform
 
 
-class Histogram(Operator):
+class Histogram(TargeteredTransform, Transform):
     """Operator to extract the histogram of a data.
 
     Parameters
@@ -34,42 +43,50 @@ class Histogram(Operator):
     density
 
     """
-
     def __init__(self,
                  bins: int = None,
                  range: tuple = None,
                  normed: bool = False,
                  weights=None,
-                 density=None):
+                 density=None,
+                 *args,
+                 **kwargs):
+        TargeteredTransform.__init__(self, *args, **kwargs)
 
-        super().__init__(name="Histogram")
-        self.bins = bins
-        self.range = range
-        self.normed = normed
-        self.weights = weights
-        self.density = density
+        self._bins = bins
+        self._range = range
+        self._normed = normed
+        self._weights = weights
+        self._density = density
 
-    def run(self, X):
-        """Calculates the histogram of data X.
+    def __lazy_transform_generic(self, X):
+        return da.histogram(
+            X,
+            bins=self._bins,
+            range=self._range,
+            normed=self._normed,
+            weights=self._weights,
+            density=self._density,
+        )
 
-        Parameters
-        ----------
-        X : Any
-            The data.
+    def __transform_generic(self, X, xp):
+        return xp.histogram(
+            X,
+            bins=self._bins,
+            range=self._range,
+            normed=self._normed,
+            weights=self._weights,
+            density=self._density,
+        )
 
-        Returns
-        -------
-        type
-            2 element tuple, with the following elements (in order):
+    def _lazy_transform_cpu(self, X):
+        return self.__lazy_transform_generic(X)
 
-            - The values of the histogram.
-            - The bin edges.
+    def _lazy_transform_gpu(self, X, **kwargs):
+        return self.__lazy_transform_generic(X)
 
-        """
-        if not self.range:
-            range_min = self.xp.min(X)
-            range_max = self.xp.max(X)
-            self.range = [range_min, range_max]
+    def _transform_cpu(self, X, **kwargs):
+        return self.__transform_generic(X, np)
 
-        return self.xp.histogram(X, self.bins, self.range, self.normed,
-                                 self.weights, self.density)
+    def _transform_gpu(self, X, **kwargs):
+        return self.__transform_generic(X, cp)

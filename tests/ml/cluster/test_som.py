@@ -9,6 +9,8 @@ try:
 except ImportError:
     pass
 
+from mock import patch, Mock
+
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import SOM
@@ -16,22 +18,20 @@ from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
 from dasf.utils.types import is_dask_gpu_array
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 
 
 class TestSOM(unittest.TestCase):
     def setUp(self):
-        self.centers = 6
-        self.size = 300
-
-        # Lets use distant samples for algorithm coherence check
-        cluster_std = np.ones(self.centers) * 0.075
+        self.size = 1000
+        self.centers = 3
+        random_state = 42
 
         self.X, self.y, self.centroids = make_blobs(n_samples=self.size,
-                                                    n_features=2,
-                                                    cluster_std=cluster_std,
                                                     centers=self.centers,
-                                                    return_centers=True)
+                                                    n_features=2,
+                                                    return_centers=True,
+                                                    random_state=random_state)
 
         # We use a fixed seed to avoid outliers between test stanzas
         np.random.seed(1234)
@@ -103,4 +103,24 @@ class TestSOM(unittest.TestCase):
         q2 = som._lazy_quantization_error_gpu(da_X)
 
         self.assertTrue(is_dask_gpu_array(y))
+        self.assertTrue(q1 > q2)
+
+    @patch('dasf.utils.decorators.is_gpu_supported', Mock(return_value=False))
+    @patch('dasf.utils.decorators.is_dask_supported', Mock(return_value=True))
+    @patch('dasf.utils.decorators.is_dask_gpu_supported', Mock(return_value=False))
+    def test_som_mcpu_local(self):
+        som = SOM(x=3, y=2, input_len=2, num_epochs=300, run_local=True)
+
+        da_X = da.from_array(self.X, meta=np.array((), dtype=np.float32))
+
+        q1 = som.quantization_error(da_X)
+
+        som.fit(da_X)
+
+        y = som.predict(da_X)
+
+        self.assertTrue(is_cpu_array(y))
+
+        q2 = som.quantization_error(da_X)
+
         self.assertTrue(q1 > q2)

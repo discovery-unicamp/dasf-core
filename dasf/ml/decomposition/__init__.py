@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
 
-from dasf.ml.decomposition import PCAFit, PCAFitTransform
+from dasf.ml.decomposition import PCA
 
-__all__ = ["PCAFit", "PCAFitTransform"]
+__all__ = ["PCA"]

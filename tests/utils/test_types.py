@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import dask.array as da
 import dask.dataframe as ddf
+import xarray as xr
 
 try:
     import cupy as cp
@@ -28,7 +29,9 @@ from dasf.utils.types import is_dask_gpu_dataframe
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_dask_dataframe
 from dasf.utils.types import is_dask
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.types import is_xarray_array
+from dasf.utils.funcs import is_gpu_supported
+
 
 
 class TestTypes(unittest.TestCase):
@@ -46,6 +49,7 @@ class TestTypes(unittest.TestCase):
                                                             columns=["test"]),
                                                npartitions=20),
                                False],
+            "Xarray DataArray": [xr.DataArray(base), False],
         }
 
         if is_gpu_supported():
@@ -84,7 +88,8 @@ class TestTypes(unittest.TestCase):
             "List",
             "Dask Numpy Array",
             "Cupy Array",
-            "Dask Cupy Array"
+            "Dask Cupy Array",
+            "Xarray DataArray"
         ]
 
         self.__set_data(keys)
@@ -238,3 +243,12 @@ class TestTypes(unittest.TestCase):
         self.__set_data(keys)
 
         self.__assert_all_data(is_dask)
+
+    def test_is_xarray_array(self):
+        keys = [
+            "Xarray DataArray"
+        ]
+
+        self.__set_data(keys)
+
+        self.__assert_all_data(is_xarray_array)

@@ -14,7 +14,7 @@ from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
 from dasf.utils.types import is_dask_gpu_array
-from dasf.utils.utils import is_gpu_supported
+from dasf.utils.funcs import is_gpu_supported
 
 
 class TestStandardScaler(unittest.TestCase):
@@ -56,7 +56,7 @@ class TestStandardScaler(unittest.TestCase):
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
-    def test_standardscaler_mgcpu(self):
+    def test_standardscaler_mgpu(self):
         ss = StantardScaler()
 
         y = ss._lazy_fit_transform_gpu(da.from_array(cp.asarray(self.X)))
