@@ -20,7 +20,7 @@ def parameterize_dataset_type():
     datasets = [
         {"name": "Array", "cls": "DatasetArray", "file": "Array.npy", "extra_args": {}},
         {"name": "Zarr", "cls": "DatasetZarr", "file": "Zarr.zarr", "extra_args": {}},
-        {"name": "HDF5", "cls": "DatasetHDF5", "file": "HDF5.h5", "extra_args": {"path": "dataset"}},
+        {"name": "HDF5", "cls": "DatasetHDF5", "file": "HDF5.h5", "extra_args": {"dataset_path": "dataset"}},
         {"name": "Xarray", "cls": "DatasetXarray", "file": "Xarray.nc", "extra_args": {"chunks": {"x": 10, "y": 10, "z": 10}}},
         {"name": "DataFrame", "cls": "DatasetDataFrame", "file": "DataFrame.csv", "extra_args": {}},
         {"name": "Parquet", "cls": "DatasetParquet", "file": "Parquet.parquet", "extra_args": {}},

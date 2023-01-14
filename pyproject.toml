@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dasf"
-version = "1.0.beta.1"
+version = "1.0.beta.2"
 description = "DASF is an Accelerated Framework for Machine Learning"
 authors = ["Julio Faracco <jcfaracco@gmail.com>"]
 maintainers = ["Julio Faracco <jcfaracco@gmail.com>"]
@@ -41,7 +41,7 @@ psutil = "*"
 pyarrow = "*"
 python = "^3.8"
 pytorch-lightning = "*"
-sklearn = "*"
+scikit-learn = "*"
 torchvision = "*"
 xarray = "*"
 xgboost = "*"
