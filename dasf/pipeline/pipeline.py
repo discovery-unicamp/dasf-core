@@ -1,15 +1,35 @@
 #!/usr/bin/env python3
 
 import inspect
+from typing import List, Union
 import graphviz
 
 import networkx as nx
 
+from distributed.diagnostics.plugin import WorkerPlugin
 from dasf.utils.logging import init_logging
 
 
+
+class PipelinePlugin:
+    def on_pipeline_start(self, fn_keys):
+        pass
+
+    def on_pipeline_end(self):
+        pass
+
+    def on_task_start(self, func, params, name):
+        pass
+
+    def on_task_end(self, func, params, name, ret):
+        pass
+
+    def on_task_error(self, func, params, name, exception):
+        pass
+
+
 class Pipeline:
-    def __init__(self, name, executor=None, verbose=False):
+    def __init__(self, name, executor=None, verbose=False, callbacks: List[PipelinePlugin] = None):
         self._name = name
         self._executor = executor
         self._verbose = verbose
@@ -19,6 +39,19 @@ class Pipeline:
         self._dag_g = graphviz.Digraph(name, format="png")
 
         self._logger = init_logging()
+        self._callbacks = callbacks or []
+
+    def register_plugin(self, plugin: Union[PipelinePlugin, WorkerPlugin]):
+        if isinstance(plugin, WorkerPlugin):
+            self._executor.client.register_worker_plugin(plugin)
+        elif isinstance(plugin, PipelinePlugin):
+            self._callbacks.append(plugin)
+        else:
+            raise TypeError(f"Invalid type from plugin {type(plugin)}")
+
+    def execute_callbacks(self, func_name: str, *args, **kwargs):
+        for callback in self._callbacks:
+            getattr(callback, func_name)(*args, **kwargs)
 
     def __add_into_dag(self, obj, func_name, parameters=None, itself=None):
         key = hash(obj)
@@ -154,6 +187,7 @@ class Pipeline:
         fn_keys = list(nx.topological_sort(self._dag))
 
         self._logger.info(f"Beginning pipeline run for '{self._name}'")
+        self.execute_callbacks("on_pipeline_start", fn_keys)
 
         if self._executor:
             self._executor.pre_run(self)
@@ -175,10 +209,13 @@ class Pipeline:
                 if not failed:
                     # Execute DAG node only if there is no error during the
                     # execution. Otherwise, skip it.
-                    self._dag_table[fn_key]["ret"] = self.__execute(func,
-                                                                    params,
-                                                                    name)
+                    self.execute_callbacks("on_task_start", func=func, params=params, name=name)
+                    result = self.__execute(func, params, name)
+                    self._dag_table[fn_key]["ret"] = result
+                    self.execute_callbacks("on_task_end", func=func, params=params, name=name, ret=result)
+
             except Exception as e:
+                self.execute_callbacks("on_task_error", func=func, params=params, name=name, exception=e)
                 failed = True
                 err = str(e)
                 self._logger.exception(f"Task '{name}': Failed with:\n{err}")
@@ -196,4 +233,5 @@ class Pipeline:
         if self._executor:
             self._executor.post_run(self)
 
+        self.execute_callbacks("on_pipeline_end")
         return ret

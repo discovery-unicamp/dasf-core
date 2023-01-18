@@ -80,6 +80,7 @@ class DatasetArray(Dataset):
         Dataset.__init__(self, name, download, root)
 
         self.__chunks = chunks
+        self.chunksize = chunks
 
         self._root_file = root
 
