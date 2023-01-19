@@ -11,16 +11,16 @@ class PipelineTaskTimer(PipelinePlugin):
         self.hostname = socket.gethostname()
 
     def on_task_start(self, func, params, name):
-        self.start_times[name] = round(time.time()*1000)
+        self.start_times[name] = time.time()
         print(f"Pipeline Task Timer Start: {name}: {self.start_times[name]}")
 
     def on_task_end(self, func, params, name, ret):
-        duration = round(time.time()*1000) - self.start_times[name]
+        duration = time.time() - self.start_times[name]
         print(f"Pipeline Task Timer End: {name}: {duration}")
         add_trace_complete(
             name=name,
             process_id="dasf-core",
-            thread_id=9999,
+            thread_id="core",
             timestamp=self.start_times[name],
             duration=duration,
             category=["dasf", "task time"],

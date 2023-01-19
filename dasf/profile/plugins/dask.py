@@ -12,9 +12,9 @@ class TaskTimePlugin(WorkerPlugin):
 
     def transition(self, key, start, finish, *args, **kwargs):
         if finish == "executing":
-            self.start_times[key] = round(time.time()*1000)
+            self.start_times[key] = time.time()
         elif start == "executing" and key in self.start_times:
-            duration = round(time.time()*1000) - self.start_times[key]
+            duration = time.time() - self.start_times[key]
             # add_trace_complete(
             #     name=key,
             #     process_id=self.hostname,
@@ -28,7 +28,7 @@ class TaskTimePlugin(WorkerPlugin):
             add_trace_complete(
                 name="Dask task",
                 process_id=self.hostname,
-                thread_id=self.worker.name,
+                thread_id=f"worker-{self.worker.name}",
                 timestamp=self.start_times[key],
                 duration=duration,
                 category=["worker", "dask", "processing time"],

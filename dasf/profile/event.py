@@ -119,16 +119,26 @@ def to_chrome_event_format(
     format_kwargs: dict = None,
 ) -> str:
     traces = []
+    pids = set()
+    tids = set()
     # stack_frames = []
+    for trace in trace_events:
+        if isinstance(trace, TraceEvent):
+            pids.add(trace.process_id)
+            tids.add((trace.process_id, trace.thread_id))
+
+    pids = list(pids)
+    tids = list(tids)
+
     for trace in trace_events:
         if isinstance(trace, TraceEvent):
             t = {
                 "name": trace.name,
                 "ph": trace.phase,
                 "cat": ",".join(trace.category) if trace.category else "default",
-                "ts": trace.timestamp,
-                "pid": trace.process_id,
-                "tid": trace.thread_id,
+                "ts": trace.timestamp*1e6,
+                "pid": pids.index(trace.process_id),
+                "tid": tids.index((trace.process_id, trace.thread_id)),
             }
 
             if trace.data is not None:
@@ -138,11 +148,34 @@ def to_chrome_event_format(
             if trace.color_name is not None:
                 t["cname"] = trace.color_name
             if trace.duration is not None:
-                t["dur"] = trace.duration
+                t["dur"] = trace.duration * 1e6
             if trace.thread_duration is not None:
                 t["tdur"] = trace.thread_duration
-
+            # pids.add(trace.process_id)
+            # threads.add((trace.process_id, trace.thread_id))
             traces.append(t)
+
+    # print(f"PIDS: {pids}")
+    for pid in pids:
+        traces.append({
+            "name": "process_name",
+            "ph": "M",
+            "pid": pids.index(pid),
+            "args": {
+                "name": pid
+            }
+        })
+
+    for pid, tid in tids:
+        traces.append({
+            "name": "thread_name",
+            "ph": "M",
+            "pid": pids.index(pid),
+            "tid": tids.index((pid, tid)),
+            "args": {
+                "name": tid
+            }
+        })
 
     traces = {
         "traceEvents": traces,
