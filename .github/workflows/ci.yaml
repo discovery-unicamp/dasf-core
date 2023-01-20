@@ -20,6 +20,7 @@ jobs:
           # Uninstall any stanza of dasf
           pip uninstall dasf -y
           # Install requirements
+          pip install -i https://test.pypi.org/simple/ XPySom-dask
           pip install dist/*.whl
       - name: Lint with flake8
         run: |
