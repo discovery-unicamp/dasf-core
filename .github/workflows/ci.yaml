@@ -10,22 +10,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: docker.io/jcfaracco/dasf:cpu
+      image: docker.io/jcfaracco/dasf:cpu_ci
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
         run: |
-          pip install poetry
-          # Skip this command due to issues: poetry self update
           poetry config virtualenvs.create false
           poetry build
-          # Installing test dependencies
-          pip install -i https://test.pypi.org/simple/ XPySom-dask
           # Uninstall any stanza of dasf
           pip uninstall dasf -y
           # Install requirements
           pip install dist/*.whl
-          pip install flake8 pytest mock parameterized
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
