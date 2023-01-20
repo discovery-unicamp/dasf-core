@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: continuous_test
     container:
       image: docker.io/jcfaracco/dasf:cpu_ci
     steps:
