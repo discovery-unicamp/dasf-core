@@ -23,7 +23,7 @@ class ConcatenateToArray(Transform):
         concatenated (the default is False).
 
     """
-    def __init__(self, fflatten: bool = False):
+    def __init__(self, flatten: bool = False):
         self.flatten = flatten
 
     def __transform_generic(self, xp, **kwargs):
@@ -98,7 +98,7 @@ class GetSubeCubeArray:
         Percentage of the samples to get from the cube.
 
     """
-    def __init__(self, percent):
+    def __init__(self, percent: float):
         self.__percent = float(percent / 100.0)
 
         assert (

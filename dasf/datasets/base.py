@@ -632,7 +632,7 @@ class DatasetLabeled(Dataset):
 
         return {"train": metadata_train, "labels": metadata_val}
 
-    def _lazy_load(self, xp, **kwargs):
+    def _lazy_load(self, xp, **kwargs) -> tuple:
         """Lazy load the dataset using an CPU dask container.
 
         Parameters
@@ -674,7 +674,8 @@ class DatasetLabeled(Dataset):
 
         return (local_data, local_labels)
 
-    def _load_meta(self):
+    def _load_meta(self) -> dict:
+
         """Load metadata to inspect.
 
         Returns

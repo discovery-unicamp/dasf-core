@@ -45,8 +45,8 @@ apt_keys = [
     f"https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu{ubuntu_unified_version}/x86_64/7fa2af80.pub"
 ]
 
-packages_list = ["git", "graphviz", "gcc", "python3-dev", "g++"]
-pip_package_install = "pip3 install --extra-index-url https://test.pypi.org/simple/ XPySom-dask bokeh git+https://github.com/discovery-unicamp/dasf-core.git"
+packages_list = ["git", "graphviz", "gcc", "python3-dev", "g++", "openssh-client"]
+pip_package_install = "pip3 install --extra-index-url https://test.pypi.org/simple/ XPySom-dask git+https://github.com/discovery-unicamp/dasf-core.git"
 
 if device_target.lower() == "cpu":
     packages_list.extend(["python3-pip"])
@@ -65,8 +65,11 @@ elif device_target.lower() == "gpu":
 
 Stage0 += shell(commands=[pip_package_install])
 
-# TODO: fix numpy issue with version 1.24
-Stage0 += shell(commands=["pip install \"numpy<1.24\""])
+# TODO: fix numpy issue with version 1.24 and other fixed reqs
+Stage0 += shell(commands=["pip install \"numpy<1.24\" bokeh==2.4.3 \"protobuf<=3.20.1\" \"charset-normalizer<3.0\" \"tornado<6.2\""])
+
+if device_target.lower() == "gpu":
+    Stage0 += shell(commands=["pip install \"dask==2022.7.1\" \"distributed==2022.7.1\""])
 
 Stage0 += workdir(directory='/dasf')
 

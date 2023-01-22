@@ -20,7 +20,11 @@ class DownloadWget(Dataset):
         If it the dataset must be downloaded (the default is True).
 
     """
-    def __init__(self, url: str, filename: str, root: str, download: bool = True):
+    def __init__(self,
+                 url: str,
+                 filename: str,
+                 root: str,
+                 download: bool = True):
         self.__url = url
         self.__filename = filename
 
@@ -55,7 +59,11 @@ class DownloadGDrive(Dataset):
         If it the dataset must be downloaded (the default is True).
 
     """
-    def __init__(self, google_file_id, filename, root, download=True):
+    def __init__(self,
+                 google_file_id: str,
+                 filename: str,
+                 root: str,
+                 download: bool = True):
         self.__google_file_id = google_file_id
         self.__filename = filename
 
