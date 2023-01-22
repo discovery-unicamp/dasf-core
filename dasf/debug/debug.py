@@ -8,6 +8,17 @@ from dasf.utils.types import is_dask_dataframe
 
 
 class Debug:
+    """Print information about an operator (shape, datatype, etc.), and return
+    the self object reference.
+
+    Parameters
+    ----------
+    name : str
+        Name of the operator.
+    **kwargs : type
+        Additional keyworkded arguments to `Operator`.
+
+    """
     def display(self, X):
         if hasattr(X, "shape"):
             print("Datashape is:", X.shape)
@@ -22,7 +33,17 @@ class Debug:
 
 
 class VisualizeDaskData:
-    def __init__(self, filename=None):
+    """Visualize DASK data from an operator.
+
+    Parameters
+    ----------
+    filename : str
+        A path to save the DASK visualization (the default is None).
+    **kwargs : type
+        Additional keyworkded arguments to `Operator`.
+
+    """
+    def __init__(self, filename: str = None):
         self.filename = filename
 
     def display(self, X):

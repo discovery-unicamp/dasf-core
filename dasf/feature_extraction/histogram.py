@@ -13,8 +13,44 @@ from dasf.transforms.base import TargeteredTransform
 
 
 class Histogram(TargeteredTransform, Transform):
-    def __init__(self, bins=None, range=None, normed=False, weights=None,
-                 density=None, *args, **kwargs):
+    """Operator to extract the histogram of a data.
+
+    Parameters
+    ----------
+    bins : Optional[int]
+        Number of bins (the default is None).
+    range : tuple
+        2-element tuple with the lower and upper range of the bins. If not
+        provided, range is simply (X.min(), X.max()) (the default is None).
+    normed : bool
+        If the historgram must be normalized (the default is False).
+    weights : type
+        An array of weights, of the same shape as X. Each value in a only
+        contributes its associated weight towards the bin count
+        (the default is None).
+    density : type
+        If False, the result will contain the number of samples in each bin.
+        If True, the result is the value of the probability density function
+        at the bin, normalized such that the integral over the range is 1
+        (the default is None).
+
+    Attributes
+    ----------
+    bins
+    range
+    normed
+    weights
+    density
+
+    """
+    def __init__(self,
+                 bins: int = None,
+                 range: tuple = None,
+                 normed: bool = False,
+                 weights=None,
+                 density=None,
+                 *args,
+                 **kwargs):
         TargeteredTransform.__init__(self, *args, **kwargs)
 
         self._bins = bins

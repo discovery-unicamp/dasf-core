@@ -4,7 +4,15 @@ from dasf.transforms.base import Transform
 
 
 class Reshape:
-    def __init__(self, shape):
+    """Reshape data with a new shape.
+
+    Parameters
+    ----------
+    shape : tuple
+        The new shape of the data.
+
+    """
+    def __init__(self, shape: tuple):
         self.shape = shape
 
     def run(self, X):

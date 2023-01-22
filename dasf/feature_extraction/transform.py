@@ -13,7 +13,17 @@ from dasf.transforms.base import Transform, Fit
 
 
 class ConcatenateToArray(Transform):
-    def __init__(self, flatten=False):
+    """Concatenate data from different Arrays into a single array.
+
+    Parameters
+    ----------
+    flatten : bool
+        If the arrays must be flatten prior concatenating. If `False`, the
+        arrays must share the shape of last dimansions in order to be
+        concatenated (the default is False).
+
+    """
+    def __init__(self, flatten: bool = False):
         self.flatten = flatten
 
     def __transform_generic(self, xp, **kwargs):
@@ -51,15 +61,44 @@ class ConcatenateToArray(Transform):
 
 
 class SampleDataframe:
-    def __init__(self, percent):
+    """Return a subset with random samples of the original dataset.
+
+    Parameters
+    ----------
+    percent : float
+        Percentage of the samples to get from the dataset.
+
+    """
+    def __init__(self, percent: float):
         self.__percent = float(percent / 100.0)
 
     def run(self, X):
+        """Returns a subset with random samples from the dataset `X`.
+
+        Parameters
+        ----------
+        X : Any
+            The dataset.
+
+        Returns
+        -------
+        Any
+            The sampled subset.
+
+        """
         return X.sample(n=int(len(X) * self.__percent))
 
 
 class GetSubeCubeArray:
-    def __init__(self, percent):
+    """Get a subcube with x% of samples from the original one.
+
+    Parameters
+    ----------
+    percent : float
+        Percentage of the samples to get from the cube.
+
+    """
+    def __init__(self, percent: float):
         self.__percent = float(percent / 100.0)
 
         assert (
@@ -84,7 +123,15 @@ class GetSubeCubeArray:
 
 
 class SliceDataframe(Fit):
-    def __init__(self, iline_index):
+    """Get a slice of a cube. An inline slice is a section over the x-axis.
+
+    Parameters
+    ----------
+    iline_index : int
+        The index of the inline to get.
+
+    """
+    def __init__(self, iline_index: int):
         self.iline_index = iline_index
 
     def fit(self, X, y):
@@ -101,7 +148,15 @@ class SliceDataframe(Fit):
 
 
 class GetSubDataframe:
-    def __init__(self, percent):
+    """Get the first x% samples from the dataset.
+
+    Parameters
+    ----------
+    percent : float
+        Percentage of the samples to get from the dataframe.
+
+    """
+    def __init__(self, percent: float):
         self.__percent = float(percent / 100.0)
 
     def transform(self, X):

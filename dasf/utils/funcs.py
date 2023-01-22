@@ -30,15 +30,18 @@ except ImportError:
     GPU_SUPPORTED = False
 
 
-def human_readable_size(size, decimal=3):
-    for unit in ["B", "KB", "MB", "GB", "TB"]:
+def human_readable_size(size, decimal=3) -> str:
+    """
+    converts data size into the proper measurement
+    """
+    for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
         if size < 1024.0:
             break
         size /= 1024.0
     return f"{size:.{decimal}f} {unit}"
 
 
-def get_full_qualname(obj):
+def get_full_qualname(obj) -> str:
     klass = obj.__class__
     module = klass.__module__
     if module == "builtins":
@@ -46,7 +49,7 @@ def get_full_qualname(obj):
     return module + "." + klass.__qualname__
 
 
-def get_worker_info(client):
+def get_worker_info(client) -> list:
     """
     returns a list of workers (sorted), and the DNS name for the master host
     The master is the 0th worker's host

@@ -6,6 +6,9 @@ from dasf.transforms.base import Transform
 
 
 class PersistDaskData(Transform):
+    """Allow persisting a dask array to memory and return a copy of the object.
+    It will gather the data blocks from all workers and resembles locally.
+    """
     def __lazy_transform_generic(self, X):
         if is_dask_array(X) or is_dask_dataframe(X):
             new_data = X.persist()
@@ -30,6 +33,9 @@ class PersistDaskData(Transform):
 
 
 class LoadDaskData(Transform):
+    """Allow persisting a dask array to memory. It will gather the data blocks
+    from all workers and resembles locally.
+    """
     def __lazy_transform_generic(self, X):
         if is_dask_array(X) or is_dask_dataframe(X):
             new_data = X.compute()
