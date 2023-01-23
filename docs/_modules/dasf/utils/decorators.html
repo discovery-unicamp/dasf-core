@@ -161,7 +161,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dasf.utils.decorators</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span></span><span class="sd">&quot;&quot;&quot; Implementations of important library decorators. &quot;&quot;&quot;</span>
+<span class="c1">#!/usr/bin/env python3</span>
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
@@ -173,56 +174,75 @@
 
 
 <div class="viewcode-block" id="is_forced_local"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.is_forced_local">[docs]</a><span class="k">def</span> <span class="nf">is_forced_local</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns if object is forced to run in a CPU.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=protected-access</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;_run_local&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_run_local</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># pylint: disable=protected-access</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_run_local</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="is_forced_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.is_forced_gpu">[docs]</a><span class="k">def</span> <span class="nf">is_forced_gpu</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns if object is forced to run in a GPU.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=protected-access</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;_run_gpu&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_run_gpu</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># pylint: disable=protected-access</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_run_gpu</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="fetch_from_dask"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_dask">[docs]</a><span class="k">def</span> <span class="nf">fetch_from_dask</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">new_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<div class="viewcode-block" id="fetch_from_dask"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_dask">[docs]</a><span class="k">def</span> <span class="nf">fetch_from_dask</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches to CPU all parameters in a Dask data type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">new_args</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">is_dask_array</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-            <span class="n">new_kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">is_dask_array</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">new_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">new_kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">new_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">is_dask_array</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-            <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_dask_array</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">new_args</span><span class="p">,</span> <span class="n">new_kwargs</span></div>
 
 
-<div class="viewcode-block" id="fetch_from_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_gpu">[docs]</a><span class="k">def</span> <span class="nf">fetch_from_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">new_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<div class="viewcode-block" id="fetch_from_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_gpu">[docs]</a><span class="k">def</span> <span class="nf">fetch_from_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches to CPU all parameters in a GPU data type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">new_args</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">is_gpu_array</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-            <span class="n">new_kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">is_gpu_array</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">new_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">new_kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">new_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">is_gpu_array</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-            <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_gpu_array</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">new_args</span><span class="p">,</span> <span class="n">new_kwargs</span></div>
 
 
 <div class="viewcode-block" id="fetch_args_from_dask"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_args_from_dask">[docs]</a><span class="k">def</span> <span class="nf">fetch_args_from_dask</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches to CPU all function parameters in a Dask data type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">new_args</span><span class="p">,</span> <span class="n">new_kwargs</span> <span class="o">=</span> <span class="n">fetch_from_dask</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -232,6 +252,9 @@
 
 
 <div class="viewcode-block" id="fetch_args_from_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_args_from_gpu">[docs]</a><span class="k">def</span> <span class="nf">fetch_args_from_gpu</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches to CPU all function parameters in a GPU data type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">new_args</span><span class="p">,</span> <span class="n">new_kwargs</span> <span class="o">=</span> <span class="n">fetch_from_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -241,6 +264,9 @@
 
 
 <div class="viewcode-block" id="task_handler"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.task_handler">[docs]</a><span class="k">def</span> <span class="nf">task_handler</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns all mapped functions corresponding to the executor in place.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">cls</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -269,14 +295,13 @@
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">wrapper_func_attr</span><span class="p">)</span> <span class="ow">and</span>
            <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">wrapper_func_attr</span><span class="p">)</span> <span class="ow">and</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">wrapper_func_attr</span><span class="p">)</span> <span class="ow">and</span>
               <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;There is no implementation of </span><span class="si">{</span><span class="n">wrapper_func_attr</span><span class="si">}</span><span class="s2"> nor &quot;</span>
                 <span class="s2">&quot;</span><span class="si">{func_name}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">wrapper_func_attr</span><span class="p">)(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">wrapper_func_attr</span><span class="p">)(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">wrapper</span></div>
 </pre></div>

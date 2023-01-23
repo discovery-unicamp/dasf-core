@@ -3,6 +3,11 @@
 
 .. py:module:: dasf.utils.logging
 
+.. autoapi-nested-parse::
+
+   Logging helpers for functions. 
+
+
 
 Module Contents
 ---------------
@@ -18,5 +23,7 @@ Functions
 
 
 .. py:function:: init_logging()
+
+   Initialize logger objects to be used by modules.
 
 

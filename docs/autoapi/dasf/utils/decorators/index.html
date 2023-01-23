@@ -212,6 +212,7 @@
 </style>
 <section id="module-dasf.utils.decorators">
 <span id="dasf-utils-decorators"></span><h1><a class="reference internal" href="#module-dasf.utils.decorators" title="dasf.utils.decorators"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils.decorators</span></code></a><a class="headerlink" href="#module-dasf.utils.decorators" title="Permalink to this heading">¶</a></h1>
+<p>Implementations of important library decorators.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="functions">
@@ -219,62 +220,79 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.decorators.is_forced_local" title="dasf.utils.decorators.is_forced_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_forced_local</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Returns if object is forced to run in a CPU.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.utils.decorators.is_forced_gpu" title="dasf.utils.decorators.is_forced_gpu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_forced_gpu</span></code></a>(cls)</p></td>
-<td><p></p></td>
+<td><p>Returns if object is forced to run in a GPU.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.decorators.fetch_from_dask" title="dasf.utils.decorators.fetch_from_dask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_from_dask</span></code></a>(*args, **kwargs)</p></td>
-<td><p></p></td>
+<td><p>Fetches to CPU all parameters in a Dask data type.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.utils.decorators.fetch_from_gpu" title="dasf.utils.decorators.fetch_from_gpu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_from_gpu</span></code></a>(*args, **kwargs)</p></td>
-<td><p></p></td>
+<td><p>Fetches to CPU all parameters in a GPU data type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.decorators.fetch_args_from_dask" title="dasf.utils.decorators.fetch_args_from_dask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_args_from_dask</span></code></a>(func)</p></td>
-<td><p></p></td>
+<td><p>Fetches to CPU all function parameters in a Dask data type.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.utils.decorators.fetch_args_from_gpu" title="dasf.utils.decorators.fetch_args_from_gpu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_args_from_gpu</span></code></a>(func)</p></td>
-<td><p></p></td>
+<td><p>Fetches to CPU all function parameters in a GPU data type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.decorators.task_handler" title="dasf.utils.decorators.task_handler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">task_handler</span></code></a>(func)</p></td>
-<td><p></p></td>
+<td><p>Returns all mapped functions corresponding to the executor in place.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.decorators.is_forced_local">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.decorators.</span></span><span class="sig-name descname"><span class="pre">is_forced_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/decorators.html#is_forced_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.decorators.is_forced_local" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns if object is forced to run in a CPU.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.decorators.is_forced_gpu">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.decorators.</span></span><span class="sig-name descname"><span class="pre">is_forced_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/decorators.html#is_forced_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.decorators.is_forced_gpu" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns if object is forced to run in a GPU.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.decorators.fetch_from_dask">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.decorators.</span></span><span class="sig-name descname"><span class="pre">fetch_from_dask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/decorators.html#fetch_from_dask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.decorators.fetch_from_dask" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fetches to CPU all parameters in a Dask data type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.decorators.fetch_from_gpu">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.decorators.</span></span><span class="sig-name descname"><span class="pre">fetch_from_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/decorators.html#fetch_from_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.decorators.fetch_from_gpu" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fetches to CPU all parameters in a GPU data type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.decorators.fetch_args_from_dask">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.decorators.</span></span><span class="sig-name descname"><span class="pre">fetch_args_from_dask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/decorators.html#fetch_args_from_dask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.decorators.fetch_args_from_dask" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fetches to CPU all function parameters in a Dask data type.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.decorators.fetch_args_from_gpu">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.decorators.</span></span><span class="sig-name descname"><span class="pre">fetch_args_from_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/decorators.html#fetch_args_from_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.decorators.fetch_args_from_gpu" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fetches to CPU all function parameters in a GPU data type.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.decorators.task_handler">
 <span class="sig-prename descclassname"><span class="pre">dasf.utils.decorators.</span></span><span class="sig-name descname"><span class="pre">task_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/decorators.html#task_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.decorators.task_handler" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns all mapped functions corresponding to the executor in place.</p>
+</dd></dl>
 
 </section>
 </section>

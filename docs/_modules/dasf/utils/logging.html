@@ -161,7 +161,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dasf.utils.logging</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span></span><span class="sd">&quot;&quot;&quot; Logging helpers for functions. &quot;&quot;&quot;</span>
+<span class="c1">#!/usr/bin/env python3</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
 
@@ -169,6 +170,9 @@
 
 
 <div class="viewcode-block" id="init_logging"><a class="viewcode-back" href="../../../autoapi/dasf/utils/logging/index.html#dasf.utils.logging.init_logging">[docs]</a><span class="k">def</span> <span class="nf">init_logging</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Logger</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize logger objects to be used by modules.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;DASF&quot;</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">INFO</span><span class="p">)</span>

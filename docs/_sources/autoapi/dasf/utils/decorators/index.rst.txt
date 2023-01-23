@@ -3,6 +3,11 @@
 
 .. py:module:: dasf.utils.decorators
 
+.. autoapi-nested-parse::
+
+   Implementations of important library decorators. 
+
+
 
 Module Contents
 ---------------
@@ -25,22 +30,36 @@ Functions
 
 .. py:function:: is_forced_local(cls)
 
+   Returns if object is forced to run in a CPU.
+
 
 .. py:function:: is_forced_gpu(cls)
+
+   Returns if object is forced to run in a GPU.
 
 
 .. py:function:: fetch_from_dask(*args, **kwargs)
 
+   Fetches to CPU all parameters in a Dask data type.
+
 
 .. py:function:: fetch_from_gpu(*args, **kwargs)
+
+   Fetches to CPU all parameters in a GPU data type.
 
 
 .. py:function:: fetch_args_from_dask(func)
 
+   Fetches to CPU all function parameters in a Dask data type.
+
 
 .. py:function:: fetch_args_from_gpu(func)
 
+   Fetches to CPU all function parameters in a GPU data type.
+
 
 .. py:function:: task_handler(func)
+
+   Returns all mapped functions corresponding to the executor in place.
 
 

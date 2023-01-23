@@ -3,6 +3,11 @@
 
 .. py:module:: dasf.utils.types
 
+.. autoapi-nested-parse::
+
+   Data types handlers. 
+
+
 
 Module Contents
 ---------------
@@ -96,49 +101,81 @@ Attributes
 
 .. py:function:: is_array(data)
 
+   Returns if data is a generic array.
+
 
 .. py:function:: is_dataframe(data)
+
+   Returns if data is a generic dataframe.
 
 
 .. py:function:: is_cpu_array(data)
 
+   Returns if data is a CPU arrau like Numpy.
+
 
 .. py:function:: is_cpu_dataframe(data)
+
+   Returns if data is a CPU dataframe like Pandas.
 
 
 .. py:function:: is_cpu_datatype(data)
 
+   Returns if data is a CPU data type.
+
 
 .. py:function:: is_gpu_array(data)
+
+   Returns if data is a GPU array like Cupy.
 
 
 .. py:function:: is_gpu_dataframe(data)
 
+   Returns if data is a GPU dataframe like Cudf.
+
 
 .. py:function:: is_gpu_datatype(data)
+
+   Returns if data is a GPU data type.
 
 
 .. py:function:: is_dask_cpu_array(data)
 
+   Returns if data is a Dask array with CPU internal array.
+
 
 .. py:function:: is_dask_cpu_dataframe(data)
+
+   Returns if data is a Dask dataframe with CPU internal dataframe.
 
 
 .. py:function:: is_dask_gpu_array(data)
 
+   Returns if data is a Dask array with GPU internal array.
+
 
 .. py:function:: is_dask_gpu_dataframe(data)
+
+   Returns if data is a Dask dataframe with GPU internal dataframe.
 
 
 .. py:function:: is_dask_array(data)
 
+   Returns if data is a Dask array.
+
 
 .. py:function:: is_dask_dataframe(data)
+
+   Returns if data is a Dask dataframe.
 
 
 .. py:function:: is_dask(data)
 
+   Returns if data is a Dask data type.
+
 
 .. py:function:: is_xarray_array(data)
+
+   Returns if data is a Xarray.
 
 
