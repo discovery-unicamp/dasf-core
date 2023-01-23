@@ -1,17 +1,19 @@
+""" Generic and regular functions. """
 #!/usr/bin/env python3
 
 import os
 import time
-import dask
-import wget
-import psutil
-import pandas
-import GPUtil
 import threading
-import numpy as np
 
 from pathlib import Path
 
+import wget
+import pandas
+import psutil
+import GPUtil
+import numpy as np
+
+import dask
 import dask.delayed as dd
 from dask.distributed import Client
 
@@ -23,9 +25,9 @@ from dasf.pipeline.types import TaskExecutorType
 from IPython import display as disp
 from ipywidgets import HBox, FloatProgress, Label
 
-GPU_SUPPORTED = True
 try:
-    import cupy as cp  # noqa
+    import cupy as cp
+    GPU_SUPPORTED = isinstance(cp.__version__, str)
 except ImportError:
     GPU_SUPPORTED = False
 
@@ -42,6 +44,9 @@ def human_readable_size(size, decimal=3) -> str:
 
 
 def get_full_qualname(obj) -> str:
+    """
+    Return fully qualified name of objects.
+    """
     klass = obj.__class__
     module = klass.__module__
     if module == "builtins":
@@ -51,7 +56,7 @@ def get_full_qualname(obj) -> str:
 
 def get_worker_info(client) -> list:
     """
-    returns a list of workers (sorted), and the DNS name for the master host
+    Returns a list of workers (sorted), and the DNS name for the master host
     The master is the 0th worker's host
     """
     workers = client.scheduler_info()["workers"]
@@ -86,6 +91,9 @@ def get_worker_info(client) -> list:
 
 
 def sync_future_loop(futures):
+    """
+    Synchronize all futures submitted to workers.
+    """
     while True:
         if not futures:
             break
@@ -98,8 +106,8 @@ def sync_future_loop(futures):
         for fut in result.done:
             try:
                 fut.result(timeout=7200)
-            except Exception as e:  # pylint: disable=broad-except
-                print(str(e))
+            except Exception as exc:  # pylint: disable=broad-except
+                print(str(exc))
                 raise
         futures = result.not_done
 
@@ -111,6 +119,7 @@ class NotebookProgressBar(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
+        # pylint: disable=disallowed-name
         self.bar = None
         self.percentage = None
         self.data = None
@@ -128,12 +137,9 @@ class NotebookProgressBar(threading.Thread):
         disp.display(box)
 
     def set_current(self, current, total):
-        self.__lock.acquire()
-
-        self.__current = current
-        self.__total = total
-
-        self.__lock.release()
+        with self.__lock:
+            self.__current = current
+            self.__total = total
 
     def set_error(self, error):
         self.__error = error
@@ -145,8 +151,8 @@ class NotebookProgressBar(threading.Thread):
             if self.__current != self.MIN_CUR and self.__total != self.MIN_TOTAL:
                 progress = (self.__current / self.__total) * 100
                 self.bar.value = progress
-                self.percentage.value = ("%d %%" % int(self.bar.value))
-                self.data.value = ("%d / %d" % (int(self.__current), int(self.__total)))
+                self.percentage.value = f"{int(self.bar.value)} %%"
+                self.data.value = f"{int(self.__current)} / {int(self.__total)}"
 
         if not self.__error:
             self.bar.style.bar_color = '#03c04a'
@@ -155,13 +161,16 @@ class NotebookProgressBar(threading.Thread):
 
 
 def download_file(url, filename=None, directory=None):
+    """
+    Download a generic file and save it.
+    """
     if directory is not None:
         os.makedirs(os.path.dirname(directory), exist_ok=True)
 
     if is_notebook():
         progressbar = NotebookProgressBar()
 
-        def update_notebook_bar(current, total, width=80):
+        def update_notebook_bar(current, total):
             progressbar.set_current(current, total)
 
     try:
@@ -213,52 +222,81 @@ def download_file(url, filename=None, directory=None):
                                                                bar=update_notebook_bar)))
             else:
                 output = os.path.abspath(os.path.join(os.getcwd(), wget.download(url)))
-    except Exception as e:
-        print(str(e))
+    except Exception as exc:
         progressbar.set_error(True)
 
     return output
 
 
 def download_file_from_gdrive(file_id, filename=None, directory=None):
-    URL = "https://drive.google.com/uc?export=download&confirm=9iBg&id=%s" % file_id
+    """
+    Download a file from Google Drive using gdrive file id.
+    """
+    url = f"https://drive.google.com/uc?export=download&confirm=9iBg&id={file_id}"
 
-    return download_file(URL, filename=filename, directory=directory)
+    return download_file(url, filename=filename, directory=directory)
 
 
 def get_machine_memory_avail():
+    """
+    Return free memory available from a single machine.
+    """
     return psutil.virtual_memory().free
 
 
 def set_executor_default():
+    """
+    Return executor as a CPU (default) instance.
+    """
     return TaskExecutorType.single_cpu
 
 
 def set_executor_gpu():
+    """
+    Return executor as a GPU instance.
+    """
     return TaskExecutorType.single_gpu
 
 
-def is_executor_single(dtype):
-    return dtype == TaskExecutorType.single_cpu or dtype == TaskExecutorType.single_gpu
+def is_executor_single(dtype) -> bool:
+    """
+    Return if the executor is a single machine instance.
+    """
+    return dtype in (TaskExecutorType.single_cpu, TaskExecutorType.single_gpu)
 
 
-def is_executor_cluster(dtype):
-    return dtype == TaskExecutorType.multi_cpu or dtype == TaskExecutorType.multi_gpu
+def is_executor_cluster(dtype) -> bool:
+    """
+    Return if the executor is a cluster instance.
+    """
+    return dtype in (TaskExecutorType.multi_cpu, TaskExecutorType.multi_gpu)
 
 
-def is_executor_cpu(dtype):
-    return dtype == TaskExecutorType.single_cpu or dtype == TaskExecutorType.multi_cpu
+def is_executor_cpu(dtype) -> bool:
+    """
+    Return if the executor is a CPU instance.
+    """
+    return dtype in (TaskExecutorType.single_cpu, TaskExecutorType.multi_cpu)
 
 
-def is_executor_gpu(dtype):
-    return dtype == TaskExecutorType.single_gpu or dtype == TaskExecutorType.multi_gpu
+def is_executor_gpu(dtype) -> bool:
+    """
+    Return if the executor is a GPU instance.
+    """
+    return dtype in (TaskExecutorType.single_gpu, TaskExecutorType.multi_gpu)
 
 
-def is_gpu_supported():
+def is_gpu_supported() -> bool:
+    """
+    Return if GPU is supported.
+    """
     return GPU_SUPPORTED
 
 
-def is_dask_local_supported():
+def is_dask_local_supported() -> bool:
+    """
+    Return if Dask is supported locally by the executor.
+    """
     try:
         scheduler = dask.config.get(key="scheduler")
         return scheduler is not None
@@ -267,23 +305,32 @@ def is_dask_local_supported():
 
 
 def get_dask_running_client():
+    """
+    Get Dask runner stanza.
+    """
     return Client.current()
 
 
-def is_dask_supported():
+def is_dask_supported() -> bool:
+    """
+    Return if Dask is supported by the executor.
+    """
     try:
         if is_dask_local_supported():
             return True
-        else:
-            cur = get_dask_running_client()
-            if hasattr(cur, 'dtype'):
-                return is_executor_cluster(cur.dtype)
-            return cur is not None
+
+        cur = get_dask_running_client()
+        if hasattr(cur, 'dtype'):
+            return is_executor_cluster(cur.dtype)
+        return cur is not None
     except Exception:
         return False
 
 
-def is_dask_gpu_supported():
+def is_dask_gpu_supported() -> bool:
+    """
+    Return if any node supports GPU.
+    """
     if is_dask_supported():
         if len(get_dask_gpu_count()) > 0:
             return True
@@ -291,18 +338,28 @@ def is_dask_gpu_supported():
     return False
 
 
-def get_gpu_count():
+def get_gpu_count() -> int:
+    """
+    Get single node GPU count.
+    """
     return GPUtil.getGPUs()
 
 
-def get_dask_gpu_count(fetch=True):
-    y = dd(GPUtil.getGPUs)()
+def get_dask_gpu_count(fetch=True) -> int:
+    """
+    Get how many GPUs are available in each worker.
+    """
+    # pylint: disable=not-callable
+    ret = dd(GPUtil.getGPUs)()
     if fetch:
-        return y.compute()
-    return y
+        return ret.compute()
+    return ret
 
 
 def block_chunk_reduce(dask_data, output_chunk):
+    """
+    Reduce the chunk according the new output size.
+    """
     drop_axis = np.array([])
     new_axis = None
 
@@ -328,30 +385,37 @@ def block_chunk_reduce(dask_data, output_chunk):
 
 
 def return_local_and_gpu(executor, local, gpu):
+    """
+    Return executor type based on passed preferences.
+    """
+    # pylint: disable=too-many-return-statements
     if local is not None and gpu is None:
         if local is True:
             return TaskExecutorType(executor.dtype.value & 2)
-        elif local is False:
+        if local is False:
             return TaskExecutorType(executor.dtype.value | 1)
     elif local is None and gpu is not None:
         if gpu is True:
             return TaskExecutorType((executor.dtype >> 1) + 2)
-        elif gpu is False:
+        if gpu is False:
             return TaskExecutorType(executor.dtype & 1)
     elif local is not None and gpu is not None:
         if local is True and gpu is False:
             return TaskExecutorType.single_cpu
-        elif local is False and gpu is False:
+        if local is False and gpu is False:
             return TaskExecutorType.multi_cpu
-        elif local is True and gpu is True:
+        if local is True and gpu is True:
             return TaskExecutorType.single_gpu
-        elif local is False and gpu is True:
+        if local is False and gpu is True:
             return TaskExecutorType.multi_gpu
 
     return executor.dtype
 
 
 def get_dask_mem_usage(profiler):
+    """
+    Get Dask memory usage profile.
+    """
     profiler_dir = os.path.abspath(str(Path.home()) + "/.cache/dasf/profiler/")
 
     if profiler == "memusage":
@@ -363,18 +427,18 @@ def get_dask_mem_usage(profiler):
         max_index = column.idxmax()
 
         return mem["max_memory_mb"][max_index]
-    else:
-        return 0.0
+    return 0.0
 
 
 def is_notebook() -> bool:
+    """
+    Return if the code is being executed in a IPyNotebook.
+    """
     try:
         shell = get_ipython().__class__.__name__
         if shell == "ZMQInteractiveShell":
             return True
-        elif shell == "TerminalInteractiveShell":
-            return False
-        else:
-            return False
     except NameError:
-        return False
+        pass
+
+    return False
