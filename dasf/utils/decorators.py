@@ -1,3 +1,4 @@
+""" Implementations of important library decorators. """
 #!/usr/bin/env python3
 
 from functools import wraps
@@ -10,56 +11,75 @@ from dasf.utils.funcs import is_dask_gpu_supported
 
 
 def is_forced_local(cls):
+    """
+    Returns if object is forced to run in a CPU.
+    """
+    # pylint: disable=protected-access
     if hasattr(cls, "_run_local") and cls._run_local is not None:
+        # pylint: disable=protected-access
         return cls._run_local
     return None
 
 
 def is_forced_gpu(cls):
+    """
+    Returns if object is forced to run in a GPU.
+    """
+    # pylint: disable=protected-access
     if hasattr(cls, "_run_gpu") and cls._run_gpu is not None:
+        # pylint: disable=protected-access
         return cls._run_gpu
     return None
 
 
-def fetch_from_dask(*args, **kwargs):
-    new_kwargs = dict()
+def fetch_from_dask(*args, **kwargs) -> tuple:
+    """
+    Fetches to CPU all parameters in a Dask data type.
+    """
+    new_kwargs = {}
     new_args = []
 
-    for k, v in kwargs.items():
-        if is_dask_array(v):
-            new_kwargs[k] = v.compute()
+    for key, value in kwargs.items():
+        if is_dask_array(value):
+            new_kwargs[key] = value.compute()
         else:
-            new_kwargs[k] = v
+            new_kwargs[key] = value
 
-    for v in args:
-        if is_dask_array(v):
-            new_args.append(v.compute())
+    for value in args:
+        if is_dask_array(value):
+            new_args.append(value.compute())
         else:
-            new_args.append(v)
+            new_args.append(value)
 
     return new_args, new_kwargs
 
 
-def fetch_from_gpu(*args, **kwargs):
-    new_kwargs = dict()
+def fetch_from_gpu(*args, **kwargs) -> tuple:
+    """
+    Fetches to CPU all parameters in a GPU data type.
+    """
+    new_kwargs = {}
     new_args = []
 
-    for k, v in kwargs.items():
-        if is_gpu_array(v):
-            new_kwargs[k] = v.get()
+    for key, value in kwargs.items():
+        if is_gpu_array(value):
+            new_kwargs[key] = value.get()
         else:
-            new_kwargs[k] = v
+            new_kwargs[key] = value
 
-    for v in args:
-        if is_gpu_array(v):
-            new_args.append(v.get())
+    for value in args:
+        if is_gpu_array(value):
+            new_args.append(value.get())
         else:
-            new_args.append(v)
+            new_args.append(value)
 
     return new_args, new_kwargs
 
 
 def fetch_args_from_dask(func):
+    """
+    Fetches to CPU all function parameters in a Dask data type.
+    """
     def wrapper(*args, **kwargs):
         new_args, new_kwargs = fetch_from_dask(*args, **kwargs)
 
@@ -69,6 +89,9 @@ def fetch_args_from_dask(func):
 
 
 def fetch_args_from_gpu(func):
+    """
+    Fetches to CPU all function parameters in a GPU data type.
+    """
     def wrapper(*args, **kwargs):
         new_args, new_kwargs = fetch_from_gpu(*args, **kwargs)
 
@@ -78,6 +101,9 @@ def fetch_args_from_gpu(func):
 
 
 def task_handler(func):
+    """
+    Returns all mapped functions corresponding to the executor in place.
+    """
     @wraps(func)
     def wrapper(*args, **kwargs):
         cls = args[0]
@@ -106,13 +132,12 @@ def task_handler(func):
         if (not hasattr(cls, wrapper_func_attr) and
            hasattr(cls, func_name)):
             return func(*new_args, **kwargs)
-        elif (not hasattr(cls, wrapper_func_attr) and
+        if (not hasattr(cls, wrapper_func_attr) and
               not hasattr(cls, func_name)):
             raise NotImplementedError(
                 f"There is no implementation of {wrapper_func_attr} nor "
                 "{func_name}"
             )
-        else:
-            return getattr(cls, wrapper_func_attr)(*new_args, **kwargs)
+        return getattr(cls, wrapper_func_attr)(*new_args, **kwargs)
 
     return wrapper
