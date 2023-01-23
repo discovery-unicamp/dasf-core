@@ -1,0 +1,43 @@
+:py:mod:`dasf.pipeline.pipeline`
+================================
+
+.. py:module:: dasf.pipeline.pipeline
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.pipeline.Pipeline
+
+
+
+
+.. py:class:: Pipeline(name, executor=None, verbose=False)
+
+   .. py:method:: __add_into_dag(obj, func_name, parameters=None, itself=None)
+
+
+   .. py:method:: __inspect_element(obj)
+
+
+   .. py:method:: add(obj, **kwargs)
+
+
+   .. py:method:: visualize(filename=None)
+
+
+   .. py:method:: __execute(func, params, name)
+
+
+   .. py:method:: get_result_from(obj)
+
+
+   .. py:method:: run()
+
+
+

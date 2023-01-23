@@ -1,0 +1,61 @@
+:py:mod:`dasf.ml.dl`
+====================
+
+.. py:module:: dasf.ml.dl
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   clusters/index.rst
+   models/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   pytorch_lightning/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.dl.NeuralNetClassifier
+
+
+
+
+.. py:class:: NeuralNetClassifier(model, max_iter=100, batch_size=32)
+
+   Bases: :py:obj:`dasf.transforms.base.Fit`
+
+   .. py:method:: _lazy_fit_generic(X, y, accel, ngpus)
+
+
+   .. py:method:: _lazy_fit_gpu(X, y=None)
+
+
+   .. py:method:: _lazy_fit_cpu(X, y=None)
+
+
+   .. py:method:: __fit_generic(X, y, accel, ngpus)
+
+
+   .. py:method:: _fit_gpu(X, y=None)
+
+
+   .. py:method:: _fit_cpu(X, y=None)
+
+
+

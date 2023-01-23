@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dasf.feature_extraction.transform &mdash; DASF 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="dasf.ml" href="../../ml/index.html" />
+    <link rel="prev" title="dasf.feature_extraction.histogram" href="../histogram/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> DASF
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../api.html">DASF API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ml/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">DASF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../api.html">DASF API Reference</a> &raquo;</li>
+        
+          <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a> &raquo;</li>
+        
+          <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction.transform</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/autoapi/dasf/feature_extraction/transform/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-dasf.feature_extraction.transform">
+<span id="dasf-feature-extraction-transform"></span><h1><a class="reference internal" href="#module-dasf.feature_extraction.transform" title="dasf.feature_extraction.transform"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction.transform</span></code></a><a class="headerlink" href="#module-dasf.feature_extraction.transform" title="Permalink to this heading">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.ConcatenateToArray" title="dasf.feature_extraction.transform.ConcatenateToArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConcatenateToArray</span></code></a></p></td>
+<td><p>Concatenate data from different Arrays into a single array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.SampleDataframe" title="dasf.feature_extraction.transform.SampleDataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleDataframe</span></code></a></p></td>
+<td><p>Return a subset with random samples of the original dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.GetSubeCubeArray" title="dasf.feature_extraction.transform.GetSubeCubeArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GetSubeCubeArray</span></code></a></p></td>
+<td><p>Get a subcube with x% of samples from the original one.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.SliceDataframe" title="dasf.feature_extraction.transform.SliceDataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SliceDataframe</span></code></a></p></td>
+<td><p>Get a slice of a cube. An inline slice is a section over the x-axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.feature_extraction.transform.GetSubDataframe" title="dasf.feature_extraction.transform.GetSubDataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GetSubDataframe</span></code></a></p></td>
+<td><p>Get the first x% samples from the dataset.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.ConcatenateToArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">ConcatenateToArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flatten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#ConcatenateToArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.ConcatenateToArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../transforms/base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
+<p>Concatenate data from different Arrays into a single array.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">¶</a></h4>
+<dl class="simple">
+<dt>flatten<span class="classifier">bool</span></dt><dd><p>If the arrays must be flatten prior concatenating. If <cite>False</cite>, the
+arrays must share the shape of last dimansions in order to be
+concatenated (the default is False).</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.ConcatenateToArray.__transform_generic">
+<span class="sig-name descname"><span class="pre">__transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.transform.ConcatenateToArray.__transform_generic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.ConcatenateToArray._transform_cpu">
+<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#ConcatenateToArray._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.ConcatenateToArray._transform_cpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.ConcatenateToArray._transform_gpu">
+<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#ConcatenateToArray._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.ConcatenateToArray._transform_gpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>flatten</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.SampleDataframe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">SampleDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#SampleDataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.SampleDataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a subset with random samples of the original dataset.</p>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h4>
+<dl class="simple">
+<dt>percent<span class="classifier">float</span></dt><dd><p>Percentage of the samples to get from the dataset.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.SampleDataframe.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#SampleDataframe.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.SampleDataframe.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a subset with random samples from the dataset <cite>X</cite>.</p>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">Any</span></dt><dd><p>The dataset.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">¶</a></h5>
+<dl class="simple">
+<dt>Any</dt><dd><p>The sampled subset.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>percent</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.GetSubeCubeArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">GetSubeCubeArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#GetSubeCubeArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.GetSubeCubeArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a subcube with x% of samples from the original one.</p>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h4>
+<dl class="simple">
+<dt>percent<span class="classifier">float</span></dt><dd><p>Percentage of the samples to get from the cube.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.GetSubeCubeArray.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#GetSubeCubeArray.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.GetSubeCubeArray.transform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>percent</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.SliceDataframe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">SliceDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iline_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#SliceDataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.SliceDataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../transforms/base/index.html#dasf.transforms.base.Fit" title="dasf.transforms.base.Fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Fit</span></code></a></p>
+<p>Get a slice of a cube. An inline slice is a section over the x-axis.</p>
+<section id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h4>
+<dl class="simple">
+<dt>iline_index<span class="classifier">int</span></dt><dd><p>The index of the inline to get.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.SliceDataframe.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#SliceDataframe.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.SliceDataframe.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>iline_index</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.GetSubDataframe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.transform.</span></span><span class="sig-name descname"><span class="pre">GetSubDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#GetSubDataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.GetSubDataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the first x% samples from the dataset.</p>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h4>
+<dl class="simple">
+<dt>percent<span class="classifier">float</span></dt><dd><p>Percentage of the samples to get from the dataframe.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.feature_extraction.transform.GetSubDataframe.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/feature_extraction/transform.html#GetSubDataframe.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.transform.GetSubDataframe.transform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>percent</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../../ml/index.html" class="btn btn-neutral float-right" title="dasf.ml" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../histogram/index.html" class="btn btn-neutral float-left" title="dasf.feature_extraction.histogram" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, UNICAMP.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

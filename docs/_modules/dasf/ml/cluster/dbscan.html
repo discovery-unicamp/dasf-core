@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dasf.ml.cluster.dbscan &mdash; DASF 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> DASF
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">DASF API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">DASF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dasf.ml.cluster.dbscan</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dasf.ml.cluster.dbscan</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">DBSCAN</span> <span class="k">as</span> <span class="n">DBSCAN_CPU</span>
+
+<span class="kn">from</span> <span class="nn">dasf.ml.cluster.classifier</span> <span class="kn">import</span> <span class="n">ClusterClassifier</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_gpu_supported</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">cuml.cluster</span> <span class="kn">import</span> <span class="n">DBSCAN</span> <span class="k">as</span> <span class="n">DBSCAN_GPU</span>
+    <span class="kn">from</span> <span class="nn">cuml.dask.cluster</span> <span class="kn">import</span> <span class="n">DBSCAN</span> <span class="k">as</span> <span class="n">DBSCAN_MGPU</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="DBSCAN"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.dbscan.DBSCAN">[docs]</a><span class="k">class</span> <span class="nc">DBSCAN</span><span class="p">(</span><span class="n">ClusterClassifier</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform DBSCAN clustering from vector array or distance matrix.</span>
+
+<span class="sd">    DBSCAN - Density-Based Spatial Clustering of Applications with Noise.</span>
+<span class="sd">    Finds core samples of high density and expands clusters from them.</span>
+<span class="sd">    Good for data which contains clusters of similar density.</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;dbscan&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    eps : float, default=0.5</span>
+<span class="sd">        The maximum distance between two samples for one to be considered</span>
+<span class="sd">        as in the neighborhood of the other. This is not a maximum bound</span>
+<span class="sd">        on the distances of points within a cluster. This is the most</span>
+<span class="sd">        important DBSCAN parameter to choose appropriately for your data set</span>
+<span class="sd">        and distance function.</span>
+
+<span class="sd">    min_samples : int, default=5</span>
+<span class="sd">        The number of samples (or total weight) in a neighborhood for a point</span>
+<span class="sd">        to be considered as a core point. This includes the point itself.</span>
+
+<span class="sd">    metric : string, or callable, default=&#39;euclidean&#39;</span>
+<span class="sd">        The metric to use when calculating distance between instances in a</span>
+<span class="sd">        feature array. If metric is a string or callable, it must be one of</span>
+<span class="sd">        the options allowed by :func:`sklearn.metrics.pairwise_distances` for</span>
+<span class="sd">        its metric parameter.</span>
+<span class="sd">        If metric is &quot;precomputed&quot;, X is assumed to be a distance matrix and</span>
+<span class="sd">        must be square. X may be a :term:`Glossary &lt;sparse graph&gt;`, in which</span>
+<span class="sd">        case only &quot;nonzero&quot; elements may be considered neighbors for DBSCAN.</span>
+
+<span class="sd">        .. versionadded:: 0.17</span>
+<span class="sd">           metric *precomputed* to accept precomputed sparse matrix.</span>
+
+<span class="sd">    metric_params : dict, default=None</span>
+<span class="sd">        Additional keyword arguments for the metric function.</span>
+
+<span class="sd">        .. versionadded:: 0.19</span>
+
+<span class="sd">    algorithm : {&#39;auto&#39;, &#39;ball_tree&#39;, &#39;kd_tree&#39;, &#39;brute&#39;}, default=&#39;auto&#39;</span>
+<span class="sd">        The algorithm to be used by the NearestNeighbors module</span>
+<span class="sd">        to compute pointwise distances and find nearest neighbors.</span>
+<span class="sd">        See NearestNeighbors module documentation for details.</span>
+
+<span class="sd">    leaf_size : int, default=30</span>
+<span class="sd">        Leaf size passed to BallTree or cKDTree. This can affect the speed</span>
+<span class="sd">        of the construction and query, as well as the memory required</span>
+<span class="sd">        to store the tree. The optimal value depends</span>
+<span class="sd">        on the nature of the problem.</span>
+
+<span class="sd">    p : float, default=None</span>
+<span class="sd">        The power of the Minkowski metric to be used to calculate distance</span>
+<span class="sd">        between points. If None, then ``p=2`` (equivalent to the Euclidean</span>
+<span class="sd">        distance).</span>
+
+<span class="sd">    n_jobs : int, default=None</span>
+<span class="sd">        The number of parallel jobs to run.</span>
+<span class="sd">        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.</span>
+<span class="sd">        ``-1`` means using all processors. See :term:`Glossary &lt;n_jobs&gt;`</span>
+<span class="sd">        for more details.</span>
+
+<span class="sd">    output_type : {&#39;input&#39;, &#39;cudf&#39;, &#39;cupy&#39;, &#39;numpy&#39;, &#39;numba&#39;}, default=None</span>
+<span class="sd">        Variable to control output type of the results and attributes of the</span>
+<span class="sd">        estimator. If None, it&#39;ll inherit the output type set at the module</span>
+<span class="sd">        level, cuml.global_settings.output_type. See Output Data Type</span>
+<span class="sd">        Configuration for more info.</span>
+
+<span class="sd">    calc_core_sample_indices(optional) : boolean, default = True</span>
+<span class="sd">        Indicates whether the indices of the core samples should be calculated.</span>
+<span class="sd">        The the attribute `core_sample_indices_` will not be used, setting this</span>
+<span class="sd">        to False will avoid unnecessary kernel launches.</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from dasf.ml.cluster import DBSCAN</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; X = np.array([[1, 2], [2, 2], [2, 3],</span>
+<span class="sd">    ...               [8, 7], [8, 8], [25, 80]])</span>
+<span class="sd">    &gt;&gt;&gt; clustering = DBSCAN(eps=3, min_samples=2).fit(X)</span>
+<span class="sd">    &gt;&gt;&gt; clustering</span>
+<span class="sd">    DBSCAN(eps=3, min_samples=2)</span>
+
+<span class="sd">    For further informations see:</span>
+<span class="sd">    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html#sklearn.cluster.DBSCAN</span>
+<span class="sd">    - https://docs.rapids.ai/api/cuml/stable/api.html#dbscan</span>
+<span class="sd">    - https://docs.rapids.ai/api/cuml/stable/api.html#dbscan-clustering</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    OPTICS : A similar clustering at multiple values of eps. Our implementation</span>
+<span class="sd">        is optimized for memory usage.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Ester, M., H. P. Kriegel, J. Sander, and X. Xu, &quot;A Density-Based</span>
+<span class="sd">    Algorithm for Discovering Clusters in Large Spatial Databases with Noise&quot;.</span>
+<span class="sd">    In: Proceedings of the 2nd International Conference on Knowledge Discovery</span>
+<span class="sd">    and Data Mining, Portland, OR, AAAI Press, pp. 226-231. 1996</span>
+
+<span class="sd">    Schubert, E., Sander, J., Ester, M., Kriegel, H. P., &amp; Xu, X. (2017).</span>
+<span class="sd">    DBSCAN revisited, revisited: why and how you should (still) use DBSCAN.</span>
+<span class="sd">    ACM Transactions on Database Systems (TODS), 42(3), 19.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">eps</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">leaf_size</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+        <span class="n">min_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">calc_core_sample_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leaf_size</span> <span class="o">=</span> <span class="n">leaf_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_samples</span> <span class="o">=</span> <span class="n">min_samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">=</span> <span class="n">output_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc_core_sample_indices</span> <span class="o">=</span> <span class="n">calc_core_sample_indices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_cpu</span> <span class="o">=</span> <span class="n">DBSCAN_CPU</span><span class="p">(</span>
+            <span class="n">eps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+            <span class="n">leaf_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">leaf_size</span><span class="p">,</span>
+            <span class="n">metric</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="p">,</span>
+            <span class="n">min_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min_samples</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_gpu</span> <span class="o">=</span> <span class="n">DBSCAN_GPU</span><span class="p">(</span>
+                <span class="n">min_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min_samples</span><span class="p">,</span>
+                <span class="n">output_type</span><span class="o">=</span><span class="n">output_type</span><span class="p">,</span>
+                <span class="n">calc_core_sample_indices</span><span class="o">=</span><span class="n">calc_core_sample_indices</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_mgpu</span> <span class="o">=</span> <span class="n">DBSCAN_MGPU</span><span class="p">(</span>
+                    <span class="n">min_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min_samples</span><span class="p">,</span>
+                    <span class="n">output_type</span><span class="o">=</span><span class="n">output_type</span><span class="p">,</span>
+                    <span class="n">calc_core_sample_indices</span><span class="o">=</span><span class="n">calc_core_sample_indices</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_mgpu</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="DBSCAN._lazy_fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.dbscan.DBSCAN._lazy_fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">out_dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_mgpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_mgpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">out_dtype</span><span class="o">=</span><span class="n">out_dtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DBSCAN._fit_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.dbscan.DBSCAN._fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DBSCAN._fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.dbscan.DBSCAN._fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">out_dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">out_dtype</span><span class="o">=</span><span class="n">out_dtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DBSCAN._lazy_fit_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.dbscan.DBSCAN._lazy_fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">out_dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_mgpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_mgpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">out_dtype</span><span class="o">=</span><span class="n">out_dtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DBSCAN._fit_predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.dbscan.DBSCAN._fit_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_cpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DBSCAN._fit_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.dbscan.DBSCAN._fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">out_dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbscan_gpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">out_dtype</span><span class="o">=</span><span class="n">out_dtype</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, UNICAMP.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

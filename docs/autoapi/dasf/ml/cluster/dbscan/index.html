@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dasf.ml.cluster.dbscan &mdash; DASF 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="dasf.ml.cluster.hdbscan" href="../hdbscan/index.html" />
+    <link rel="prev" title="dasf.ml.cluster.classifier" href="../classifier/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> DASF
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../api.html">DASF API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">DASF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../../api.html">DASF API Reference</a> &raquo;</li>
+        
+          <li><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a> &raquo;</li>
+        
+          <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a> &raquo;</li>
+        
+          <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster</span></code></a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.dbscan</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../../_sources/autoapi/dasf/ml/cluster/dbscan/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-dasf.ml.cluster.dbscan">
+<span id="dasf-ml-cluster-dbscan"></span><h1><a class="reference internal" href="#module-dasf.ml.cluster.dbscan" title="dasf.ml.cluster.dbscan"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.dbscan</span></code></a><a class="headerlink" href="#module-dasf.ml.cluster.dbscan" title="Permalink to this heading">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.ml.cluster.dbscan.DBSCAN" title="dasf.ml.cluster.dbscan.DBSCAN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DBSCAN</span></code></a></p></td>
+<td><p>Perform DBSCAN clustering from vector array or distance matrix.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.ml.cluster.dbscan.DBSCAN">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.cluster.dbscan.</span></span><span class="sig-name descname"><span class="pre">DBSCAN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaf_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_core_sample_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/dbscan.html#DBSCAN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.dbscan.DBSCAN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../classifier/index.html#dasf.ml.cluster.classifier.ClusterClassifier" title="dasf.ml.cluster.classifier.ClusterClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.ml.cluster.classifier.ClusterClassifier</span></code></a></p>
+<p>Perform DBSCAN clustering from vector array or distance matrix.</p>
+<p>DBSCAN - Density-Based Spatial Clustering of Applications with Noise.
+Finds core samples of high density and expands clusters from them.
+Good for data which contains clusters of similar density.</p>
+<p>Read more in the <span class="xref std std-ref">User Guide</span>.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">¶</a></h4>
+<dl>
+<dt>eps<span class="classifier">float, default=0.5</span></dt><dd><p>The maximum distance between two samples for one to be considered
+as in the neighborhood of the other. This is not a maximum bound
+on the distances of points within a cluster. This is the most
+important DBSCAN parameter to choose appropriately for your data set
+and distance function.</p>
+</dd>
+<dt>min_samples<span class="classifier">int, default=5</span></dt><dd><p>The number of samples (or total weight) in a neighborhood for a point
+to be considered as a core point. This includes the point itself.</p>
+</dd>
+<dt>metric<span class="classifier">string, or callable, default=’euclidean’</span></dt><dd><p>The metric to use when calculating distance between instances in a
+feature array. If metric is a string or callable, it must be one of
+the options allowed by <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.pairwise_distances()</span></code> for
+its metric parameter.
+If metric is “precomputed”, X is assumed to be a distance matrix and
+must be square. X may be a <span class="xref std std-term">Glossary</span>, in which
+case only “nonzero” elements may be considered neighbors for DBSCAN.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.17: </span>metric <em>precomputed</em> to accept precomputed sparse matrix.</p>
+</div>
+</dd>
+<dt>metric_params<span class="classifier">dict, default=None</span></dt><dd><p>Additional keyword arguments for the metric function.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.19.</span></p>
+</div>
+</dd>
+<dt>algorithm<span class="classifier">{‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, default=’auto’</span></dt><dd><p>The algorithm to be used by the NearestNeighbors module
+to compute pointwise distances and find nearest neighbors.
+See NearestNeighbors module documentation for details.</p>
+</dd>
+<dt>leaf_size<span class="classifier">int, default=30</span></dt><dd><p>Leaf size passed to BallTree or cKDTree. This can affect the speed
+of the construction and query, as well as the memory required
+to store the tree. The optimal value depends
+on the nature of the problem.</p>
+</dd>
+<dt>p<span class="classifier">float, default=None</span></dt><dd><p>The power of the Minkowski metric to be used to calculate distance
+between points. If None, then <code class="docutils literal notranslate"><span class="pre">p=2</span></code> (equivalent to the Euclidean
+distance).</p>
+</dd>
+<dt>n_jobs<span class="classifier">int, default=None</span></dt><dd><p>The number of parallel jobs to run.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code> context.
+<code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors. See <span class="xref std std-term">Glossary</span>
+for more details.</p>
+</dd>
+<dt>output_type<span class="classifier">{‘input’, ‘cudf’, ‘cupy’, ‘numpy’, ‘numba’}, default=None</span></dt><dd><p>Variable to control output type of the results and attributes of the
+estimator. If None, it’ll inherit the output type set at the module
+level, cuml.global_settings.output_type. See Output Data Type
+Configuration for more info.</p>
+</dd>
+<dt>calc_core_sample_indices(optional)<span class="classifier">boolean, default = True</span></dt><dd><p>Indicates whether the indices of the core samples should be calculated.
+The the attribute <cite>core_sample_indices_</cite> will not be used, setting this
+to False will avoid unnecessary kernel launches.</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dasf.ml.cluster</span> <span class="kn">import</span> <span class="n">DBSCAN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">80</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clustering</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clustering</span>
+<span class="go">DBSCAN(eps=3, min_samples=2)</span>
+</pre></div>
+</div>
+<p>For further informations see:
+- <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html#sklearn.cluster.DBSCAN">https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html#sklearn.cluster.DBSCAN</a>
+- <a class="reference external" href="https://docs.rapids.ai/api/cuml/stable/api.html#dbscan">https://docs.rapids.ai/api/cuml/stable/api.html#dbscan</a>
+- <a class="reference external" href="https://docs.rapids.ai/api/cuml/stable/api.html#dbscan-clustering">https://docs.rapids.ai/api/cuml/stable/api.html#dbscan-clustering</a></p>
+</section>
+<section id="see-also">
+<h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">¶</a></h4>
+<dl class="simple">
+<dt>OPTICS<span class="classifier">A similar clustering at multiple values of eps. Our implementation</span></dt><dd><p>is optimized for memory usage.</p>
+</dd>
+</dl>
+</section>
+<section id="references">
+<h4>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h4>
+<p>Ester, M., H. P. Kriegel, J. Sander, and X. Xu, “A Density-Based
+Algorithm for Discovering Clusters in Large Spatial Databases with Noise”.
+In: Proceedings of the 2nd International Conference on Knowledge Discovery
+and Data Mining, Portland, OR, AAAI Press, pp. 226-231. 1996</p>
+<p>Schubert, E., Sander, J., Ester, M., Kriegel, H. P., &amp; Xu, X. (2017).
+DBSCAN revisited, revisited: why and how you should (still) use DBSCAN.
+ACM Transactions on Database Systems (TODS), 42(3), 19.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.dbscan.DBSCAN._lazy_fit_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'int32'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/dbscan.html#DBSCAN._lazy_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.dbscan.DBSCAN._lazy_fit_gpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.dbscan.DBSCAN._fit_cpu">
+<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/dbscan.html#DBSCAN._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.dbscan.DBSCAN._fit_cpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.dbscan.DBSCAN._fit_gpu">
+<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'int32'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/dbscan.html#DBSCAN._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.dbscan.DBSCAN._fit_gpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.dbscan.DBSCAN._lazy_fit_predict_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_predict_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'int32'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/dbscan.html#DBSCAN._lazy_fit_predict_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.dbscan.DBSCAN._lazy_fit_predict_gpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.dbscan.DBSCAN._fit_predict_cpu">
+<span class="sig-name descname"><span class="pre">_fit_predict_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/dbscan.html#DBSCAN._fit_predict_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.dbscan.DBSCAN._fit_predict_cpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.dbscan.DBSCAN._fit_predict_gpu">
+<span class="sig-name descname"><span class="pre">_fit_predict_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'int32'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/dbscan.html#DBSCAN._fit_predict_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.dbscan.DBSCAN._fit_predict_gpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../hdbscan/index.html" class="btn btn-neutral float-right" title="dasf.ml.cluster.hdbscan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../classifier/index.html" class="btn btn-neutral float-left" title="dasf.ml.cluster.classifier" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, UNICAMP.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

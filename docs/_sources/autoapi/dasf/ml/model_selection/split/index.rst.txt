@@ -1,0 +1,37 @@
+:py:mod:`dasf.ml.model_selection.split`
+=======================================
+
+.. py:module:: dasf.ml.model_selection.split
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.model_selection.split.train_test_split
+
+
+
+
+.. py:class:: train_test_split(output='train', test_size=None, train_size=None, random_state=None, shuffle=None, blockwise=True, convert_mixed_types=False, **kwargs)
+
+   Bases: :py:obj:`dasf.transforms.TargeteredTransform`, :py:obj:`dasf.transforms.Transform`
+
+   .. py:method:: _lazy_transform_cpu(X)
+
+
+   .. py:method:: _lazy_transform_gpu(X)
+      :abstractmethod:
+
+
+   .. py:method:: _transform_cpu(X)
+
+
+   .. py:method:: _transform_gpu(X)
+
+
+

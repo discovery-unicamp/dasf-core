@@ -1,0 +1,263 @@
+:py:mod:`dasf.ml.dl.models`
+===========================
+
+.. py:module:: dasf.ml.dl.models
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   devconvnet/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.dl.models.TorchPatchDeConvNet
+   dasf.ml.dl.models.TorchPatchDeConvNetSkip
+   dasf.ml.dl.models.TorchSectionDeConvNet
+   dasf.ml.dl.models.TorchSectionDeConvNetSkip
+
+
+
+
+.. py:class:: TorchPatchDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
+
+   Bases: :py:obj:`NNModule`
+
+   Base class for all neural network modules.
+
+   Your models should also subclass this class.
+
+   Modules can also contain other Modules, allowing to nest them in
+   a tree structure. You can assign the submodules as regular attributes::
+
+       import torch.nn as nn
+       import torch.nn.functional as F
+
+       class Model(nn.Module):
+           def __init__(self):
+               super().__init__()
+               self.conv1 = nn.Conv2d(1, 20, 5)
+               self.conv2 = nn.Conv2d(20, 20, 5)
+
+           def forward(self, x):
+               x = F.relu(self.conv1(x))
+               return F.relu(self.conv2(x))
+
+   Submodules assigned in this way will be registered, and will have their
+   parameters converted too when you call :meth:`to`, etc.
+
+   .. note::
+       As per the example above, an ``__init__()`` call to the parent class
+       must be made before assignment on the child.
+
+   :ivar training: Boolean represents whether this module is in training or
+                   evaluation mode.
+   :vartype training: bool
+
+   Initializes internal Module state, shared by both nn.Module and ScriptModule.
+
+   .. py:method:: forward(x)
+
+      Same as :meth:`torch.nn.Module.forward()`.
+
+      Args:
+          *args: Whatever you decide to pass into the forward method.
+          **kwargs: Keyword arguments are also possible.
+
+      Return:
+          Your model's output
+
+
+   .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
+
+
+   .. py:method:: load()
+
+      This is just a no-op load method. 
+
+
+
+.. py:class:: TorchPatchDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
+
+   Bases: :py:obj:`NNModule`
+
+   Base class for all neural network modules.
+
+   Your models should also subclass this class.
+
+   Modules can also contain other Modules, allowing to nest them in
+   a tree structure. You can assign the submodules as regular attributes::
+
+       import torch.nn as nn
+       import torch.nn.functional as F
+
+       class Model(nn.Module):
+           def __init__(self):
+               super().__init__()
+               self.conv1 = nn.Conv2d(1, 20, 5)
+               self.conv2 = nn.Conv2d(20, 20, 5)
+
+           def forward(self, x):
+               x = F.relu(self.conv1(x))
+               return F.relu(self.conv2(x))
+
+   Submodules assigned in this way will be registered, and will have their
+   parameters converted too when you call :meth:`to`, etc.
+
+   .. note::
+       As per the example above, an ``__init__()`` call to the parent class
+       must be made before assignment on the child.
+
+   :ivar training: Boolean represents whether this module is in training or
+                   evaluation mode.
+   :vartype training: bool
+
+   Initializes internal Module state, shared by both nn.Module and ScriptModule.
+
+   .. py:method:: forward(x)
+
+      Same as :meth:`torch.nn.Module.forward()`.
+
+      Args:
+          *args: Whatever you decide to pass into the forward method.
+          **kwargs: Keyword arguments are also possible.
+
+      Return:
+          Your model's output
+
+
+   .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
+
+
+   .. py:method:: load()
+
+      This is just a no-op load method. 
+
+
+
+.. py:class:: TorchSectionDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=False)
+
+   Bases: :py:obj:`NNModule`
+
+   Base class for all neural network modules.
+
+   Your models should also subclass this class.
+
+   Modules can also contain other Modules, allowing to nest them in
+   a tree structure. You can assign the submodules as regular attributes::
+
+       import torch.nn as nn
+       import torch.nn.functional as F
+
+       class Model(nn.Module):
+           def __init__(self):
+               super().__init__()
+               self.conv1 = nn.Conv2d(1, 20, 5)
+               self.conv2 = nn.Conv2d(20, 20, 5)
+
+           def forward(self, x):
+               x = F.relu(self.conv1(x))
+               return F.relu(self.conv2(x))
+
+   Submodules assigned in this way will be registered, and will have their
+   parameters converted too when you call :meth:`to`, etc.
+
+   .. note::
+       As per the example above, an ``__init__()`` call to the parent class
+       must be made before assignment on the child.
+
+   :ivar training: Boolean represents whether this module is in training or
+                   evaluation mode.
+   :vartype training: bool
+
+   Initializes internal Module state, shared by both nn.Module and ScriptModule.
+
+   .. py:method:: forward(x)
+
+      Same as :meth:`torch.nn.Module.forward()`.
+
+      Args:
+          *args: Whatever you decide to pass into the forward method.
+          **kwargs: Keyword arguments are also possible.
+
+      Return:
+          Your model's output
+
+
+   .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
+
+
+   .. py:method:: load()
+
+      This is just a no-op load method. 
+
+
+
+.. py:class:: TorchSectionDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
+
+   Bases: :py:obj:`NNModule`
+
+   Base class for all neural network modules.
+
+   Your models should also subclass this class.
+
+   Modules can also contain other Modules, allowing to nest them in
+   a tree structure. You can assign the submodules as regular attributes::
+
+       import torch.nn as nn
+       import torch.nn.functional as F
+
+       class Model(nn.Module):
+           def __init__(self):
+               super().__init__()
+               self.conv1 = nn.Conv2d(1, 20, 5)
+               self.conv2 = nn.Conv2d(20, 20, 5)
+
+           def forward(self, x):
+               x = F.relu(self.conv1(x))
+               return F.relu(self.conv2(x))
+
+   Submodules assigned in this way will be registered, and will have their
+   parameters converted too when you call :meth:`to`, etc.
+
+   .. note::
+       As per the example above, an ``__init__()`` call to the parent class
+       must be made before assignment on the child.
+
+   :ivar training: Boolean represents whether this module is in training or
+                   evaluation mode.
+   :vartype training: bool
+
+   Initializes internal Module state, shared by both nn.Module and ScriptModule.
+
+   .. py:method:: forward(x)
+
+      Same as :meth:`torch.nn.Module.forward()`.
+
+      Args:
+          *args: Whatever you decide to pass into the forward method.
+          **kwargs: Keyword arguments are also possible.
+
+      Return:
+          Your model's output
+
+
+   .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
+
+
+   .. py:method:: load()
+
+      This is just a no-op load method. 
+
+
+

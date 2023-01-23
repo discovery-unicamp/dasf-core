@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dasf.ml.cluster.hdbscan &mdash; DASF 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> DASF
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">DASF API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">DASF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dasf.ml.cluster.hdbscan</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dasf.ml.cluster.hdbscan</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">hdbscan</span> <span class="kn">import</span> <span class="n">HDBSCAN</span> <span class="k">as</span> <span class="n">HDBSCAN_CPU</span>
+
+<span class="kn">from</span> <span class="nn">dasf.ml.cluster.classifier</span> <span class="kn">import</span> <span class="n">ClusterClassifier</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_gpu_supported</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">cuml.cluster</span> <span class="kn">import</span> <span class="n">HDBSCAN</span> <span class="k">as</span> <span class="n">HDBSCAN_GPU</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="HDBSCAN"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN">[docs]</a><span class="k">class</span> <span class="nc">HDBSCAN</span><span class="p">(</span><span class="n">ClusterClassifier</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform HDBSCAN clustering from vector array or distance matrix.</span>
+
+<span class="sd">    HDBSCAN - Hierarchical Density-Based Spatial Clustering of Applications</span>
+<span class="sd">    with Noise. Performs DBSCAN over varying epsilon values and integrates</span>
+<span class="sd">    the result to find a clustering that gives the best stability over epsilon.</span>
+<span class="sd">    This allows HDBSCAN to find clusters of varying densities (unlike DBSCAN),</span>
+<span class="sd">    and be more robust to parameter selection.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    min_cluster_size : int, optional (default=5)</span>
+<span class="sd">        The minimum size of clusters; single linkage splits that contain</span>
+<span class="sd">        fewer points than this will be considered points &quot;falling out&quot; of a</span>
+<span class="sd">        cluster rather than a cluster splitting into two new clusters.</span>
+
+<span class="sd">    min_samples : int, optional (default=None)</span>
+<span class="sd">        The number of samples in a neighbourhood for a point to be</span>
+<span class="sd">        considered a core point.</span>
+
+<span class="sd">    metric : string, or callable, optional (default=&#39;euclidean&#39;)</span>
+<span class="sd">        The metric to use when calculating distance between instances in a</span>
+<span class="sd">        feature array. If metric is a string or callable, it must be one of</span>
+<span class="sd">        the options allowed by metrics.pairwise.pairwise_distances for its</span>
+<span class="sd">        metric parameter.</span>
+<span class="sd">        If metric is &quot;precomputed&quot;, X is assumed to be a distance matrix and</span>
+<span class="sd">        must be square.</span>
+
+<span class="sd">    p : int, optional (default=None)</span>
+<span class="sd">        p value to use if using the minkowski metric.</span>
+
+<span class="sd">    alpha : float, optional (default=1.0)</span>
+<span class="sd">        A distance scaling parameter as used in robust single linkage.</span>
+<span class="sd">        See [3]_ for more information.</span>
+
+<span class="sd">    cluster_selection_epsilon: float, optional (default=0.0)</span>
+<span class="sd">                A distance threshold. Clusters below this value will be merged.</span>
+<span class="sd">        See [5]_ for more information.</span>
+
+<span class="sd">    algorithm : string, optional (default=&#39;best&#39;)</span>
+<span class="sd">        Exactly which algorithm to use; hdbscan has variants specialised</span>
+<span class="sd">        for different characteristics of the data. By default this is set</span>
+<span class="sd">        to ``best`` which chooses the &quot;best&quot; algorithm given the nature of</span>
+<span class="sd">        the data. You can force other options if you believe you know</span>
+<span class="sd">        better. Options are:</span>
+<span class="sd">            * ``best``</span>
+<span class="sd">            * ``generic``</span>
+<span class="sd">            * ``prims_kdtree``</span>
+<span class="sd">            * ``prims_balltree``</span>
+<span class="sd">            * ``boruvka_kdtree``</span>
+<span class="sd">            * ``boruvka_balltree``</span>
+
+<span class="sd">    leaf_size: int, optional (default=40)</span>
+<span class="sd">        If using a space tree algorithm (kdtree, or balltree) the number</span>
+<span class="sd">        of points ina leaf node of the tree. This does not alter the</span>
+<span class="sd">        resulting clustering, but may have an effect on the runtime</span>
+<span class="sd">        of the algorithm.</span>
+
+<span class="sd">    memory : Instance of joblib.Memory or string (optional)</span>
+<span class="sd">        Used to cache the output of the computation of the tree.</span>
+<span class="sd">        By default, no caching is done. If a string is given, it is the</span>
+<span class="sd">        path to the caching directory.</span>
+
+<span class="sd">    approx_min_span_tree : bool, optional (default=True)</span>
+<span class="sd">        Whether to accept an only approximate minimum spanning tree.</span>
+<span class="sd">        For some algorithms this can provide a significant speedup, but</span>
+<span class="sd">        the resulting clustering may be of marginally lower quality.</span>
+<span class="sd">        If you are willing to sacrifice speed for correctness you may want</span>
+<span class="sd">        to explore this; in general this should be left at the default True.</span>
+
+<span class="sd">    gen_min_span_tree: bool, optional (default=False)</span>
+<span class="sd">        Whether to generate the minimum spanning tree with regard</span>
+<span class="sd">        to mutual reachability distance for later analysis.</span>
+
+<span class="sd">    core_dist_n_jobs : int, optional (default=4)</span>
+<span class="sd">        Number of parallel jobs to run in core distance computations (if</span>
+<span class="sd">        supported by the specific algorithm). For ``core_dist_n_jobs``</span>
+<span class="sd">        below -1, (n_cpus + 1 + core_dist_n_jobs) are used.</span>
+
+<span class="sd">    cluster_selection_method : string, optional (default=&#39;eom&#39;)</span>
+<span class="sd">        The method used to select clusters from the condensed tree. The</span>
+<span class="sd">        standard approach for HDBSCAN* is to use an Excess of Mass algorithm</span>
+<span class="sd">        to find the most persistent clusters. Alternatively you can instead</span>
+<span class="sd">        select the clusters at the leaves of the tree -- this provides the</span>
+<span class="sd">        most fine grained and homogeneous clusters. Options are:</span>
+<span class="sd">            * ``eom``</span>
+<span class="sd">            * ``leaf``</span>
+
+<span class="sd">    allow_single_cluster : bool, optional (default=False)</span>
+<span class="sd">        By default HDBSCAN* will not produce a single cluster, setting this</span>
+<span class="sd">        to True will override this and allow single cluster results in</span>
+<span class="sd">        the case that you feel this is a valid result for your dataset.</span>
+
+<span class="sd">    prediction_data : boolean, optional</span>
+<span class="sd">        Whether to generate extra cached data for predicting labels or</span>
+<span class="sd">        membership vectors few new unseen points later. If you wish to</span>
+<span class="sd">        persist the clustering object for later re-use you probably want</span>
+<span class="sd">        to set this to True.</span>
+<span class="sd">        (default False)</span>
+
+<span class="sd">    match_reference_implementation : bool, optional (default=False)</span>
+<span class="sd">        There exist some interpretational differences between this</span>
+<span class="sd">        HDBSCAN* implementation and the original authors reference</span>
+<span class="sd">        implementation in Java. This can result in very minor differences</span>
+<span class="sd">        in clustering results. Setting this flag to True will, at a some</span>
+<span class="sd">        performance cost, ensure that the clustering results match the</span>
+<span class="sd">        reference implementation.</span>
+
+<span class="sd">    connectivity : {&#39;pairwise&#39;, &#39;knn&#39;}, default=&#39;knn&#39;</span>
+<span class="sd">        The type of connectivity matrix to compute.</span>
+<span class="sd">            * &#39;pairwise&#39; will compute the entire fully-connected graph of</span>
+<span class="sd">            pairwise distances between each set of points. This is the fastest</span>
+<span class="sd">            to compute and can be very fast for smaller datasets but requires</span>
+<span class="sd">            O(n^2) space.</span>
+
+<span class="sd">            * &#39;knn&#39; will sparsify the fully-connected connectivity matrix to</span>
+<span class="sd">            save memory and enable much larger inputs. &quot;n_neighbors” will</span>
+<span class="sd">            control the amount of memory used and the graph will be connected</span>
+<span class="sd">            automatically in the event &quot;n_neighbors” was not large enough to</span>
+<span class="sd">            connect it.</span>
+
+<span class="sd">    output_type : {&#39;input&#39;, &#39;cudf&#39;, &#39;cupy&#39;, &#39;numpy&#39;, &#39;numba&#39;}, default=None</span>
+<span class="sd">        Variable to control output type of the results and attributes of the</span>
+<span class="sd">        estimator. If None, it&#39;ll inherit the output type set at the module</span>
+<span class="sd">        level, cuml.global_settings.output_type. See Output Data Type</span>
+<span class="sd">        Configuration for more info.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from dasf.ml.cluster import HDBSCAN</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; X = np.array([[1, 2], [2, 2], [2, 3],</span>
+<span class="sd">    ...               [8, 7], [8, 8], [25, 80]])</span>
+<span class="sd">    &gt;&gt;&gt; clustering = HDBSCAN(min_cluster_size=30, min_samples=2).fit(X)</span>
+<span class="sd">    &gt;&gt;&gt; clustering</span>
+<span class="sd">    HDBSCAN(min_cluster_size=30, min_samples=2)</span>
+
+<span class="sd">    For further informations see:</span>
+<span class="sd">    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html#sklearn.cluster.DBSCAN</span>
+<span class="sd">    - https://docs.rapids.ai/api/cuml/stable/api.html#dbscan</span>
+<span class="sd">    - https://docs.rapids.ai/api/cuml/stable/api.html#dbscan-clustering</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    .. [1] Campello, R. J., Moulavi, D., &amp; Sander, J. (2013, April).</span>
+<span class="sd">       Density-based clustering based on hierarchical density estimates.</span>
+<span class="sd">       In Pacific-Asia Conference on Knowledge Discovery and Data Mining</span>
+<span class="sd">       (pp. 160-172). Springer Berlin Heidelberg.</span>
+
+<span class="sd">    .. [2] Campello, R. J., Moulavi, D., Zimek, A., &amp; Sander, J. (2015).</span>
+<span class="sd">       Hierarchical density estimates for data clustering, visualization,</span>
+<span class="sd">       and outlier detection. ACM Transactions on Knowledge Discovery</span>
+<span class="sd">       from Data (TKDD), 10(1), 5.</span>
+
+<span class="sd">    .. [3] Chaudhuri, K., &amp; Dasgupta, S. (2010). Rates of convergence for the</span>
+<span class="sd">       cluster tree. In Advances in Neural Information Processing Systems</span>
+<span class="sd">       (pp. 343-351).</span>
+
+<span class="sd">    .. [4] Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and</span>
+<span class="sd">       Sander, J., 2014. Density-Based Clustering Validation. In SDM</span>
+<span class="sd">       (pp. 839-847).</span>
+
+<span class="sd">    .. [5] Malzer, C., &amp; Baum, M. (2019). A Hybrid Approach To Hierarchical</span>
+<span class="sd">           Density-based Cluster Selection. arxiv preprint 1911.02282.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">gen_min_span_tree</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">leaf_size</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+        <span class="n">min_cluster_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">min_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span>
+        <span class="n">approx_min_span_tree</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">core_dist_n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">cluster_selection_method</span><span class="o">=</span><span class="s1">&#39;eom&#39;</span><span class="p">,</span>
+        <span class="n">allow_single_cluster</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">prediction_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">match_reference_implementation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">connectivity</span><span class="o">=</span><span class="s1">&#39;knn&#39;</span><span class="p">,</span>
+        <span class="n">output_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gen_min_span_tree</span> <span class="o">=</span> <span class="n">gen_min_span_tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leaf_size</span> <span class="o">=</span> <span class="n">leaf_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_cluster_size</span> <span class="o">=</span> <span class="n">min_cluster_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_samples</span> <span class="o">=</span> <span class="n">min_samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">=</span> <span class="n">algorithm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approx_min_span_tree</span> <span class="o">=</span> <span class="n">approx_min_span_tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">core_dist_n_jobs</span> <span class="o">=</span> <span class="n">core_dist_n_jobs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_selection_method</span> <span class="o">=</span> <span class="n">cluster_selection_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_single_cluster</span> <span class="o">=</span> <span class="n">allow_single_cluster</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prediction_data</span> <span class="o">=</span> <span class="n">prediction_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">match_reference_implementation</span> <span class="o">=</span> <span class="n">match_reference_implementation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connectivity</span> <span class="o">=</span> <span class="n">connectivity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">=</span> <span class="n">output_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_cpu</span> <span class="o">=</span> <span class="n">HDBSCAN_CPU</span><span class="p">(</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+            <span class="n">gen_min_span_tree</span><span class="o">=</span><span class="n">gen_min_span_tree</span><span class="p">,</span>
+            <span class="n">leaf_size</span><span class="o">=</span><span class="n">leaf_size</span><span class="p">,</span>
+            <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
+            <span class="n">min_cluster_size</span><span class="o">=</span><span class="n">min_cluster_size</span><span class="p">,</span>
+            <span class="n">min_samples</span><span class="o">=</span><span class="n">min_samples</span><span class="p">,</span>
+            <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span>
+            <span class="n">algorithm</span><span class="o">=</span><span class="n">algorithm</span><span class="p">,</span>
+            <span class="n">approx_min_span_tree</span><span class="o">=</span><span class="n">approx_min_span_tree</span><span class="p">,</span>
+            <span class="n">core_dist_n_jobs</span><span class="o">=</span><span class="n">core_dist_n_jobs</span><span class="p">,</span>
+            <span class="n">cluster_selection_method</span><span class="o">=</span><span class="n">cluster_selection_method</span><span class="p">,</span>
+            <span class="n">allow_single_cluster</span><span class="o">=</span><span class="n">allow_single_cluster</span><span class="p">,</span>
+            <span class="n">prediction_data</span><span class="o">=</span><span class="n">prediction_data</span><span class="p">,</span>
+            <span class="n">match_reference_implementation</span><span class="o">=</span><span class="n">match_reference_implementation</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_gpu</span> <span class="o">=</span> <span class="n">HDBSCAN_GPU</span><span class="p">(</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+                <span class="n">gen_min_span_tree</span><span class="o">=</span><span class="n">gen_min_span_tree</span><span class="p">,</span>
+                <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
+                <span class="n">min_cluster_size</span><span class="o">=</span><span class="n">min_cluster_size</span><span class="p">,</span>
+                <span class="n">min_samples</span><span class="o">=</span><span class="n">min_samples</span><span class="p">,</span>
+                <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span>
+                <span class="n">cluster_selection_method</span><span class="o">=</span><span class="n">cluster_selection_method</span><span class="p">,</span>
+                <span class="n">allow_single_cluster</span><span class="o">=</span><span class="n">allow_single_cluster</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">,</span>
+                <span class="n">output_type</span><span class="o">=</span><span class="n">output_type</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="HDBSCAN._fit_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HDBSCAN._fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">convert_dtype</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">convert_dtype</span><span class="o">=</span><span class="n">convert_dtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HDBSCAN._fit_predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_cpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HDBSCAN._fit_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_gpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, UNICAMP.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1127 @@
+:py:mod:`dasf.ml.cluster`
+=========================
+
+.. py:module:: dasf.ml.cluster
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   agglomerative/index.rst
+   classifier/index.rst
+   dbscan/index.rst
+   hdbscan/index.rst
+   kmeans/index.rst
+   som/index.rst
+   spectral/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.cluster.AgglomerativeClustering
+   dasf.ml.cluster.KMeans
+   dasf.ml.cluster.DBSCAN
+   dasf.ml.cluster.SOM
+   dasf.ml.cluster.SpectralClustering
+
+
+
+
+.. py:class:: AgglomerativeClustering(n_clusters=2, affinity='euclidean', connectivity=None, linkage='single', memory=None, compute_full_tree='auto', distance_threshold=None, compute_distances=False, handle=None, verbose=False, n_neighbors=10, output_type=None, **kwargs)
+
+   Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
+   Agglomerative Clustering
+
+   Recursively merges the pair of clusters that minimally increases
+   a given linkage distance.
+
+   Read more in the :ref:`User Guide <hierarchical_clustering>`.
+
+   Parameters
+   ----------
+   n_clusters : int or None, default=2
+       The number of clusters to find. It must be ``None`` if
+       ``distance_threshold`` is not ``None``.
+
+   affinity : str or callable, default='euclidean'
+       Metric used to compute the linkage. Can be "euclidean", "l1", "l2",
+       "manhattan", "cosine", or "precomputed".
+       If linkage is "ward", only "euclidean" is accepted.
+       If "precomputed", a distance matrix (instead of a similarity matrix)
+       is needed as input for the fit method.
+
+   memory : str or object with the joblib.Memory interface, default=None
+       Used to cache the output of the computation of the tree.
+       By default, no caching is done. If a string is given, it is the
+       path to the caching directory.
+
+   connectivity : array-like or callable, default=None
+       Connectivity matrix. Defines for each sample the neighboring
+       samples following a given structure of the data.
+       This can be a connectivity matrix itself or a callable that transforms
+       the data into a connectivity matrix, such as derived from
+       kneighbors_graph. Default is ``None``, i.e, the
+       hierarchical clustering algorithm is unstructured.
+
+   compute_full_tree : 'auto' or bool, default='auto'
+       Stop early the construction of the tree at ``n_clusters``. This is
+       useful to decrease computation time if the number of clusters is not
+       small compared to the number of samples. This option is useful only
+       when specifying a connectivity matrix. Note also that when varying the
+       number of clusters and using caching, it may be advantageous to compute
+       the full tree. It must be ``True`` if ``distance_threshold`` is not
+       ``None``. By default `compute_full_tree` is "auto", which is equivalent
+       to `True` when `distance_threshold` is not `None` or that `n_clusters`
+       is inferior to the maximum between 100 or `0.02 * n_samples`.
+       Otherwise, "auto" is equivalent to `False`.
+
+   linkage : {'ward', 'complete', 'average', 'single'}, default='ward'
+       Which linkage criterion to use. The linkage criterion determines which
+       distance to use between sets of observation. The algorithm will merge
+       the pairs of cluster that minimize this criterion.
+
+       - 'ward' minimizes the variance of the clusters being merged.
+       - 'average' uses the average of the distances of each observation of
+         the two sets.
+       - 'complete' or 'maximum' linkage uses the maximum distances between
+         all observations of the two sets.
+       - 'single' uses the minimum of the distances between all observations
+         of the two sets.
+
+       .. versionadded:: 0.20
+           Added the 'single' option
+
+   distance_threshold : float, default=None
+       The linkage distance threshold above which, clusters will not be
+       merged. If not ``None``, ``n_clusters`` must be ``None`` and
+       ``compute_full_tree`` must be ``True``.
+
+       .. versionadded:: 0.21
+
+   compute_distances : bool, default=False
+       Computes distances between clusters even if `distance_threshold` is not
+       used. This can be used to make dendrogram visualization, but introduces
+       a computational and memory overhead.
+
+       .. versionadded:: 0.24
+
+   n_neighbors : int, default = 15
+       The number of neighbors to compute when connectivity = "knn"
+
+   output_type : {'input', 'cudf', 'cupy', 'numpy', 'numba'}, default=None
+       Variable to control output type of the results and attributes of the
+       estimator. If None, it'll inherit the output type set at the module
+       level, cuml.global_settings.output_type. See Output Data Type
+       Configuration for more info.
+
+   Examples
+   --------
+   >>> from dasf.ml.cluster import AgglomerativeClustering
+   >>> import numpy as np
+   >>> X = np.array([[1, 2], [1, 4], [1, 0],
+   ...               [4, 2], [4, 4], [4, 0]])
+   >>> clustering = AgglomerativeClustering().fit(X)
+   >>> clustering
+   AgglomerativeClustering()
+
+   For further informations see:
+   - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html
+   - https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering
+
+
+   .. py:method:: _fit_cpu(X, y=None, convert_dtype=True)
+
+
+   .. py:method:: _fit_gpu(X, y=None, convert_dtype=True)
+
+
+   .. py:method:: _fit_predict_cpu(X, y=None)
+
+
+   .. py:method:: _fit_predict_gpu(X, y=None)
+
+
+
+.. py:class:: KMeans(n_clusters=8, init=None, n_init=None, max_iter=300, tol=0.0001, verbose=0, random_state=None, copy_x=True, algorithm='full', oversampling_factor=2.0, n_jobs=1, init_max_iter=None, max_samples_per_batch=32768, precompute_distances='auto', output_type=None, **kwargs)
+
+   Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
+   K-Means clustering.
+
+   Read more in the :ref:`User Guide <k_means>`.
+
+   Parameters
+   ----------
+
+   n_clusters : int, default=8
+       The number of clusters to form as well as the number of
+       centroids to generate.
+
+   init : {'k-means++', 'random'}, callable or array-like of shape (n_clusters, n_features), default='k-means++'
+
+       Method for initialization:
+
+       'k-means++' : selects initial cluster centers for k-mean
+       clustering in a smart way to speed up convergence. See section
+       Notes in k_init for more details.
+
+       'random': choose `n_clusters` observations (rows) at random from data
+       for the initial centroids.
+
+       If an array is passed, it should be of shape (n_clusters, n_features)
+       and gives the initial centers.
+
+       If a callable is passed, it should take arguments X, n_clusters and a
+       random state and return an initialization.
+
+   n_init : int, default=10
+       Number of time the k-means algorithm will be run with different
+       centroid seeds. The final results will be the best output of
+       n_init consecutive runs in terms of inertia.
+
+   max_iter : int, default=300
+       Maximum number of iterations of the k-means algorithm for a
+       single run.
+
+   tol : float, default=1e-4
+       Relative tolerance with regards to Frobenius norm of the difference
+       in the cluster centers of two consecutive iterations to declare
+       convergence.
+
+   precompute_distances : {'auto', True, False}, default='auto'
+       Precompute distances (faster but takes more memory).
+
+       'auto' : do not precompute distances if n_samples * n_clusters > 12
+       million. This corresponds to about 100MB overhead per job using
+       double precision. IMPORTANT: This is used only in Dask ML version.
+
+       True : always precompute distances.
+
+       False : never precompute distances.
+
+   verbose : int, default=0
+       Verbosity mode.
+
+   random_state : int, RandomState instance or None, default=None
+       Determines random number generation for centroid initialization. Use
+       an int to make the randomness deterministic.
+       See :term:`Glossary <random_state>`.
+
+   copy_x : bool, default=True
+       When pre-computing distances it is more numerically accurate to center
+       the data first. If copy_x is True (default), then the original data is
+       not modified. If False, the original data is modified, and put back
+       before the function returns, but small numerical differences may be
+       introduced by subtracting and then adding the data mean. Note that if
+       the original data is not C-contiguous, a copy will be made even if
+       copy_x is False. If the original data is sparse, but not in CSR format,
+       a copy will be made even if copy_x is False.
+
+   n_jobs : int, default=1
+       The number of OpenMP threads to use for the computation. Parallelism is
+       sample-wise on the main cython loop which assigns each sample to its
+       closest center. IMPORTANT: This is used only in Dask ML version.
+
+       ``None`` or ``-1`` means using all processors.
+
+   init_max_iter : int, default=None
+       Number of iterations for init step.
+
+   algorithm : {"auto", "full", "elkan"}, default="full"
+       K-means algorithm to use. The classical EM-style algorithm is "full".
+       The "elkan" variation is more efficient on data with well-defined
+       clusters, by using the triangle inequality. However it's more memory
+       intensive due to the allocation of an extra array of shape
+       (n_samples, n_clusters).
+
+       For now "auto" (kept for backward compatibiliy) chooses "elkan" but it
+       might change in the future for a better heuristic.
+
+       .. versionchanged:: 0.18
+           Added Elkan algorithm
+
+   oversampling_factor : int, default=2
+       The amount of points to sample in scalable k-means++ initialization
+       for potential centroids. Increasing this value can lead to better
+       initial centroids at the cost of memory. The total number of centroids
+       sampled in scalable k-means++ is oversampling_factor * n_clusters * 8.
+
+   max_samples_per_batch : int, default=32768
+       The number of data samples to use for batches of the pairwise distance
+       computation. This computation is done throughout both fit predict. The
+       default should suit most cases. The total number of elements in the
+       batched pairwise distance computation is max_samples_per_batch *
+       n_clusters. It might become necessary to lower this number when
+       n_clusters becomes prohibitively large.
+
+   output_type : {'input', 'cudf', 'cupy', 'numpy', 'numba'}, default=None
+       Variable to control output type of the results and attributes of the
+       estimator. If None, it'll inherit the output type set at the module
+       level, cuml.global_settings.output_type. See Output Data Type
+       Configuration for more info.
+
+   See Also
+   --------
+   MiniBatchKMeans : Alternative online implementation that does incremental
+       updates of the centers positions using mini-batches.
+       For large scale learning (say n_samples > 10k) MiniBatchKMeans is
+       probably much faster than the default batch implementation.
+
+   Notes
+   -----
+   The k-means problem is solved using either Lloyd's or Elkan's algorithm.
+
+   The average complexity is given by O(k n T), where n is the number of
+   samples and T is the number of iteration.
+
+   The worst case complexity is given by O(n^(k+2/p)) with
+   n = n_samples, p = n_features. (D. Arthur and S. Vassilvitskii,
+   'How slow is the k-means method?' SoCG2006)
+
+   In practice, the k-means algorithm is very fast (one of the fastest
+   clustering algorithms available), but it falls in local minima. That's why
+   it can be useful to restart it several times.
+
+   If the algorithm stops before fully converging (because of ``tol`` or
+   ``max_iter``), ``labels_`` and ``cluster_centers_`` will not be consistent,
+   i.e. the ``cluster_centers_`` will not be the means of the points in each
+   cluster. Also, the estimator will reassign ``labels_`` after the last
+   iteration to make ``labels_`` consistent with ``predict`` on the training
+   set.
+
+   Examples
+   --------
+
+   >>> from dasf.ml.cluster import KMeans
+   >>> import numpy as np
+   >>> X = np.array([[1, 2], [1, 4], [1, 0],
+   ...               [10, 2], [10, 4], [10, 0]])
+   >>> kmeans = KMeans(n_clusters=2, random_state=0).fit(X)
+   >>> kmeans.predict([[0, 0], [12, 3]])
+   array([1, 0], dtype=int32)
+
+   For further informations see:
+   - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
+   - https://ml.dask.org/modules/generated/dask_ml.cluster.KMeans.html
+   - https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering
+   - https://docs.rapids.ai/api/cuml/stable/api.html#cuml.dask.cluster.KMeans
+
+
+   .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None)
+
+      Compute Dask k-means clustering.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          Training instances to cluster. It must be noted that the data
+          will be converted to C ordering, which will cause a memory
+          copy if the given data is not C-contiguous.
+          If a sparse matrix is passed, a copy will be made if it&apos;s not in
+          CSR format.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : Ignored
+          Not used, present here for API consistency by convention.
+
+
+      Returns
+      -------
+      self
+          Fitted estimator.
+
+
+   .. py:method:: _lazy_fit_gpu(X, y=None, sample_weight=None)
+
+      Compute Dask CuML k-means clustering.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          Training instances to cluster. It must be noted that the data
+          will be converted to C ordering, which will cause a memory
+          copy if the given data is not C-contiguous.
+          If a sparse matrix is passed, a copy will be made if it&apos;s not in
+          CSR format.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+
+      Returns
+      -------
+      self
+          Fitted estimator.
+
+
+   .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
+
+      Compute Scikit Learn k-means clustering.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          Training instances to cluster. It must be noted that the data
+          will be converted to C ordering, which will cause a memory
+          copy if the given data is not C-contiguous.
+          If a sparse matrix is passed, a copy will be made if it&apos;s not in
+          CSR format.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+
+      Returns
+      -------
+      self
+          Fitted estimator.
+
+
+   .. py:method:: _fit_gpu(X, y=None, sample_weight=None)
+
+      Compute CuML k-means clustering.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          Training instances to cluster. It must be noted that the data
+          will be converted to C ordering, which will cause a memory
+          copy if the given data is not C-contiguous.
+          If a sparse matrix is passed, a copy will be made if it&apos;s not in
+          CSR format.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+
+      Returns
+      -------
+      self
+          Fitted estimator.
+
+
+   .. py:method:: _lazy_fit_predict_cpu(X, y=None, sample_weight=None)
+
+      Compute cluster centers and predict cluster index for each sample using
+      Dask ML.
+
+      Convenience method; equivalent to calling fit(X) followed by
+      predict(X).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to transform.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : Ignored
+          Not used, present here for API consistency by convention.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _lazy_fit_predict_gpu(X, y=None, sample_weight=None)
+
+      Compute cluster centers and predict cluster index for each sample using
+      Dask CuML.
+
+      Convenience method; equivalent to calling fit(X) followed by
+      predict(X).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to transform.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
+
+      Compute cluster centers and predict cluster index for each sample using
+      Scikit Learn.
+
+      Convenience method; equivalent to calling fit(X) followed by
+      predict(X).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to transform.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : Ignored
+          Not used, present here for API consistency by convention.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _fit_predict_gpu(X, y=None, sample_weight=None)
+
+      Compute cluster centers and predict cluster index for each sample using
+      CuML.
+
+      Convenience method; equivalent to calling fit(X) followed by
+      predict(X).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to transform.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _lazy_predict_cpu(X, sample_weight=None)
+
+      Predict the closest cluster each sample in X belongs to using Dask ML.
+
+      In the vector quantization literature, `cluster_centers_` is called
+      the code book and each value returned by `predict` is the index of
+      the closest code in the code book.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to predict.
+
+      sample_weight : Ignored
+          Not used, present here for API consistency by convention.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _lazy_predict_gpu(X, sample_weight=None)
+
+      Predict the closest cluster each sample in X belongs to using Dask
+      CuML.
+
+      In the vector quantization literature, `cluster_centers_` is called
+      the code book and each value returned by `predict` is the index of
+      the closest code in the code book.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to predict.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _predict_cpu(X, sample_weight=None)
+
+      Predict the closest cluster each sample in X belongs to using Scikit
+      Learn.
+
+      In the vector quantization literature, `cluster_centers_` is called
+      the code book and each value returned by `predict` is the index of
+      the closest code in the code book.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to predict.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _predict_gpu(X, sample_weight=None)
+
+      Predict the closest cluster each sample in X belongs to using CuML.
+
+      In the vector quantization literature, `cluster_centers_` is called
+      the code book and each value returned by `predict` is the index of
+      the closest code in the code book.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to predict.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _lazy_predict2_cpu(X, sample_weight=None)
+
+      A block predict using Scikit Learn variant but for Dask.
+
+      In the vector quantization literature, `cluster_centers_` is called
+      the code book and each value returned by `predict` is the index of
+      the closest code in the code book.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to predict.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _lazy_predict2_gpu(X, sample_weight=None)
+
+      A block predict using CuML variant but for Dask.
+
+      In the vector quantization literature, `cluster_centers_` is called
+      the code book and each value returned by `predict` is the index of
+      the closest code in the code book.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features)
+          New data to predict.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          The weights for each observation in X. If None, all observations
+          are assigned equal weight.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Index of the cluster each sample belongs to.
+
+
+   .. py:method:: _predict2_cpu(X, sample_weight=None)
+      :abstractmethod:
+
+
+   .. py:method:: _predict2_gpu(X, sample_weight=None)
+      :abstractmethod:
+
+
+   .. py:method:: predict2(sample_weight=None)
+
+
+
+.. py:class:: DBSCAN(eps=0.5, leaf_size=40, metric='euclidean', min_samples=5, p=None, output_type=None, calc_core_sample_indices=True, verbose=False, **kwargs)
+
+   Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
+   Perform DBSCAN clustering from vector array or distance matrix.
+
+   DBSCAN - Density-Based Spatial Clustering of Applications with Noise.
+   Finds core samples of high density and expands clusters from them.
+   Good for data which contains clusters of similar density.
+
+   Read more in the :ref:`User Guide <dbscan>`.
+
+   Parameters
+   ----------
+   eps : float, default=0.5
+       The maximum distance between two samples for one to be considered
+       as in the neighborhood of the other. This is not a maximum bound
+       on the distances of points within a cluster. This is the most
+       important DBSCAN parameter to choose appropriately for your data set
+       and distance function.
+
+   min_samples : int, default=5
+       The number of samples (or total weight) in a neighborhood for a point
+       to be considered as a core point. This includes the point itself.
+
+   metric : string, or callable, default='euclidean'
+       The metric to use when calculating distance between instances in a
+       feature array. If metric is a string or callable, it must be one of
+       the options allowed by :func:`sklearn.metrics.pairwise_distances` for
+       its metric parameter.
+       If metric is "precomputed", X is assumed to be a distance matrix and
+       must be square. X may be a :term:`Glossary <sparse graph>`, in which
+       case only "nonzero" elements may be considered neighbors for DBSCAN.
+
+       .. versionadded:: 0.17
+          metric *precomputed* to accept precomputed sparse matrix.
+
+   metric_params : dict, default=None
+       Additional keyword arguments for the metric function.
+
+       .. versionadded:: 0.19
+
+   algorithm : {'auto', 'ball_tree', 'kd_tree', 'brute'}, default='auto'
+       The algorithm to be used by the NearestNeighbors module
+       to compute pointwise distances and find nearest neighbors.
+       See NearestNeighbors module documentation for details.
+
+   leaf_size : int, default=30
+       Leaf size passed to BallTree or cKDTree. This can affect the speed
+       of the construction and query, as well as the memory required
+       to store the tree. The optimal value depends
+       on the nature of the problem.
+
+   p : float, default=None
+       The power of the Minkowski metric to be used to calculate distance
+       between points. If None, then ``p=2`` (equivalent to the Euclidean
+       distance).
+
+   n_jobs : int, default=None
+       The number of parallel jobs to run.
+       ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.
+       ``-1`` means using all processors. See :term:`Glossary <n_jobs>`
+       for more details.
+
+   output_type : {'input', 'cudf', 'cupy', 'numpy', 'numba'}, default=None
+       Variable to control output type of the results and attributes of the
+       estimator. If None, it'll inherit the output type set at the module
+       level, cuml.global_settings.output_type. See Output Data Type
+       Configuration for more info.
+
+   calc_core_sample_indices(optional) : boolean, default = True
+       Indicates whether the indices of the core samples should be calculated.
+       The the attribute `core_sample_indices_` will not be used, setting this
+       to False will avoid unnecessary kernel launches.
+
+
+   Examples
+   --------
+   >>> from dasf.ml.cluster import DBSCAN
+   >>> import numpy as np
+   >>> X = np.array([[1, 2], [2, 2], [2, 3],
+   ...               [8, 7], [8, 8], [25, 80]])
+   >>> clustering = DBSCAN(eps=3, min_samples=2).fit(X)
+   >>> clustering
+   DBSCAN(eps=3, min_samples=2)
+
+   For further informations see:
+   - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html#sklearn.cluster.DBSCAN
+   - https://docs.rapids.ai/api/cuml/stable/api.html#dbscan
+   - https://docs.rapids.ai/api/cuml/stable/api.html#dbscan-clustering
+
+   See Also
+   --------
+   OPTICS : A similar clustering at multiple values of eps. Our implementation
+       is optimized for memory usage.
+
+   References
+   ----------
+   Ester, M., H. P. Kriegel, J. Sander, and X. Xu, "A Density-Based
+   Algorithm for Discovering Clusters in Large Spatial Databases with Noise".
+   In: Proceedings of the 2nd International Conference on Knowledge Discovery
+   and Data Mining, Portland, OR, AAAI Press, pp. 226-231. 1996
+
+   Schubert, E., Sander, J., Ester, M., Kriegel, H. P., & Xu, X. (2017).
+   DBSCAN revisited, revisited: why and how you should (still) use DBSCAN.
+   ACM Transactions on Database Systems (TODS), 42(3), 19.
+
+
+   .. py:method:: _lazy_fit_gpu(X, y=None, out_dtype='int32')
+
+
+   .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_gpu(X, y=None, out_dtype='int32')
+
+
+   .. py:method:: _lazy_fit_predict_gpu(X, y=None, out_dtype='int32')
+
+
+   .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_predict_gpu(X, y=None, out_dtype='int32')
+
+
+
+.. py:class:: SOM(x, y, input_len, num_epochs=100, sigma=0, sigmaN=1, learning_rate=0.5, learning_rateN=0.01, decay_function='exponential', neighborhood_function='gaussian', std_coeff=0.5, topology='rectangular', activation_distance='euclidean', random_seed=None, n_parallel=0, compact_support=False, **kwargs)
+
+   Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
+   Initializes a Self Organizing Maps.
+
+   A rule of thumb to set the size of the grid for a dimensionality
+   reduction task is that it should contain 5*sqrt(N) neurons
+   where N is the number of samples in the dataset to analyze.
+
+   E.g. if your dataset has 150 samples, 5*sqrt(150) = 61.23
+   hence a map 8-by-8 should perform well.
+
+   Parameters
+   ----------
+   x : int
+       x dimension of the SOM.
+
+   y : int
+       y dimension of the SOM.
+
+   input_len : int
+       Number of the elements of the vectors in input.
+
+   sigma : float, default=min(x,y)/2
+       Spread of the neighborhood function, needs to be adequate
+       to the dimensions of the map.
+
+   sigmaN : float, default=0.01
+       Spread of the neighborhood function at last iteration.
+
+   learning_rate : float, default=0.5
+       initial learning rate.
+
+   learning_rateN : float, default=0.01
+       final learning rate
+
+   decay_function : string, default='exponential'
+       Function that reduces learning_rate and sigma at each iteration.
+       Possible values: 'exponential', 'linear', 'aymptotic'
+
+   neighborhood_function : string, default='gaussian'
+       Function that weights the neighborhood of a position in the map.
+       Possible values: 'gaussian', 'mexican_hat', 'bubble', 'triangle'
+
+   topology : string, default='rectangular'
+       Topology of the map.
+       Possible values: 'rectangular', 'hexagonal'
+
+   activation_distance : string, default='euclidean'
+       Distance used to activate the map.
+       Possible values: 'euclidean', 'cosine', 'manhattan'
+
+   random_seed : int, default=None
+       Random seed to use.
+
+   n_parallel : uint, default=#max_CUDA_threads or 500*#CPUcores
+       Number of samples to be processed at a time. Setting a too low 
+       value may drastically lower performance due to under-utilization,
+       setting a too high value increases memory usage without granting 
+       any significant performance benefit.
+
+   xp : numpy or cupy, default=cupy if can be imported else numpy
+       Use numpy (CPU) or cupy (GPU) for computations.
+
+   std_coeff: float, default=0.5
+       Used to calculate gausssian exponent denominator: 
+       d = 2*std_coeff**2*sigma**2
+
+   compact_support: bool, default=False
+       Cut the neighbor function to 0 beyond neighbor radius sigma
+
+   Examples
+   --------
+   >>> from dasf.ml.cluster import SOM
+   >>> import numpy as np
+   >>> X = np.array([[1, 1], [2, 1], [1, 0],
+   ...               [4, 7], [3, 5], [3, 6]])
+   >>> som = SOM(x=3, y=2, input_len=2,
+   ...           num_epochs=100).fit(X)
+   >>> som
+   SOM(x=3, y=2, input_len=2, num_epochs=100)
+
+
+   .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _lazy_fit_gpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_gpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _lazy_fit_predict_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _lazy_fit_predict_gpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_predict_gpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _lazy_predict_cpu(X, sample_weight=None)
+
+
+   .. py:method:: _lazy_predict_gpu(X, sample_weight=None)
+
+
+   .. py:method:: _predict_cpu(X, sample_weight=None)
+
+
+   .. py:method:: _predict_gpu(X, sample_weight=None)
+
+
+   .. py:method:: _lazy_quantization_error_cpu(X)
+
+
+   .. py:method:: _lazy_quantization_error_gpu(X)
+
+
+   .. py:method:: _quantization_error_cpu(X)
+
+
+   .. py:method:: _quantization_error_gpu(X)
+
+
+   .. py:method:: quantization_error(X)
+
+
+
+.. py:class:: SpectralClustering(n_clusters=8, eigen_solver=None, random_state=None, n_init=10, gamma=1.0, affinity='rbf', n_neighbors=10, eigen_tol=0.0, assign_labels='kmeans', degree=3, coef0=1, kernel_params=None, n_jobs=None, n_components=None, persist_embedding=False, kmeans_params=None, verbose=False, **kwargs)
+
+   Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
+   Apply clustering to a projection of the normalized Laplacian.
+
+   In practice Spectral Clustering is very useful when the structure of
+   the individual clusters is highly non-convex, or more generally when
+   a measure of the center and spread of the cluster is not a suitable
+   description of the complete cluster, such as when clusters are
+   nested circles on the 2D plane.
+
+   If the affinity matrix is the adjacency matrix of a graph, this method
+   can be used to find normalized graph cuts.
+
+   When calling ``fit``, an affinity matrix is constructed using either
+   a kernel function such the Gaussian (aka RBF) kernel with Euclidean
+   distance ``d(X, X)``::
+
+           np.exp(-gamma * d(X,X) ** 2)
+
+   or a k-nearest neighbors connectivity matrix.
+
+   Alternatively, a user-provided affinity matrix can be specified by
+   setting ``affinity='precomputed'``.
+
+   Read more in the :ref:`User Guide <spectral_clustering>`.
+
+   Parameters
+   ----------
+   n_clusters : int, default=8
+       The dimension of the projection subspace.
+
+   eigen_solver : {'arpack', 'lobpcg', 'amg'}, default=None
+       The eigenvalue decomposition strategy to use. AMG requires pyamg
+       to be installed. It can be faster on very large, sparse problems,
+       but may also lead to instabilities. If None, then ``'arpack'`` is
+       used.
+
+   n_components : int, default=n_clusters
+       Number of eigenvectors to use for the spectral embedding
+
+   random_state : int, RandomState instance, default=None
+       A pseudo random number generator used for the initialization of the
+       lobpcg eigenvectors decomposition when ``eigen_solver='amg'`` and by
+       the K-Means initialization. Use an int to make the randomness
+       deterministic.
+       See :term:`Glossary <random_state>`.
+
+   n_init : int, default=10
+       Number of time the k-means algorithm will be run with different
+       centroid seeds. The final results will be the best output of n_init
+       consecutive runs in terms of inertia. Only used if
+       ``assign_labels='kmeans'``.
+
+   gamma : float, default=1.0
+       Kernel coefficient for rbf, poly, sigmoid, laplacian and chi2 kernels.
+       Ignored for ``affinity='nearest_neighbors'``.
+
+   affinity : str or callable, default='rbf'
+       How to construct the affinity matrix.
+        - 'nearest_neighbors': construct the affinity matrix by computing a
+          graph of nearest neighbors.
+        - 'rbf': construct the affinity matrix using a radial basis function
+          (RBF) kernel.
+        - 'precomputed': interpret ``X`` as a precomputed affinity matrix,
+          where larger values indicate greater similarity between instances.
+        - 'precomputed_nearest_neighbors': interpret ``X`` as a sparse graph
+          of precomputed distances, and construct a binary affinity matrix
+          from the ``n_neighbors`` nearest neighbors of each instance.
+        - one of the kernels supported by
+          :func:`~sklearn.metrics.pairwise_kernels`.
+
+       Only kernels that produce similarity scores (non-negative values that
+       increase with similarity) should be used. This property is not checked
+       by the clustering algorithm.
+
+   n_neighbors : int, default=10
+       Number of neighbors to use when constructing the affinity matrix using
+       the nearest neighbors method. Ignored for ``affinity='rbf'``.
+
+   eigen_tol : float, default=0.0
+       Stopping criterion for eigendecomposition of the Laplacian matrix
+       when ``eigen_solver='arpack'``.
+
+   assign_labels : {'kmeans', 'discretize'}, default='kmeans'
+       The strategy for assigning labels in the embedding space. There are two
+       ways to assign labels after the Laplacian embedding. k-means is a
+       popular choice, but it can be sensitive to initialization.
+       Discretization is another approach which is less sensitive to random
+       initialization.
+
+   degree : float, default=3
+       Degree of the polynomial kernel. Ignored by other kernels.
+
+   coef0 : float, default=1
+       Zero coefficient for polynomial and sigmoid kernels.
+       Ignored by other kernels.
+
+   kernel_params : dict of str to any, default=None
+       Parameters (keyword arguments) and values for kernel passed as
+       callable object. Ignored by other kernels.
+
+   n_jobs : int, default=None
+       The number of parallel jobs to run when `affinity='nearest_neighbors'`
+       or `affinity='precomputed_nearest_neighbors'`. The neighbors search
+       will be done in parallel.
+       ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.
+       ``-1`` means using all processors. See :term:`Glossary <n_jobs>`
+       for more details.
+
+   verbose : bool, default=False
+       Verbosity mode.
+
+       .. versionadded:: 0.24
+
+   persist_embedding : bool
+       Whether to persist the intermediate n_samples x n_components array used
+       for clustering.
+
+   kmeans_params : dictionary of string to any, optional
+       Keyword arguments for the KMeans clustering used for the final
+       clustering.
+
+   Examples
+   --------
+   >>> from dasf.ml.cluster import SpectralClustering
+   >>> import numpy as np
+   >>> X = np.array([[1, 1], [2, 1], [1, 0],
+   ...               [4, 7], [3, 5], [3, 6]])
+   >>> clustering = SpectralClustering(n_clusters=2,
+   ...         assign_labels='discretize',
+   ...         random_state=0).fit(X)
+   >>> clustering
+   SpectralClustering(assign_labels='discretize', n_clusters=2,
+       random_state=0)
+
+   For further informations see:
+   - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering
+   - https://ml.dask.org/modules/generated/dask_ml.cluster.SpectralClustering.html
+
+   Notes
+   -----
+   A distance matrix for which 0 indicates identical elements and high values
+   indicate very dissimilar elements can be transformed into an affinity /
+   similarity matrix that is well-suited for the algorithm by
+   applying the Gaussian (aka RBF, heat) kernel::
+
+       np.exp(- dist_matrix ** 2 / (2. * delta ** 2))
+
+   where ``delta`` is a free parameter representing the width of the Gaussian
+   kernel.
+
+   An alternative is to take a symmetric version of the k-nearest neighbors
+   connectivity matrix of the points.
+
+   If the pyamg package is installed, it is used: this greatly
+   speeds up computation.
+
+   References
+   ----------
+
+   - Normalized cuts and image segmentation, 2000
+     Jianbo Shi, Jitendra Malik
+     http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.160.2324
+
+   - A Tutorial on Spectral Clustering, 2007
+     Ulrike von Luxburg
+     http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.165.9323
+
+   - Multiclass spectral clustering, 2003
+     Stella X. Yu, Jianbo Shi
+     https://www1.icsi.berkeley.edu/~stellayu/publication/doc/2003kwayICCV.pdf
+
+
+   .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _lazy_fit_predict_cpu(X, y=None, sample_weight=None)
+
+
+   .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
+
+
+

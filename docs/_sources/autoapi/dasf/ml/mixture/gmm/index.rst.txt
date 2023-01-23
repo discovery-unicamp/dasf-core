@@ -1,0 +1,39 @@
+:py:mod:`dasf.ml.mixture.gmm`
+=============================
+
+.. py:module:: dasf.ml.mixture.gmm
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.mixture.gmm.GaussianMixture
+
+
+
+
+.. py:class:: GaussianMixture(n_components=1, *, covariance_type='full', tol=0.001, reg_covar=1e-06, max_iter=100, n_init=1, init_params='kmeans', weights_init=None, means_init=None, precisions_init=None, random_state=None, warm_start=False, verbose=0, verbose_interval=10)
+
+   Bases: :py:obj:`dasf.ml.mixture.classifier.MixtureClassifier`
+
+   .. py:method:: _fit_cpu(X, y=None)
+
+
+   .. py:method:: _fit_predict_cpu(X, y=None)
+
+
+   .. py:method:: _predict_cpu(X, y=None)
+
+
+   .. py:method:: _set_params_cpu(**params)
+
+
+   .. py:method:: _get_params_cpu(deep=True)
+
+
+

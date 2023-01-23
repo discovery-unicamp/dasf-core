@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dasf.feature_extraction.transform &mdash; DASF 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DASF
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">DASF API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DASF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dasf.feature_extraction.transform</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dasf.feature_extraction.transform</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="kn">from</span> <span class="nn">dasf.utils.types</span> <span class="kn">import</span> <span class="n">is_array</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.types</span> <span class="kn">import</span> <span class="n">is_dataframe</span>
+<span class="kn">from</span> <span class="nn">dasf.transforms.base</span> <span class="kn">import</span> <span class="n">Transform</span><span class="p">,</span> <span class="n">Fit</span>
+
+
+<div class="viewcode-block" id="ConcatenateToArray"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.ConcatenateToArray">[docs]</a><span class="k">class</span> <span class="nc">ConcatenateToArray</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Concatenate data from different Arrays into a single array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    flatten : bool</span>
+<span class="sd">        If the arrays must be flatten prior concatenating. If `False`, the</span>
+<span class="sd">        arrays must share the shape of last dimansions in order to be</span>
+<span class="sd">        concatenated (the default is False).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flatten</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span> <span class="o">=</span> <span class="n">flatten</span>
+
+    <span class="k">def</span> <span class="nf">__transform_generic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">datas</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">datas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span><span class="p">:</span>
+                    <span class="n">flat</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                    <span class="n">datas</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">flat</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                    <span class="n">datas</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">expand_dim</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span><span class="p">:</span>
+                    <span class="n">flat</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                    <span class="n">datas</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datas</span><span class="p">,</span> <span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">flat</span><span class="p">]),</span>
+                                      <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                    <span class="n">datas</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datas</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">datas</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">datas</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+<span class="c1">#        return data.rechunk({1: data.shape[1]})</span>
+
+<div class="viewcode-block" id="ConcatenateToArray._transform_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.ConcatenateToArray._transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transform_generic</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ConcatenateToArray._transform_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.ConcatenateToArray._transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transform_generic</span><span class="p">(</span><span class="n">cp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SampleDataframe"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.SampleDataframe">[docs]</a><span class="k">class</span> <span class="nc">SampleDataframe</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a subset with random samples of the original dataset.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    percent : float</span>
+<span class="sd">        Percentage of the samples to get from the dataset.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">percent</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">percent</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SampleDataframe.run"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.SampleDataframe.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a subset with random samples from the dataset `X`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : Any</span>
+<span class="sd">            The dataset.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any</span>
+<span class="sd">            The sampled subset.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="GetSubeCubeArray"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.GetSubeCubeArray">[docs]</a><span class="k">class</span> <span class="nc">GetSubeCubeArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a subcube with x% of samples from the original one.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    percent : float</span>
+<span class="sd">        Percentage of the samples to get from the cube.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">percent</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">percent</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span> <span class="o">&lt;=</span> <span class="mf">1.0</span>
+        <span class="p">),</span> <span class="s2">&quot;Percent must be in [0,1] range.&quot;</span>
+
+
+<div class="viewcode-block" id="GetSubeCubeArray.transform"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.GetSubeCubeArray.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">i_num</span><span class="p">,</span> <span class="n">x_num</span><span class="p">,</span> <span class="n">t_num</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="n">i_start_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">i_num</span> <span class="o">-</span> <span class="p">(</span><span class="n">i_num</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">i_end_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i_start_idx</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__percent</span> <span class="o">*</span> <span class="n">i_num</span><span class="p">))</span>
+
+        <span class="n">x_start_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">x_num</span> <span class="o">-</span> <span class="p">(</span><span class="n">x_num</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">x_end_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_start_idx</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__percent</span> <span class="o">*</span> <span class="n">x_num</span><span class="p">))</span>
+
+        <span class="n">t_start_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">t_num</span> <span class="o">-</span> <span class="p">(</span><span class="n">t_num</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">t_end_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t_start_idx</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__percent</span> <span class="o">*</span> <span class="n">t_num</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="n">i_start_idx</span><span class="p">:</span><span class="n">i_end_idx</span><span class="p">,</span>
+                 <span class="n">x_start_idx</span><span class="p">:</span><span class="n">x_end_idx</span><span class="p">,</span>
+                 <span class="n">t_start_idx</span><span class="p">:</span><span class="n">t_end_idx</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="SliceDataframe"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.SliceDataframe">[docs]</a><span class="k">class</span> <span class="nc">SliceDataframe</span><span class="p">(</span><span class="n">Fit</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a slice of a cube. An inline slice is a section over the x-axis.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    iline_index : int</span>
+<span class="sd">        The index of the inline to get.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iline_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iline_index</span> <span class="o">=</span> <span class="n">iline_index</span>
+
+<div class="viewcode-block" id="SliceDataframe.fit"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.SliceDataframe.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">cube_shape</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">if</span> <span class="n">is_array</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="n">slice_array</span> <span class="o">=</span> <span class="n">X</span>
+        <span class="k">elif</span> <span class="n">is_dataframe</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="n">slice_array</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;X is not a known datatype.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">slice_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cube_shape</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="GetSubDataframe"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.GetSubDataframe">[docs]</a><span class="k">class</span> <span class="nc">GetSubDataframe</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the first x% samples from the dataset.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    percent : float</span>
+<span class="sd">        Percentage of the samples to get from the dataframe.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">percent</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">percent</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GetSubDataframe.transform"><a class="viewcode-back" href="../../../autoapi/dasf/feature_extraction/transform/index.html#dasf.feature_extraction.GetSubDataframe.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">new_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__percent</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">new_size</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, UNICAMP.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

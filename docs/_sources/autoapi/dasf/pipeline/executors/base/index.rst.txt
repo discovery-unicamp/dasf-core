@@ -1,0 +1,39 @@
+:py:mod:`dasf.pipeline.executors.base`
+======================================
+
+.. py:module:: dasf.pipeline.executors.base
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.executors.base.Executor
+
+
+
+
+.. py:class:: Executor
+
+   .. py:property:: ngpus
+      :type: int
+
+
+   .. py:property:: is_connected
+      :type: bool
+
+
+   .. py:method:: pre_run(pipeline)
+
+
+   .. py:method:: post_run(pipeline)
+
+
+   .. py:method:: execute(fn, *args, **kwargs)
+
+
+

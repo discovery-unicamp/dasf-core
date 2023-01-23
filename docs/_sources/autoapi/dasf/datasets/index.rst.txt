@@ -1,0 +1,522 @@
+:py:mod:`dasf.datasets`
+=======================
+
+.. py:module:: dasf.datasets
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   base/index.rst
+   blobs/index.rst
+   datasets/index.rst
+   download/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.datasets.Dataset
+   dasf.datasets.DatasetArray
+   dasf.datasets.DatasetZarr
+   dasf.datasets.DatasetHDF5
+   dasf.datasets.DatasetXarray
+   dasf.datasets.DatasetLabeled
+   dasf.datasets.DatasetDataFrame
+   dasf.datasets.DatasetParquet
+   dasf.datasets.make_blobs
+   dasf.datasets.make_classification
+
+
+
+
+.. py:class:: Dataset(name, download = False, root = None, *args, **kwargs)
+
+   Bases: :py:obj:`dasf.transforms.base.TargeteredTransform`
+
+   .. py:method:: __set_dataset_cache_dir()
+
+
+   .. py:method:: download()
+
+
+   .. py:method:: __len__()
+
+
+   .. py:method:: __getitem__(idx)
+
+
+
+.. py:class:: DatasetArray(name, download = False, root = None, chunks='auto')
+
+   Bases: :py:obj:`Dataset`
+
+   Class representing an dataset wich is defined as an array of a defined
+   shape.
+
+   Parameters
+   ----------
+   name : str
+       Symbolic name of the dataset.
+   download : bool
+       If the dataset must be downloaded (the default is False).
+   root : str
+       Root download directory (the default is None).
+   chunks : Any
+       Number of blocks of the array (the default is "auto").
+
+
+   .. py:property:: shape
+      :type: tuple
+
+      Returns the shape of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the shape.
+
+
+
+   .. py:method:: __operator_check__(other)
+
+
+   .. py:method:: __repr__()
+
+      Return repr(self).
+
+
+   .. py:method:: __array__(dtype=None)
+
+
+   .. py:method:: __array_ufunc__(ufunc, method, *inputs, **kwargs)
+
+
+   .. py:method:: __check_op_input(in_data)
+
+
+   .. py:method:: __add__(other)
+
+
+   .. py:method:: __sub__(other)
+
+
+   .. py:method:: __mul__(other)
+
+
+   .. py:method:: __div__(other)
+
+
+   .. py:method:: __copy_attrs_from_data()
+
+
+   .. py:method:: __npy_header()
+
+      Read an array header from a filelike object.
+
+              
+
+
+   .. py:method:: _lazy_load(xp, **kwargs)
+
+      Lazy load the dataset using an CPU dask container.
+
+      Parameters
+      ----------
+      xp : type
+          Library used to load the file. It must follow numpy library.
+      **kwargs : type
+          Additional keyworkded argumnts to the load.
+
+      Returns
+      -------
+      Any
+          The data (or a Future load object, for `_lazy` operations).
+
+
+
+   .. py:method:: _load(xp, **kwargs)
+
+      Load data using CPU container.
+
+      Parameters
+      ----------
+      xp : Module
+          A module that load data (implement `load` function)
+      **kwargs : type
+          Additional `kwargs` to `xp.load` function.
+
+
+
+   .. py:method:: _load_meta()
+
+      Load metadata to inspect.
+
+      Returns
+      -------
+      dict
+          A dictionary with metadata information.
+
+
+
+   .. py:method:: _lazy_load_gpu()
+
+      Load data with GPU container + DASK. (It does not load immediattly)
+
+              
+
+
+   .. py:method:: _lazy_load_cpu()
+
+      Load data with CPU container + DASK. (It does not load immediattly)
+
+              
+
+
+   .. py:method:: _load_gpu()
+
+      Load data with GPU container (e.g. cupy).
+
+              
+
+
+   .. py:method:: _load_cpu()
+
+      Load data with CPU container (e.g. numpy).
+
+              
+
+
+   .. py:method:: load()
+
+
+   .. py:method:: inspect_metadata()
+
+      Return a dictionary with all metadata information from data.
+
+      Returns
+      -------
+      dict
+          A dictionary with metadata information.
+
+
+
+
+.. py:class:: DatasetZarr(name, download=False, root=None, chunks=None)
+
+   Bases: :py:obj:`Dataset`
+
+   .. py:method:: _lazy_load(xp)
+
+
+   .. py:method:: _load()
+
+
+   .. py:method:: _lazy_load_cpu()
+
+
+   .. py:method:: _lazy_load_gpu()
+
+
+   .. py:method:: _load_cpu()
+
+
+   .. py:method:: _load_gpu()
+
+
+   .. py:method:: load()
+
+
+   .. py:method:: _load_meta()
+
+
+   .. py:method:: inspect_metadata()
+
+
+
+.. py:class:: DatasetHDF5(name, download=False, root=None, chunks='auto', dataset_path=None)
+
+   Bases: :py:obj:`Dataset`
+
+   .. py:method:: _lazy_load(xp)
+
+
+   .. py:method:: _load()
+
+
+   .. py:method:: _lazy_load_cpu()
+
+
+   .. py:method:: _lazy_load_gpu()
+
+
+   .. py:method:: _load_cpu()
+
+
+   .. py:method:: _load_gpu()
+
+
+   .. py:method:: load()
+
+
+   .. py:method:: _load_meta()
+
+
+   .. py:method:: inspect_metadata()
+
+
+
+.. py:class:: DatasetXarray(name, download=False, root=None, chunks=None, data_var=None)
+
+   Bases: :py:obj:`Dataset`
+
+   .. py:method:: _lazy_load_cpu()
+
+
+   .. py:method:: _lazy_load_gpu()
+
+
+   .. py:method:: _load_cpu()
+
+
+   .. py:method:: _load_gpu()
+
+
+   .. py:method:: load()
+
+
+   .. py:method:: _load_meta()
+
+
+   .. py:method:: inspect_metadata()
+
+
+   .. py:method:: __len__()
+
+
+   .. py:method:: __getitem__(idx)
+
+
+
+.. py:class:: DatasetLabeled(name, download = False, root = None, chunks='auto')
+
+   Bases: :py:obj:`Dataset`
+
+   A class representing a labeled dataset. Each item is a 2-element tuple,
+   where the first element is a array of data and the second element is the
+   respective label. The items can be accessed from `dataset[x]`.
+
+   Parameters
+   ----------
+   name : str
+       Symbolic name of the dataset.
+   download : bool
+       If the dataset must be downloaded (the default is False).
+   root : str
+       Root download directory (the default is None).
+   chunks : Any
+       Number of blocks of the array (the default is "auto").
+
+   Attributes
+   ----------
+   __chunks : type
+       Description of attribute `__chunks`.
+
+
+   .. py:method:: download()
+
+      Download the dataset.
+
+              
+
+
+   .. py:method:: inspect_metadata()
+
+      Return a dictionary with all metadata information from data
+      (train and labels).
+
+      Returns
+      -------
+      dict
+          A dictionary with metadata information.
+
+
+
+   .. py:method:: _lazy_load(xp, **kwargs)
+
+      Lazy load the dataset using an CPU dask container.
+
+      Parameters
+      ----------
+      xp : type
+          Library used to load the file. It must follow numpy library.
+      **kwargs : type
+          Additional keyworkded argumnts to the load.
+
+      Returns
+      -------
+      Tuple
+          A Future object that will return a tuple: (data, label).
+
+
+
+   .. py:method:: _load(xp, **kwargs)
+
+      Load data using CPU container.
+
+      Parameters
+      ----------
+      xp : Module
+          A module that load data (implement `load` function)
+      **kwargs : type
+          Additional `kwargs` to `xp.load` function.
+
+      Returns
+      -------
+      Tuple
+          A 2-element tuple: (data, label)
+
+
+
+   .. py:method:: _load_meta()
+
+      Load metadata to inspect.
+
+      Returns
+      -------
+      dict
+          A dictionary with metadata information.
+
+
+
+   .. py:method:: _lazy_load_gpu()
+
+      Load data with GPU container + DASK. (It does not load immediattly)
+
+              
+
+
+   .. py:method:: _lazy_load_cpu()
+
+      Load data with CPU container + DASK. (It does not load immediattly)
+
+              
+
+
+   .. py:method:: _load_gpu()
+
+      Load data with GPU container (e.g. cupy).
+
+              
+
+
+   .. py:method:: _load_cpu()
+
+      Load data with CPU container (e.g. numpy).
+
+              
+
+
+   .. py:method:: load()
+
+
+   .. py:method:: __getitem__(idx)
+
+
+
+.. py:class:: DatasetDataFrame(name, download=True, root=None, chunks='auto')
+
+   Bases: :py:obj:`Dataset`
+
+   .. py:property:: shape
+
+
+   .. py:method:: _load_meta()
+
+
+   .. py:method:: inspect_metadata()
+
+
+   .. py:method:: _lazy_load_gpu()
+
+
+   .. py:method:: _lazy_load_cpu()
+
+
+   .. py:method:: _load_gpu()
+
+
+   .. py:method:: _load_cpu()
+
+
+   .. py:method:: load()
+
+
+   .. py:method:: __len__()
+
+
+   .. py:method:: __getitem__(idx)
+
+
+
+.. py:class:: DatasetParquet(name, download=True, root=None, chunks='auto')
+
+   Bases: :py:obj:`DatasetDataFrame`
+
+   .. py:method:: _lazy_load_gpu()
+
+
+   .. py:method:: _lazy_load_cpu()
+
+
+   .. py:method:: _load_gpu()
+
+
+   .. py:method:: _load_cpu()
+
+
+
+.. py:class:: make_blobs
+
+   .. py:method:: _lazy_make_blobs_cpu(**kwargs)
+
+
+   .. py:method:: _lazy_make_blobs_gpu(**kwargs)
+
+
+   .. py:method:: _make_blobs_cpu(**kwargs)
+
+
+   .. py:method:: _make_blobs_gpu(**kwargs)
+
+
+   .. py:method:: __call__(**kwargs)
+
+
+
+.. py:class:: make_classification
+
+   .. py:method:: _lazy_make_classification_cpu(**kwargs)
+
+
+   .. py:method:: _lazy_make_classification_gpu(**kwargs)
+
+
+   .. py:method:: _make_classification_cpu(**kwargs)
+
+
+   .. py:method:: _make_classification_gpu(**kwargs)
+
+
+   .. py:method:: __call__(**kwargs)
+
+
+

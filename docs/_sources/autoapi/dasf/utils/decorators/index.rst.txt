@@ -1,0 +1,46 @@
+:py:mod:`dasf.utils.decorators`
+===============================
+
+.. py:module:: dasf.utils.decorators
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.utils.decorators.is_forced_local
+   dasf.utils.decorators.is_forced_gpu
+   dasf.utils.decorators.fetch_from_dask
+   dasf.utils.decorators.fetch_from_gpu
+   dasf.utils.decorators.fetch_args_from_dask
+   dasf.utils.decorators.fetch_args_from_gpu
+   dasf.utils.decorators.task_handler
+
+
+
+.. py:function:: is_forced_local(cls)
+
+
+.. py:function:: is_forced_gpu(cls)
+
+
+.. py:function:: fetch_from_dask(*args, **kwargs)
+
+
+.. py:function:: fetch_from_gpu(*args, **kwargs)
+
+
+.. py:function:: fetch_args_from_dask(func)
+
+
+.. py:function:: fetch_args_from_gpu(func)
+
+
+.. py:function:: task_handler(func)
+
+

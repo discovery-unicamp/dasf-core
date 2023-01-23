@@ -1,0 +1,45 @@
+:py:mod:`dasf.ml.neighbors`
+===========================
+
+.. py:module:: dasf.ml.neighbors
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   neighbors/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.neighbors.NearestNeighbors
+
+
+
+
+.. py:class:: NearestNeighbors(n_neighbors=5, radius=1.0, algorithm='auto', leaf_size=30, metric='minkowski', p=2, metric_params=None, n_jobs=None, handle=None, verbose=False, output_type=None, **kwargs)
+
+   Bases: :py:obj:`dasf.transforms.base.Fit`, :py:obj:`dasf.transforms.base.GetParams`, :py:obj:`dasf.transforms.base.SetParams`
+
+   .. py:method:: _fit_cpu(X, y=None, **kwargs)
+
+
+   .. py:method:: _fit_gpu(X, y=None, **kwargs)
+
+
+   .. py:method:: _get_params_cpu(deep=True, **kwargs)
+
+
+   .. py:method:: _set_params_cpu(**params)
+
+
+

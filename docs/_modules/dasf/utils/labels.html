@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dasf.utils.labels &mdash; DASF 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DASF
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">DASF API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DASF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dasf.utils.labels</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dasf.utils.labels</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
+
+<span class="kn">from</span> <span class="nn">dask.core</span> <span class="kn">import</span> <span class="n">get_dependencies</span><span class="p">,</span> <span class="n">ishashable</span><span class="p">,</span> <span class="n">istask</span>
+<span class="kn">from</span> <span class="nn">dask.base</span> <span class="kn">import</span> <span class="n">is_dask_collection</span>
+<span class="kn">from</span> <span class="nn">dask.dot</span> <span class="kn">import</span> <span class="n">to_graphviz</span><span class="p">,</span> <span class="n">graphviz_to_file</span>
+
+<span class="n">inside_with</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+
+<span class="n">g_hash_attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">g_func_attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">g_data_attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="DaskLabel"><a class="viewcode-back" href="../../../autoapi/dasf/utils/labels/index.html#dasf.utils.labels.DaskLabel">[docs]</a><span class="k">class</span> <span class="nc">DaskLabel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__label</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__stop</span> <span class="o">=</span> <span class="n">stop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span> <span class="o">=</span> <span class="n">g_hash_attrs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__func_attrs</span> <span class="o">=</span> <span class="n">g_func_attrs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data_attrs</span> <span class="o">=</span> <span class="n">g_data_attrs</span>
+
+<div class="viewcode-block" id="DaskLabel.start"><a class="viewcode-back" href="../../../autoapi/dasf/utils/labels/index.html#dasf.utils.labels.DaskLabel.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__enter</span><span class="p">(</span><span class="n">start</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DaskLabel.stop"><a class="viewcode-back" href="../../../autoapi/dasf/utils/labels/index.html#dasf.utils.labels.DaskLabel.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__exit</span><span class="p">(</span><span class="n">stop</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">__add_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atype</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__data_attrs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="c1"># We use comment as a generic field for tag</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;xlabel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atype</span>
+
+    <span class="k">def</span> <span class="nf">__add_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__func_attrs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__func_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="c1"># We use comment as a generic field for tag</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__func_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
+            <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__func_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;xlabel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__func_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__func_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;filled&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__add_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__data_attrs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__data_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="c1"># We use comment as a generic field for tag</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__data_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
+            <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__data_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;xlabel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__data_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__data_attrs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;filled&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__generate_hashtable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">delete_dup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_dask_collection</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;This is not a Dask data: this is </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dsk</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dask</span>
+
+        <span class="n">remove</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dsk</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">k_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">istask</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="n">func_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;function&quot;</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="n">delete_dup</span> <span class="ow">and</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span>
+                    <span class="n">remove</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">func_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remove</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__add_item</span><span class="p">(</span>
+                        <span class="n">func_name</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__color</span><span class="p">,</span> <span class="n">atype</span><span class="o">=</span><span class="s2">&quot;func&quot;</span>
+                    <span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">get_dependencies</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+                    <span class="n">dep_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">delete_dup</span> <span class="ow">and</span> <span class="n">dep_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">:</span>
+                        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">dep_name</span><span class="p">]</span>
+                        <span class="n">remove</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dep_name</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">dep_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remove</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__add_item</span><span class="p">(</span><span class="n">dep_name</span><span class="p">,</span> <span class="n">dep</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__color</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__enter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dsk</span><span class="p">):</span>
+        <span class="k">global</span> <span class="n">inside_with</span>
+
+        <span class="n">inside_with</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__generate_hashtable</span><span class="p">(</span><span class="n">dsk</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+<div class="viewcode-block" id="DaskLabel.__enter__"><a class="viewcode-back" href="../../../autoapi/dasf/utils/labels/index.html#dasf.utils.labels.DaskLabel.__enter__">[docs]</a>    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dsk</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__start</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enter</span><span class="p">(</span><span class="n">dsk</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__exit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dsk</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">global</span> <span class="n">inside_with</span><span class="p">,</span> <span class="n">g_hash_attrs</span><span class="p">,</span> <span class="n">g_func_attrs</span><span class="p">,</span> <span class="n">g_data_attrs</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__generate_hashtable</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">delete_dup</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__add_data</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">],</span>
+                    <span class="n">k</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;xlabel&quot;</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">],</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;func&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__add_func</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">],</span>
+                    <span class="n">k</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;xlabel&quot;</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">],</span>
+                <span class="p">)</span>
+
+        <span class="n">g_hash_attrs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">g_hash_attrs</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">__hash_attrs</span><span class="p">}</span>
+        <span class="n">g_func_attrs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">g_func_attrs</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">__func_attrs</span><span class="p">}</span>
+        <span class="n">g_data_attrs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">g_data_attrs</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">__data_attrs</span><span class="p">}</span>
+
+        <span class="n">inside_with</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+<div class="viewcode-block" id="DaskLabel.__exit__"><a class="viewcode-back" href="../../../autoapi/dasf/utils/labels/index.html#dasf.utils.labels.DaskLabel.__exit__">[docs]</a>    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="n">dsk</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__stop</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exit</span><span class="p">(</span><span class="n">dsk</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="get_attributes"><a class="viewcode-back" href="../../../autoapi/dasf/utils/labels/index.html#dasf.utils.labels.get_attributes">[docs]</a><span class="k">def</span> <span class="nf">get_attributes</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">inside_with</span><span class="p">,</span> <span class="n">g_func_attrs</span><span class="p">,</span> <span class="n">g_data_attrs</span>
+
+    <span class="k">if</span> <span class="n">inside_with</span><span class="o">.</span><span class="n">locked</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: it cannot reflect all attribute changes.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;function_attributes&quot;</span><span class="p">:</span> <span class="n">g_func_attrs</span><span class="p">,</span> <span class="s2">&quot;data_attributes&quot;</span><span class="p">:</span> <span class="n">g_data_attrs</span><span class="p">}</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, UNICAMP.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
