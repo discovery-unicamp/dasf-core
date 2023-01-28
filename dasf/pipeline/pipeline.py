@@ -85,8 +85,8 @@ class Pipeline:
                     obj)
         else:
             raise ValueError(
-                f"This object {obj.__name__} is not a function, method "
-                "or a transformer object."
+                f"This object {obj.__class__.__name__} is not a function, "
+                "method or a transformer object."
             )
 
     def add(self, obj, **kwargs):
