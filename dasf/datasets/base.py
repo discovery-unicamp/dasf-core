@@ -777,13 +777,13 @@ class DatasetHDF5(Dataset):
         data = f[self._dataset_path]
         return da.from_array(data, chunks=self._chunks, meta=xp.array(()))
 
-    def _load(self, xp, **kwargs):
+    def _load(self, xp=None, **kwargs):
         """Load data using CPU container.
 
         Parameters
         ----------
         xp : Module
-            A module that load data (implement `load` function)
+            A module that load data (implement `load` function) (placeholder).
         **kwargs : type
             Additional `kwargs` to `xp.load` function.
 
