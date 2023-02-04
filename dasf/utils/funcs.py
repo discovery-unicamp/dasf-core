@@ -167,6 +167,8 @@ def download_file(url, filename=None, directory=None):
     if directory is not None:
         os.makedirs(os.path.dirname(directory), exist_ok=True)
 
+    progressbar = None
+
     if is_notebook():
         progressbar = NotebookProgressBar()
 
@@ -223,7 +225,8 @@ def download_file(url, filename=None, directory=None):
             else:
                 output = os.path.abspath(os.path.join(os.getcwd(), wget.download(url)))
     except Exception as exc:
-        progressbar.set_error(True)
+        if progressbar:
+            progressbar.set_error(True)
 
     return output
 

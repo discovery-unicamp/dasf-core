@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import json
 import zarr
 import h5py
 import dask
@@ -33,6 +34,23 @@ from dasf.transforms.base import TargeteredTransform
 
 
 class Dataset(TargeteredTransform):
+    """Class representing a generic dataset based on a TargeteredTransform
+    object.
+
+    Parameters
+    ----------
+    name : str
+        Symbolic name of the dataset.
+    download : bool
+        If the dataset must be downloaded (the default is False).
+    root : str
+        Root download directory (the default is None).
+    *args : type
+        Additional arguments without keys.
+    **kwargs : type
+        Additional keyworkded arguments.
+
+    """
     def __init__(self, 
                  name: str,
                  download: bool = False,
@@ -54,6 +72,9 @@ class Dataset(TargeteredTransform):
         self.download()
 
     def __set_dataset_cache_dir(self):
+        """Generate cached directory in $HOME to store dataset(s).
+
+        """
         self._cache_dir = os.path.abspath(str(Path.home()) + "/.cache/dasf/datasets/")
         os.makedirs(self._cache_dir, exist_ok=True)
 
@@ -61,16 +82,30 @@ class Dataset(TargeteredTransform):
             self._root = self._cache_dir
 
     def download(self):
+        """Skeleton of the download method.
+
+        """
         if self._download:
             raise NotImplementedError("Function download() needs to be defined")
 
     def __len__(self) -> int:
+        """Return internal data length.
+
+        """
         if self._data is None:
             raise Exception("Data is not loaded yet")
 
         return len(self._data)
 
     def __getitem__(self, idx):
+        """Generic __getitem__() function based on internal data.
+
+        Parameters
+        ----------
+        idx : Any
+            Key of the fetched data. It can be an integer or a tuple.
+
+        """
         if self._data is None:
             raise Exception("Data is not loaded yet")
 
@@ -118,6 +153,9 @@ class DatasetArray(Dataset):
         return other
 
     def __repr__(self):
+        """Return a class representation based on internal array.
+
+        """
         return repr(self._data)
 
     def __array__(self, dtype=None):
@@ -144,6 +182,22 @@ class DatasetArray(Dataset):
             return NotImplemented
 
     def __check_op_input(self, in_data):
+        """Return the proper type of data for operation
+
+          >>> Result = DatasetArray + Numpy; or
+          >>> Result = DatasetArray + DatasetArray
+
+        Parameters
+        ----------
+        in_data : Any
+            Input data to be analyzed.
+
+        Returns
+        -------
+        data : Any
+            A data representing the internal array or the class itself.
+
+        """
         if is_array(in_data) or is_dask_array(in_data):
             return in_data
         elif isinstance(in_data, self.__class__):
@@ -151,26 +205,81 @@ class DatasetArray(Dataset):
         raise TypeError("Data is incompatible with Array")
 
     def __add__(self, other):
+        """Internal function of adding two array datasets.
+
+        Parameters
+        ----------
+        other : Any
+            A data representing an array or a DatasetArray.
+
+        Returns
+        -------
+        DatasetArry
+            A sum with two arrays.
+
+        """
         assert self._data is not None, "Data is not loaded yet."
         data = self.__check_op_input(other)
         return self._data + data
 
     def __sub__(self, other):
+        """Internal function of subtracting two array datasets.
+
+        Parameters
+        ----------
+        other : Any
+            A data representing an array or a DatasetArray.
+
+        Returns
+        -------
+        DatasetArry
+            A subtraction of two arrays.
+
+        """
         assert self._data is not None, "Data is not loaded yet."
         data = self.__check_op_input(other)
         return self._data - data
 
     def __mul__(self, other):
+        """Internal function of multiplication two array datasets.
+
+        Parameters
+        ----------
+        other : Any
+            A data representing an array or a DatasetArray.
+
+        Returns
+        -------
+        DatasetArry
+            A multiplication of two arrays.
+
+        """
         assert self._data is not None, "Data is not loaded yet."
         data = self.__check_op_input(other)
         return self._data * data
 
     def __div__(self, other):
+        """Internal function of division two array datasets.
+
+        Parameters
+        ----------
+        other : Any
+            A data representing an array or a DatasetArray.
+
+        Returns
+        -------
+        DatasetArry
+            A division of two arrays.
+
+        """
         assert self._data is not None, "Data is not loaded yet."
         data = self.__check_op_input(other)
         return self._data / data
 
     def __copy_attrs_from_data(self):
+        """Extends metadata to new transformed object (after operations).
+
+        """
         self._metadata["type"] = type(self._data)
 
         attrs = dir(self._data)
@@ -197,7 +306,7 @@ class DatasetArray(Dataset):
         xp : type
             Library used to load the file. It must follow numpy library.
         **kwargs : type
-            Additional keyworkded argumnts to the load.
+            Additional keyworkded arguments to the load.
 
         Returns
         -------
@@ -297,7 +406,7 @@ class DatasetArray(Dataset):
         """
         return self.__npy_header()[0]
 
-    def inspect_metadata(self):
+    def inspect_metadata(self) -> dict:
         """Return a dictionary with all metadata information from data.
 
         Returns
@@ -322,7 +431,26 @@ class DatasetArray(Dataset):
 
 
 class DatasetZarr(Dataset):
-    def __init__(self, name, download=False, root=None, chunks=None):
+    """Class representing an dataset wich is defined as a Zarr array of a
+    defined shape.
+
+    Parameters
+    ----------
+    name : str
+        Symbolic name of the dataset.
+    download : bool
+        If the dataset must be downloaded (the default is False).
+    root : str
+        Root download directory (the default is None).
+    chunks : Any
+        Number of blocks of the array (the default is "auto").
+
+    """
+    def __init__(self,
+                 name: str,
+                 download: bool = False,
+                 root: str = None,
+                 chunks=None):
 
         Dataset.__init__(self, name, download, root)
 
@@ -336,42 +464,123 @@ class DatasetZarr(Dataset):
             else:
                 self._root = os.path.dirname(root)
 
-    def _lazy_load(self, xp):
+    def _lazy_load(self, xp, **kwargs):
+        """Lazy load the dataset using an CPU dask container.
+
+        Parameters
+        ----------
+        xp : type
+            Library used to load the file. It must follow numpy library.
+        **kwargs : type
+            Additional keyworkded arguments to the load.
+
+        Returns
+        -------
+        Any
+            The data (or a Future load object, for `_lazy` operations).
+
+        """
         return da.from_zarr(self._root_file, chunks=self._chunks).map_blocks(xp.asarray)
 
-    def _load(self):
-        return zarr.open(self._root_file, mode='r')
+    def _load(self, xp, **kwargs):
+        """Load data using CPU container.
+
+        Parameters
+        ----------
+        xp : Module
+            A module that load data (implement `load` function)
+        **kwargs : type
+            Additional `kwargs` to `xp.load` function.
+
+        """
+        return zarr.open(self._root_file, mode='r', meta_array=xp.empty(()))
 
     def _lazy_load_cpu(self):
+        """Load data with CPU container + DASK. (It does not load immediattly)
+
+        """
         self._metadata = self._load_meta()
         self._data = self._lazy_load(np)
+        self.__copy_attrs_from_data()
         return self
 
     def _lazy_load_gpu(self):
+        """Load data with GPU container + DASK. (It does not load immediattly)
+
+        """
         self._metadata = self._load_meta()
         self._data = self._lazy_load(cp)
+        self.__copy_attrs_from_data()
         return self
 
     def _load_cpu(self):
+        """Load data with CPU container (e.g. numpy).
+
+        """
         self._metadata = self._load_meta()
-        self._data = self._load()
+        self._data = self._load(np)
+        self.__copy_attrs_from_data()
         return self
 
     def _load_gpu(self):
+        """Load data with GPU container (e.g. cupy).
+
+        """
         self._metadata = self._load_meta()
-        self._data = cp.asarray(self._load())
+        self._data = self._load(cp)
+        self.__copy_attrs_from_data()
         return self
 
     @task_handler
     def load(self):
         ...
 
-    def _load_meta(self):
+    def _load_meta(self) -> dict:
+        """Load metadata to inspect.
+
+        Returns
+        -------
+        dict
+            A dictionary with metadata information.
+
+        """
         assert self._root_file is not None, "There is no temporary file to inspect"
 
         return self.inspect_metadata()
 
-    def inspect_metadata(self):
+    @property
+    def shape(self) -> tuple:
+        """Returns the shape of an array.
+
+        Returns
+        -------
+        tuple
+            A tuple with the shape.
+
+        """
+        if not self._data:
+            if self._root_file and os.path.isdir(self._root_file):
+                zarray = os.path.abspath(self._root_file + "/.zarray")
+                if os.path.exists(zarray):
+                    try:
+                        with open(zarray) as fz:
+                            meta = json.load(fz)
+                            return tuple(meta["shape"])
+                    except Exception:
+                        pass
+            return tuple()
+
+        return self._data.shape
+
+    def inspect_metadata(self) -> dict:
+        """Return a dictionary with all metadata information from data.
+
+        Returns
+        -------
+        dict
+            A dictionary with metadata information.
+
+        """
         z = zarr.open(self._root_file, mode='r')
 
         info = dict()
@@ -392,9 +601,144 @@ class DatasetZarr(Dataset):
             "block": {"chunks": self._chunks},
         }
 
+    def __repr__(self):
+        """Return a class representation based on internal array.
+
+        """
+        return repr(self._data)
+
+    def __check_op_input(self, in_data):
+        """Return the proper type of data for operation
+
+          >>> Result = DatasetZarr + Numpy; or
+          >>> Result = DatasetZarr + DatasetZarr
+
+        Parameters
+        ----------
+        in_data : Any
+            Input data to be analyzed.
+
+        Returns
+        -------
+        data : Any
+            A data representing the internal array or the class itself.
+
+        """
+        if is_array(in_data) or is_dask_array(in_data):
+            return in_data
+        elif isinstance(in_data, self.__class__):
+            return in_data._data
+        raise TypeError("Data is incompatible with Array")
+
+    def __add__(self, other):
+        """Internal function of adding two array datasets.
+
+        Parameters
+        ----------
+        other : Any
+            A data representing an array or a DatasetArray.
+
+        Returns
+        -------
+        DatasetArry
+            A sum with two arrays.
+
+        """
+        assert self._data is not None, "Data is not loaded yet."
+        data = self.__check_op_input(other)
+        return self._data + data
+
+    def __sub__(self, other):
+        """Internal function of subtracting two array datasets.
+
+        Parameters
+        ----------
+        other : Any
+            A data representing an array or a DatasetArray.
+
+        Returns
+        -------
+        DatasetArry
+            A subtraction of two arrays.
+
+        """
+        assert self._data is not None, "Data is not loaded yet."
+        data = self.__check_op_input(other)
+        return self._data - data
+
+    def __mul__(self, other):
+        """Internal function of multiplication two array datasets.
+
+        Parameters
+        ----------
+        other : Any
+            A data representing an array or a DatasetArray.
+
+        Returns
+        -------
+        DatasetArry
+            A multiplication of two arrays.
+
+        """
+        assert self._data is not None, "Data is not loaded yet."
+        data = self.__check_op_input(other)
+        return self._data * data
+
+    def __div__(self, other):
+        """Internal function of division two array datasets.
+
+        Parameters
+        ----------
+        other : Any
+            A data representing an array or a DatasetArray.
+
+        Returns
+        -------
+        DatasetArry
+            A division of two arrays.
+
+        """
+        assert self._data is not None, "Data is not loaded yet."
+        data = self.__check_op_input(other)
+        return self._data / data
+
+    def __copy_attrs_from_data(self):
+        """Extends metadata to new transformed object (after operations).
+
+        """
+        self._metadata["type"] = type(self._data)
+
+        attrs = dir(self._data)
+        for attr in attrs:
+            if not attr.startswith("__") and callable(getattr(self._data, attr)):
+                if not hasattr(self, attr):
+                    self.__dict__[attr] = getattr(self._data, attr)
+
 
 class DatasetHDF5(Dataset):
-    def __init__(self, name, download=False, root=None, chunks="auto", dataset_path=None):
+    """Class representing an dataset wich is defined as a HDF5 dataset of a
+    defined shape.
+
+    Parameters
+    ----------
+    name : str
+        Symbolic name of the dataset.
+    download : bool
+        If the dataset must be downloaded (the default is False).
+    root : str
+        Root download directory (the default is None).
+    chunks : Any
+        Number of blocks of the array (the default is "auto").
+    dataset_path : str
+        Relative path of the internal HDF5 dataset (the default is None).
+
+    """
+    def __init__(self,
+                 name: str,
+                 download: str = False,
+                 root: str = None,
+                 chunks="auto",
+                 dataset_path: str = None):
 
         Dataset.__init__(self, name, download, root)
 
@@ -413,31 +757,68 @@ class DatasetHDF5(Dataset):
         if dataset_path is None:
             raise Exception("HDF5 requires a path.")
 
-    def _lazy_load(self, xp):
+    def _lazy_load(self, xp, **kwargs):
+        """Lazy load the dataset using an CPU dask container.
+
+        Parameters
+        ----------
+        xp : type
+            Library used to load the file. It must follow numpy library.
+        **kwargs : type
+            Additional keyworkded arguments to the load.
+
+        Returns
+        -------
+        Any
+            The data (or a Future load object, for `_lazy` operations).
+
+        """
         f = h5py.File(self._root_file)
         data = f[self._dataset_path]
         return da.from_array(data, chunks=self._chunks, meta=xp.array(()))
 
-    def _load(self):
+    def _load(self, xp, **kwargs):
+        """Load data using CPU container.
+
+        Parameters
+        ----------
+        xp : Module
+            A module that load data (implement `load` function)
+        **kwargs : type
+            Additional `kwargs` to `xp.load` function.
+
+        """
         f = h5py.File(self._root_file)
         return f[self._dataset_path]
 
     def _lazy_load_cpu(self):
+        """Load data with CPU container + DASK. (It does not load immediattly)
+
+        """
         self._metadata = self._load_meta()
         self._data = self._lazy_load(np)
         return self
 
     def _lazy_load_gpu(self):
+        """Load data with GPU container + DASK. (It does not load immediattly)
+
+        """
         self._metadata = self._load_meta()
         self._data = self._lazy_load(cp)
         return self
 
     def _load_cpu(self):
+        """Load data with CPU container (e.g. numpy).
+
+        """
         self._metadata = self._load_meta()
         self._data = self._load()
         return self
 
     def _load_gpu(self):
+        """Load data with GPU container (e.g. cupy).
+
+        """
         self._metadata = self._load_meta()
         self._data = cp.asarray(self._load())
         return self
@@ -446,13 +827,29 @@ class DatasetHDF5(Dataset):
     def load(self):
         ...
 
-    def _load_meta(self):
+    def _load_meta(self) -> dict:
+        """Load metadata to inspect.
+
+        Returns
+        -------
+        dict
+            A dictionary with metadata information.
+
+        """
         assert self._root_file is not None, "There is no temporary file to inspect"
         assert self._dataset_path is not None, "There is no path to fetch data"
 
         return self.inspect_metadata()
 
-    def inspect_metadata(self):
+    def inspect_metadata(self) -> dict:
+        """Return a dictionary with all metadata information from data.
+
+        Returns
+        -------
+        dict
+            A dictionary with metadata information.
+
+        """
         f = h5py.File(self._root_file)
         data = f[self._dataset_path]
 
@@ -469,7 +866,29 @@ class DatasetHDF5(Dataset):
 
 
 class DatasetXarray(Dataset):
-    def __init__(self, name, download=False, root=None, chunks=None, data_var=None):
+    """Class representing an dataset wich is defined as a Xarray dataset of a
+    defined shape.
+
+    Parameters
+    ----------
+    name : str
+        Symbolic name of the dataset.
+    download : bool
+        If the dataset must be downloaded (the default is False).
+    root : str
+        Root download directory (the default is None).
+    chunks : Any
+        Number of blocks of the array (the default is "auto").
+    data_var : Any
+        Key (or index) of the internal Xarray dataset (the default is None).
+
+    """
+    def __init__(self,
+                 name: str,
+                 download: bool = False,
+                 root: str = None,
+                 chunks=None,
+                 data_var=None):
         Dataset.__init__(self, name, download, root)
 
         self._chunks = chunks
@@ -488,6 +907,9 @@ class DatasetXarray(Dataset):
             self._root = os.path.dirname(root)
 
     def _lazy_load_cpu(self):
+        """Load data with CPU container + DASK. (It does not load immediattly)
+
+        """
         assert self._chunks is not None, "Lazy operations require chunks"
 
         if self._data_var:
@@ -499,6 +921,9 @@ class DatasetXarray(Dataset):
         self._metadata = self._load_meta()
 
     def _lazy_load_gpu(self):
+        """Load data with GPU container + DASK. (It does not load immediattly)
+
+        """
         assert self._chunks is not None, "Lazy operations require chunks"
 
         if self._data_var:
@@ -510,6 +935,9 @@ class DatasetXarray(Dataset):
         self._metadata = self._load_meta()
 
     def _load_cpu(self):
+        """Load data with CPU container (e.g. numpy).
+
+        """
         if self._data_var:
             self._data = xr.open_dataset(self._root_file)
         else:
@@ -518,6 +946,9 @@ class DatasetXarray(Dataset):
         self._metadata = self._load_meta()
 
     def _load_gpu(self):
+        """Load data with GPU container (e.g. cupy).
+
+        """
         if self._data_var:
             self._data = xr.open_dataset(self._root_file).as_cupy()
         else:
@@ -529,12 +960,28 @@ class DatasetXarray(Dataset):
     def load(self):
         ...
 
-    def _load_meta(self):
+    def _load_meta(self) -> dict:
+        """Load metadata to inspect.
+
+        Returns
+        -------
+        dict
+            A dictionary with metadata information.
+
+        """
         assert self._root_file is not None, "There is no temporary file to inspect"
 
         return self.inspect_metadata()
 
-    def inspect_metadata(self):
+    def inspect_metadata(self) -> dict:
+        """Return a dictionary with all metadata information from data.
+
+        Returns
+        -------
+        dict
+            A dictionary with metadata information.
+
+        """
         array_file_size = human_readable_size(
             os.path.getsize(self._root_file), decimal=2
         )
@@ -547,7 +994,10 @@ class DatasetXarray(Dataset):
             "block": {"chunks": self._chunks},
         }
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """Return internal data length.
+
+        """
         if self._data is None:
             raise Exception("Data is not loaded yet")
 
@@ -557,6 +1007,14 @@ class DatasetXarray(Dataset):
         return len(self._data)
 
     def __getitem__(self, idx):
+        """A __getitem__() function based on internal Xarray data.
+
+        Parameters
+        ----------
+        idx : Any
+            Key of the fetched data. It can be an integer or a tuple.
+
+        """
         if self._data is None:
             raise Exception("Data is not loaded yet")
 
@@ -640,7 +1098,7 @@ class DatasetLabeled(Dataset):
         xp : type
             Library used to load the file. It must follow numpy library.
         **kwargs : type
-            Additional keyworkded argumnts to the load.
+            Additional keyworkded arguments to the load.
 
         Returns
         -------
@@ -732,6 +1190,14 @@ class DatasetLabeled(Dataset):
         ...
 
     def __getitem__(self, idx):
+        """A __getitem__() function for data and labeled data together.
+
+        Parameters
+        ----------
+        idx : Any
+            Key of the fetched data. It can be an integer or a tuple.
+
+        """
         if self._data is None:
             raise Exception("Data is not loaded yet")
 
@@ -739,7 +1205,25 @@ class DatasetLabeled(Dataset):
 
 
 class DatasetDataFrame(Dataset):
-    def __init__(self, name, download=True, root=None, chunks="auto"):
+    """Class representing an dataset wich is defined as a dataframe.
+
+    Parameters
+    ----------
+    name : str
+        Symbolic name of the dataset.
+    download : bool
+        If the dataset must be downloaded (the default is False).
+    root : str
+        Root download directory (the default is None).
+    chunks : Any
+        Number of blocks of the array (the default is "auto").
+
+    """
+    def __init__(self,
+                 name: str,
+                 download: bool = True,
+                 root: str = None,
+                 chunks="auto"):
 
         Dataset.__init__(self, name, download, root)
 
@@ -753,14 +1237,30 @@ class DatasetDataFrame(Dataset):
 
             self._root = os.path.dirname(root)
 
-    def _load_meta(self):
+    def _load_meta(self) -> dict:
+        """Load metadata to inspect.
+
+        Returns
+        -------
+        dict
+            A dictionary with metadata information.
+
+        """
         assert self._root_file is not None, (
             "There is no temporary file to inspect"
         )
 
         return self.inspect_metadata()
 
-    def inspect_metadata(self):
+    def inspect_metadata(self) -> dict:
+        """Return a dictionary with all metadata information from data.
+
+        Returns
+        -------
+        dict
+            A dictionary with metadata information.
+
+        """
         df_file_size = human_readable_size(
             os.stat(self._root_file).st_size, decimal=2
         )
@@ -775,21 +1275,33 @@ class DatasetDataFrame(Dataset):
         }
 
     def _lazy_load_gpu(self):
+        """Load data with GPU container + DASK. (It does not load immediattly)
+
+        """
         self._data = dcudf.read_csv(self._root_file)
         self._metadata = self._load_meta()
         return self
 
     def _lazy_load_cpu(self):
+        """Load data with CPU container + DASK. (It does not load immediattly)
+
+        """
         self._data = ddf.read_csv(self._root_file)
         self._metadata = self._load_meta()
         return self
 
     def _load_gpu(self):
+        """Load data with GPU container (e.g. CuDF).
+
+        """
         self._data = cudf.read_csv(self._root_file)
         self._metadata = self._load_meta()
         return self
 
     def _load_cpu(self):
+        """Load data with CPU container (e.g. pandas).
+
+        """
         self._data = pd.read_csv(self._root_file)
         self._metadata = self._load_meta()
         return self
@@ -799,19 +1311,37 @@ class DatasetDataFrame(Dataset):
         ...
 
     @property
-    def shape(self):
+    def shape(self) -> tuple:
+        """Returns the shape of an array.
+
+        Returns
+        -------
+        tuple
+            A tuple with the shape.
+
+        """
         if self._data is None:
             raise Exception("Data is not loaded yet")
 
         return self._data.shape
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """Return internal data length.
+        """
         if self._data is None:
             raise Exception("Data is not loaded yet")
 
         return len(self._data)
 
     def __getitem__(self, idx):
+        """A __getitem__() function based on internal dataframe.
+
+        Parameters
+        ----------
+        idx : Any
+            Key of the fetched data. It can be an integer or a tuple.
+
+        """
         if self._data is None:
             raise Exception("Data is not loaded yet")
 
@@ -819,26 +1349,56 @@ class DatasetDataFrame(Dataset):
 
 
 class DatasetParquet(DatasetDataFrame):
-    def __init__(self, name, download=True, root=None, chunks="auto"):
+    """Class representing an dataset wich is defined as a Parquet.
+
+    Parameters
+    ----------
+    name : str
+        Symbolic name of the dataset.
+    download : bool
+        If the dataset must be downloaded (the default is False).
+    root : str
+        Root download directory (the default is None).
+    chunks : Any
+        Number of blocks of the array (the default is "auto").
+
+    """
+    def __init__(self,
+                 name: str,
+                 download: bool = True,
+                 root: str = None,
+                 chunks="auto"):
 
         DatasetDataFrame.__init__(self, name, download, root, chunks)
 
     def _lazy_load_gpu(self):
+        """Load data with GPU container + DASK. (It does not load immediattly)
+
+        """
         self._data = dcudf.read_parquet(self._root_file)
         self._metadata = self._load_meta()
         return self
 
     def _lazy_load_cpu(self):
+        """Load data with CPU container + DASK. (It does not load immediattly)
+
+        """
         self._data = ddf.read_parquet(self._root_file)
         self._metadata = self._load_meta()
         return self
 
     def _load_gpu(self):
+        """Load data with GPU container (e.g. CuDF).
+
+        """
         self._data = cudf.read_parquet(self._root_file)
         self._metadata = self._load_meta()
         return self
 
     def _load_cpu(self):
+        """Load data with CPU container (e.g. pandas).
+
+        """
         self._data = pd.read_parquet(self._root_file)
         self._metadata = self._load_meta()
         return self
