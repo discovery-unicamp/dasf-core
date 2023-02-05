@@ -283,13 +283,12 @@ class KMeans(ClusterClassifier):
             copy if the given data is not C-contiguous.
             If a sparse matrix is passed, a copy will be made if it&apos;s not in
             CSR format.
-      
+
         y : Ignored
             Not used, present here for API consistency by convention.
-      
+
         sample_weight : Ignored
             Not used, present here for API consistency by convention.
-
 
         Returns
         -------
@@ -310,14 +309,13 @@ class KMeans(ClusterClassifier):
             copy if the given data is not C-contiguous.
             If a sparse matrix is passed, a copy will be made if it&apos;s not in
             CSR format.
-      
+
         y : Ignored
             Not used, present here for API consistency by convention.
-      
+
         sample_weight : array-like of shape (n_samples,), default=None
             The weights for each observation in X. If None, all observations
             are assigned equal weight.
-
 
         Returns
         -------
@@ -340,14 +338,13 @@ class KMeans(ClusterClassifier):
             copy if the given data is not C-contiguous.
             If a sparse matrix is passed, a copy will be made if it&apos;s not in
             CSR format.
-      
+
         y : Ignored
             Not used, present here for API consistency by convention.
-      
+
         sample_weight : array-like of shape (n_samples,), default=None
             The weights for each observation in X. If None, all observations
             are assigned equal weight.
-
 
         Returns
         -------
@@ -368,14 +365,13 @@ class KMeans(ClusterClassifier):
             copy if the given data is not C-contiguous.
             If a sparse matrix is passed, a copy will be made if it&apos;s not in
             CSR format.
-      
+
         y : Ignored
             Not used, present here for API consistency by convention.
-      
+
         sample_weight : array-like of shape (n_samples,), default=None
             The weights for each observation in X. If None, all observations
             are assigned equal weight.
-
 
         Returns
         -------
