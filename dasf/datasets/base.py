@@ -51,7 +51,7 @@ class Dataset(TargeteredTransform):
         Additional keyworkded arguments.
 
     """
-    def __init__(self, 
+    def __init__(self,
                  name: str,
                  download: bool = False,
                  root: str = None,
@@ -63,7 +63,7 @@ class Dataset(TargeteredTransform):
         self._name = name
         self._download = download
         self._root = root
-        self._metadata = dict()
+        self._metadata = {}
         self._data = None
         self._chunks = None
 
@@ -167,19 +167,18 @@ class DatasetArray(Dataset):
         if method == '__call__':
             scalars = []
 
-            for input in inputs:
-                if isinstance(input, Number):
-                    scalars.append(input)
-                elif isinstance(input, self.__class__):
-                    scalars.append(input._data)
+            for inp in inputs:
+                if isinstance(inp, Number):
+                    scalars.append(inp)
+                elif isinstance(inp, self.__class__):
+                    scalars.append(inp._data)
                 else:
                     return NotImplemented
 
             self.__class__(name=self._name, chunks=self._chunks)
             self._data = ufunc(*scalars, **kwargs)
             return self
-        else:
-            return NotImplemented
+        return NotImplemented
 
     def __check_op_input(self, in_data):
         """Return the proper type of data for operation
@@ -200,7 +199,7 @@ class DatasetArray(Dataset):
         """
         if is_array(in_data) or is_dask_array(in_data):
             return in_data
-        elif isinstance(in_data, self.__class__):
+        if isinstance(in_data, self.__class__):
             return in_data._data
         raise TypeError("Data is incompatible with Array")
 
@@ -392,6 +391,9 @@ class DatasetArray(Dataset):
 
     @task_handler
     def load(self):
+        """Placeholder for load function.
+
+        """
         ...
 
     @property
@@ -533,6 +535,9 @@ class DatasetZarr(Dataset):
 
     @task_handler
     def load(self):
+        """Placeholder for load function.
+
+        """
         ...
 
     def _load_meta(self) -> dict:
@@ -583,7 +588,7 @@ class DatasetZarr(Dataset):
         """
         z = zarr.open(self._root_file, mode='r')
 
-        info = dict()
+        info = {}
         for k, v in z.info_items():
             info[k] = v
 
@@ -777,13 +782,13 @@ class DatasetHDF5(Dataset):
         data = f[self._dataset_path]
         return da.from_array(data, chunks=self._chunks, meta=xp.array(()))
 
-    def _load(self, xp, **kwargs):
+    def _load(self, xp=None, **kwargs):
         """Load data using CPU container.
 
         Parameters
         ----------
         xp : Module
-            A module that load data (implement `load` function)
+            A module that load data (implement `load` function) (placeholder).
         **kwargs : type
             Additional `kwargs` to `xp.load` function.
 
@@ -825,6 +830,9 @@ class DatasetHDF5(Dataset):
 
     @task_handler
     def load(self):
+        """Placeholder for load function.
+
+        """
         ...
 
     def _load_meta(self) -> dict:
@@ -958,6 +966,9 @@ class DatasetXarray(Dataset):
 
     @task_handler
     def load(self):
+        """Placeholder for load function.
+
+        """
         ...
 
     def _load_meta(self) -> dict:
@@ -1187,6 +1198,9 @@ class DatasetLabeled(Dataset):
 
     @task_handler
     def load(self):
+        """Placeholder for load function.
+
+        """
         ...
 
     def __getitem__(self, idx):
@@ -1308,6 +1322,9 @@ class DatasetDataFrame(Dataset):
 
     @task_handler
     def load(self):
+        """Placeholder for load function.
+
+        """
         ...
 
     @property
