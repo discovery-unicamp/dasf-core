@@ -5,7 +5,6 @@ import tempfile
 import unittest
 import urllib.parse
 
-from pytest import fixture
 from dask.distributed import Client, LocalCluster
 
 from dasf.pipeline.executors import DaskPipelineExecutor
@@ -16,11 +15,12 @@ class TestDaskExecutor(unittest.TestCase):
         self.scheduler_file = os.path.abspath(f"{tempfile.gettempdir()}/scheduler.json")
 
     def test_dask_executor_remote(self):
-        cluster = LocalCluster()
+        with LocalCluster() as cluster:
+            conn = urllib.parse.urlsplit(cluster.scheduler.address)
 
-        conn = urllib.parse.urlsplit(cluster.scheduler.address)
-
-        dask = DaskPipelineExecutor(address=conn.hostname, port=conn.port)
+            dask = DaskPipelineExecutor(address=conn.hostname, port=conn.port)
+        
+            dask.client.shutdown()
 
     def test_dask_executor_local_no_args(self):
         dask = DaskPipelineExecutor()
@@ -35,20 +35,25 @@ class TestDaskExecutor(unittest.TestCase):
         client = Client.current()
 
         self.assertEqual(hash(dask.client), hash(client))
+        
+        client.shutdown()
 
     def test_dask_executor_scheduler_file(self):
-        client = Client(LocalCluster())
+        with LocalCluster() as cluster:
+            client = Client(cluster)
 
-        client.write_scheduler_file(self.scheduler_file)
+            client.write_scheduler_file(self.scheduler_file)
 
-        client_kwargs = {}
-        client_kwargs["scheduler_file"] = self.scheduler_file
+            client_kwargs = {}
+            client_kwargs["scheduler_file"] = self.scheduler_file
 
-        dask = DaskPipelineExecutor(client_kwargs=client_kwargs)
+            dask = DaskPipelineExecutor(client_kwargs=client_kwargs)
 
-        client = Client.current()
+            client = Client.current()
 
-        self.assertEqual(hash(dask.client), hash(client))
+            self.assertEqual(hash(dask.client), hash(client))
+        
+            client.shutdown()
 
     def tearDown(self):
         if os.path.isfile(self.scheduler_file) or os.path.islink(self.scheduler_file):
