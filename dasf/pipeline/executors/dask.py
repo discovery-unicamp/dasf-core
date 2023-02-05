@@ -48,17 +48,19 @@ class DaskPipelineExecutor(Executor):
         self.address = address
         self.port = port
 
-        # If address is not set, consider local
-        local = local or address is None
-
         if not cluster_kwargs:
             cluster_kwargs = dict()
 
         if not client_kwargs:
             client_kwargs = dict()
 
+        # If address is not set, consider local
+        local = local or (address is None and "scheduler_file" not in client_kwargs)
+
         if address:
-            self.client = Client(f"{address}:{port}")
+            self.client = Client(address=f"{address}:{port}")
+        elif "scheduler_file" in client_kwargs:
+            self.client = Client(scheduler_file=client_kwargs["scheduler_file"])
         elif local:
             if use_gpu:
                 self.client = Client(
