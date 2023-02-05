@@ -213,63 +213,63 @@
 
 
 <div class="viewcode-block" id="is_array"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_array">[docs]</a><span class="k">def</span> <span class="nf">is_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a generic array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">get_args</span><span class="p">(</span><span class="n">Array</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="is_dataframe"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_dataframe">[docs]</a><span class="k">def</span> <span class="nf">is_dataframe</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a generic dataframe.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">get_args</span><span class="p">(</span><span class="n">DataFrame</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="is_cpu_array"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_cpu_array">[docs]</a><span class="k">def</span> <span class="nf">is_cpu_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a CPU arrau like Numpy.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">get_args</span><span class="p">(</span><span class="n">ArrayCPU</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="is_cpu_dataframe"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_cpu_dataframe">[docs]</a><span class="k">def</span> <span class="nf">is_cpu_dataframe</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a CPU dataframe like Pandas.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DataFrameCPU</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_cpu_datatype"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_cpu_datatype">[docs]</a><span class="k">def</span> <span class="nf">is_cpu_datatype</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a CPU data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">get_args</span><span class="p">(</span><span class="n">DataCPU</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="is_gpu_array"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_gpu_array">[docs]</a><span class="k">def</span> <span class="nf">is_gpu_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a GPU array like Cupy.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">is_gpu_supported</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ArrayGPU</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_gpu_dataframe"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_gpu_dataframe">[docs]</a><span class="k">def</span> <span class="nf">is_gpu_dataframe</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a GPU dataframe like Cudf.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">is_gpu_supported</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DataFrameGPU</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_gpu_datatype"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_gpu_datatype">[docs]</a><span class="k">def</span> <span class="nf">is_gpu_datatype</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a GPU data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">is_gpu_supported</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">get_args</span><span class="p">(</span><span class="n">DataGPU</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="is_dask_cpu_array"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_dask_cpu_array">[docs]</a><span class="k">def</span> <span class="nf">is_dask_cpu_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a Dask array with CPU internal array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DaskArray</span><span class="p">):</span>
@@ -280,7 +280,7 @@
 
 
 <div class="viewcode-block" id="is_dask_cpu_dataframe"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_dask_cpu_dataframe">[docs]</a><span class="k">def</span> <span class="nf">is_dask_cpu_dataframe</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a Dask dataframe with CPU internal dataframe.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -299,7 +299,7 @@
 
 
 <div class="viewcode-block" id="is_dask_gpu_array"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_dask_gpu_array">[docs]</a><span class="k">def</span> <span class="nf">is_dask_gpu_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a Dask array with GPU internal array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_gpu_supported</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DaskArray</span><span class="p">):</span>
@@ -310,7 +310,7 @@
 
 
 <div class="viewcode-block" id="is_dask_gpu_dataframe"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_dask_gpu_dataframe">[docs]</a><span class="k">def</span> <span class="nf">is_dask_gpu_dataframe</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a Dask dataframe with GPU internal dataframe.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_gpu_supported</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">get_args</span><span class="p">(</span><span class="n">DaskDataFrame</span><span class="p">)):</span>
@@ -321,14 +321,14 @@
 
 
 <div class="viewcode-block" id="is_dask_array"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_dask_array">[docs]</a><span class="k">def</span> <span class="nf">is_dask_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a Dask array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DaskArray</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_dask_dataframe"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_dask_dataframe">[docs]</a><span class="k">def</span> <span class="nf">is_dask_dataframe</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a Dask dataframe.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
@@ -337,14 +337,14 @@
 
 
 <div class="viewcode-block" id="is_dask"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_dask">[docs]</a><span class="k">def</span> <span class="nf">is_dask</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a Dask data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">get_args</span><span class="p">(</span><span class="n">DataDask</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="is_xarray_array"><a class="viewcode-back" href="../../../autoapi/dasf/utils/types/index.html#dasf.utils.types.is_xarray_array">[docs]</a><span class="k">def</span> <span class="nf">is_xarray_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if data is a Xarray.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">XDataArray</span><span class="p">)</span></div>

@@ -178,7 +178,7 @@
 
 
 <div class="viewcode-block" id="KMeans"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans">[docs]</a><span class="k">class</span> <span class="nc">KMeans</span><span class="p">(</span><span class="n">ClusterClassifier</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    K-Means clustering.</span>
 
 <span class="sd">    Read more in the :ref:`User Guide &lt;k_means&gt;`.</span>
@@ -435,7 +435,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_mgpu</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="KMeans._lazy_fit_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._lazy_fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute Dask k-means clustering.</span>
 
 <span class="sd">        Parameters</span>
@@ -446,13 +446,12 @@
 <span class="sd">            copy if the given data is not C-contiguous.</span>
 <span class="sd">            If a sparse matrix is passed, a copy will be made if it&amp;apos;s not in</span>
 <span class="sd">            CSR format.</span>
-<span class="sd">      </span>
+
 <span class="sd">        y : Ignored</span>
 <span class="sd">            Not used, present here for API consistency by convention.</span>
-<span class="sd">      </span>
+
 <span class="sd">        sample_weight : Ignored</span>
 <span class="sd">            Not used, present here for API consistency by convention.</span>
-
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -462,7 +461,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_mcpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._lazy_fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._lazy_fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute Dask CuML k-means clustering.</span>
 
 <span class="sd">        Parameters</span>
@@ -473,14 +472,13 @@
 <span class="sd">            copy if the given data is not C-contiguous.</span>
 <span class="sd">            If a sparse matrix is passed, a copy will be made if it&amp;apos;s not in</span>
 <span class="sd">            CSR format.</span>
-<span class="sd">      </span>
+
 <span class="sd">        y : Ignored</span>
 <span class="sd">            Not used, present here for API consistency by convention.</span>
-<span class="sd">      </span>
+
 <span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
 <span class="sd">            The weights for each observation in X. If None, all observations</span>
 <span class="sd">            are assigned equal weight.</span>
-
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -492,7 +490,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_mgpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._fit_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute Scikit Learn k-means clustering.</span>
 
 <span class="sd">        Parameters</span>
@@ -503,14 +501,13 @@
 <span class="sd">            copy if the given data is not C-contiguous.</span>
 <span class="sd">            If a sparse matrix is passed, a copy will be made if it&amp;apos;s not in</span>
 <span class="sd">            CSR format.</span>
-<span class="sd">      </span>
+
 <span class="sd">        y : Ignored</span>
 <span class="sd">            Not used, present here for API consistency by convention.</span>
-<span class="sd">      </span>
+
 <span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
 <span class="sd">            The weights for each observation in X. If None, all observations</span>
 <span class="sd">            are assigned equal weight.</span>
-
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -520,7 +517,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute CuML k-means clustering.</span>
 
 <span class="sd">        Parameters</span>
@@ -531,14 +528,13 @@
 <span class="sd">            copy if the given data is not C-contiguous.</span>
 <span class="sd">            If a sparse matrix is passed, a copy will be made if it&amp;apos;s not in</span>
 <span class="sd">            CSR format.</span>
-<span class="sd">      </span>
+
 <span class="sd">        y : Ignored</span>
 <span class="sd">            Not used, present here for API consistency by convention.</span>
-<span class="sd">      </span>
+
 <span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
 <span class="sd">            The weights for each observation in X. If None, all observations</span>
 <span class="sd">            are assigned equal weight.</span>
-
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -548,7 +544,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._lazy_fit_predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._lazy_fit_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute cluster centers and predict cluster index for each sample using</span>
 <span class="sd">        Dask ML.</span>
 
@@ -575,7 +571,7 @@
         <span class="k">return</span> <span class="n">local_kmeans</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._lazy_fit_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._lazy_fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute cluster centers and predict cluster index for each sample using</span>
 <span class="sd">        Dask CuML.</span>
 
@@ -604,7 +600,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_mgpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._fit_predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._fit_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute cluster centers and predict cluster index for each sample using</span>
 <span class="sd">        Scikit Learn.</span>
 
@@ -630,7 +626,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_cpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._fit_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute cluster centers and predict cluster index for each sample using</span>
 <span class="sd">        CuML.</span>
 
@@ -657,7 +653,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_gpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._lazy_predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._lazy_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predict the closest cluster each sample in X belongs to using Dask ML.</span>
 
 <span class="sd">        In the vector quantization literature, `cluster_centers_` is called</span>
@@ -680,7 +676,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_mcpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._lazy_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._lazy_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predict the closest cluster each sample in X belongs to using Dask</span>
 <span class="sd">        CuML.</span>
 
@@ -707,7 +703,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_mgpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predict the closest cluster each sample in X belongs to using Scikit</span>
 <span class="sd">        Learn.</span>
 
@@ -732,7 +728,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_cpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predict the closest cluster each sample in X belongs to using CuML.</span>
 
 <span class="sd">        In the vector quantization literature, `cluster_centers_` is called</span>
@@ -756,7 +752,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_gpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._lazy_predict2_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._lazy_predict2_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_predict2_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A block predict using Scikit Learn variant but for Dask.</span>
 
 <span class="sd">        In the vector quantization literature, `cluster_centers_` is called</span>
@@ -785,7 +781,7 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="KMeans._lazy_predict2_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._lazy_predict2_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_predict2_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A block predict using CuML variant but for Dask.</span>
 
 <span class="sd">        In the vector quantization literature, `cluster_centers_` is called</span>

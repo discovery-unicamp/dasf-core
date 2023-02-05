@@ -169,7 +169,7 @@
 
 
 <div class="viewcode-block" id="DaskClusterEnvironment"><a class="viewcode-back" href="../../../../../autoapi/dasf/ml/dl/clusters/index.html#dasf.ml.dl.clusters.dask.DaskClusterEnvironment">[docs]</a><span class="k">class</span> <span class="nc">DaskClusterEnvironment</span><span class="p">(</span><span class="n">ClusterEnvironment</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a Dask Cluster environment for workers</span>
 
 <span class="sd">    metadata -- dictionary containing all data related to workers.</span>
@@ -197,42 +197,42 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">creates_processes_externally</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if the cluster is managed (you don&#39;t launch processes</span>
+        <span class="sd">&quot;&quot;&quot;Return True if the cluster is managed (you don&#39;t launch processes</span>
 <span class="sd">        yourself).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">main_address</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return master worker address.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return master worker address.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">main_port</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return master worker port.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return master worker port.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_master_port</span>
 
 <div class="viewcode-block" id="DaskClusterEnvironment.creates_children"><a class="viewcode-back" href="../../../../../autoapi/dasf/ml/dl/clusters/index.html#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.creates_children">[docs]</a>    <span class="k">def</span> <span class="nf">creates_children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fork children when generate a cluster.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Fork children when generate a cluster.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="DaskClusterEnvironment.world_size"><a class="viewcode-back" href="../../../../../autoapi/dasf/ml/dl/clusters/index.html#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.world_size">[docs]</a>    <span class="k">def</span> <span class="nf">world_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return worker world size.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return worker world size.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;world_size&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="DaskClusterEnvironment.global_rank"><a class="viewcode-back" href="../../../../../autoapi/dasf/ml/dl/clusters/index.html#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.global_rank">[docs]</a>    <span class="k">def</span> <span class="nf">global_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return worker global rank.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return worker global rank.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;global_rank&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="DaskClusterEnvironment.local_rank"><a class="viewcode-back" href="../../../../../autoapi/dasf/ml/dl/clusters/index.html#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.local_rank">[docs]</a>    <span class="k">def</span> <span class="nf">local_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return worker local rank.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return worker local rank.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;local_rank&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;local_rank&quot;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="DaskClusterEnvironment.node_rank"><a class="viewcode-back" href="../../../../../autoapi/dasf/ml/dl/clusters/index.html#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.node_rank">[docs]</a>    <span class="k">def</span> <span class="nf">node_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return worker node rank (which is similar to global rank).&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return worker node rank (which is similar to global rank).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;global_rank&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="DaskClusterEnvironment.set_world_size"><a class="viewcode-back" href="../../../../../autoapi/dasf/ml/dl/clusters/index.html#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.set_world_size">[docs]</a>    <span class="k">def</span> <span class="nf">set_world_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

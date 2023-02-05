@@ -164,6 +164,7 @@
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">zarr</span>
 <span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">import</span> <span class="nn">dask</span>
@@ -196,7 +197,24 @@
 
 
 <div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="n">TargeteredTransform</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+    <span class="sd">&quot;&quot;&quot;Class representing a generic dataset based on a TargeteredTransform</span>
+<span class="sd">    object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Symbolic name of the dataset.</span>
+<span class="sd">    download : bool</span>
+<span class="sd">        If the dataset must be downloaded (the default is False).</span>
+<span class="sd">    root : str</span>
+<span class="sd">        Root download directory (the default is None).</span>
+<span class="sd">    *args : type</span>
+<span class="sd">        Additional arguments without keys.</span>
+<span class="sd">    **kwargs : type</span>
+<span class="sd">        Additional keyworkded arguments.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -208,7 +226,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_download</span> <span class="o">=</span> <span class="n">download</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="n">root</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -217,6 +235,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__set_dataset_cache_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate cached directory in $HOME to store dataset(s).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;/.cache/dasf/datasets/&quot;</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -224,16 +245,30 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span>
 
 <div class="viewcode-block" id="Dataset.download"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.Dataset.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Skeleton of the download method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_download</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Function download() needs to be defined&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Dataset.__len__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.Dataset.__len__">[docs]</a>    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return internal data length.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data is not loaded yet&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Dataset.__getitem__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.Dataset.__getitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generic __getitem__() function based on internal data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : Any</span>
+<span class="sd">            Key of the fetched data. It can be an integer or a tuple.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data is not loaded yet&quot;</span><span class="p">)</span>
 
@@ -241,7 +276,7 @@
 
 
 <div class="viewcode-block" id="DatasetArray"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray">[docs]</a><span class="k">class</span> <span class="nc">DatasetArray</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representing an dataset wich is defined as an array of a defined</span>
+    <span class="sd">&quot;&quot;&quot;Class representing an dataset wich is defined as an array of a defined</span>
 <span class="sd">    shape.</span>
 
 <span class="sd">    Parameters</span>
@@ -281,6 +316,9 @@
         <span class="k">return</span> <span class="n">other</span></div>
 
 <div class="viewcode-block" id="DatasetArray.__repr__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a class representation based on internal array.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetArray.__array__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray.__array__">[docs]</a>    <span class="k">def</span> <span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -292,48 +330,118 @@
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;__call__&#39;</span><span class="p">:</span>
             <span class="n">scalars</span> <span class="o">=</span> <span class="p">[]</span>
 
-            <span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">Number</span><span class="p">):</span>
-                    <span class="n">scalars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-                    <span class="n">scalars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">Number</span><span class="p">):</span>
+                    <span class="n">scalars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+                    <span class="n">scalars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">NotImplemented</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">ufunc</span><span class="p">(</span><span class="o">*</span><span class="n">scalars</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span></div>
+        <span class="k">return</span> <span class="bp">NotImplemented</span></div>
 
     <span class="k">def</span> <span class="nf">__check_op_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the proper type of data for operation</span>
+
+<span class="sd">          &gt;&gt;&gt; Result = DatasetArray + Numpy; or</span>
+<span class="sd">          &gt;&gt;&gt; Result = DatasetArray + DatasetArray</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        in_data : Any</span>
+<span class="sd">            Input data to be analyzed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        data : Any</span>
+<span class="sd">            A data representing the internal array or the class itself.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">is_array</span><span class="p">(</span><span class="n">in_data</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_dask_array</span><span class="p">(</span><span class="n">in_data</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">in_data</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">in_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">in_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">in_data</span><span class="o">.</span><span class="n">_data</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Data is incompatible with Array&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DatasetArray.__add__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray.__add__">[docs]</a>    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal function of adding two array datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Any</span>
+<span class="sd">            A data representing an array or a DatasetArray.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DatasetArry</span>
+<span class="sd">            A sum with two arrays.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Data is not loaded yet.&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_op_input</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">+</span> <span class="n">data</span></div>
 
 <div class="viewcode-block" id="DatasetArray.__sub__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray.__sub__">[docs]</a>    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal function of subtracting two array datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Any</span>
+<span class="sd">            A data representing an array or a DatasetArray.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DatasetArry</span>
+<span class="sd">            A subtraction of two arrays.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Data is not loaded yet.&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_op_input</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">-</span> <span class="n">data</span></div>
 
 <div class="viewcode-block" id="DatasetArray.__mul__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray.__mul__">[docs]</a>    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal function of multiplication two array datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Any</span>
+<span class="sd">            A data representing an array or a DatasetArray.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DatasetArry</span>
+<span class="sd">            A multiplication of two arrays.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Data is not loaded yet.&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_op_input</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">*</span> <span class="n">data</span></div>
 
 <div class="viewcode-block" id="DatasetArray.__div__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray.__div__">[docs]</a>    <span class="k">def</span> <span class="nf">__div__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal function of division two array datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Any</span>
+<span class="sd">            A data representing an array or a DatasetArray.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DatasetArry</span>
+<span class="sd">            A division of two arrays.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Data is not loaded yet.&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_op_input</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">/</span> <span class="n">data</span></div>
 
     <span class="k">def</span> <span class="nf">__copy_attrs_from_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extends metadata to new transformed object (after operations).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
 
         <span class="n">attrs</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
@@ -343,7 +451,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__npy_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read an array header from a filelike object.</span>
+        <span class="sd">&quot;&quot;&quot;Read an array header from a filelike object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fobj</span><span class="p">:</span>
@@ -353,14 +461,14 @@
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">fobj</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DatasetArray._lazy_load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray._lazy_load">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lazy load the dataset using an CPU dask container.</span>
+        <span class="sd">&quot;&quot;&quot;Lazy load the dataset using an CPU dask container.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        xp : type</span>
 <span class="sd">            Library used to load the file. It must follow numpy library.</span>
 <span class="sd">        **kwargs : type</span>
-<span class="sd">            Additional keyworkded argumnts to the load.</span>
+<span class="sd">            Additional keyworkded arguments to the load.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -379,7 +487,7 @@
         <span class="k">return</span> <span class="n">local_data</span></div>
 
 <div class="viewcode-block" id="DatasetArray._load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray._load">[docs]</a>    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data using CPU container.</span>
+        <span class="sd">&quot;&quot;&quot;Load data using CPU container.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -393,7 +501,7 @@
         <span class="k">return</span> <span class="n">xp</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetArray._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load metadata to inspect.</span>
+        <span class="sd">&quot;&quot;&quot;Load metadata to inspect.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -409,7 +517,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inspect_metadata</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DatasetArray._lazy_load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray._lazy_load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data with GPU container + DASK. (It does not load immediattly)</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container + DASK. (It does not load immediattly)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
@@ -418,7 +526,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetArray._lazy_load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray._lazy_load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data with CPU container + DASK. (It does not load immediattly)</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container + DASK. (It does not load immediattly)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
@@ -427,7 +535,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetArray._load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray._load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data with GPU container (e.g. cupy).</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container (e.g. cupy).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
@@ -436,7 +544,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetArray._load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray._load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data with CPU container (e.g. numpy).</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container (e.g. numpy).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
@@ -446,11 +554,14 @@
 
 <div class="viewcode-block" id="DatasetArray.load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray.load">[docs]</a>    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Placeholder for load function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the shape of an array.</span>
+        <span class="sd">&quot;&quot;&quot;Returns the shape of an array.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -460,8 +571,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__npy_header</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
-<div class="viewcode-block" id="DatasetArray.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a dictionary with all metadata information from data.</span>
+<div class="viewcode-block" id="DatasetArray.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetArray.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return a dictionary with all metadata information from data.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -485,7 +596,26 @@
 
 
 <div class="viewcode-block" id="DatasetZarr"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr">[docs]</a><span class="k">class</span> <span class="nc">DatasetZarr</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing an dataset wich is defined as a Zarr array of a</span>
+<span class="sd">    defined shape.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Symbolic name of the dataset.</span>
+<span class="sd">    download : bool</span>
+<span class="sd">        If the dataset must be downloaded (the default is False).</span>
+<span class="sd">    root : str</span>
+<span class="sd">        Root download directory (the default is None).</span>
+<span class="sd">    chunks : Any</span>
+<span class="sd">        Number of blocks of the array (the default is &quot;auto&quot;).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">chunks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="n">Dataset</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
 
@@ -499,45 +629,129 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DatasetZarr._lazy_load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._lazy_load">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetZarr._lazy_load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._lazy_load">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Lazy load the dataset using an CPU dask container.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xp : type</span>
+<span class="sd">            Library used to load the file. It must follow numpy library.</span>
+<span class="sd">        **kwargs : type</span>
+<span class="sd">            Additional keyworkded arguments to the load.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any</span>
+<span class="sd">            The data (or a Future load object, for `_lazy` operations).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">da</span><span class="o">.</span><span class="n">from_zarr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="p">)</span><span class="o">.</span><span class="n">map_blocks</span><span class="p">(</span><span class="n">xp</span><span class="o">.</span><span class="n">asarray</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DatasetZarr._load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._load">[docs]</a>    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="DatasetZarr._load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._load">[docs]</a>    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data using CPU container.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xp : Module</span>
+<span class="sd">            A module that load data (implement `load` function)</span>
+<span class="sd">        **kwargs : type</span>
+<span class="sd">            Additional `kwargs` to `xp.load` function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">meta_array</span><span class="o">=</span><span class="n">xp</span><span class="o">.</span><span class="n">empty</span><span class="p">(()))</span></div>
 
 <div class="viewcode-block" id="DatasetZarr._lazy_load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._lazy_load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_load</span><span class="p">(</span><span class="n">np</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__copy_attrs_from_data</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetZarr._lazy_load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._lazy_load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_load</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__copy_attrs_from_data</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetZarr._load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container (e.g. numpy).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">(</span><span class="n">np</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__copy_attrs_from_data</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetZarr._load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container (e.g. cupy).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__copy_attrs_from_data</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetZarr.load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr.load">[docs]</a>    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Placeholder for load function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-<div class="viewcode-block" id="DatasetZarr._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetZarr._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load metadata to inspect.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary with metadata information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;There is no temporary file to inspect&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inspect_metadata</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="DatasetZarr.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the shape of an array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            A tuple with the shape.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">):</span>
+                <span class="n">zarray</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span> <span class="o">+</span> <span class="s2">&quot;/.zarray&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">zarray</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">zarray</span><span class="p">)</span> <span class="k">as</span> <span class="n">fz</span><span class="p">:</span>
+                            <span class="n">meta</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fz</span><span class="p">)</span>
+                            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">])</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="k">pass</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">shape</span>
+
+<div class="viewcode-block" id="DatasetZarr.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return a dictionary with all metadata information from data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary with metadata information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">z</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
 
-        <span class="n">info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">z</span><span class="o">.</span><span class="n">info_items</span><span class="p">():</span>
             <span class="n">info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
@@ -553,11 +767,146 @@
             <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">,</span>
             <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;Shape&quot;</span><span class="p">],</span>
             <span class="s2">&quot;block&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;chunks&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="p">},</span>
-        <span class="p">}</span></div></div>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="DatasetZarr.__repr__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a class representation based on internal array.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__check_op_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the proper type of data for operation</span>
+
+<span class="sd">          &gt;&gt;&gt; Result = DatasetZarr + Numpy; or</span>
+<span class="sd">          &gt;&gt;&gt; Result = DatasetZarr + DatasetZarr</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        in_data : Any</span>
+<span class="sd">            Input data to be analyzed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        data : Any</span>
+<span class="sd">            A data representing the internal array or the class itself.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">is_array</span><span class="p">(</span><span class="n">in_data</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_dask_array</span><span class="p">(</span><span class="n">in_data</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">in_data</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">in_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">in_data</span><span class="o">.</span><span class="n">_data</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Data is incompatible with Array&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DatasetZarr.__add__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr.__add__">[docs]</a>    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal function of adding two array datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Any</span>
+<span class="sd">            A data representing an array or a DatasetArray.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DatasetArry</span>
+<span class="sd">            A sum with two arrays.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Data is not loaded yet.&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_op_input</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">+</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="DatasetZarr.__sub__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr.__sub__">[docs]</a>    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal function of subtracting two array datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Any</span>
+<span class="sd">            A data representing an array or a DatasetArray.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DatasetArry</span>
+<span class="sd">            A subtraction of two arrays.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Data is not loaded yet.&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_op_input</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">-</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="DatasetZarr.__mul__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr.__mul__">[docs]</a>    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal function of multiplication two array datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Any</span>
+<span class="sd">            A data representing an array or a DatasetArray.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DatasetArry</span>
+<span class="sd">            A multiplication of two arrays.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Data is not loaded yet.&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_op_input</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">*</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="DatasetZarr.__div__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetZarr.__div__">[docs]</a>    <span class="k">def</span> <span class="nf">__div__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Internal function of division two array datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : Any</span>
+<span class="sd">            A data representing an array or a DatasetArray.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DatasetArry</span>
+<span class="sd">            A division of two arrays.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Data is not loaded yet.&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_op_input</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">/</span> <span class="n">data</span></div>
+
+    <span class="k">def</span> <span class="nf">__copy_attrs_from_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extends metadata to new transformed object (after operations).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+
+        <span class="n">attrs</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">attr</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DatasetHDF5"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5">[docs]</a><span class="k">class</span> <span class="nc">DatasetHDF5</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">dataset_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing an dataset wich is defined as a HDF5 dataset of a</span>
+<span class="sd">    defined shape.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Symbolic name of the dataset.</span>
+<span class="sd">    download : bool</span>
+<span class="sd">        If the dataset must be downloaded (the default is False).</span>
+<span class="sd">    root : str</span>
+<span class="sd">        Root download directory (the default is None).</span>
+<span class="sd">    chunks : Any</span>
+<span class="sd">        Number of blocks of the array (the default is &quot;auto&quot;).</span>
+<span class="sd">    dataset_path : str</span>
+<span class="sd">        Relative path of the internal HDF5 dataset (the default is None).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">download</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                 <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
         <span class="n">Dataset</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
 
@@ -576,46 +925,102 @@
         <span class="k">if</span> <span class="n">dataset_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;HDF5 requires a path.&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DatasetHDF5._lazy_load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._lazy_load">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetHDF5._lazy_load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._lazy_load">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Lazy load the dataset using an CPU dask container.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xp : type</span>
+<span class="sd">            Library used to load the file. It must follow numpy library.</span>
+<span class="sd">        **kwargs : type</span>
+<span class="sd">            Additional keyworkded arguments to the load.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any</span>
+<span class="sd">            The data (or a Future load object, for `_lazy` operations).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_path</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">xp</span><span class="o">.</span><span class="n">array</span><span class="p">(()))</span></div>
 
-<div class="viewcode-block" id="DatasetHDF5._load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._load">[docs]</a>    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetHDF5._load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._load">[docs]</a>    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data using CPU container.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xp : Module</span>
+<span class="sd">            A module that load data (implement `load` function) (placeholder).</span>
+<span class="sd">        **kwargs : type</span>
+<span class="sd">            Additional `kwargs` to `xp.load` function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_path</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="DatasetHDF5._lazy_load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._lazy_load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_load</span><span class="p">(</span><span class="n">np</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetHDF5._lazy_load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._lazy_load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_load</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetHDF5._load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container (e.g. numpy).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetHDF5._load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container (e.g. cupy).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetHDF5.load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5.load">[docs]</a>    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Placeholder for load function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-<div class="viewcode-block" id="DatasetHDF5._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetHDF5._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load metadata to inspect.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary with metadata information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;There is no temporary file to inspect&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;There is no path to fetch data&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inspect_metadata</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="DatasetHDF5.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetHDF5.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetHDF5.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return a dictionary with all metadata information from data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary with metadata information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_path</span><span class="p">]</span>
 
@@ -632,7 +1037,29 @@
 
 
 <div class="viewcode-block" id="DatasetXarray"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray">[docs]</a><span class="k">class</span> <span class="nc">DatasetXarray</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_var</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing an dataset wich is defined as a Xarray dataset of a</span>
+<span class="sd">    defined shape.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Symbolic name of the dataset.</span>
+<span class="sd">    download : bool</span>
+<span class="sd">        If the dataset must be downloaded (the default is False).</span>
+<span class="sd">    root : str</span>
+<span class="sd">        Root download directory (the default is None).</span>
+<span class="sd">    chunks : Any</span>
+<span class="sd">        Number of blocks of the array (the default is &quot;auto&quot;).</span>
+<span class="sd">    data_var : Any</span>
+<span class="sd">        Key (or index) of the internal Xarray dataset (the default is None).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">chunks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">data_var</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">Dataset</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span> <span class="o">=</span> <span class="n">chunks</span>
@@ -651,6 +1078,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DatasetXarray._lazy_load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray._lazy_load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Lazy operations require chunks&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_var</span><span class="p">:</span>
@@ -662,6 +1092,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DatasetXarray._lazy_load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray._lazy_load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Lazy operations require chunks&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_var</span><span class="p">:</span>
@@ -673,6 +1106,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DatasetXarray._load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray._load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container (e.g. numpy).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_var</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -681,6 +1117,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DatasetXarray._load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray._load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container (e.g. cupy).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_var</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span><span class="o">.</span><span class="n">as_cupy</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -690,14 +1129,33 @@
 
 <div class="viewcode-block" id="DatasetXarray.load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray.load">[docs]</a>    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Placeholder for load function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-<div class="viewcode-block" id="DatasetXarray._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetXarray._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load metadata to inspect.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary with metadata information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;There is no temporary file to inspect&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inspect_metadata</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="DatasetXarray.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetXarray.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return a dictionary with all metadata information from data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary with metadata information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">array_file_size</span> <span class="o">=</span> <span class="n">human_readable_size</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">),</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">2</span>
         <span class="p">)</span>
@@ -710,7 +1168,10 @@
             <span class="s2">&quot;block&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;chunks&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="p">},</span>
         <span class="p">}</span></div>
 
-<div class="viewcode-block" id="DatasetXarray.__len__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray.__len__">[docs]</a>    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetXarray.__len__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray.__len__">[docs]</a>    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return internal data length.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data is not loaded yet&quot;</span><span class="p">)</span>
 
@@ -720,6 +1181,14 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetXarray.__getitem__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetXarray.__getitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A __getitem__() function based on internal Xarray data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : Any</span>
+<span class="sd">            Key of the fetched data. It can be an integer or a tuple.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data is not loaded yet&quot;</span><span class="p">)</span>
 
@@ -731,7 +1200,7 @@
 
 
 <div class="viewcode-block" id="DatasetLabeled"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled">[docs]</a><span class="k">class</span> <span class="nc">DatasetLabeled</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a labeled dataset. Each item is a 2-element tuple,</span>
+    <span class="sd">&quot;&quot;&quot;A class representing a labeled dataset. Each item is a 2-element tuple,</span>
 <span class="sd">    where the first element is a array of data and the second element is the</span>
 <span class="sd">    respective label. The items can be accessed from `dataset[x]`.</span>
 
@@ -763,7 +1232,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span> <span class="o">=</span> <span class="n">chunks</span>
 
 <div class="viewcode-block" id="DatasetLabeled.download"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Download the dataset.</span>
+        <span class="sd">&quot;&quot;&quot;Download the dataset.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_train&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_train</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">):</span>
@@ -773,7 +1242,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_val</span><span class="o">.</span><span class="n">download</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DatasetLabeled.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a dictionary with all metadata information from data</span>
+        <span class="sd">&quot;&quot;&quot;Return a dictionary with all metadata information from data</span>
 <span class="sd">        (train and labels).</span>
 
 <span class="sd">        Returns</span>
@@ -796,14 +1265,14 @@
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;train&quot;</span><span class="p">:</span> <span class="n">metadata_train</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">metadata_val</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="DatasetLabeled._lazy_load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled._lazy_load">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lazy load the dataset using an CPU dask container.</span>
+        <span class="sd">&quot;&quot;&quot;Lazy load the dataset using an CPU dask container.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        xp : type</span>
 <span class="sd">            Library used to load the file. It must follow numpy library.</span>
 <span class="sd">        **kwargs : type</span>
-<span class="sd">            Additional keyworkded argumnts to the load.</span>
+<span class="sd">            Additional keyworkded arguments to the load.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -817,7 +1286,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">local_data</span><span class="p">,</span> <span class="n">local_labels</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetLabeled._load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled._load">[docs]</a>    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data using CPU container.</span>
+        <span class="sd">&quot;&quot;&quot;Load data using CPU container.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -839,7 +1308,7 @@
 
 <div class="viewcode-block" id="DatasetLabeled._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load metadata to inspect.</span>
+        <span class="sd">&quot;&quot;&quot;Load metadata to inspect.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -863,28 +1332,28 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inspect_metadata</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DatasetLabeled._lazy_load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled._lazy_load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data with GPU container + DASK. (It does not load immediattly)</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container + DASK. (It does not load immediattly)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_load</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetLabeled._lazy_load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled._lazy_load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data with CPU container + DASK. (It does not load immediattly)</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container + DASK. (It does not load immediattly)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_load</span><span class="p">(</span><span class="n">np</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetLabeled._load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled._load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data with GPU container (e.g. cupy).</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container (e.g. cupy).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetLabeled._load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled._load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data with CPU container (e.g. numpy).</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container (e.g. numpy).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
@@ -892,9 +1361,20 @@
 
 <div class="viewcode-block" id="DatasetLabeled.load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled.load">[docs]</a>    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Placeholder for load function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
 <div class="viewcode-block" id="DatasetLabeled.__getitem__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetLabeled.__getitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A __getitem__() function for data and labeled data together.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : Any</span>
+<span class="sd">            Key of the fetched data. It can be an integer or a tuple.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data is not loaded yet&quot;</span><span class="p">)</span>
 
@@ -902,7 +1382,25 @@
 
 
 <div class="viewcode-block" id="DatasetDataFrame"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame">[docs]</a><span class="k">class</span> <span class="nc">DatasetDataFrame</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing an dataset wich is defined as a dataframe.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Symbolic name of the dataset.</span>
+<span class="sd">    download : bool</span>
+<span class="sd">        If the dataset must be downloaded (the default is False).</span>
+<span class="sd">    root : str</span>
+<span class="sd">        Root download directory (the default is None).</span>
+<span class="sd">    chunks : Any</span>
+<span class="sd">        Number of blocks of the array (the default is &quot;auto&quot;).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
 
         <span class="n">Dataset</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
 
@@ -916,14 +1414,30 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DatasetDataFrame._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetDataFrame._load_meta"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame._load_meta">[docs]</a>    <span class="k">def</span> <span class="nf">_load_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load metadata to inspect.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary with metadata information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
             <span class="s2">&quot;There is no temporary file to inspect&quot;</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inspect_metadata</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="DatasetDataFrame.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetDataFrame.inspect_metadata"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame.inspect_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">inspect_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return a dictionary with all metadata information from data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary with metadata information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">df_file_size</span> <span class="o">=</span> <span class="n">human_readable_size</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">2</span>
         <span class="p">)</span>
@@ -938,43 +1452,76 @@
         <span class="p">}</span></div>
 
 <div class="viewcode-block" id="DatasetDataFrame._lazy_load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame._lazy_load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">dcudf</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetDataFrame._lazy_load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame._lazy_load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">ddf</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetDataFrame._load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame._load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container (e.g. CuDF).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">cudf</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetDataFrame._load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame._load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container (e.g. pandas).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetDataFrame.load"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame.load">[docs]</a>    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Placeholder for load function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the shape of an array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            A tuple with the shape.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data is not loaded yet&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">shape</span>
 
-<div class="viewcode-block" id="DatasetDataFrame.__len__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame.__len__">[docs]</a>    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetDataFrame.__len__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame.__len__">[docs]</a>    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return internal data length.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data is not loaded yet&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DatasetDataFrame.__getitem__"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetDataFrame.__getitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A __getitem__() function based on internal dataframe.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : Any</span>
+<span class="sd">            Key of the fetched data. It can be an integer or a tuple.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data is not loaded yet&quot;</span><span class="p">)</span>
 
@@ -982,26 +1529,56 @@
 
 
 <div class="viewcode-block" id="DatasetParquet"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetParquet">[docs]</a><span class="k">class</span> <span class="nc">DatasetParquet</span><span class="p">(</span><span class="n">DatasetDataFrame</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing an dataset wich is defined as a Parquet.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Symbolic name of the dataset.</span>
+<span class="sd">    download : bool</span>
+<span class="sd">        If the dataset must be downloaded (the default is False).</span>
+<span class="sd">    root : str</span>
+<span class="sd">        Root download directory (the default is None).</span>
+<span class="sd">    chunks : Any</span>
+<span class="sd">        Number of blocks of the array (the default is &quot;auto&quot;).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
 
         <span class="n">DatasetDataFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">download</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DatasetParquet._lazy_load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetParquet._lazy_load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">dcudf</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetParquet._lazy_load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetParquet._lazy_load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container + DASK. (It does not load immediattly)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">ddf</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetParquet._load_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetParquet._load_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with GPU container (e.g. CuDF).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">cudf</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="DatasetParquet._load_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.base.DatasetParquet._load_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_load_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data with CPU container (e.g. pandas).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_meta</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div></div>

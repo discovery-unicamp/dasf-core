@@ -203,7 +203,7 @@
 <p>To install DASF using docker, you must in the go to the <cite>build/</cite> directory and
 execute the command below directory according to your build type: <cite>cpu</cite> or
 <cite>gpu</cite>.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build_docker.sh<span class="w"> </span>&lt;cpu<span class="p">|</span>gpu&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./build_docker.sh &lt;cpu<span class="p">|</span>gpu&gt;
 </pre></div>
 </div>
 <p>The <cite>dasf</cite> image will be created and be ready to use. Once it is ready, you
@@ -217,7 +217,7 @@ can start a jupyter instance by executing the command:</p>
 <p>If you just want to create a base Conda environment for DASF, you need to
 create it, using the respective YAML file based on architecture: for CPUs
 or GPUs. The environment name is always <cite>dasf</cite>.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>build/conda/<span class="o">{</span>cpu,gpu<span class="o">}</span>/environment.yml
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda env create -f build/conda/<span class="o">{</span>cpu,gpu<span class="o">}</span>/environment.yml
 </pre></div>
 </div>
 </section>
@@ -225,7 +225,7 @@ or GPUs. The environment name is always <cite>dasf</cite>.</p>
 <h2>Development version<a class="headerlink" href="#development-version" title="Permalink to this heading">¶</a></h2>
 <p>To install this development version, all you need to do is run <cite>pip</cite> from the
 root project directory (the same where <cite>pyproject.toml</cite> lives).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m pip install .
 </pre></div>
 </div>
 </section>
@@ -235,7 +235,7 @@ root project directory (the same where <cite>pyproject.toml</cite> lives).</p>
 the test set. Make sure you have all development packages installed such as
 <strong>pytest</strong>, <strong>parameterized</strong> and <strong>mock</strong>. To run, you need to execute
 <cite>pytest</cite> from the <cite>tests/</cite> directory.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests/
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest tests/
 </pre></div>
 </div>
 </section>

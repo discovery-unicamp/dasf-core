@@ -74,7 +74,7 @@ Classes
        Random seed to use.
 
    n_parallel : uint, default=#max_CUDA_threads or 500*#CPUcores
-       Number of samples to be processed at a time. Setting a too low 
+       Number of samples to be processed at a time. Setting a too low
        value may drastically lower performance due to under-utilization,
        setting a too high value increases memory usage without granting 
        any significant performance benefit.
@@ -83,7 +83,7 @@ Classes
        Use numpy (CPU) or cupy (GPU) for computations.
 
    std_coeff: float, default=0.5
-       Used to calculate gausssian exponent denominator: 
+       Used to calculate gausssian exponent denominator:
        d = 2*std_coeff**2*sigma**2
 
    compact_support: bool, default=False

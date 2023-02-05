@@ -248,8 +248,8 @@
                     <span class="n">obj</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;This object </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is not a function, method &quot;</span>
-                <span class="s2">&quot;or a transformer object.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;This object </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is not a function, &quot;</span>
+                <span class="s2">&quot;method or a transformer object.&quot;</span>
             <span class="p">)</span>
 
 <div class="viewcode-block" id="Pipeline.add"><a class="viewcode-back" href="../../../autoapi/dasf/pipeline/pipeline/index.html#dasf.pipeline.Pipeline.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

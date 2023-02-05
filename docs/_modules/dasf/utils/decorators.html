@@ -174,7 +174,7 @@
 
 
 <div class="viewcode-block" id="is_forced_local"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.is_forced_local">[docs]</a><span class="k">def</span> <span class="nf">is_forced_local</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if object is forced to run in a CPU.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># pylint: disable=protected-access</span>
@@ -185,7 +185,7 @@
 
 
 <div class="viewcode-block" id="is_forced_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.is_forced_gpu">[docs]</a><span class="k">def</span> <span class="nf">is_forced_gpu</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if object is forced to run in a GPU.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># pylint: disable=protected-access</span>
@@ -196,7 +196,7 @@
 
 
 <div class="viewcode-block" id="fetch_from_dask"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_dask">[docs]</a><span class="k">def</span> <span class="nf">fetch_from_dask</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches to CPU all parameters in a Dask data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -218,7 +218,7 @@
 
 
 <div class="viewcode-block" id="fetch_from_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_gpu">[docs]</a><span class="k">def</span> <span class="nf">fetch_from_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches to CPU all parameters in a GPU data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -240,7 +240,7 @@
 
 
 <div class="viewcode-block" id="fetch_args_from_dask"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_args_from_dask">[docs]</a><span class="k">def</span> <span class="nf">fetch_args_from_dask</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches to CPU all function parameters in a Dask data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -252,7 +252,7 @@
 
 
 <div class="viewcode-block" id="fetch_args_from_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_args_from_gpu">[docs]</a><span class="k">def</span> <span class="nf">fetch_args_from_gpu</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches to CPU all function parameters in a GPU data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -264,7 +264,7 @@
 
 
 <div class="viewcode-block" id="task_handler"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.task_handler">[docs]</a><span class="k">def</span> <span class="nf">task_handler</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns all mapped functions corresponding to the executor in place.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>

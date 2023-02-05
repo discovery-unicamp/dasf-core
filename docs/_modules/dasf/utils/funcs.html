@@ -196,7 +196,7 @@
 
 
 <div class="viewcode-block" id="human_readable_size"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.human_readable_size">[docs]</a><span class="k">def</span> <span class="nf">human_readable_size</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    converts data size into the proper measurement</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">unit</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;KB&#39;</span><span class="p">,</span> <span class="s1">&#39;MB&#39;</span><span class="p">,</span> <span class="s1">&#39;GB&#39;</span><span class="p">,</span> <span class="s1">&#39;TB&#39;</span><span class="p">]:</span>
@@ -207,7 +207,7 @@
 
 
 <div class="viewcode-block" id="get_full_qualname"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.get_full_qualname">[docs]</a><span class="k">def</span> <span class="nf">get_full_qualname</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return fully qualified name of objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">klass</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span>
@@ -218,7 +218,7 @@
 
 
 <div class="viewcode-block" id="get_worker_info"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.get_worker_info">[docs]</a><span class="k">def</span> <span class="nf">get_worker_info</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a list of workers (sorted), and the DNS name for the master host</span>
 <span class="sd">    The master is the 0th worker&#39;s host</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -254,7 +254,7 @@
 
 
 <div class="viewcode-block" id="sync_future_loop"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.sync_future_loop">[docs]</a><span class="k">def</span> <span class="nf">sync_future_loop</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Synchronize all futures submitted to workers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -324,11 +324,13 @@
 
 
 <div class="viewcode-block" id="download_file"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.download_file">[docs]</a><span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download a generic file and save it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">directory</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">progressbar</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">is_notebook</span><span class="p">():</span>
         <span class="n">progressbar</span> <span class="o">=</span> <span class="n">NotebookProgressBar</span><span class="p">()</span>
@@ -386,13 +388,14 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)))</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-        <span class="n">progressbar</span><span class="o">.</span><span class="n">set_error</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">progressbar</span><span class="p">:</span>
+            <span class="n">progressbar</span><span class="o">.</span><span class="n">set_error</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output</span></div>
 
 
 <div class="viewcode-block" id="download_file_from_gdrive"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.download_file_from_gdrive">[docs]</a><span class="k">def</span> <span class="nf">download_file_from_gdrive</span><span class="p">(</span><span class="n">file_id</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download a file from Google Drive using gdrive file id.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://drive.google.com/uc?export=download&amp;confirm=9iBg&amp;id=</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -401,63 +404,63 @@
 
 
 <div class="viewcode-block" id="get_machine_memory_avail"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.get_machine_memory_avail">[docs]</a><span class="k">def</span> <span class="nf">get_machine_memory_avail</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return free memory available from a single machine.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">free</span></div>
 
 
 <div class="viewcode-block" id="set_executor_default"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.set_executor_default">[docs]</a><span class="k">def</span> <span class="nf">set_executor_default</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return executor as a CPU (default) instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">single_cpu</span></div>
 
 
 <div class="viewcode-block" id="set_executor_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.set_executor_gpu">[docs]</a><span class="k">def</span> <span class="nf">set_executor_gpu</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return executor as a GPU instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">single_gpu</span></div>
 
 
 <div class="viewcode-block" id="is_executor_single"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.is_executor_single">[docs]</a><span class="k">def</span> <span class="nf">is_executor_single</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return if the executor is a single machine instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">single_cpu</span><span class="p">,</span> <span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">single_gpu</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_executor_cluster"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.is_executor_cluster">[docs]</a><span class="k">def</span> <span class="nf">is_executor_cluster</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return if the executor is a cluster instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">multi_cpu</span><span class="p">,</span> <span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">multi_gpu</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_executor_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.is_executor_cpu">[docs]</a><span class="k">def</span> <span class="nf">is_executor_cpu</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return if the executor is a CPU instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">single_cpu</span><span class="p">,</span> <span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">multi_cpu</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_executor_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.is_executor_gpu">[docs]</a><span class="k">def</span> <span class="nf">is_executor_gpu</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return if the executor is a GPU instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">single_gpu</span><span class="p">,</span> <span class="n">TaskExecutorType</span><span class="o">.</span><span class="n">multi_gpu</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_gpu_supported"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.is_gpu_supported">[docs]</a><span class="k">def</span> <span class="nf">is_gpu_supported</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return if GPU is supported.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">GPU_SUPPORTED</span></div>
 
 
 <div class="viewcode-block" id="is_dask_local_supported"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.is_dask_local_supported">[docs]</a><span class="k">def</span> <span class="nf">is_dask_local_supported</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return if Dask is supported locally by the executor.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -468,14 +471,14 @@
 
 
 <div class="viewcode-block" id="get_dask_running_client"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.get_dask_running_client">[docs]</a><span class="k">def</span> <span class="nf">get_dask_running_client</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get Dask runner stanza.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">Client</span><span class="o">.</span><span class="n">current</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="is_dask_supported"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.is_dask_supported">[docs]</a><span class="k">def</span> <span class="nf">is_dask_supported</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return if Dask is supported by the executor.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -491,7 +494,7 @@
 
 
 <div class="viewcode-block" id="is_dask_gpu_supported"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.is_dask_gpu_supported">[docs]</a><span class="k">def</span> <span class="nf">is_dask_gpu_supported</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return if any node supports GPU.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_dask_supported</span><span class="p">():</span>
@@ -502,14 +505,14 @@
 
 
 <div class="viewcode-block" id="get_gpu_count"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.get_gpu_count">[docs]</a><span class="k">def</span> <span class="nf">get_gpu_count</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get single node GPU count.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">GPUtil</span><span class="o">.</span><span class="n">getGPUs</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="get_dask_gpu_count"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.get_dask_gpu_count">[docs]</a><span class="k">def</span> <span class="nf">get_dask_gpu_count</span><span class="p">(</span><span class="n">fetch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get how many GPUs are available in each worker.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># pylint: disable=not-callable</span>
@@ -520,7 +523,7 @@
 
 
 <div class="viewcode-block" id="block_chunk_reduce"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.block_chunk_reduce">[docs]</a><span class="k">def</span> <span class="nf">block_chunk_reduce</span><span class="p">(</span><span class="n">dask_data</span><span class="p">,</span> <span class="n">output_chunk</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reduce the chunk according the new output size.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">drop_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
@@ -548,7 +551,7 @@
 
 
 <div class="viewcode-block" id="return_local_and_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.return_local_and_gpu">[docs]</a><span class="k">def</span> <span class="nf">return_local_and_gpu</span><span class="p">(</span><span class="n">executor</span><span class="p">,</span> <span class="n">local</span><span class="p">,</span> <span class="n">gpu</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return executor type based on passed preferences.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># pylint: disable=too-many-return-statements</span>
@@ -576,7 +579,7 @@
 
 
 <div class="viewcode-block" id="get_dask_mem_usage"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.get_dask_mem_usage">[docs]</a><span class="k">def</span> <span class="nf">get_dask_mem_usage</span><span class="p">(</span><span class="n">profiler</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get Dask memory usage profile.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">profiler_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;/.cache/dasf/profiler/&quot;</span><span class="p">)</span>
@@ -594,7 +597,7 @@
 
 
 <div class="viewcode-block" id="is_notebook"><a class="viewcode-back" href="../../../autoapi/dasf/utils/funcs/index.html#dasf.utils.funcs.is_notebook">[docs]</a><span class="k">def</span> <span class="nf">is_notebook</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return if the code is being executed in a IPyNotebook.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
