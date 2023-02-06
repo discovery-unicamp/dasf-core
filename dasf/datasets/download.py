@@ -43,6 +43,9 @@ class DownloadWget(Dataset):
                 self.__url, self.__filename, self._root
             )
 
+            if hasattr(self, "_download_check") and callable(self._download_check):
+                self._download_check()
+
 
 class DownloadGDrive(Dataset):
     """Dataset downloadable via Google Drive.
@@ -83,3 +86,6 @@ class DownloadGDrive(Dataset):
             self._root_file = download_file_from_gdrive(
                 self.__google_file_id, self.__filename, self._root
             )
+
+            if hasattr(self, "_download_check") and callable(self._download_check):
+                self._download_check()
