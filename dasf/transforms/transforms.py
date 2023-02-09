@@ -9,11 +9,14 @@ import pandas as pd
 
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dask_array
+from dasf.utils.types import is_dask_gpu_array
 from dasf.transforms.base import Transform
 
 try:
     import cupy as cp
     import cudf
+
+    import dask_cudf as dcudf
 except ImportError:
     pass
 
@@ -276,8 +279,14 @@ class ArraysToDataFrame(Transform):
 
                     if dfs is None:
                         dfs = flat.to_dask_dataframe(columns=[y[i]])
+                        if is_dask_gpu_array(x):
+                            dfs = dcudf.from_dask_dataframe(dfs)
                     else:
-                        dfs = dfs.join(flat.to_dask_dataframe(columns=[y[i]]))
+                        if is_dask_gpu_array(x):
+                            dfs_aux = flat.to_dask_dataframe(columns=[y[i]])
+                            dfs = dfs.join(dcudf.from_dask_dataframe(dfs_aux))
+                        else:
+                            dfs = dfs.join(flat.to_dask_dataframe(columns=[y[i]]))
                 else:
                     flat = x.flatten()
 

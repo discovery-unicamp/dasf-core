@@ -18,10 +18,15 @@ from dasf.datasets import DatasetHDF5
 from dasf.transforms import Normalize
 from dasf.transforms import ArrayToZarr
 from dasf.transforms import ArrayToHDF5
+from dasf.transforms import ArraysToDataFrame
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
 from dasf.utils.types import is_dask_gpu_array
+from dasf.utils.types import is_cpu_dataframe
+from dasf.utils.types import is_gpu_dataframe
+from dasf.utils.types import is_dask_cpu_dataframe
+from dasf.utils.types import is_dask_gpu_dataframe
 from dasf.utils.funcs import is_gpu_supported
 
 
@@ -160,3 +165,71 @@ class TestArrayToHDF5(unittest.TestCase):
         self.remove(self.array)
         self.remove(self.hdf5)
 
+
+class TestArraysToDataFrame(unittest.TestCase):
+    def test_arrays_to_dataframe_cpu(self):
+        array_1 = np.random.random((40, 40, 40))
+        array_2 = np.random.random((40, 40, 40))
+        array_3 = np.random.random((40, 40, 40))
+
+        arr_to_df = ArraysToDataFrame()
+
+        y = arr_to_df._transform_cpu(array_1=array_1,
+                                     array_2=array_2,
+                                     array_3=array_3)
+
+        self.assertTrue(is_cpu_dataframe(y))
+
+    def test_arrays_to_dataframe_mcpu(self):
+        chunks = (10, 10, 10)
+
+        darray_1 = da.random.random((40, 40, 40), chunks=chunks)
+        darray_2 = da.random.random((40, 40, 40), chunks=chunks)
+        darray_3 = da.random.random((40, 40, 40), chunks=chunks)
+
+        arr_to_df = ArraysToDataFrame()
+
+        y = arr_to_df._lazy_transform_cpu(array_1=darray_1,
+                                          array_2=darray_2,
+                                          array_3=darray_3)
+
+        self.assertTrue(is_dask_cpu_dataframe(y))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_arrays_to_dataframe_gpu(self):
+        array_1 = cp.random.random((40, 40, 40))
+        array_2 = cp.random.random((40, 40, 40))
+        array_3 = cp.random.random((40, 40, 40))
+
+        arr_to_df = ArraysToDataFrame()
+
+        y = arr_to_df._transform_gpu(array_1=array_1,
+                                     array_2=array_2,
+                                     array_3=array_3)
+
+        self.assertTrue(is_gpu_dataframe(y))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_arrays_to_dataframe_mgpu(self):
+        # Need to generate a Cupy first because Dask random does not accept meta
+        array_1 = cp.random.random((40, 40, 40))
+        array_2 = cp.random.random((40, 40, 40))
+        array_3 = cp.random.random((40, 40, 40))
+
+        chunks = (10, 10, 10)
+
+        darray_1 = da.from_array(array_1, chunks=chunks, meta=cp.array(()))
+        darray_2 = da.from_array(array_2, chunks=chunks, meta=cp.array(()))
+        darray_3 = da.from_array(array_3, chunks=chunks, meta=cp.array(()))
+
+        arr_to_df = ArraysToDataFrame()
+
+        y = arr_to_df._lazy_transform_gpu(array_1=darray_1,
+                                          array_2=darray_2,
+                                          array_3=darray_3)
+
+        print(type(y._meta))
+
+        self.assertTrue(is_dask_gpu_dataframe(y))
