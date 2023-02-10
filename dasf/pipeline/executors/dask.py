@@ -108,6 +108,15 @@ class DaskPipelineExecutor(Executor):
     def execute(self, fn, *args, **kwargs):
         return fn(*args, **kwargs)
 
+    def register_dataset(self, **kwargs):
+        self.client.publish_dataset(**kwargs)
+
+    def has_dataset(self, key):
+        return key in self.client.list_datasets()
+
+    def get_dataset(self, key):
+        return self.client.get_dataset(name=key)
+
 
 class DaskTasksPipelineExecutor(DaskPipelineExecutor):
     """
@@ -189,6 +198,15 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         worker = self._tasks_map[key]["worker"]
 
         return self.client.submit(fn, *args, **kwargs, workers=[worker])
+
+    def register_dataset(self, **kwargs):
+        self.client.publish_dataset(**kwargs)
+
+    def has_dataset(self, key):
+        return key in self.client.list_datasets()
+
+    def get_dataset(self, key):
+        return self.client.get_dataset(name=key)
 
 
 class DaskPBSPipelineExecutor(Executor):

@@ -74,6 +74,9 @@ class Pipeline:
                                   "transform"),
                     obj)
         elif issubclass(obj.__class__, Dataset) and hasattr(obj, "load"):
+            # Register dataset for reusability
+            obj = self.__register_dataset(obj)
+
             return (obj.load,
                     generate_name(obj.__class__.__name__,
                                   "load"),
@@ -102,6 +105,21 @@ class Pipeline:
             return self._dag_g
         return self._dag_g.view(filename)
 
+    def __register_dataset(self, dataset):
+        if self._executor is not None:
+            if hasattr(self._executor, "client") and \
+               hasattr(self._executor.client, "datasets"):
+                key = str(hash(dataset.load))
+                kwargs = {key: dataset}
+
+                if self._executor.has_dataset(key):
+                    self._executor.register_dataset(**kwargs)
+
+                return self._executor.get_dataset(key)
+
+        # Just bypass because executor does not support datasets
+        return dataset
+
     def __execute(self, func, params, name):
         ret = None
 
@@ -114,12 +132,12 @@ class Pipeline:
                 new_params[k] = self._dag_table[req_key]["ret"]
 
         if len(new_params) > 0:
-            if self._executor:
+            if self._executor is not None:
                 ret = self._executor.execute(fn=func, **new_params)
             else:
                 ret = func(**new_params)
         else:
-            if self._executor:
+            if self._executor is not None:
                 ret = self._executor.execute(fn=func)
             else:
                 ret = func()
