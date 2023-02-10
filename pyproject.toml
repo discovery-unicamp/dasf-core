@@ -58,10 +58,18 @@ hpccm = "*"
 mock = "*"
 parameterized = "*"
 pytest = "*"
+pytest-cov = "*"
 wheel = "*"
 
 [tool.isort]
 profile = "black"
+
+[tool.coverage.paths]
+source = ["dasf", "*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["dasf"]
 
 [build-system]
 requires = ["poetry>=0.12"]
