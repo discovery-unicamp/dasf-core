@@ -2,13 +2,9 @@
 
 import unittest
 import numpy as np
-import dask.array as da
 
 try:
     import cupy as cp
-
-    from dask.distributed import Client
-    from dask_cuda import LocalCUDACluster
 except ImportError:
     pass
 
@@ -21,8 +17,6 @@ except ImportError:
 
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
-from dasf.utils.types import is_dask_cpu_array
-from dasf.utils.types import is_dask_gpu_array
 from dasf.utils.funcs import is_gpu_supported
 
 
@@ -54,7 +48,7 @@ class TestHDBSCAN(unittest.TestCase):
         sc = HDBSCAN()
 
         y = sc._fit_predict_cpu(self.X)
-        
+
         self.assertTrue(is_cpu_array(y))
 
         y1, y2 = self.__match_randomly_labels_created(y, self.y)
@@ -73,5 +67,5 @@ class TestHDBSCAN(unittest.TestCase):
         self.assertTrue(is_gpu_array(y))
 
         y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
-        
+
         self.assertTrue(float(len(np.where(y1 != y2)[0])/len(y1))*100 < 5.0)

@@ -63,5 +63,3 @@ class TestStandardScaler(unittest.TestCase):
 
         self.assertTrue(is_dask_gpu_array(y))
         self.assertTrue(np.array_equal(self.y, y.compute().get(), equal_nan=True))
-
-

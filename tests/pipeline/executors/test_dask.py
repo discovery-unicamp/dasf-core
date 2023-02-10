@@ -19,8 +19,9 @@ class TestDaskExecutor(unittest.TestCase):
             conn = urllib.parse.urlsplit(cluster.scheduler.address)
 
             dask = DaskPipelineExecutor(address=conn.hostname, port=conn.port)
-        
-            dask.client.shutdown()
+
+            # Compute everything to gracefully shutdown
+            dask.client.close()
 
     def test_dask_executor_local_no_args(self):
         dask = DaskPipelineExecutor()
@@ -29,14 +30,20 @@ class TestDaskExecutor(unittest.TestCase):
 
         self.assertEqual(hash(dask.client), hash(client))
 
+        # Compute everything to gracefully shutdown
+        client.close()
+        dask.client.close()
+
     def test_dask_executor_local(self):
         dask = DaskPipelineExecutor(local=True)
 
         client = Client.current()
 
         self.assertEqual(hash(dask.client), hash(client))
-        
-        client.shutdown()
+
+        # Compute everything to gracefully shutdown
+        client.close()
+        dask.client.close()
 
     def test_dask_executor_scheduler_file(self):
         with LocalCluster() as cluster:
@@ -47,13 +54,16 @@ class TestDaskExecutor(unittest.TestCase):
             client_kwargs = {}
             client_kwargs["scheduler_file"] = self.scheduler_file
 
+            client.close()
+
             dask = DaskPipelineExecutor(client_kwargs=client_kwargs)
 
             client = Client.current()
 
             self.assertEqual(hash(dask.client), hash(client))
-        
-            client.shutdown()
+
+            # Compute everything to gracefully shutdown
+            dask.client.close()
 
     def tearDown(self):
         if os.path.isfile(self.scheduler_file) or os.path.islink(self.scheduler_file):

@@ -4,6 +4,8 @@ import unittest
 
 import numpy as np
 
+from mock import MagicMock
+
 from dasf.pipeline import Pipeline
 from dasf.datasets import DatasetArray
 from dasf.transforms.base import Transform
@@ -155,3 +157,30 @@ class TestPipeline(unittest.TestCase):
 
             self.assertTrue(np.array_equal(t_A_r, orig_data + 2))
             self.assertTrue(np.array_equal(t_B_r, orig_data))
+
+    def test_dataset_registration(self):
+        dataset_A = Dataset_A(name="Test Dataset A")
+
+        executor = MagicMock()
+        executor.is_connected = True
+        executor.pre_run.return_value = None
+        executor.post_run.return_value = None
+        executor.has_dataset = MagicMock(side_effect=[False, True])
+        executor.register_dataset.return_value = None
+        executor.get_dataset.return_value = dataset_A
+
+        t_A = Transform_A()
+        t_B = Transform_B()
+
+        pipeline = Pipeline("Test Pipeline Creation", executor=executor)
+
+        pipeline = pipeline.add(t_A, X=dataset_A) \
+                           .add(t_B, X=t_A)
+
+        pipeline.run()
+
+        key = str(hash(dataset_A.load))
+        kwargs = {key: dataset_A}
+
+        executor.register_dataset.assert_called_once_with(**kwargs)
+        executor.has_dataset.assert_called_with(key)

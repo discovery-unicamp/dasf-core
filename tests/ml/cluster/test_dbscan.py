@@ -2,7 +2,6 @@
 
 import unittest
 import numpy as np
-import dask.array as da
 
 try:
     import cupy as cp
@@ -17,8 +16,6 @@ from sklearn.datasets import make_blobs
 from dasf.ml.cluster import DBSCAN
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
-from dasf.utils.types import is_dask_cpu_array
-from dasf.utils.types import is_dask_gpu_array
 from dasf.utils.funcs import is_gpu_supported
 
 
@@ -50,7 +47,7 @@ class TestDBSCAN(unittest.TestCase):
         sc = DBSCAN()
 
         y = sc._fit_predict_cpu(self.X)
-        
+
         self.assertTrue(is_cpu_array(y))
 
         y1, y2 = self.__match_randomly_labels_created(y, self.y)
@@ -68,24 +65,28 @@ class TestDBSCAN(unittest.TestCase):
         self.assertTrue(is_gpu_array(y))
 
         y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
-        
+
         self.assertTrue(float(len(np.where(y1 != y2)[0])/len(y1))*100 < 5.0)
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_dbscan_mgpu(self):
         # KMeans for Multi GPUs requires a client
-        client = Client(LocalCUDACluster())
+        with LocalCUDACluster() as cluster:
+            client = Client(cluster)
 
-        # For GPUs we need to specify which data we are handling with `output_type`.
-        sc = DBSCAN(output_type='cupy')
+            # For GPUs we need to specify which data we are handling with `output_type`.
+            sc = DBSCAN(output_type='cupy')
 
-        cp_X = cp.asarray(self.X)
+            cp_X = cp.asarray(self.X)
 
-        y = sc._lazy_fit_predict_gpu(cp_X)
-        
-        self.assertTrue(is_gpu_array(y))
+            y = sc._lazy_fit_predict_gpu(cp_X)
 
-        y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
-        
-        self.assertTrue(float(len(np.where(y1 != y2)[0])/len(y1))*100 < 5.0)     
+            self.assertTrue(is_gpu_array(y))
+
+            y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
+
+            self.assertTrue(float(len(np.where(y1 != y2)[0])/len(y1))*100 < 5.0)
+
+            # Compute everything to gracefully shutdown
+            client.close()

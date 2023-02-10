@@ -2,13 +2,9 @@
 
 import unittest
 import numpy as np
-import dask.array as da
 
 try:
     import cupy as cp
-
-    from dask.distributed import Client
-    from dask_cuda import LocalCUDACluster
 except ImportError:
     pass
 
@@ -17,8 +13,6 @@ from sklearn.datasets import make_blobs
 from dasf.ml.cluster import AgglomerativeClustering
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
-from dasf.utils.types import is_dask_cpu_array
-from dasf.utils.types import is_dask_gpu_array
 from dasf.utils.funcs import is_gpu_supported
 
 

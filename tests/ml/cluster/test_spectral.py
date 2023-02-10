@@ -4,22 +4,11 @@ import unittest
 import numpy as np
 import dask.array as da
 
-try:
-    import cupy as cp
-
-    from dask.distributed import Client
-    from dask_cuda import LocalCUDACluster
-except ImportError:
-    pass
-
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import SpectralClustering
 from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
-from dasf.utils.types import is_dask_gpu_array
-from dasf.utils.funcs import is_gpu_supported
 
 
 class TestSpectralClustering(unittest.TestCase):
@@ -47,7 +36,8 @@ class TestSpectralClustering(unittest.TestCase):
         return y1, y2
 
     def test_spectral_cpu(self):
-        sc = SpectralClustering(n_clusters=self.centers, random_state=self.random_state)
+        sc = SpectralClustering(n_clusters=self.centers,
+                                random_state=self.random_state)
 
         y = sc._fit_predict_cpu(self.X)
 
@@ -58,7 +48,9 @@ class TestSpectralClustering(unittest.TestCase):
         self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
 
     def test_spectral_mcpu(self):
-        sc = SpectralClustering(n_clusters=self.centers, random_state=self.random_state, n_components=250)
+        sc = SpectralClustering(n_clusters=self.centers,
+                                random_state=self.random_state,
+                                n_components=250)
 
         da_X = da.from_array(self.X)
 

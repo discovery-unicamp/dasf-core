@@ -12,7 +12,7 @@ try:
 except ImportError:
     pass
 
-from mock import patch, Mock    
+from mock import patch, Mock
 
 from sklearn.datasets import make_blobs
 
@@ -97,21 +97,25 @@ class TestKMeans(unittest.TestCase):
                      "not supported CUDA in this platform")
     def test_kmeans_mgpu(self):
         # KMeans for Multi GPUs requires a client
-        client = Client(LocalCUDACluster())
+        with LocalCUDACluster() as cluster:
+            client = Client(cluster)
 
-        kmeans = KMeans(n_clusters=self.centers, max_iter=100)
+            kmeans = KMeans(n_clusters=self.centers, max_iter=100)
 
-        da_X = da.from_array(cp.asarray(self.X))
+            da_X = da.from_array(cp.asarray(self.X))
 
-        kmeans._lazy_fit_gpu(da_X)
+            kmeans._lazy_fit_gpu(da_X)
 
-        y = kmeans._lazy_predict_gpu(da_X)
+            y = kmeans._lazy_predict_gpu(da_X)
 
-        self.assertTrue(is_dask_gpu_array(y))
+            self.assertTrue(is_dask_gpu_array(y))
 
-        y1, y2 = self.__match_randomly_labels_created(y.compute().get(), self.y)
+            y1, y2 = self.__match_randomly_labels_created(y.compute().get(), self.y)
 
-        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+            self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+
+            # Compute everything to gracefully shutdown
+            client.close()
 
     @patch('dasf.utils.decorators.is_gpu_supported', Mock(return_value=False))
     @patch('dasf.utils.decorators.is_dask_supported', Mock(return_value=True))

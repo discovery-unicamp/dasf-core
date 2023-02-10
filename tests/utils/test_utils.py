@@ -101,4 +101,3 @@ class TestArchitetures(unittest.TestCase):
     @patch('GPUtil.getGPUs', Mock(return_value=[]))
     def test_get_dask_gpu_count_0(self):
         self.assertTrue(len(get_dask_gpu_count()) == 0)
-

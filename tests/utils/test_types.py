@@ -33,7 +33,6 @@ from dasf.utils.types import is_xarray_array
 from dasf.utils.funcs import is_gpu_supported
 
 
-
 class TestTypes(unittest.TestCase):
     def setUp(self):
         base = np.random.randint(10, size=100)
