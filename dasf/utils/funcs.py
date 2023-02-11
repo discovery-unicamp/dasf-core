@@ -7,7 +7,7 @@ import threading
 
 from pathlib import Path
 
-import wget
+import gdown
 import pandas
 import psutil
 import GPUtil
@@ -185,9 +185,9 @@ def download_file(url, filename=None, directory=None):
                     progressbar.show()
                     progressbar.start()
 
-                    wget.download(url, out=output, bar=update_notebook_bar)
+                    gdown.download(url, output=output, bar=update_notebook_bar)
                 else:
-                    wget.download(url, out=output)
+                    gdown.download(url, output=output)
         elif filename:
             output = os.path.abspath(os.path.join(os.getcwd(), filename))
 
@@ -197,9 +197,9 @@ def download_file(url, filename=None, directory=None):
                     progressbar.show()
                     progressbar.start()
 
-                    wget.download(url, out=output, bar=update_notebook_bar)
+                    gdown.download(url, output=output, bar=update_notebook_bar)
                 else:
-                    wget.download(url, out=output)
+                    gdown.download(url, output=output)
         elif directory:
             if is_notebook():
                 # Activate the notebook progress bar
@@ -208,10 +208,10 @@ def download_file(url, filename=None, directory=None):
 
                 output = \
                     os.path.abspath(os.path.join(directory,
-                                                 wget.download(url,
-                                                               bar=update_notebook_bar)))
+                                                 gdown.download(url,
+                                                                bar=update_notebook_bar)))
             else:
-                output = os.path.abspath(os.path.join(directory, wget.download(url)))
+                output = os.path.abspath(os.path.join(directory, gdown.download(url)))
         else:
             if is_notebook():
                 # Activate the notebook progress bar
@@ -220,10 +220,10 @@ def download_file(url, filename=None, directory=None):
 
                 output = \
                     os.path.abspath(os.path.join(os.getcwd(),
-                                                 wget.download(url,
-                                                               bar=update_notebook_bar)))
+                                                 gdown.download(url,
+                                                                bar=update_notebook_bar)))
             else:
-                output = os.path.abspath(os.path.join(os.getcwd(), wget.download(url)))
+                output = os.path.abspath(os.path.join(os.getcwd(), gdown.download(url)))
     except Exception as exc:
         if progressbar:
             progressbar.set_error(True)

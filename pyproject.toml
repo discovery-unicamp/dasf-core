@@ -29,6 +29,7 @@ dask_memusage = "*"
 dask_ml = "*"
 dask-pytorch-ddp = "*"
 GPUtil = "*"
+gdown = "^4.6"
 graphviz = "*"
 h5py = "*"
 hdbscan = "*"
@@ -46,7 +47,6 @@ torchvision = "*"
 xarray = "*"
 xgboost = "*"
 zarr = "*"
-wget = "*"
 
 #xpysom = { git = "https://github.com/jcfaracco/xpysom/", branch = "dask2" }
 
