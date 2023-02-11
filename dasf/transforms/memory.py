@@ -32,7 +32,7 @@ class PersistDaskData(Transform):
         return X
 
 
-class LoadDaskData(Transform):
+class ComputeDaskData(Transform):
     """Allow persisting a dask array to memory. It will gather the data blocks
     from all workers and resembles locally.
     """
