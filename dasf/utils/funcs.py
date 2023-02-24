@@ -185,7 +185,7 @@ def download_file(url, filename=None, directory=None):
                     progressbar.show()
                     progressbar.start()
 
-                    gdown.download(url, output=output, bar=update_notebook_bar)
+                    gdown.download(url, output=output) # TODO: use pbar=update_notebook_bar
                 else:
                     gdown.download(url, output=output)
         elif filename:
@@ -197,7 +197,7 @@ def download_file(url, filename=None, directory=None):
                     progressbar.show()
                     progressbar.start()
 
-                    gdown.download(url, output=output, bar=update_notebook_bar)
+                    gdown.download(url, output=output) # TODO: use pbar=update_notebook_bar
                 else:
                     gdown.download(url, output=output)
         elif directory:
