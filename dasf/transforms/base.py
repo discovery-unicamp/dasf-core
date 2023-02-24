@@ -1,7 +1,13 @@
 #!/usr/bin/python3
 
 import inspect
+import numpy as np
 import dask.array as da
+
+try:
+    import cupy as cp
+except ImportError:
+    pass
 
 from dasf.utils.decorators import task_handler
 from dasf.utils.types import is_dask_array
@@ -192,8 +198,13 @@ class MappedTransform(Transform):
             raise Exception("Both boundary and depth should be passed "
                             "together")
 
-    def __lazy_transform_generic(self, X, **kwargs):
+    def __lazy_transform_generic(self, X, xp, **kwargs):
         drop_axis, new_axis = block_chunk_reduce(X, self.output_chunk)
+
+        if self.output_chunk is None:
+            __output_chunk = X.chunks
+        else:
+            __output_chunk = self.output_chunk
 
         if self.depth and self.boundary:
             if self.trim:
@@ -203,6 +214,7 @@ class MappedTransform(Transform):
                     dtype=X.dtype,
                     depth=self.depth,
                     boundary=self.boundary,
+                    meta=xp.array(()),
                 )
             else:
                 data_blocks = da.overlap.overlap(
@@ -214,6 +226,7 @@ class MappedTransform(Transform):
                     dtype=X.dtype,
                     drop_axis=drop_axis,
                     new_axis=new_axis,
+                    meta=xp.array(()),
                     **kwargs,
                 )
         else:
@@ -223,6 +236,8 @@ class MappedTransform(Transform):
                     dtype=X.dtype,
                     drop_axis=drop_axis,
                     new_axis=new_axis,
+                    chunks=__output_chunk,
+                    meta=xp.array(()),
                     **kwargs,
                 )
             elif is_dask_dataframe(X):
@@ -231,10 +246,10 @@ class MappedTransform(Transform):
         return new_data
 
     def _lazy_transform_cpu(self, X, **kwargs):
-        return self.__lazy_transform_generic(X, **kwargs)
+        return self.__lazy_transform_generic(X, xp=np, **kwargs)
 
     def _lazy_transform_gpu(self, X, **kwargs):
-        return self.__lazy_transform_generic(X, **kwargs)
+        return self.__lazy_transform_generic(X, xp=cp, **kwargs)
 
     def _transform_cpu(self, X, **kwargs):
         return self.function(X, **kwargs)
