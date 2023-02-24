@@ -13,10 +13,12 @@ except ImportError:
 from dasf.transforms.base import Fit
 from dasf.transforms.base import Transform
 from dasf.transforms.base import FitTransform
+from dasf.transforms.base import TargeteredTransform
 
 
-class StantardScaler(Fit, Transform, FitTransform):
-    def __init__(self, copy=True, with_mean=True, with_std=True):
+class StantardScaler(Fit, Transform, FitTransform, TargeteredTransform):
+    def __init__(self, copy=True, with_mean=True, with_std=True, **kwargs):
+        TargeteredTransform.__init__(self, **kwargs)
 
         self.__std_scaler_cpu = StandardScaler_CPU(
             copy=copy, with_mean=with_mean, with_std=with_std

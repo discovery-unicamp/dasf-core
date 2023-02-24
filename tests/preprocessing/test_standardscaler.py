@@ -4,6 +4,8 @@ import unittest
 import numpy as np
 import dask.array as da
 
+from mock import patch, Mock
+
 try:
     import cupy as cp
 except ImportError:
@@ -63,3 +65,14 @@ class TestStandardScaler(unittest.TestCase):
 
         self.assertTrue(is_dask_gpu_array(y))
         self.assertTrue(np.array_equal(self.y, y.compute().get(), equal_nan=True))
+
+    @patch('dasf.utils.decorators.is_gpu_supported', Mock(return_value=False))
+    @patch('dasf.utils.decorators.is_dask_supported', Mock(return_value=True))
+    @patch('dasf.utils.decorators.is_dask_gpu_supported', Mock(return_value=False))
+    def test_standardscaler_mcpu_local(self):
+        ss = StantardScaler(run_local=True)
+
+        y = ss._fit_transform_cpu(self.X)
+
+        self.assertTrue(is_cpu_array(y))
+        self.assertTrue(np.array_equal(self.y, y, equal_nan=True))
