@@ -63,6 +63,8 @@ elif device_target.lower() == "gpu":
     if is_devel:
         pip_package_install = ("%s %s" % (pip_package_install, "git+https://github.com/cupy/cupy.git"))
 
+Stage0 += shell(commands=["pip3 install pip --upgrade"])
+
 Stage0 += shell(commands=[pip_package_install])
 
 # TODO: fix numpy issue with version 1.24 and other fixed reqs
