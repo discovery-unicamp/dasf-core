@@ -32,5 +32,5 @@ jobs:
       - name: Build from scratch
         run: |
           pushd build
-          ./build_container --device cpu --format docker
+          ./build_container.sh --device cpu --format docker
           popd
