@@ -25,9 +25,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
+      - name: Install requirements
+        run: |
+          pip3 install --user hpccm
+
       - name: Build from scratch
         run: |
-          apt update && apt install python3-pip && pip3 install hpccm
           pushd build
           ./build_container --device cpu --format docker
           popd
