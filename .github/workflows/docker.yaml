@@ -15,6 +15,10 @@ jobs:
     permissions:
       packages: write
       contents: read
+    strategy:
+      matrix:
+        devices: ['cpu', 'gpu']
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -32,7 +36,7 @@ jobs:
       - name: Build from scratch
         run: |
           pushd build
-          ./build_container.sh --device cpu --format docker
+          ./build_container.sh --device ${{ matrix.devices }} --format docker
           popd
 
       - name: Extract metadata (tags, labels) for Docker
