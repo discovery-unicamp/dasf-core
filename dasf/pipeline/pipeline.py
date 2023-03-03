@@ -74,8 +74,8 @@ class Pipeline:
                                   "transform"),
                     obj)
         elif issubclass(obj.__class__, Dataset) and hasattr(obj, "load"):
-            # Register dataset for reusability
-            obj = self.__register_dataset(obj)
+            # (Disabled) Register dataset for reusability
+            # obj = self.__register_dataset(obj)
 
             return (obj.load,
                     generate_name(obj.__class__.__name__,
@@ -112,7 +112,7 @@ class Pipeline:
                 key = str(hash(dataset.load))
                 kwargs = {key: dataset}
 
-                if self._executor.has_dataset(key):
+                if not self._executor.has_dataset(key):
                     self._executor.register_dataset(**kwargs)
 
                 return self._executor.get_dataset(key)
