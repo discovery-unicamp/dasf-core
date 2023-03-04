@@ -16,9 +16,9 @@ if is_devel:
 else:
     cuda_version = USERARG.get('cuda-version', '11.2')
 
-rapidsai_version = USERARG.get('rapids-version', '22.08')
+rapidsai_version = USERARG.get('rapids-version', '23.02')
 ubuntu_version = USERARG.get('ubuntu-version', '20.04')
-python_version = USERARG.get('python-version', '3.9')
+python_version = USERARG.get('python-version', '3.10')
 
 if python_version:
     python_version = f"-py{python_version}"
