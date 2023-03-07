@@ -68,11 +68,6 @@ class Pipeline:
                     generate_name(obj.__self__.__class__.__name__,
                                   obj.__name__),
                     obj.__self__)
-        elif issubclass(obj.__class__, Transform) and hasattr(obj, "transform"):
-            return (obj.transform,
-                    generate_name(obj.__class__.__name__,
-                                  "transform"),
-                    obj)
         elif issubclass(obj.__class__, Dataset) and hasattr(obj, "load"):
             # (Disabled) Register dataset for reusability
             # obj = self.__register_dataset(obj)
@@ -85,6 +80,11 @@ class Pipeline:
             return (obj.fit,
                     generate_name(obj.__class__.__name__,
                                   "fit"),
+                    obj)
+        elif issubclass(obj.__class__, Transform) and hasattr(obj, "transform"):
+            return (obj.transform,
+                    generate_name(obj.__class__.__name__,
+                                  "transform"),
                     obj)
         else:
             raise ValueError(
