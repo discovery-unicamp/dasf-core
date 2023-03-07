@@ -12,8 +12,7 @@ from dasf.transforms.base import SetParams
 
 class ClusterClassifier(
     Fit, FitPredict, FitTransform, Predict,
-    Transform, GetParams, SetParams,
-    TargeteredTransform
+    GetParams, SetParams, TargeteredTransform
 ):
     def __init__(self, **kwargs):
         TargeteredTransform.__init__(self, **kwargs)

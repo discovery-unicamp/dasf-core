@@ -9,6 +9,7 @@ from mock import MagicMock
 from dasf.pipeline import Pipeline
 from dasf.datasets import DatasetArray
 from dasf.transforms.base import Transform
+from dasf.transforms.base import TargeteredTransform
 
 
 class Dataset_A(DatasetArray):
@@ -42,7 +43,12 @@ class Transform_E(Transform):
         return X + 4
 
 
-def transform_f(X):
+class Transform_F(TargeteredTransform):
+    def transform(self, X):
+        return X - 4
+
+
+def transform_g(X):
     return X - 4
 
 
@@ -121,7 +127,7 @@ class TestPipeline(unittest.TestCase):
         pipeline = Pipeline("Test Pipeline Creation Non Transformers")
 
         pipeline = pipeline.add(t_E.transform_new, X=dataset_A) \
-                           .add(transform_f, X=t_E.transform_new)
+                           .add(transform_g, X=t_E.transform_new)
 
         with self.assertLogs('DASF', level='INFO') as plogs:
             pipeline.run()
@@ -132,7 +138,28 @@ class TestPipeline(unittest.TestCase):
 
             self.assertIn('Dataset_A', all_output)
             self.assertIn('transform_new', all_output)
-            self.assertIn('transform_f', all_output)
+            self.assertIn('transform_g', all_output)
+
+    def test_pipeline_targetered_transformers(self):
+        dataset_A = Dataset_A(name="Test Dataset A")
+
+        t_F = Transform_F()
+
+        pipeline = Pipeline("Test Pipeline Creation Non Transformers")
+
+        pipeline = pipeline.add(t_F, X=dataset_A) \
+                           .add(transform_g, X=t_F)
+
+        with self.assertLogs('DASF', level='INFO') as plogs:
+            pipeline.run()
+
+            self.assertIn('Pipeline run successfully', plogs.output[-1])
+
+            all_output = '\n'.join(plogs.output)
+
+            self.assertIn('Dataset_A', all_output)
+            self.assertIn('Transform_F', all_output)
+            self.assertIn('transform_g', all_output)
 
     def test_pipeline_results(self):
         orig_data = np.arange(10)

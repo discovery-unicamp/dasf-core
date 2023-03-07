@@ -6,7 +6,6 @@ from dask_ml.decomposition import PCA as PCA_MCPU
 from dasf.utils.funcs import is_dask_supported
 from dasf.utils.funcs import is_gpu_supported
 from dasf.transforms.base import Fit, FitTransform
-from dasf.transforms.base import Transform
 from dasf.transforms.base import TargeteredTransform
 
 try:
@@ -16,7 +15,7 @@ except ImportError:
     pass
 
 
-class PCA(Fit, FitTransform, Transform, TargeteredTransform):
+class PCA(Fit, FitTransform, TargeteredTransform):
     def __init__(
         self,
         n_components=None,
