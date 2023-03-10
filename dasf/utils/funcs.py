@@ -293,7 +293,7 @@ def is_gpu_supported() -> bool:
     """
     Return if GPU is supported.
     """
-    return GPU_SUPPORTED
+    return GPU_SUPPORTED and get_gpu_count() >= 1
 
 
 def is_dask_local_supported() -> bool:
@@ -335,7 +335,7 @@ def is_dask_gpu_supported() -> bool:
     Return if any node supports GPU.
     """
     if is_dask_supported():
-        if len(get_dask_gpu_count()) > 0:
+        if get_dask_gpu_count() > 0:
             return True
 
     return False
@@ -345,7 +345,7 @@ def get_gpu_count() -> int:
     """
     Get single node GPU count.
     """
-    return GPUtil.getGPUs()
+    return len(GPUtil.getGPUs())
 
 
 def get_dask_gpu_count(fetch=True) -> int:
@@ -355,7 +355,7 @@ def get_dask_gpu_count(fetch=True) -> int:
     # pylint: disable=not-callable
     ret = dd(GPUtil.getGPUs)()
     if fetch:
-        return ret.compute()
+        return len(ret.compute())
     return ret
 
 

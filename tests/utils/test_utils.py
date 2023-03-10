@@ -88,16 +88,16 @@ class TestArchitetures(unittest.TestCase):
 
     @patch('GPUtil.getGPUs', Mock(return_value=[0, 1]))
     def test_get_gpu_count_2(self):
-        self.assertTrue(len(get_gpu_count()) == 2)
+        self.assertTrue(get_gpu_count() == 2)
 
     @patch('GPUtil.getGPUs', Mock(return_value=[0, 1]))
     def test_get_dask_gpu_count_2(self):
-        self.assertTrue(len(get_gpu_count()) == 2)
+        self.assertTrue(get_gpu_count() == 2)
 
     @patch('GPUtil.getGPUs', Mock(return_value=[]))
     def test_get_gpu_count_0(self):
-        self.assertTrue(len(get_dask_gpu_count()) == 0)
+        self.assertTrue(get_dask_gpu_count() == 0)
 
     @patch('GPUtil.getGPUs', Mock(return_value=[]))
     def test_get_dask_gpu_count_0(self):
-        self.assertTrue(len(get_dask_gpu_count()) == 0)
+        self.assertTrue(get_dask_gpu_count() == 0)
