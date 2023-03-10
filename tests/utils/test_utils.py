@@ -41,6 +41,7 @@ class TestArchitetures(unittest.TestCase):
         self.assertTrue(len(number_str.split(".")[1]) == decimal)
 
     @patch('dasf.utils.funcs.GPU_SUPPORTED', True)
+    @patch('dasf.utils.funcs.get_gpu_count', Mock(return_value=1))
     def test_is_gpu_supported_true(self):
         self.assertTrue(is_gpu_supported())
 
