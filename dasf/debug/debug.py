@@ -5,6 +5,7 @@ from IPython.core.display import display as idisplay
 
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_dask_dataframe
+from dasf.utils.funcs import is_notebook
 
 
 class Debug:
@@ -23,7 +24,7 @@ class Debug:
         if hasattr(X, "shape"):
             print("Datashape is:", X.shape)
 
-        if is_dask_array(X) or is_dask_dataframe(X):
+        if (is_dask_array(X) or is_dask_dataframe(X)) and is_notebook():
             idisplay(iHTML(X._repr_html_()))
         else:
             print("Datatype is:", type(X))
