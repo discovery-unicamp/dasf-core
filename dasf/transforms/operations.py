@@ -30,7 +30,7 @@ class SliceArray:
         elif len(self.x) == 2:
             return X[0:self.x[0], 0:self.x[1]]
         elif len(self.x) == 3:
-            return X[0:self.x[0], 0:self.x[0], 0:self.x[0]]
+            return X[0:self.x[0], 0:self.x[1], 0:self.x[2]]
         else:
             raise Exception("The dimmension is not known")
 
