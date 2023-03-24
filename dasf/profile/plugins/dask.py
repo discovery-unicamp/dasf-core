@@ -21,7 +21,7 @@ class TaskTimePlugin(WorkerPlugin):
                     name="Waiting",
                     process_id=self.hostname,
                     thread_id=f"worker-{self.worker.name}",
-                    timestamp=self.transfer_times[key],
+                    timestamp=self.waiting_time[key],
                     duration=duration,
                     category=["worker", "dask", "waiting"],
                     data={"from": start, "to": finish, "key": key},
