@@ -3,21 +3,19 @@ name: PyPi Automatic Upload
 on:
   push:
     branches:
-      - 'releases'
+      - releases
 
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: pypi_upload
-    container:
-      image: docker.io/jcfaracco/dasf:cpu_ci
     steps:
       - uses: actions/checkout@v3
       - name: Generate artifacts
         run: |
+          # Install twine and poetry
+          pip install twine poetry
           poetry config virtualenvs.create false
           poetry build
-          # Install twine
-          pip install twine
       -name: Upload artifacts
           twine upload --repository $PYPI_REPOSITORY -u $PYPI_USER -p $PYPI_TOKEN dist/*
