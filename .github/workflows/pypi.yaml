@@ -17,5 +17,6 @@ jobs:
           pip install twine poetry
           poetry config virtualenvs.create false
           poetry build
-      -name: Upload artifacts
+      - name: Upload artifacts
+        run: |
           twine upload --repository $PYPI_REPOSITORY -u $PYPI_USER -p $PYPI_TOKEN dist/*
