@@ -20,4 +20,4 @@ jobs:
           # Install twine
           pip install twine
       -name: Upload artifacts
-          twine upload --repository testpypi -u $PYPI_USER -p $PYPI_TOKEN dist/*
+          twine upload --repository $PYPI_REPOSITORY -u $PYPI_USER -p $PYPI_TOKEN dist/*
