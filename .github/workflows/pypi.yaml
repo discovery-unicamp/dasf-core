@@ -1,0 +1,23 @@
+name: Continuous Test
+
+on:
+  push:
+    branches:
+      - 'releases'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: continuous_test
+    container:
+      image: docker.io/jcfaracco/dasf:cpu_ci
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate artifacts
+        run: |
+          poetry config virtualenvs.create false
+          poetry build
+          # Install twine
+          pip install twine
+      -name: Upload artifacts
+          twine upload --repository testpypi -u $PYPI_USER -p $PYPI_TOKEN dist/*
