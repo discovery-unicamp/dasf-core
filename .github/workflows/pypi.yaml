@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: PyPi environment
+    environment: pypi_upload
     container:
       image: docker.io/jcfaracco/dasf:cpu_ci
     steps:
