@@ -187,3 +187,31 @@ def to_chrome_event_format(
 
     format_kwargs = format_kwargs or {}
     return json.dumps(traces, **format_kwargs)
+
+
+class Profile:
+    def __init__(self, trace_file: str = "traces.txt",  
+                remove_trace_file_on_start: bool = True, 
+                dump_on_exit: bool = True,
+                dump_trace_options: dict = None,
+                dump_format_kwargs: dict = None):
+        self.trace_file = trace_file
+        self.dump_on_exit = dump_on_exit
+        self.remove_trace_file_on_start = remove_trace_file_on_start
+        self.dump_trace_options = dump_trace_options
+        self.dump_format_kwargs = dump_format_kwargs
+
+    def __enter__(self):
+        if self.remove_trace_file_on_start:
+            try:
+                os.unlink(self.trace_file)
+            except FileNotFoundError:
+                pass
+        db = SingleFileTraceDatabase(self.trace_file)
+        TraceDatabase(db)
+        
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.dump_on_exit:
+            traces = get_traces()
+            with open(self.trace_file, "w") as f:
+                f.write(to_chrome_event_format(traces, self.dump_trace_options, self.dump_format_kwargs))
