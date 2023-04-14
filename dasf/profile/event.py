@@ -3,7 +3,7 @@ import threading
 import os
 import json
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 from dasf.profile.database import TraceEvent, TraceDatabase, SingleFileTraceDatabase
 
 
@@ -136,7 +136,7 @@ def to_chrome_event_format(
                 "name": trace.name,
                 "ph": trace.phase,
                 "cat": ",".join(trace.category) if trace.category else "default",
-                "ts": trace.timestamp*1e6,
+                "ts": trace.timestamp * 1e6,
                 "pid": pids.index(trace.process_id),
                 "tid": tids.index((trace.process_id, trace.thread_id)),
             }
@@ -157,25 +157,25 @@ def to_chrome_event_format(
 
     # print(f"PIDS: {pids}")
     for pid in pids:
-        traces.append({
-            "name": "process_name",
-            "ph": "M",
-            "pid": pids.index(pid),
-            "args": {
-                "name": pid
+        traces.append(
+            {
+                "name": "process_name",
+                "ph": "M",
+                "pid": pids.index(pid),
+                "args": {"name": pid},
             }
-        })
+        )
 
     for pid, tid in tids:
-        traces.append({
-            "name": "thread_name",
-            "ph": "M",
-            "pid": pids.index(pid),
-            "tid": tids.index((pid, tid)),
-            "args": {
-                "name": tid
+        traces.append(
+            {
+                "name": "thread_name",
+                "ph": "M",
+                "pid": pids.index(pid),
+                "tid": tids.index((pid, tid)),
+                "args": {"name": tid},
             }
-        })
+        )
 
     traces = {
         "traceEvents": traces,
@@ -190,28 +190,34 @@ def to_chrome_event_format(
 
 
 class Profile:
-    def __init__(self, trace_file: str = "traces.txt",  
-                remove_trace_file_on_start: bool = True, 
-                dump_on_exit: bool = True,
-                dump_trace_options: dict = None,
-                dump_format_kwargs: dict = None):
-        self.trace_file = trace_file
-        self.dump_on_exit = dump_on_exit
-        self.remove_trace_file_on_start = remove_trace_file_on_start
-        self.dump_trace_options = dump_trace_options
-        self.dump_format_kwargs = dump_format_kwargs
+    def __init__(
+        self,
+        trace_file: str = "traces.txt",
+        remove_old_trace_file: bool = True,
+        processed_filename: Optional[str] = "profile.json",
+        process_trace_options: dict = None,
+        process_trace_kwargs: dict = None,
+    ):
+        self.trace_file = Path(trace_file)
+        self.processed_filename = Path(processed_filename)
+        self.remove_old_trace_file = remove_old_trace_file
+        self.process_trace_options = process_trace_options
+        self.process_trace_kwargs = process_trace_kwargs
 
     def __enter__(self):
-        if self.remove_trace_file_on_start:
-            try:
-                os.unlink(self.trace_file)
-            except FileNotFoundError:
-                pass
+        if self.remove_old_trace_file:
+            self.trace_file.unlink(missing_ok=True)
         db = SingleFileTraceDatabase(self.trace_file)
         TraceDatabase(db)
-        
+
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.dump_on_exit:
+        if self.processed_filename is not None:
+            # print("Processing traces...")
             traces = get_traces()
-            with open(self.trace_file, "w") as f:
-                f.write(to_chrome_event_format(traces, self.dump_trace_options, self.dump_format_kwargs))
+            with self.processed_filename.open("w") as f:
+                f.write(
+                    to_chrome_event_format(
+                        traces, self.process_trace_options, self.process_trace_kwargs
+                    )
+                )
+            print(f"Chrome trace file written to {self.processed_filename}")
