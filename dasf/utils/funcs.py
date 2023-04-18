@@ -66,8 +66,13 @@ def get_worker_info(client) -> list:
         worker = workers[key]
         host = worker["host"]
         workers_by_host.setdefault(host, []).append(key)
-    host = workers[worker_keys[0]]["host"]
+
     all_workers = []
+
+    if len(worker_keys) == 0:
+        return all_workers
+
+    host = workers[worker_keys[0]]["host"]
     global_rank = 0
     world_size = len(workers_by_host)
     hosts = sorted(workers_by_host.keys())
