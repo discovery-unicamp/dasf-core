@@ -117,6 +117,19 @@ class DaskPipelineExecutor(Executor):
     def get_dataset(self, key):
         return self.client.get_dataset(name=key)
 
+    def shutdown(self, gracefully=True):
+        if gracefully:
+            info = get_worker_info(self.client)
+
+            worker_names = []
+            for worker in info:
+                worker_names.append(worker["worker"])
+
+            if worker_names:
+                self.client.retire_workers(worker_names, close_workers=True)
+        else:
+            self.client.shutdown()
+
 
 class DaskTasksPipelineExecutor(DaskPipelineExecutor):
     """
@@ -207,6 +220,19 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
 
     def get_dataset(self, key):
         return self.client.get_dataset(name=key)
+
+    def shutdown(self, gracefully=True):
+        if gracefully:
+            info = get_worker_info(self.client)
+
+            worker_names = []
+            for worker in info:
+                worker_names.append(worker["worker"])
+
+            if worker_names:
+                self.client.retire_workers(worker_names, close_workers=True)
+        else:
+            self.client.shutdown()
 
 
 class DaskPBSPipelineExecutor(Executor):
