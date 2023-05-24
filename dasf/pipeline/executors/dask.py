@@ -150,7 +150,7 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         address=None,
         port=8786,
         local=False,
-        use_gpu=False,
+        use_gpu=True,
         profiler=None,
         cluster_kwargs=None,
         client_kwargs=None,
@@ -167,8 +167,11 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         )
 
         # Ask workers for GPUs
-        if is_dask_gpu_supported():
-            self.dtype = TaskExecutorType.single_gpu
+        if use_gpu:
+            if is_dask_gpu_supported():
+                self.dtype = TaskExecutorType.single_gpu
+            else:
+                self.dtype = TaskExecutorType.single_cpu
         else:
             self.dtype = TaskExecutorType.single_cpu
 
