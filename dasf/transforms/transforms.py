@@ -265,6 +265,42 @@ class ArrayToHDF5(Transform):
         return self._transform_generic(X, **kwargs)
 
 
+class ZarrToArray(Transform):
+    def __init__(self, chunks=None, save=True, filename=None):
+        self.chunks = chunks
+        # TODO: implement the possibility of not saving
+        self.save = True
+        self.filename = filename
+
+    @staticmethod
+    def _convert_filename(url):
+        if url.endswith(".zarr"):
+            return url.replace(".zarr", ".npy")
+        return url + ".npy"
+
+    def transform(self, X):
+        # XXX: Avoid circular dependency
+        from dasf.datasets.base import DatasetZarr
+
+        if issubclass(X.__class__, DatasetZarr):
+            if self.save:
+                if self.filename:
+                    url = self.filename
+                elif hasattr(X, '_root_file'):
+                    url = X._root_file
+                else:
+                    raise Exception("Array requires a valid path to convert to Array.")
+
+                url = self._convert_filename(url)
+
+                np.save(url, X._data)
+
+            # This is just a place holder
+            return X._data
+        else:
+            raise Exception("Input is not a Zarr dataset.")
+
+
 class ArraysToDataFrame(Transform):
     def __transform_generic(self, X, y):
         assert len(X) == len(y), "Data and labels should have the same length."

@@ -1,6 +1,8 @@
 """ Data types handlers. """
 #!/usr/bin/env python3
 
+import zarr
+
 from typing import Union, get_args
 
 import numpy as np
@@ -19,7 +21,7 @@ except ImportError:
 from dasf.utils.funcs import is_gpu_supported
 
 
-ArrayCPU = Union[list, np.ndarray]
+ArrayCPU = Union[list, np.ndarray, zarr.core.Array]
 DataFrameCPU = Union[pd.DataFrame]
 
 DataCPU = Union[ArrayCPU, DataFrameCPU]

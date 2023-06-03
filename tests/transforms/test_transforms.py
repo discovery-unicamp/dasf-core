@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import zarr
 import shutil
 import tempfile
 import unittest
@@ -18,6 +19,7 @@ from dasf.datasets import DatasetHDF5
 from dasf.transforms import Normalize
 from dasf.transforms import ArrayToZarr
 from dasf.transforms import ArrayToHDF5
+from dasf.transforms import ZarrToArray
 from dasf.transforms import ArraysToDataFrame
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
@@ -139,7 +141,7 @@ class TestArrayToHDF5(unittest.TestCase):
         else:
             raise ValueError("file {} is not a file or dir.".format(path))
 
-    def test_array_to_zarr_cpu(self):
+    def test_array_to_hdf5_cpu(self):
         dataset = DatasetArray(root=self.array, download=False, name="Test Array")
 
         dataset = dataset._load_cpu()
@@ -150,7 +152,7 @@ class TestArrayToHDF5(unittest.TestCase):
 
         self.assertTrue(isinstance(T_1, DatasetHDF5))
 
-    def test_array_to_zarr_mcpu(self):
+    def test_array_to_hdf5_mcpu(self):
         dataset = DatasetArray(root=self.array, download=False, name="Test Array")
 
         dataset = dataset._lazy_load_cpu()
@@ -164,6 +166,54 @@ class TestArrayToHDF5(unittest.TestCase):
     def tearDown(self):
         self.remove(self.array)
         self.remove(self.hdf5)
+
+
+class TestZarrToArray(unittest.TestCase):
+    def setUp(self):
+        self.array = os.path.abspath(f"{tempfile.gettempdir()}/array.npy")
+        self.zarr = os.path.abspath(f"{tempfile.gettempdir()}/array.zarr")
+
+        random = z = zarr.array(np.random.random(10000), chunks=100)
+        zarr.save(self.zarr, random)
+
+    @staticmethod
+    def remove(path):
+        if os.path.isfile(path) or os.path.islink(path):
+            os.remove(path)  # remove the file
+        elif os.path.isdir(path):
+            shutil.rmtree(path)  # remove dir and all contains
+        else:
+            raise ValueError("file {} is not a file or dir.".format(path))
+
+    def test_zarr_to_array_cpu(self):
+        dataset = DatasetZarr(root=self.zarr, download=False, name="Test Zarr")
+
+        dataset = dataset._load_cpu()
+
+        T = ZarrToArray()
+
+        T_1 = T.transform(dataset)
+
+        print(type(T_1))
+
+        self.assertTrue(is_cpu_array(T_1))
+
+    def test_zarr_to_array_mcpu(self):
+        dataset = DatasetZarr(root=self.zarr, download=False, name="Test Zarr")
+
+        dataset = dataset._lazy_load_cpu()
+
+        T = ZarrToArray()
+
+        print(dataset._data)
+
+        T_1 = T.transform(dataset)
+
+        self.assertTrue(is_dask_cpu_array(T_1))
+
+    def tearDown(self):
+        self.remove(self.array)
+        self.remove(self.zarr)
 
 
 class TestArraysToDataFrame(unittest.TestCase):
@@ -229,7 +279,5 @@ class TestArraysToDataFrame(unittest.TestCase):
         y = arr_to_df._lazy_transform_gpu(array_1=darray_1,
                                           array_2=darray_2,
                                           array_3=darray_3)
-
-        print(type(y._meta))
 
         self.assertTrue(is_dask_gpu_dataframe(y))
