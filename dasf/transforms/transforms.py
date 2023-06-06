@@ -268,8 +268,7 @@ class ArrayToHDF5(Transform):
 class ZarrToArray(Transform):
     def __init__(self, chunks=None, save=True, filename=None):
         self.chunks = chunks
-        # TODO: implement the possibility of not saving
-        self.save = True
+        self.save = save
         self.filename = filename
 
     @staticmethod
