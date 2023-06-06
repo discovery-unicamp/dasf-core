@@ -11,7 +11,7 @@ from dasf.transforms import FitPredict
 from dasf.utils.funcs import is_gpu_supported
 
 
-class XGBoost(Fit, FitPredict, Predict):
+class XGBRegressor(Fit, FitPredict, Predict):
     def __init__(
         self,
         max_depth=None,
@@ -80,7 +80,7 @@ class XGBoost(Fit, FitPredict, Predict):
             random_state=random_state,
         )
 
-        self.__xgb_mcpu = xgb.dask.DaskXGBClassifier(
+        self.__xgb_mcpu = xgb.dask.DaskXGBRegressor(
             n_estimators=n_estimators,
             max_depth=max_depth,
             max_leaves=max_leaves,
@@ -141,7 +141,7 @@ class XGBoost(Fit, FitPredict, Predict):
                 gpu_id=gpu_id
             )
 
-            self.__xgb_mgpu = xgb.dask.DaskXGBClassifier(
+            self.__xgb_mgpu = xgb.dask.DaskXGBRegressor(
                 n_estimators=n_estimators,
                 max_depth=max_depth,
                 max_leaves=max_leaves,
@@ -168,29 +168,26 @@ class XGBoost(Fit, FitPredict, Predict):
                 random_state=random_state,
             )
 
-            self.__xgb_gpu.set_param({'predictor': 'gpu_predictor'})
-            self.__xgb_mgpu.set_param({'predictor': 'gpu_predictor'})
+    def _lazy_fit_cpu(self, X, y=None, sample_weight=None, *args, **kwargs):
+        return self.__xgb_mcpu.fit(X=X, y=y, *args, **kwargs)
 
-    def _lazy_fit_cpu(self, X, y=None, sample_weight=None):
-        return self.__xgb_mcpu.fit(X=X, y=y)
-
-    def _lazy_fit_gpu(self, X, y=None, sample_weight=None):
-        return self.__xgb_mgpu.fit(X=X, y=y)
+    def _lazy_fit_gpu(self, X, y=None, sample_weight=None, *args, **kwargs):
+        return self.__xgb_mgpu.fit(X=X, y=y, *args, **kwargs)
 
     def _fit_cpu(self, X, y=None, sample_weight=None):
         return self.__xgb_cpu.fit(X=X, y=y)
 
-    def _fit_gpu(self, X, y=None, sample_weight=None):
-        return self.__xgb_gpu.fit(X=X, y=y)
+    def _fit_gpu(self, X, y=None, sample_weight=None, *args, **kwargs):
+        return self.__xgb_gpu.fit(X=X, y=y, *args, **kwargs)
 
     def _lazy_predict_cpu(self, X, sample_weight=None, **kwargs):
-        return self.__kmeans_mcpu.predict(data=X, **kwargs)
+        return self.__xgb_mcpu.predict(X=X, **kwargs)
 
     def _lazy_predict_gpu(self, X, sample_weight=None, **kwargs):
-        return self.__kmeans_mgpu.predict(data=X, **kwargs)
+        return self.__xgb_mgpu.predict(X=X, **kwargs)
 
     def _predict_cpu(self, X, sample_weight=None, **kwargs):
-        return self.__kmeans_cpu.predict(X, **kwargs)
+        return self.__xgb_cpu.predict(X=X, **kwargs)
 
     def _predict_gpu(self, X, sample_weight=None, **kwargs):
-        return self.__kmeans_gpu.predict(X, **kwargs)
+        return self.__xgb_gpu.predict(X=X, **kwargs)
