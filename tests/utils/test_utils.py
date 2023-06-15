@@ -2,6 +2,9 @@
 
 import unittest
 
+import numpy as np
+import dask.array as da
+
 from mock import patch, Mock
 
 from dasf.utils.funcs import human_readable_size
@@ -11,6 +14,7 @@ from dasf.utils.funcs import is_dask_supported
 from dasf.utils.funcs import is_dask_gpu_supported
 from dasf.utils.funcs import get_gpu_count
 from dasf.utils.funcs import get_dask_gpu_count
+from dasf.utils.funcs import block_chunk_reduce
 
 
 class TestArchitetures(unittest.TestCase):
@@ -97,8 +101,65 @@ class TestArchitetures(unittest.TestCase):
 
     @patch('GPUtil.getGPUs', Mock(return_value=[]))
     def test_get_gpu_count_0(self):
+        print(get_dask_gpu_count())
         self.assertTrue(get_dask_gpu_count() == 0)
 
     @patch('GPUtil.getGPUs', Mock(return_value=[]))
     def test_get_dask_gpu_count_0(self):
         self.assertTrue(get_dask_gpu_count() == 0)
+
+
+class TestBlockChunkReduce(unittest.TestCase):
+    def test_different_chunks(self):
+        output_size = (100, 20)
+        data = da.random.random((20, 30, 40), chunks=(5, 15, 10))
+
+        drop_axis, new_axis = block_chunk_reduce(data, output_size)
+
+        self.assertTrue(np.array_equal(drop_axis, np.asarray([0, 1, 2])))
+        self.assertTrue(np.array_equal(new_axis, np.asarray([0, 1])))
+
+    def test_different_chunks_but_same_x(self):
+        output_size = (5, 20)
+        data = da.random.random((20, 30, 40), chunks=(5, 15, 10))
+
+        drop_axis, new_axis = block_chunk_reduce(data, output_size)
+
+        self.assertTrue(np.array_equal(drop_axis, np.asarray([1, 2])))
+        self.assertTrue(np.array_equal(new_axis, np.asarray([1])))
+
+    def test_different_chunks_but_same_y(self):
+        output_size = (100, 15)
+        data = da.random.random((20, 30, 40), chunks=(5, 15, 10))
+
+        drop_axis, new_axis = block_chunk_reduce(data, output_size)
+
+        self.assertTrue(np.array_equal(drop_axis, np.asarray([0, 2])))
+        self.assertTrue(np.array_equal(new_axis, np.asarray([0])))
+
+    def test_different_chunks_but_same_z(self):
+        output_size = (100, 10)
+        data = da.random.random((20, 30, 40), chunks=(5, 15, 10))
+
+        drop_axis, new_axis = block_chunk_reduce(data, output_size)
+
+        self.assertTrue(np.array_equal(drop_axis, np.asarray([0, 1])))
+        self.assertTrue(np.array_equal(new_axis, np.asarray([0])))
+
+    def test_different_chunks_but_greater_than_original(self):
+        output_size = (1, 1, 1, 100, 20, 20)
+        data = da.random.random((20, 30, 40), chunks=(5, 15, 10))
+
+        drop_axis, new_axis = block_chunk_reduce(data, output_size)
+
+        self.assertTrue(np.array_equal(drop_axis, np.asarray([0, 1, 2])))
+        self.assertTrue(np.array_equal(new_axis, np.asarray([0, 1, 2, 3, 4, 5])))
+
+    def test_different_chunks_but_greater_equal_than_original(self):
+        output_size = (5, 15, 10, 1, 1, 1)
+        data = da.random.random((20, 30, 40), chunks=(5, 15, 10))
+
+        drop_axis, new_axis = block_chunk_reduce(data, output_size)
+
+        self.assertTrue(np.array_equal(drop_axis, np.asarray([])))
+        self.assertTrue(np.array_equal(new_axis, np.asarray([3, 4, 5])))

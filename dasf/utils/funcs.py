@@ -374,23 +374,15 @@ def block_chunk_reduce(dask_data, output_chunk):
     if output_chunk is None or not isinstance(output_chunk, tuple):
         return drop_axis.tolist(), new_axis
 
-    data_chunk_range = len(dask_data.chunksize)
-    output_chunk_range = len(output_chunk)
+    data_chunk = dask_data.chunksize
 
-    data_indexes = np.arange(data_chunk_range)
-    output_indexes = np.arange(output_chunk_range)
+    drop_axis = np.in1d(data_chunk, output_chunk)
+    new_axis = np.in1d(output_chunk, data_chunk)
 
-    if data_chunk_range > output_chunk_range:
-        inter = np.intersect1d(data_indexes, output_indexes)
+    drop_axis = np.where(drop_axis == False)
+    new_axis = np.where(new_axis == False)
 
-        drop_axis = np.delete(data_indexes, inter)
-    elif data_chunk_range < output_chunk_range:
-        inter = np.intersect1d(data_indexes, output_indexes)
-
-        new_axis = np.delete(output_chunk_range, inter).tolist()
-
-    return drop_axis.tolist(), new_axis
-
+    return drop_axis[0], new_axis[0]
 
 def return_local_and_gpu(executor, local, gpu):
     """

@@ -181,6 +181,8 @@ class MappedTransform(Transform):
         boundary=None,
         trim=True,
         output_chunk=None,
+        drop_axis=None,
+        new_axis=None,
     ):
 
         self.function = function
@@ -188,6 +190,8 @@ class MappedTransform(Transform):
         self.boundary = boundary
         self.trim = trim
         self.output_chunk = output_chunk
+        self.drop_axis = drop_axis
+        self.new_axis = new_axis
 
         if (
             self.boundary is None
@@ -199,7 +203,10 @@ class MappedTransform(Transform):
                             "together")
 
     def __lazy_transform_generic(self, X, xp, **kwargs):
-        drop_axis, new_axis = block_chunk_reduce(X, self.output_chunk)
+        if self.drop_axis is not None or self.new_axis is not None:
+            drop_axis, new_axis = self.drop_axis, self.new_axis
+        else:
+            drop_axis, new_axis = block_chunk_reduce(X, self.output_chunk)
 
         if self.output_chunk is None:
             __output_chunk = X.chunks
