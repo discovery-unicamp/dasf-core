@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import rmm
 
 import networkx as nx
 
@@ -31,6 +32,7 @@ class DaskPipelineExecutor(Executor):
     use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
                 cluster (default False).
     profiler -- sets a Dask profiler.
+    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
     cluster_kwargs -- extra Dask parameters like memory, processes, etc.
     client_kwargs -- extra Client parameters.
     """
@@ -42,6 +44,7 @@ class DaskPipelineExecutor(Executor):
         local=False,
         use_gpu=False,
         profiler=None,
+        gpu_allocator="cupy",
         cluster_kwargs=None,
         client_kwargs=None,
     ):
@@ -77,6 +80,16 @@ class DaskPipelineExecutor(Executor):
             # Ask workers for GPUs
             if is_dask_gpu_supported():
                 self.dtype = TaskExecutorType.multi_gpu
+
+                if gpu_allocator == "cupy":
+                    # Nothing is required yet.
+                    pass
+                elif gpu_allocator == "rmm":
+                    self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
+                    rmm.reinitialize(managed_memory=True)
+                    cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
+                else:
+                    raise Exception(f"'{gpu_allocator}' GPU Memory allocator is not known")
             else:
                 self.dtype = TaskExecutorType.multi_cpu
 
@@ -142,6 +155,7 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
     use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
                 cluster (default False).
     profiler -- sets a Dask profiler.
+    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
     cluster_kwargs -- extra Dask parameters like memory, processes, etc.
     client_kwargs -- extra Client parameters.
     """
@@ -152,6 +166,7 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         local=False,
         use_gpu=True,
         profiler=None,
+        gpu_allocator="cupy",
         cluster_kwargs=None,
         client_kwargs=None,
     ):
@@ -170,6 +185,16 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         if use_gpu:
             if is_dask_gpu_supported():
                 self.dtype = TaskExecutorType.single_gpu
+
+                if gpu_allocator == "cupy":
+                    # Nothing is required yet.
+                    pass
+                elif gpu_allocator == "rmm":
+                    self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
+                    rmm.reinitialize(managed_memory=True)
+                    cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
+                else:
+                    raise Exception(f"'{gpu_allocator}' GPU Memory allocator is not known")
             else:
                 self.dtype = TaskExecutorType.single_cpu
         else:
