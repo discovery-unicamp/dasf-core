@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import os
-import rmm
 
 try:
+    import rmm
     import cupy as cp
     GPU_SUPPORTED = isinstance(cp.__version__, str)
 except ImportError:
