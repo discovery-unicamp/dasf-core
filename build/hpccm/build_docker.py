@@ -46,6 +46,11 @@ apt_keys = [
 ]
 
 packages_list = ["git", "graphviz", "gcc", "python3-dev", "g++", "openssh-client"]
+
+if is_devel:
+    # Install NVIDIA NSight packages
+    package_list += ["nsight-compute"]
+
 pip_package_install = "pip3 install --extra-index-url https://test.pypi.org/simple/ XPySom-dask git+https://github.com/discovery-unicamp/dasf-core.git"
 
 if device_target.lower() == "cpu":

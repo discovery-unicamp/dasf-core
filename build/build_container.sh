@@ -31,6 +31,7 @@ function print_help() {
     echo "    --format FORMAT                  Select the container backend for this build."
     echo "                                     Use 'docker' for Docker images."
     echo "                                     Use 'singularity' for SIF images (default='$FORMAT')."
+    echo "    --devel                          Defines extra packages for development purpose."
     echo ""
 }
 
@@ -70,6 +71,10 @@ while [[ $# -gt 0 ]]; do
     --format)
       FORMAT="$2"
       shift
+      shift
+      ;;
+    --devel)
+      IS_DEVEL="True"
       shift
       ;;
     -*|--*)
