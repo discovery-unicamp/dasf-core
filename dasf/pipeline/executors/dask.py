@@ -3,6 +3,12 @@
 import os
 import rmm
 
+try:
+    import cupy as cp
+    GPU_SUPPORTED = isinstance(cp.__version__, str)
+except ImportError:
+    GPU_SUPPORTED = False    
+
 import networkx as nx
 
 import dask_memusage as dmem
@@ -84,7 +90,7 @@ class DaskPipelineExecutor(Executor):
                 if gpu_allocator == "cupy":
                     # Nothing is required yet.
                     pass
-                elif gpu_allocator == "rmm":
+                elif gpu_allocator == "rmm" and GPU_SUPPORTED:
                     self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
                     rmm.reinitialize(managed_memory=True)
                     cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
@@ -189,7 +195,7 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
                 if gpu_allocator == "cupy":
                     # Nothing is required yet.
                     pass
-                elif gpu_allocator == "rmm":
+                elif gpu_allocator == "rmm" and GPU_SUPPORTED:
                     self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
                     rmm.reinitialize(managed_memory=True)
                     cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
