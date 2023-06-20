@@ -54,9 +54,10 @@ class TestMappedTransform(unittest.TestCase):
 
         X_t = mapped._lazy_transform_cpu(X, nxp=np)
 
+        self.assertEqual(X_t.shape, (1, 2))
         # We split data in 4 chunks of axis 0. If the new chunk size is
         # (1, 2), it means that the final size is (1 * 4, 2).
-        self.assertEqual(X_t.shape, (4, 2))
+        self.assertEqual(X_t.compute().shape, (1, 2))
 
         self.assertTrue(is_dask_cpu_array(X_t))
 
@@ -88,9 +89,10 @@ class TestMappedTransform(unittest.TestCase):
 
         X_t = mapped._lazy_transform_gpu(X, nxp=cp)
 
+        self.assertEqual(X_t.shape, (1, 2))
         # We split data in 4 chunks of axis 0. If the new chunk size is
         # (1, 2), it means that the final size is (1 * 4, 2).
-        self.assertEqual(X_t.shape, (4, 2))
+        self.assertEqual(X_t.compute().get().shape, (1, 2))
 
         self.assertTrue(is_dask_gpu_array(X_t))
 

@@ -382,7 +382,7 @@ def block_chunk_reduce(dask_data, output_chunk):
     drop_axis = np.where(drop_axis == False)
     new_axis = np.where(new_axis == False)
 
-    return drop_axis[0], new_axis[0]
+    return drop_axis[0].tolist(), new_axis[0].tolist()
 
 def return_local_and_gpu(executor, local, gpu):
     """
