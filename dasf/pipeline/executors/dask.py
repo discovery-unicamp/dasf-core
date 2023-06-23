@@ -79,6 +79,13 @@ class DaskPipelineExecutor(Executor):
                 self.client = Client(LocalCluster(**cluster_kwargs),
                                      **client_kwargs)
 
+        # Setup RMM allocator when using GPUs
+        if use_gpu:
+            if self.client is not None:
+                self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
+            rmm.reinitialize(managed_memory=True)
+            cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
+
         # Ask workers for GPUs
         if local and not use_gpu:
             self.dtype = TaskExecutorType.multi_cpu
