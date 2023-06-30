@@ -1,0 +1,116 @@
+:py:mod:`dasf.transforms.transforms`
+====================================
+
+.. py:module:: dasf.transforms.transforms
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.transforms.transforms.Normalize
+   dasf.transforms.transforms.ArrayToZarr
+   dasf.transforms.transforms.ArrayToHDF5
+   dasf.transforms.transforms.ArraysToDataFrame
+
+
+
+
+.. py:class:: Normalize
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   .. py:method:: transform(X)
+
+
+
+.. py:class:: ArrayToZarr(chunks=None, save=True, filename=None)
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   .. py:method:: _convert_filename(url)
+      :staticmethod:
+
+
+   .. py:method:: _lazy_transform_generic_all(data)
+
+
+   .. py:method:: _transform_generic_all(data, chunks, **kwargs)
+
+
+   .. py:method:: _lazy_transform_generic(X, **kwargs)
+
+
+   .. py:method:: _transform_generic(X, **kwargs)
+
+
+   .. py:method:: _lazy_transform_gpu(X, **kwargs)
+
+
+   .. py:method:: _lazy_transform_cpu(X, **kwargs)
+
+
+   .. py:method:: _transform_gpu(X, **kwargs)
+
+
+   .. py:method:: _transform_cpu(X, **kwargs)
+
+
+
+.. py:class:: ArrayToHDF5(dataset_path, chunks=None, save=True, filename=None)
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   .. py:method:: _convert_filename(url)
+      :staticmethod:
+
+
+   .. py:method:: _lazy_transform_generic_all(data)
+
+
+   .. py:method:: _transform_generic_all(data)
+
+
+   .. py:method:: _lazy_transform_generic(X, **kwargs)
+
+
+   .. py:method:: _transform_generic(X, **kwargs)
+
+
+   .. py:method:: _lazy_transform_gpu(X, **kwargs)
+
+
+   .. py:method:: _lazy_transform_cpu(X, **kwargs)
+
+
+   .. py:method:: _transform_gpu(X, **kwargs)
+
+
+   .. py:method:: _transform_cpu(X, **kwargs)
+
+
+
+.. py:class:: ArraysToDataFrame
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   .. py:method:: __transform_generic(X, y)
+
+
+   .. py:method:: _lazy_transform_cpu(X=None, **kwargs)
+
+
+   .. py:method:: _lazy_transform_gpu(X=None, **kwargs)
+
+
+   .. py:method:: _transform_gpu(X=None, **kwargs)
+
+
+   .. py:method:: _transform_cpu(X=None, **kwargs)
+
+
+

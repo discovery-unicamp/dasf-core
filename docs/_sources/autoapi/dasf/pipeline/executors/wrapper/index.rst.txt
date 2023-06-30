@@ -1,0 +1,27 @@
+:py:mod:`dasf.pipeline.executors.wrapper`
+=========================================
+
+.. py:module:: dasf.pipeline.executors.wrapper
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.executors.wrapper.PrefectPipelineExecutor
+
+
+
+
+.. py:class:: PrefectPipelineExecutor
+
+   Bases: :py:obj:`prefect.executors.local.LocalExecutor`
+
+   .. py:property:: dtype
+
+
+

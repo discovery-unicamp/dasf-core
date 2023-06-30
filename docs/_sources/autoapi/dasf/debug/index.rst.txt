@@ -1,0 +1,62 @@
+:py:mod:`dasf.debug`
+====================
+
+.. py:module:: dasf.debug
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   debug/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.debug.Debug
+   dasf.debug.VisualizeDaskData
+
+
+
+
+.. py:class:: Debug
+
+   Print information about an operator (shape, datatype, etc.), and return
+   the self object reference.
+
+   Parameters
+   ----------
+   name : str
+       Name of the operator.
+   **kwargs : type
+       Additional keyworkded arguments to `Operator`.
+
+
+   .. py:method:: display(X)
+
+
+
+.. py:class:: VisualizeDaskData(filename = None)
+
+   Visualize DASK data from an operator.
+
+   Parameters
+   ----------
+   filename : str
+       A path to save the DASK visualization (the default is None).
+   **kwargs : type
+       Additional keyworkded arguments to `Operator`.
+
+
+   .. py:method:: display(X)
+
+
+

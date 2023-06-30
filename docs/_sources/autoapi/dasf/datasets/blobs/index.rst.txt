@@ -1,0 +1,44 @@
+:py:mod:`dasf.datasets.blobs`
+=============================
+
+.. py:module:: dasf.datasets.blobs
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.datasets.blobs.make_blobs
+
+
+
+
+.. py:class:: make_blobs
+
+   Singleton class used to generate isotropic Gaussian blobs for clustering.
+   It automatically selects the implementation based on hardware and available
+   libraries and return a container suitable for it (cupy, numpy, cupy+dask or
+   numpy+dask).
+
+   The class implements `__call__` being a callable object. 
+
+   .. py:method:: _lazy_make_blobs_cpu(**kwargs)
+
+
+   .. py:method:: _lazy_make_blobs_gpu(**kwargs)
+
+
+   .. py:method:: _make_blobs_cpu(**kwargs)
+
+
+   .. py:method:: _make_blobs_gpu(**kwargs)
+
+
+   .. py:method:: __call__(**kwargs)
+
+
+

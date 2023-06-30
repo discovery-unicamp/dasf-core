@@ -1,0 +1,28 @@
+:py:mod:`dasf.ml.core`
+======================
+
+.. py:module:: dasf.ml.core
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.ml.core.MLGeneric
+
+
+
+
+.. py:class:: MLGeneric(name, checkpoint=False, **kwargs)
+
+   .. py:method:: dump(model)
+
+
+   .. py:method:: load(model)
+
+
+

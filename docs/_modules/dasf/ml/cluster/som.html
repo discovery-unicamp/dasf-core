@@ -1,0 +1,484 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dasf.ml.cluster.som &mdash; DASF 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> DASF
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">DASF API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">DASF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dasf.ml.cluster.som</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dasf.ml.cluster.som</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">xpysom_dask</span> <span class="kn">import</span> <span class="n">XPySom</span>
+
+<span class="kn">from</span> <span class="nn">dasf.ml.cluster.classifier</span> <span class="kn">import</span> <span class="n">ClusterClassifier</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_gpu_supported</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.decorators</span> <span class="kn">import</span> <span class="n">task_handler</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="SOM"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM">[docs]</a><span class="k">class</span> <span class="nc">SOM</span><span class="p">(</span><span class="n">ClusterClassifier</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes a Self Organizing Maps.</span>
+
+<span class="sd">    A rule of thumb to set the size of the grid for a dimensionality</span>
+<span class="sd">    reduction task is that it should contain 5*sqrt(N) neurons</span>
+<span class="sd">    where N is the number of samples in the dataset to analyze.</span>
+
+<span class="sd">    E.g. if your dataset has 150 samples, 5*sqrt(150) = 61.23</span>
+<span class="sd">    hence a map 8-by-8 should perform well.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : int</span>
+<span class="sd">        x dimension of the SOM.</span>
+
+<span class="sd">    y : int</span>
+<span class="sd">        y dimension of the SOM.</span>
+
+<span class="sd">    input_len : int</span>
+<span class="sd">        Number of the elements of the vectors in input.</span>
+
+<span class="sd">    sigma : float, default=min(x,y)/2</span>
+<span class="sd">        Spread of the neighborhood function, needs to be adequate</span>
+<span class="sd">        to the dimensions of the map.</span>
+
+<span class="sd">    sigmaN : float, default=0.01</span>
+<span class="sd">        Spread of the neighborhood function at last iteration.</span>
+
+<span class="sd">    learning_rate : float, default=0.5</span>
+<span class="sd">        initial learning rate.</span>
+
+<span class="sd">    learning_rateN : float, default=0.01</span>
+<span class="sd">        final learning rate</span>
+
+<span class="sd">    decay_function : string, default=&#39;exponential&#39;</span>
+<span class="sd">        Function that reduces learning_rate and sigma at each iteration.</span>
+<span class="sd">        Possible values: &#39;exponential&#39;, &#39;linear&#39;, &#39;aymptotic&#39;</span>
+
+<span class="sd">    neighborhood_function : string, default=&#39;gaussian&#39;</span>
+<span class="sd">        Function that weights the neighborhood of a position in the map.</span>
+<span class="sd">        Possible values: &#39;gaussian&#39;, &#39;mexican_hat&#39;, &#39;bubble&#39;, &#39;triangle&#39;</span>
+
+<span class="sd">    topology : string, default=&#39;rectangular&#39;</span>
+<span class="sd">        Topology of the map.</span>
+<span class="sd">        Possible values: &#39;rectangular&#39;, &#39;hexagonal&#39;</span>
+
+<span class="sd">    activation_distance : string, default=&#39;euclidean&#39;</span>
+<span class="sd">        Distance used to activate the map.</span>
+<span class="sd">        Possible values: &#39;euclidean&#39;, &#39;cosine&#39;, &#39;manhattan&#39;</span>
+
+<span class="sd">    random_seed : int, default=None</span>
+<span class="sd">        Random seed to use.</span>
+
+<span class="sd">    n_parallel : uint, default=#max_CUDA_threads or 500*#CPUcores</span>
+<span class="sd">        Number of samples to be processed at a time. Setting a too low</span>
+<span class="sd">        value may drastically lower performance due to under-utilization,</span>
+<span class="sd">        setting a too high value increases memory usage without granting </span>
+<span class="sd">        any significant performance benefit.</span>
+
+<span class="sd">    xp : numpy or cupy, default=cupy if can be imported else numpy</span>
+<span class="sd">        Use numpy (CPU) or cupy (GPU) for computations.</span>
+
+<span class="sd">    std_coeff: float, default=0.5</span>
+<span class="sd">        Used to calculate gausssian exponent denominator:</span>
+<span class="sd">        d = 2*std_coeff**2*sigma**2</span>
+
+<span class="sd">    compact_support: bool, default=False</span>
+<span class="sd">        Cut the neighbor function to 0 beyond neighbor radius sigma</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from dasf.ml.cluster import SOM</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; X = np.array([[1, 1], [2, 1], [1, 0],</span>
+<span class="sd">    ...               [4, 7], [3, 5], [3, 6]])</span>
+<span class="sd">    &gt;&gt;&gt; som = SOM(x=3, y=2, input_len=2,</span>
+<span class="sd">    ...           num_epochs=100).fit(X)</span>
+<span class="sd">    &gt;&gt;&gt; som</span>
+<span class="sd">    SOM(x=3, y=2, input_len=2, num_epochs=100)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">,</span>
+        <span class="n">input_len</span><span class="p">,</span>
+        <span class="n">num_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">sigma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">sigmaN</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">learning_rateN</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">decay_function</span><span class="o">=</span><span class="s2">&quot;exponential&quot;</span><span class="p">,</span>
+        <span class="n">neighborhood_function</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">,</span>
+        <span class="n">std_coeff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">topology</span><span class="o">=</span><span class="s2">&quot;rectangular&quot;</span><span class="p">,</span>
+        <span class="n">activation_distance</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+        <span class="n">random_seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_parallel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">compact_support</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_len</span> <span class="o">=</span> <span class="n">input_len</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span> <span class="o">=</span> <span class="n">num_epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigmaN</span> <span class="o">=</span> <span class="n">sigmaN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rateN</span> <span class="o">=</span> <span class="n">learning_rateN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decay_function</span> <span class="o">=</span> <span class="n">decay_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neighborhood_function</span> <span class="o">=</span> <span class="n">neighborhood_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">std_coeff</span> <span class="o">=</span> <span class="n">std_coeff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topology</span> <span class="o">=</span> <span class="n">topology</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_distance</span> <span class="o">=</span> <span class="n">activation_distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="n">random_seed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_parallel</span> <span class="o">=</span> <span class="n">n_parallel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compact_support</span> <span class="o">=</span> <span class="n">compact_support</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span> <span class="o">=</span> <span class="n">XPySom</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">input_len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_len</span><span class="p">,</span>
+            <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span>
+            <span class="n">sigmaN</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigmaN</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+            <span class="n">learning_rateN</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rateN</span><span class="p">,</span>
+            <span class="n">decay_function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_function</span><span class="p">,</span>
+            <span class="n">neighborhood_function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">neighborhood_function</span><span class="p">,</span>
+            <span class="n">std_coeff</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">std_coeff</span><span class="p">,</span>
+            <span class="n">topology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">topology</span><span class="p">,</span>
+            <span class="n">activation_distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation_distance</span><span class="p">,</span>
+            <span class="n">random_seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span><span class="p">,</span>
+            <span class="n">n_parallel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_parallel</span><span class="p">,</span>
+            <span class="n">compact_support</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compact_support</span><span class="p">,</span>
+            <span class="n">xp</span><span class="o">=</span><span class="n">np</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span> <span class="o">=</span> <span class="n">XPySom</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">input_len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_len</span><span class="p">,</span>
+            <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span>
+            <span class="n">sigmaN</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigmaN</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+            <span class="n">learning_rateN</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rateN</span><span class="p">,</span>
+            <span class="n">decay_function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_function</span><span class="p">,</span>
+            <span class="n">neighborhood_function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">neighborhood_function</span><span class="p">,</span>
+            <span class="n">std_coeff</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">std_coeff</span><span class="p">,</span>
+            <span class="n">topology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">topology</span><span class="p">,</span>
+            <span class="n">activation_distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation_distance</span><span class="p">,</span>
+            <span class="n">random_seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span><span class="p">,</span>
+            <span class="n">n_parallel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_parallel</span><span class="p">,</span>
+            <span class="n">compact_support</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compact_support</span><span class="p">,</span>
+            <span class="n">xp</span><span class="o">=</span><span class="n">np</span><span class="p">,</span>
+            <span class="n">use_dask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span> <span class="o">=</span> <span class="n">XPySom</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                <span class="n">input_len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_len</span><span class="p">,</span>
+                <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span>
+                <span class="n">sigmaN</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigmaN</span><span class="p">,</span>
+                <span class="n">learning_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+                <span class="n">learning_rateN</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rateN</span><span class="p">,</span>
+                <span class="n">decay_function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_function</span><span class="p">,</span>
+                <span class="n">neighborhood_function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">neighborhood_function</span><span class="p">,</span>
+                <span class="n">std_coeff</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">std_coeff</span><span class="p">,</span>
+                <span class="n">topology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">topology</span><span class="p">,</span>
+                <span class="n">activation_distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation_distance</span><span class="p">,</span>
+                <span class="n">random_seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span><span class="p">,</span>
+                <span class="n">n_parallel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_parallel</span><span class="p">,</span>
+                <span class="n">compact_support</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compact_support</span><span class="p">,</span>
+                <span class="n">xp</span><span class="o">=</span><span class="n">cp</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span> <span class="o">=</span> <span class="n">XPySom</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                <span class="n">input_len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_len</span><span class="p">,</span>
+                <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span>
+                <span class="n">sigmaN</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigmaN</span><span class="p">,</span>
+                <span class="n">learning_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+                <span class="n">learning_rateN</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rateN</span><span class="p">,</span>
+                <span class="n">decay_function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_function</span><span class="p">,</span>
+                <span class="n">neighborhood_function</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">neighborhood_function</span><span class="p">,</span>
+                <span class="n">std_coeff</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">std_coeff</span><span class="p">,</span>
+                <span class="n">topology</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">topology</span><span class="p">,</span>
+                <span class="n">activation_distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation_distance</span><span class="p">,</span>
+                <span class="n">random_seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span><span class="p">,</span>
+                <span class="n">n_parallel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_parallel</span><span class="p">,</span>
+                <span class="n">compact_support</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compact_support</span><span class="p">,</span>
+                <span class="n">xp</span><span class="o">=</span><span class="n">cp</span><span class="p">,</span>
+                <span class="n">use_dask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="SOM._lazy_fit_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._lazy_fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._fit_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._lazy_fit_predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_fit_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._lazy_fit_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._fit_predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._fit_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._fit_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._lazy_predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._lazy_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._lazy_quantization_error_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_quantization_error_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_quantization_error_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span><span class="o">.</span><span class="n">quantization_error</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._lazy_quantization_error_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_quantization_error_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_quantization_error_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span><span class="o">.</span><span class="n">quantization_error</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._quantization_error_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._quantization_error_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_quantization_error_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span><span class="o">.</span><span class="n">quantization_error</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM._quantization_error_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._quantization_error_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_quantization_error_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span><span class="o">.</span><span class="n">quantization_error</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SOM.quantization_error"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM.quantization_error">[docs]</a>    <span class="nd">@task_handler</span>
+    <span class="k">def</span> <span class="nf">quantization_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="o">...</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, UNICAMP.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+:py:mod:`dasf.ml.decomposition`
+===============================
+
+.. py:module:: dasf.ml.decomposition
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   pca/index.rst
+
+
