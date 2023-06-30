@@ -38,6 +38,7 @@ Classes
 
 .. py:class:: NeuralNetClassifier(model, max_iter=100, batch_size=32)
 
+
    Bases: :py:obj:`dasf.transforms.base.Fit`
 
    .. py:method:: _lazy_fit_generic(X, y, accel, ngpus)

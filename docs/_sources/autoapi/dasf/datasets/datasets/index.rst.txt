@@ -21,6 +21,7 @@ Classes
 
 .. py:class:: make_blobs
 
+
    .. py:method:: _lazy_make_blobs_cpu(**kwargs)
 
 
@@ -39,6 +40,7 @@ Classes
 
 .. py:class:: make_classification
 
+
    .. py:method:: _lazy_make_classification_cpu(**kwargs)
 
 
@@ -56,6 +58,7 @@ Classes
 
 
 .. py:class:: make_regression
+
 
    .. py:method:: _lazy_make_regression_cpu(**kwargs)
 

@@ -24,6 +24,7 @@ Classes
 
 .. py:class:: MyAccuracy(dist_sync_on_step=False)
 
+
    Bases: :py:obj:`torchmetrics.Metric`
 
    Base class for all metrics present in the Metrics API.
@@ -36,8 +37,8 @@ Classes
    call of ``update()`` and are synchronized across processes when ``compute()`` is called.
 
    Note:
-       Metric state variables can either be ``torch.Tensors`` or an empty list which can we used
-       to store `torch.Tensors``.
+       Metric state variables can either be :class:`~torch.Tensor` or an empty list which can we used
+       to store :class:`~torch.Tensor`.
 
    Note:
        Different metrics only override ``update()`` and not ``forward()``. A call to ``update()``
@@ -80,6 +81,7 @@ Classes
 
 
 .. py:class:: NNModule(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
+
 
    Bases: :py:obj:`pytorch_lightning.LightningModule`
 
@@ -124,8 +126,9 @@ Classes
 
    .. py:method:: configure_optimizers()
 
-      Choose what optimizers and learning-rate schedulers to use in your optimization.
-      Normally you'd need one. But in the case of GANs or similar you might have multiple.
+      Choose what optimizers and learning-rate schedulers to use in your optimization. Normally you'd need
+      one. But in the case of GANs or similar you might have multiple. Optimization with multiple optimizers only
+      works in the manual optimization mode.
 
       Return:
           Any of these 6 options.
@@ -136,7 +139,6 @@ Classes
             (or multiple ``lr_scheduler_config``).
           - **Dictionary**, with an ``"optimizer"`` key, and (optionally) a ``"lr_scheduler"``
             key whose value is a single LR scheduler or ``lr_scheduler_config``.
-          - **Tuple of dictionaries** as described above, with an optional ``"frequency"`` key.
           - **None** - Fit will run without any optimizer.
 
       The ``lr_scheduler_config`` is a dictionary which contains the scheduler and its associated configuration.
@@ -210,100 +212,28 @@ Classes
       ``self.log('metric_to_track', metric_val)`` in your :class:`~pytorch_lightning.core.module.LightningModule`.
 
       Note:
-          The ``frequency`` value specified in a dict along with the ``optimizer`` key is an int corresponding
-          to the number of sequential batches optimized with the specific optimizer.
-          It should be given to none or to all of the optimizers.
-          There is a difference between passing multiple optimizers in a list,
-          and passing multiple optimizers in dictionaries with a frequency of 1:
-
-              - In the former case, all optimizers will operate on the given batch in each optimization step.
-              - In the latter, only one optimizer will operate on the given batch at every step.
-
-          This is different from the ``frequency`` value specified in the ``lr_scheduler_config`` mentioned above.
-
-          .. code-block:: python
-
-              def configure_optimizers(self):
-                  optimizer_one = torch.optim.SGD(self.model.parameters(), lr=0.01)
-                  optimizer_two = torch.optim.SGD(self.model.parameters(), lr=0.01)
-                  return [
-                      {"optimizer": optimizer_one, "frequency": 5},
-                      {"optimizer": optimizer_two, "frequency": 10},
-                  ]
-
-          In this example, the first optimizer will be used for the first 5 steps,
-          the second optimizer for the next 10 steps and that cycle will continue.
-          If an LR scheduler is specified for an optimizer using the ``lr_scheduler`` key in the above dict,
-          the scheduler will only be updated when its optimizer is being used.
-
-      Examples::
-
-          # most cases. no learning rate scheduler
-          def configure_optimizers(self):
-              return Adam(self.parameters(), lr=1e-3)
-
-          # multiple optimizer case (e.g.: GAN)
-          def configure_optimizers(self):
-              gen_opt = Adam(self.model_gen.parameters(), lr=0.01)
-              dis_opt = Adam(self.model_dis.parameters(), lr=0.02)
-              return gen_opt, dis_opt
-
-          # example with learning rate schedulers
-          def configure_optimizers(self):
-              gen_opt = Adam(self.model_gen.parameters(), lr=0.01)
-              dis_opt = Adam(self.model_dis.parameters(), lr=0.02)
-              dis_sch = CosineAnnealing(dis_opt, T_max=10)
-              return [gen_opt, dis_opt], [dis_sch]
-
-          # example with step-based learning rate schedulers
-          # each optimizer has its own scheduler
-          def configure_optimizers(self):
-              gen_opt = Adam(self.model_gen.parameters(), lr=0.01)
-              dis_opt = Adam(self.model_dis.parameters(), lr=0.02)
-              gen_sch = {
-                  'scheduler': ExponentialLR(gen_opt, 0.99),
-                  'interval': 'step'  # called after each training step
-              }
-              dis_sch = CosineAnnealing(dis_opt, T_max=10) # called every epoch
-              return [gen_opt, dis_opt], [gen_sch, dis_sch]
-
-          # example with optimizer frequencies
-          # see training procedure in `Improved Training of Wasserstein GANs`, Algorithm 1
-          # https://arxiv.org/abs/1704.00028
-          def configure_optimizers(self):
-              gen_opt = Adam(self.model_gen.parameters(), lr=0.01)
-              dis_opt = Adam(self.model_dis.parameters(), lr=0.02)
-              n_critic = 5
-              return (
-                  {'optimizer': dis_opt, 'frequency': n_critic},
-                  {'optimizer': gen_opt, 'frequency': 1}
-              )
-
-      Note:
           Some things to know:
 
-          - Lightning calls ``.backward()`` and ``.step()`` on each optimizer and learning rate scheduler as needed.
-          - If you use 16-bit precision (``precision=16``), Lightning will automatically handle the optimizers.
-          - If you use multiple optimizers, :meth:`training_step` will have an additional ``optimizer_idx`` parameter.
+          - Lightning calls ``.backward()`` and ``.step()`` automatically in case of automatic optimization.
+          - If a learning rate scheduler is specified in ``configure_optimizers()`` with key
+            ``"interval"`` (default "epoch") in the scheduler configuration, Lightning will call
+            the scheduler's ``.step()`` method automatically in case of automatic optimization.
+          - If you use 16-bit precision (``precision=16``), Lightning will automatically handle the optimizer.
           - If you use :class:`torch.optim.LBFGS`, Lightning handles the closure function automatically for you.
-          - If you use multiple optimizers, gradients will be calculated only for the parameters of current optimizer
-            at each training step.
-          - If you need to control how often those optimizers step or override the default ``.step()`` schedule,
-            override the :meth:`optimizer_step` hook.
+          - If you use multiple optimizers, you will have to switch to 'manual optimization' mode and step them
+            yourself.
+          - If you need to control how often the optimizer steps, override the :meth:`optimizer_step` hook.
 
 
    .. py:method:: training_step(batch, batch_idx)
 
-      Here you compute and return the training loss and some additional metrics for e.g.
-      the progress bar or logger.
+      Here you compute and return the training loss and some additional metrics for e.g. the progress bar or
+      logger.
 
       Args:
           batch (:class:`~torch.Tensor` | (:class:`~torch.Tensor`, ...) | [:class:`~torch.Tensor`, ...]):
               The output of your :class:`~torch.utils.data.DataLoader`. A tensor, tuple or list.
           batch_idx (``int``): Integer displaying index of this batch
-          optimizer_idx (``int``): When using multiple optimizers, this argument will also be present.
-          hiddens (``Any``): Passed in if
-              :paramref:`~pytorch_lightning.core.module.LightningModule.truncated_bptt_steps` > 0.
 
       Return:
           Any of.
@@ -324,52 +254,35 @@ Classes
               loss = self.loss(out, x)
               return loss
 
-      If you define multiple optimizers, this step will be called with an additional
-      ``optimizer_idx`` parameter.
+      To use multiple optimizers, you can switch to 'manual optimization' and control their stepping:
 
       .. code-block:: python
+
+          def __init__(self):
+              super().__init__()
+              self.automatic_optimization = False
+
 
           # Multiple optimizers (e.g.: GANs)
-          def training_step(self, batch, batch_idx, optimizer_idx):
-              if optimizer_idx == 0:
-                  # do training_step with encoder
-                  ...
-              if optimizer_idx == 1:
-                  # do training_step with decoder
-                  ...
+          def training_step(self, batch, batch_idx):
+              opt1, opt2 = self.optimizers()
 
-
-      If you add truncated back propagation through time you will also get an additional
-      argument with the hidden states of the previous step.
-
-      .. code-block:: python
-
-          # Truncated back-propagation through time
-          def training_step(self, batch, batch_idx, hiddens):
-              # hiddens are the hidden states from the previous truncated backprop step
-              out, hiddens = self.lstm(data, hiddens)
-              loss = ...
-              return {"loss": loss, "hiddens": hiddens}
+              # do training_step with encoder
+              ...
+              opt1.step()
+              # do training_step with decoder
+              ...
+              opt2.step()
 
       Note:
-          The loss value shown in the progress bar is smoothed (averaged) over the last values,
-          so it differs from the actual loss returned in train/validation step.
+          When ``accumulate_grad_batches`` > 1, the loss returned here will be automatically
+          normalized by ``accumulate_grad_batches`` internally.
 
 
    .. py:method:: test_step(test_batch, batch_idx)
 
-      Operates on a single batch of data from the test set.
-      In this step you'd normally generate examples or calculate anything of interest
-      such as accuracy.
-
-      .. code-block:: python
-
-          # the pseudocode for these calls
-          test_outs = []
-          for test_batch in test_data:
-              out = test_step(test_batch)
-              test_outs.append(out)
-          test_epoch_end(test_outs)
+      Operates on a single batch of data from the test set. In this step you'd normally generate examples or
+      calculate anything of interest such as accuracy.
 
       Args:
           batch: The output of your :class:`~torch.utils.data.DataLoader`.
@@ -439,6 +352,7 @@ Classes
 
 .. py:class:: TorchPatchDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
+
    Bases: :py:obj:`NNModule`
 
    Base class for all neural network modules.
@@ -476,7 +390,7 @@ Classes
 
    .. py:method:: forward(x)
 
-      Same as :meth:`torch.nn.Module.forward()`.
+      Same as :meth:`torch.nn.Module.forward`.
 
       Args:
           *args: Whatever you decide to pass into the forward method.
@@ -497,6 +411,7 @@ Classes
 
 .. py:class:: TorchPatchDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
+
    Bases: :py:obj:`NNModule`
 
    Base class for all neural network modules.
@@ -534,7 +449,7 @@ Classes
 
    .. py:method:: forward(x)
 
-      Same as :meth:`torch.nn.Module.forward()`.
+      Same as :meth:`torch.nn.Module.forward`.
 
       Args:
           *args: Whatever you decide to pass into the forward method.
@@ -555,6 +470,7 @@ Classes
 
 .. py:class:: TorchSectionDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=False)
 
+
    Bases: :py:obj:`NNModule`
 
    Base class for all neural network modules.
@@ -592,7 +508,7 @@ Classes
 
    .. py:method:: forward(x)
 
-      Same as :meth:`torch.nn.Module.forward()`.
+      Same as :meth:`torch.nn.Module.forward`.
 
       Args:
           *args: Whatever you decide to pass into the forward method.
@@ -613,6 +529,7 @@ Classes
 
 .. py:class:: TorchSectionDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
+
    Bases: :py:obj:`NNModule`
 
    Base class for all neural network modules.
@@ -650,7 +567,7 @@ Classes
 
    .. py:method:: forward(x)
 
-      Same as :meth:`torch.nn.Module.forward()`.
+      Same as :meth:`torch.nn.Module.forward`.
 
       Args:
           *args: Whatever you decide to pass into the forward method.

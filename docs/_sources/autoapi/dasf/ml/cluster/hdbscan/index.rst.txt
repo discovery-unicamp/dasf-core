@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: HDBSCAN(alpha=1.0, gen_min_span_tree=False, leaf_size=40, metric='euclidean', min_cluster_size=5, min_samples=None, p=None, algorithm='best', approx_min_span_tree=True, core_dist_n_jobs=4, cluster_selection_method='eom', allow_single_cluster=False, prediction_data=False, match_reference_implementation=False, connectivity='knn', output_type=None, verbose=0, **kwargs)
 
+
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
 
    Perform HDBSCAN clustering from vector array or distance matrix.

@@ -28,6 +28,7 @@ Classes
 
 .. py:class:: DaskClusterEnvironment(metadata=None)
 
+
    Bases: :py:obj:`pytorch_lightning.plugins.environments.ClusterEnvironment`
 
    Create a Dask Cluster environment for workers

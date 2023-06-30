@@ -47,7 +47,7 @@ root project directory (the same where `pyproject.toml` lives).
 
 .. code-block:: bash
 
-  python -m pip install .
+  python -m pip install -e .
 
 Testing
 --------

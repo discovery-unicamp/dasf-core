@@ -27,12 +27,13 @@ Classes
    dasf.transforms.ArraysToDataFrame
    dasf.transforms.ArrayToZarr
    dasf.transforms.ArrayToHDF5
+   dasf.transforms.ZarrToArray
    dasf.transforms.Normalize
    dasf.transforms.SliceArray
    dasf.transforms.SliceArrayByPercent
    dasf.transforms.Reshape
    dasf.transforms.PersistDaskData
-   dasf.transforms.LoadDaskData
+   dasf.transforms.ComputeDaskData
    dasf.transforms.Fit
    dasf.transforms.FitPredict
    dasf.transforms.FitTransform
@@ -45,6 +46,7 @@ Classes
 
 
 .. py:class:: ArraysToDataFrame
+
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
@@ -65,6 +67,7 @@ Classes
 
 
 .. py:class:: ArrayToZarr(chunks=None, save=True, filename=None)
+
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
@@ -99,6 +102,7 @@ Classes
 
 .. py:class:: ArrayToHDF5(dataset_path, chunks=None, save=True, filename=None)
 
+
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
    .. py:method:: _convert_filename(url)
@@ -130,7 +134,21 @@ Classes
 
 
 
+.. py:class:: ZarrToArray(chunks=None, save=True, filename=None)
+
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   .. py:method:: _convert_filename(url)
+      :staticmethod:
+
+
+   .. py:method:: transform(X)
+
+
+
 .. py:class:: Normalize
+
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
@@ -140,11 +158,13 @@ Classes
 
 .. py:class:: SliceArray(output_size)
 
+
    .. py:method:: transform(X)
 
 
 
 .. py:class:: SliceArrayByPercent(x=100.0, y=100.0, z=100.0)
+
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
@@ -153,6 +173,7 @@ Classes
 
 
 .. py:class:: Reshape(shape)
+
 
    Reshape data with a new shape.
 
@@ -167,6 +188,7 @@ Classes
 
 
 .. py:class:: PersistDaskData
+
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
@@ -189,7 +211,8 @@ Classes
 
 
 
-.. py:class:: LoadDaskData
+.. py:class:: ComputeDaskData
+
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
@@ -213,6 +236,7 @@ Classes
 
 
 .. py:class:: Fit
+
 
    .. py:method:: _lazy_fit_cpu(X, y=None, **kwargs)
       :abstractmethod:
@@ -240,6 +264,7 @@ Classes
 
 .. py:class:: FitPredict
 
+
    .. py:method:: _lazy_fit_predict_cpu(X, y=None, **kwargs)
       :abstractmethod:
 
@@ -265,6 +290,7 @@ Classes
 
 
 .. py:class:: FitTransform
+
 
    .. py:method:: _lazy_fit_transform_cpu(X, y=None, **kwargs)
       :abstractmethod:
@@ -292,6 +318,7 @@ Classes
 
 .. py:class:: Predict
 
+
    .. py:method:: _lazy_predict_cpu(X, sample_weight=None, **kwargs)
       :abstractmethod:
 
@@ -318,6 +345,7 @@ Classes
 
 .. py:class:: GetParams
 
+
    .. py:method:: _lazy_get_params_cpu(deep=True, **kwargs)
       :abstractmethod:
 
@@ -341,11 +369,15 @@ Classes
 .. py:class:: TargeteredTransform(run_local=None, run_gpu=None)
 
 
-.. py:class:: MappedTransform(function, depth=None, boundary=None, trim=True, output_chunk=None)
+   Bases: :py:obj:`Transform`
+
+
+.. py:class:: MappedTransform(function, depth=None, boundary=None, trim=True, output_chunk=None, drop_axis=None, new_axis=None)
+
 
    Bases: :py:obj:`Transform`
 
-   .. py:method:: __lazy_transform_generic(X, **kwargs)
+   .. py:method:: __lazy_transform_generic(X, xp, **kwargs)
 
 
    .. py:method:: _lazy_transform_cpu(X, **kwargs)

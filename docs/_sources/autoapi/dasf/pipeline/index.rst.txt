@@ -32,11 +32,19 @@ Classes
 .. autoapisummary::
 
    dasf.pipeline.Pipeline
+   dasf.pipeline.PipelinePlugin
 
 
 
 
-.. py:class:: Pipeline(name, executor=None, verbose=False)
+.. py:class:: Pipeline(name, executor=None, verbose=False, callbacks = None)
+
+
+   .. py:method:: register_plugin(plugin)
+
+
+   .. py:method:: execute_callbacks(func_name, *args, **kwargs)
+
 
    .. py:method:: __add_into_dag(obj, func_name, parameters=None, itself=None)
 
@@ -50,6 +58,9 @@ Classes
    .. py:method:: visualize(filename=None)
 
 
+   .. py:method:: __register_dataset(dataset)
+
+
    .. py:method:: __execute(func, params, name)
 
 
@@ -57,6 +68,25 @@ Classes
 
 
    .. py:method:: run()
+
+
+
+.. py:class:: PipelinePlugin
+
+
+   .. py:method:: on_pipeline_start(fn_keys)
+
+
+   .. py:method:: on_pipeline_end()
+
+
+   .. py:method:: on_task_start(func, params, name)
+
+
+   .. py:method:: on_task_end(func, params, name, ret)
+
+
+   .. py:method:: on_task_error(func, params, name, exception)
 
 
 

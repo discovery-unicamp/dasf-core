@@ -54,6 +54,7 @@ Attributes
 
 .. py:class:: DaskLabel(start, stop, label=None, color=None)
 
+
    Bases: :py:obj:`object`
 
    .. py:method:: start(start)

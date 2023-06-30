@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: PrefectPipelineExecutor
 
+
    Bases: :py:obj:`prefect.executors.local.LocalExecutor`
 
    .. py:property:: dtype

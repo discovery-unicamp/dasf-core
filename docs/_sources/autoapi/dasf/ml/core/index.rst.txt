@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: MLGeneric(name, checkpoint=False, **kwargs)
 
+
    .. py:method:: dump(model)
 
 

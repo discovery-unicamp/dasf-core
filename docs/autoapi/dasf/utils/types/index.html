@@ -1,98 +1,53 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>dasf.utils.types &mdash; DASF 1.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+  <title>dasf.utils.types &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
-    
+    <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="prev" title="dasf.utils.logging" href="../logging/index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../../index.html" class="icon icon-home"> DASF
           
-
-          
+          <a href="../../../../index.html" class="icon icon-home">
+            DASF
           </a>
-
-          
-            
-            
               <div class="version">
-                1.0
+                1.0b5
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../principles.html">Principles</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
@@ -104,6 +59,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../ml/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../profile/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
 </ul>
@@ -114,108 +70,40 @@
 </li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../index.html">DASF</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../../../api.html">DASF API Reference</a> &raquo;</li>
-        
-          <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a> &raquo;</li>
-        
-          <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a> &raquo;</li>
-        
-      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils.types</span></code></li>
-    
-    
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../api.html">DASF API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils.types</span></code></li>
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../../../../_sources/autoapi/dasf/utils/types/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="module-dasf.utils.types">
-<span id="dasf-utils-types"></span><h1><a class="reference internal" href="#module-dasf.utils.types" title="dasf.utils.types"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils.types</span></code></a><a class="headerlink" href="#module-dasf.utils.types" title="Permalink to this heading">¶</a></h1>
+             
+  <section id="module-dasf.utils.types">
+<span id="dasf-utils-types"></span><h1><a class="reference internal" href="#module-dasf.utils.types" title="dasf.utils.types"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils.types</span></code></a><a class="headerlink" href="#module-dasf.utils.types" title="Permalink to this heading"></a></h1>
 <p>Data types handlers.</p>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.types.is_array" title="dasf.utils.types.is_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_array</span></code></a>(data)</p></td>
@@ -270,7 +158,7 @@
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.utils.types.ArrayCPU" title="dasf.utils.types.ArrayCPU"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ArrayCPU</span></code></a></p></td>
@@ -310,62 +198,62 @@
 </table>
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.ArrayCPU">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">ArrayCPU</span></span><a class="headerlink" href="#dasf.utils.types.ArrayCPU" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">ArrayCPU</span></span><a class="headerlink" href="#dasf.utils.types.ArrayCPU" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.DataFrameCPU">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DataFrameCPU</span></span><a class="headerlink" href="#dasf.utils.types.DataFrameCPU" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DataFrameCPU</span></span><a class="headerlink" href="#dasf.utils.types.DataFrameCPU" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.DataCPU">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DataCPU</span></span><a class="headerlink" href="#dasf.utils.types.DataCPU" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DataCPU</span></span><a class="headerlink" href="#dasf.utils.types.DataCPU" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.DaskArray">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DaskArray</span></span><a class="headerlink" href="#dasf.utils.types.DaskArray" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DaskArray</span></span><a class="headerlink" href="#dasf.utils.types.DaskArray" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.DaskDataFrameCPU">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DaskDataFrameCPU</span></span><a class="headerlink" href="#dasf.utils.types.DaskDataFrameCPU" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DaskDataFrameCPU</span></span><a class="headerlink" href="#dasf.utils.types.DaskDataFrameCPU" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.XDataArray">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">XDataArray</span></span><a class="headerlink" href="#dasf.utils.types.XDataArray" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">XDataArray</span></span><a class="headerlink" href="#dasf.utils.types.XDataArray" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.Array">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">Array</span></span><a class="headerlink" href="#dasf.utils.types.Array" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">Array</span></span><a class="headerlink" href="#dasf.utils.types.Array" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.DaskDataFrame">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DaskDataFrame</span></span><a class="headerlink" href="#dasf.utils.types.DaskDataFrame" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DaskDataFrame</span></span><a class="headerlink" href="#dasf.utils.types.DaskDataFrame" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.DataFrame">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DataFrame</span></span><a class="headerlink" href="#dasf.utils.types.DataFrame" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DataFrame</span></span><a class="headerlink" href="#dasf.utils.types.DataFrame" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.DataDask">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DataDask</span></span><a class="headerlink" href="#dasf.utils.types.DataDask" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">DataDask</span></span><a class="headerlink" href="#dasf.utils.types.DataDask" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="dasf.utils.types.ArrayGPU">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">ArrayGPU</span></span><a class="headerlink" href="#dasf.utils.types.ArrayGPU" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">ArrayGPU</span></span><a class="headerlink" href="#dasf.utils.types.ArrayGPU" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_array">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_array" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a generic array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -376,7 +264,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_dataframe">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dataframe" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dataframe" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a generic dataframe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -387,7 +275,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_cpu_array">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_cpu_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_cpu_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_cpu_array" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_cpu_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_cpu_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_cpu_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a CPU arrau like Numpy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -398,7 +286,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_cpu_dataframe">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_cpu_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_cpu_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_cpu_dataframe" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_cpu_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_cpu_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_cpu_dataframe" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a CPU dataframe like Pandas.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -409,7 +297,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_cpu_datatype">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_cpu_datatype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_cpu_datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_cpu_datatype" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_cpu_datatype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_cpu_datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_cpu_datatype" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a CPU data type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -420,7 +308,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_gpu_array">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_gpu_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_gpu_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_gpu_array" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_gpu_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_gpu_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_gpu_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a GPU array like Cupy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -431,7 +319,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_gpu_dataframe">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_gpu_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_gpu_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_gpu_dataframe" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_gpu_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_gpu_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_gpu_dataframe" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a GPU dataframe like Cudf.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -442,7 +330,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_gpu_datatype">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_gpu_datatype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_gpu_datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_gpu_datatype" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_gpu_datatype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_gpu_datatype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_gpu_datatype" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a GPU data type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -453,7 +341,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_dask_cpu_array">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_cpu_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_cpu_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_cpu_array" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_cpu_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_cpu_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_cpu_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a Dask array with CPU internal array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -464,7 +352,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_dask_cpu_dataframe">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_cpu_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_cpu_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_cpu_dataframe" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_cpu_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_cpu_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_cpu_dataframe" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a Dask dataframe with CPU internal dataframe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -475,7 +363,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_dask_gpu_array">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_gpu_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_gpu_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_gpu_array" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_gpu_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_gpu_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_gpu_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a Dask array with GPU internal array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -486,7 +374,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_dask_gpu_dataframe">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_gpu_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_gpu_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_gpu_dataframe" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_gpu_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_gpu_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_gpu_dataframe" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a Dask dataframe with GPU internal dataframe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -497,7 +385,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_dask_array">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_array" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a Dask array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -508,7 +396,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_dask_dataframe">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_dataframe" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask_dataframe" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a Dask dataframe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -519,7 +407,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_dask">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_dask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_dask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_dask" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a Dask data type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -530,7 +418,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dasf.utils.types.is_xarray_array">
-<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_xarray_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_xarray_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_xarray_array" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dasf.utils.types.</span></span><span class="sig-name descname"><span class="pre">is_xarray_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/utils/types.html#is_xarray_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.utils.types.is_xarray_array" title="Permalink to this definition"></a></dt>
 <dd><p>Returns if data is a Xarray.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -545,49 +433,32 @@
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../logging/index.html" class="btn btn-neutral float-left" title="dasf.utils.logging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2022, UNICAMP.
-
-    </p>
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: DBSCAN(eps=0.5, leaf_size=40, metric='euclidean', min_samples=5, p=None, output_type=None, calc_core_sample_indices=True, verbose=False, **kwargs)
 
+
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
 
    Perform DBSCAN clustering from vector array or distance matrix.

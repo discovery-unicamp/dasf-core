@@ -27,6 +27,7 @@ Classes
 
 .. py:class:: Fit
 
+
    .. py:method:: _lazy_fit_cpu(X, y=None, **kwargs)
       :abstractmethod:
 
@@ -52,6 +53,7 @@ Classes
 
 
 .. py:class:: FitPredict
+
 
    .. py:method:: _lazy_fit_predict_cpu(X, y=None, **kwargs)
       :abstractmethod:
@@ -79,6 +81,7 @@ Classes
 
 .. py:class:: FitTransform
 
+
    .. py:method:: _lazy_fit_transform_cpu(X, y=None, **kwargs)
       :abstractmethod:
 
@@ -104,6 +107,7 @@ Classes
 
 
 .. py:class:: Predict
+
 
    .. py:method:: _lazy_predict_cpu(X, sample_weight=None, **kwargs)
       :abstractmethod:
@@ -131,6 +135,7 @@ Classes
 
 .. py:class:: GetParams
 
+
    .. py:method:: _lazy_get_params_cpu(deep=True, **kwargs)
       :abstractmethod:
 
@@ -153,6 +158,7 @@ Classes
 
 .. py:class:: SetParams
 
+
    .. py:method:: _lazy_set_params_cpu(**params)
       :abstractmethod:
 
@@ -174,6 +180,7 @@ Classes
 
 
 .. py:class:: Transform
+
 
    .. py:method:: _lazy_transform_cpu(X, **kwargs)
       :abstractmethod:
@@ -202,11 +209,15 @@ Classes
 .. py:class:: TargeteredTransform(run_local=None, run_gpu=None)
 
 
-.. py:class:: MappedTransform(function, depth=None, boundary=None, trim=True, output_chunk=None)
+   Bases: :py:obj:`Transform`
+
+
+.. py:class:: MappedTransform(function, depth=None, boundary=None, trim=True, output_chunk=None, drop_axis=None, new_axis=None)
+
 
    Bases: :py:obj:`Transform`
 
-   .. py:method:: __lazy_transform_generic(X, **kwargs)
+   .. py:method:: __lazy_transform_generic(X, xp, **kwargs)
 
 
    .. py:method:: _lazy_transform_cpu(X, **kwargs)

@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: SOM(x, y, input_len, num_epochs=100, sigma=0, sigmaN=1, learning_rate=0.5, learning_rateN=0.01, decay_function='exponential', neighborhood_function='gaussian', std_coeff=0.5, topology='rectangular', activation_distance='euclidean', random_seed=None, n_parallel=0, compact_support=False, **kwargs)
 
+
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
 
    Initializes a Self Organizing Maps.

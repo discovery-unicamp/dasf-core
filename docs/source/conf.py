@@ -81,12 +81,12 @@ templates_path = ['_templates']
 # -- Project information -----------------------------------------------------
 
 project = 'DASF'
-copyright = '2022, UNICAMP'
+copyright = '2022--2023, UNICAMP'
 author = 'Julio Faracco <jcfaracco@gmail.com>'
 
 # The full version, including alpha/beta/rc tags
-version = "1.0"
-release = "1.0"
+version = "1.0b5"
+release = "1.0b5"
 
 source_suffix = ['.rst']
 master_doc = 'index'

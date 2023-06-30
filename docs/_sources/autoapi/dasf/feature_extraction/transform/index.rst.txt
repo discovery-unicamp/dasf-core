@@ -23,6 +23,7 @@ Classes
 
 .. py:class:: ConcatenateToArray(flatten = False)
 
+
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
    Concatenate data from different Arrays into a single array.
@@ -46,6 +47,7 @@ Classes
 
 
 .. py:class:: SampleDataframe(percent)
+
 
    Return a subset with random samples of the original dataset.
 
@@ -74,6 +76,7 @@ Classes
 
 .. py:class:: GetSubeCubeArray(percent)
 
+
    Get a subcube with x% of samples from the original one.
 
    Parameters
@@ -87,6 +90,7 @@ Classes
 
 
 .. py:class:: SliceDataframe(iline_index)
+
 
    Bases: :py:obj:`dasf.transforms.base.Fit`
 
@@ -103,6 +107,7 @@ Classes
 
 
 .. py:class:: GetSubDataframe(percent)
+
 
    Get the first x% samples from the dataset.
 

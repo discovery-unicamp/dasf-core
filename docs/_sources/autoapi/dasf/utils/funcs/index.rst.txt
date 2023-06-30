@@ -88,6 +88,7 @@ Attributes
 
 .. py:class:: NotebookProgressBar
 
+
    Bases: :py:obj:`threading.Thread`
 
    A class that represents a thread of control.

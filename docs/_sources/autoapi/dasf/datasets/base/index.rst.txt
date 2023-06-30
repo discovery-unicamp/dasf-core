@@ -26,6 +26,7 @@ Classes
 
 .. py:class:: Dataset(name, download = False, root = None, *args, **kwargs)
 
+
    Bases: :py:obj:`dasf.transforms.base.TargeteredTransform`
 
    Class representing a generic dataset based on a TargeteredTransform
@@ -79,6 +80,7 @@ Classes
 
 
 .. py:class:: DatasetArray(name, download = False, root = None, chunks='auto')
+
 
    Bases: :py:obj:`Dataset`
 
@@ -313,6 +315,7 @@ Classes
 
 .. py:class:: DatasetZarr(name, download = False, root = None, chunks=None)
 
+
    Bases: :py:obj:`Dataset`
 
    Class representing an dataset wich is defined as a Zarr array of a
@@ -530,6 +533,7 @@ Classes
 
 .. py:class:: DatasetHDF5(name, download = False, root = None, chunks='auto', dataset_path = None)
 
+
    Bases: :py:obj:`Dataset`
 
    Class representing an dataset wich is defined as a HDF5 dataset of a
@@ -640,6 +644,7 @@ Classes
 
 .. py:class:: DatasetXarray(name, download = False, root = None, chunks=None, data_var=None)
 
+
    Bases: :py:obj:`Dataset`
 
    Class representing an dataset wich is defined as a Xarray dataset of a
@@ -736,6 +741,7 @@ Classes
 
 
 .. py:class:: DatasetLabeled(name, download = False, root = None, chunks='auto')
+
 
    Bases: :py:obj:`Dataset`
 
@@ -875,6 +881,7 @@ Classes
 
 .. py:class:: DatasetDataFrame(name, download = True, root = None, chunks='auto')
 
+
    Bases: :py:obj:`Dataset`
 
    Class representing an dataset wich is defined as a dataframe.
@@ -979,6 +986,7 @@ Classes
 
 
 .. py:class:: DatasetParquet(name, download = True, root = None, chunks='auto')
+
 
    Bases: :py:obj:`DatasetDataFrame`
 

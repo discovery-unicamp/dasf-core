@@ -13,12 +13,13 @@ Classes
 .. autoapisummary::
 
    dasf.transforms.memory.PersistDaskData
-   dasf.transforms.memory.LoadDaskData
+   dasf.transforms.memory.ComputeDaskData
 
 
 
 
 .. py:class:: PersistDaskData
+
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
@@ -41,7 +42,8 @@ Classes
 
 
 
-.. py:class:: LoadDaskData
+.. py:class:: ComputeDaskData
+
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 

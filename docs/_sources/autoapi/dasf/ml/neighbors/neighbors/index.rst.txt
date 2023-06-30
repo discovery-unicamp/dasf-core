@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: NearestNeighbors(n_neighbors=5, radius=1.0, algorithm='auto', leaf_size=30, metric='minkowski', p=2, metric_params=None, n_jobs=None, handle=None, verbose=False, output_type=None, **kwargs)
 
+
    Bases: :py:obj:`dasf.transforms.base.Fit`, :py:obj:`dasf.transforms.base.GetParams`, :py:obj:`dasf.transforms.base.SetParams`
 
    .. py:method:: _fit_cpu(X, y=None, **kwargs)

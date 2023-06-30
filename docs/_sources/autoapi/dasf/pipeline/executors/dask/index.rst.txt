@@ -19,7 +19,20 @@ Classes
 
 
 
-.. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, cluster_kwargs=None, client_kwargs=None)
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.executors.dask.GPU_SUPPORTED
+
+
+.. py:data:: GPU_SUPPORTED
+
+   
+
+.. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
+
 
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
 
@@ -32,6 +45,7 @@ Classes
    use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
                cluster (default False).
    profiler -- sets a Dask profiler.
+   gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
 
@@ -44,8 +58,21 @@ Classes
    .. py:method:: execute(fn, *args, **kwargs)
 
 
+   .. py:method:: register_dataset(**kwargs)
 
-.. py:class:: DaskTasksPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, cluster_kwargs=None, client_kwargs=None)
+
+   .. py:method:: has_dataset(key)
+
+
+   .. py:method:: get_dataset(key)
+
+
+   .. py:method:: shutdown(gracefully=True)
+
+
+
+.. py:class:: DaskTasksPipelineExecutor(address=None, port=8786, local=False, use_gpu=True, profiler=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
+
 
    Bases: :py:obj:`DaskPipelineExecutor`
 
@@ -58,6 +85,7 @@ Classes
    use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
                cluster (default False).
    profiler -- sets a Dask profiler.
+   gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
 
@@ -70,8 +98,21 @@ Classes
    .. py:method:: execute(fn, *args, **kwargs)
 
 
+   .. py:method:: register_dataset(**kwargs)
+
+
+   .. py:method:: has_dataset(key)
+
+
+   .. py:method:: get_dataset(key)
+
+
+   .. py:method:: shutdown(gracefully=True)
+
+
 
 .. py:class:: DaskPBSPipelineExecutor(**kwargs)
+
 
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
 

@@ -1,0 +1,59 @@
+:py:mod:`dasf.pipeline.executors.ray`
+=====================================
+
+.. py:module:: dasf.pipeline.executors.ray
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.executors.ray.RayPipelineExecutor
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.executors.ray.USE_RAY
+
+
+.. py:data:: USE_RAY
+   :value: True
+
+   
+
+.. py:class:: RayPipelineExecutor(address=None, port=6379, local=False, use_gpu=False, ray_kwargs=None)
+
+
+   Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
+
+   A pipeline engine based on ray data flow.
+
+   Keyword arguments:
+   address -- address of the Dask scheduler (default None).
+   port -- port of the Ray head (default 8786).
+   local -- kicks off a new local Ray cluster (default False).
+   use_gpu -- in conjunction with `local`, it kicks off a local CUDA Ray
+               cluster (default False).
+
+   .. py:property:: ngpus
+
+
+   .. py:property:: is_connected
+
+
+   .. py:method:: execute(fn, *args, **kwargs)
+
+
+   .. py:method:: __del__()
+
+
+

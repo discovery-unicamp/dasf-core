@@ -20,6 +20,7 @@ Classes
 
 .. py:class:: Debug
 
+
    Print information about an operator (shape, datatype, etc.), and return
    the self object reference.
 
@@ -36,6 +37,7 @@ Classes
 
 
 .. py:class:: VisualizeDaskData(filename = None)
+
 
    Visualize DASK data from an operator.
 

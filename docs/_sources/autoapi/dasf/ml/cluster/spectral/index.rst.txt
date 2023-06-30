@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: SpectralClustering(n_clusters=8, eigen_solver=None, random_state=None, n_init=10, gamma=1.0, affinity='rbf', n_neighbors=10, eigen_tol=0.0, assign_labels='kmeans', degree=3, coef0=1, kernel_params=None, n_jobs=None, n_components=None, persist_embedding=False, kmeans_params=None, verbose=False, **kwargs)
 
+
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
 
    Apply clustering to a projection of the normalized Laplacian.

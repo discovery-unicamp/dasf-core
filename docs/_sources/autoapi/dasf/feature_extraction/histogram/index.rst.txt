@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: Histogram(bins = None, range = None, normed = False, weights=None, density=None, *args, **kwargs)
 
+
    Bases: :py:obj:`dasf.transforms.base.TargeteredTransform`, :py:obj:`dasf.transforms.base.Transform`
 
    Operator to extract the histogram of a data.

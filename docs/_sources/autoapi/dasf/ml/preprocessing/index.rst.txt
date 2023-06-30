@@ -26,9 +26,10 @@ Classes
 
 
 
-.. py:class:: StantardScaler(copy=True, with_mean=True, with_std=True)
+.. py:class:: StantardScaler(copy=True, with_mean=True, with_std=True, **kwargs)
 
-   Bases: :py:obj:`dasf.transforms.base.Fit`, :py:obj:`dasf.transforms.base.Transform`, :py:obj:`dasf.transforms.base.FitTransform`
+
+   Bases: :py:obj:`dasf.transforms.base.Fit`, :py:obj:`dasf.transforms.base.FitTransform`, :py:obj:`dasf.transforms.base.TargeteredTransform`
 
    .. py:method:: _lazy_fit_cpu(X, y=None)
 

@@ -21,6 +21,7 @@ Classes
 
 .. py:class:: Reshape(shape)
 
+
    Reshape data with a new shape.
 
    Parameters
@@ -35,11 +36,13 @@ Classes
 
 .. py:class:: SliceArray(output_size)
 
+
    .. py:method:: transform(X)
 
 
 
 .. py:class:: SliceArrayByPercent(x=100.0, y=100.0, z=100.0)
+
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 

@@ -12,13 +12,13 @@ most common libraries to increase the speed up of most algorithms. Part of this
 is to use Dask data to scale computation and RAPIDS AI algorithms to extend the
 support to GPUs as well.
 
-
 Contents
 ---------------
 
 ..  toctree::
     :maxdepth: 2
 
+    principles
     installation
     overview
     tutorials

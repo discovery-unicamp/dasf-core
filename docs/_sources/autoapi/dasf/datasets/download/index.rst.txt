@@ -20,6 +20,7 @@ Classes
 
 .. py:class:: DownloadWget(url, filename, root, download = True)
 
+
    Bases: :py:obj:`dasf.datasets.base.Dataset`
 
    Dataset downloadable via wget.
@@ -45,6 +46,7 @@ Classes
 
 
 .. py:class:: DownloadGDrive(google_file_id, filename, root, download = True)
+
 
    Bases: :py:obj:`dasf.datasets.base.Dataset`
 

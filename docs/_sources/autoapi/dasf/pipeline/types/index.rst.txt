@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: TaskExecutorType
 
+
    Bases: :py:obj:`enum.IntEnum`
 
    Enum where members are also (and must be) ints

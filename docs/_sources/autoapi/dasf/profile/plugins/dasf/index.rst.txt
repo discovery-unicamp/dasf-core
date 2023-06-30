@@ -1,0 +1,31 @@
+:py:mod:`dasf.profile.plugins.dasf`
+===================================
+
+.. py:module:: dasf.profile.plugins.dasf
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.profile.plugins.dasf.PipelineTaskTimer
+
+
+
+
+.. py:class:: PipelineTaskTimer
+
+
+   Bases: :py:obj:`dasf.pipeline.PipelinePlugin`
+
+   .. py:method:: on_task_start(func, params, name)
+
+
+   .. py:method:: on_task_end(func, params, name, ret)
+
+
+

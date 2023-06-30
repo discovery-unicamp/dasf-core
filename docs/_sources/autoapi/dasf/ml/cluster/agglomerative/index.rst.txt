@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: AgglomerativeClustering(n_clusters=2, affinity='euclidean', connectivity=None, linkage='single', memory=None, compute_full_tree='auto', distance_threshold=None, compute_distances=False, handle=None, verbose=False, n_neighbors=10, output_type=None, **kwargs)
 
+
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
 
    Agglomerative Clustering

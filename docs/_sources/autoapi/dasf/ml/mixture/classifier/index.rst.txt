@@ -19,6 +19,7 @@ Classes
 
 .. py:class:: MixtureClassifier
 
+
    Bases: :py:obj:`dasf.transforms.base.Fit`, :py:obj:`dasf.transforms.base.FitPredict`, :py:obj:`dasf.transforms.base.FitTransform`, :py:obj:`dasf.transforms.base.GetParams`, :py:obj:`dasf.transforms.base.SetParams`
 
    .. py:method:: fit(X, y=None, sample_weight=None)
