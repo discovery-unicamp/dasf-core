@@ -15,6 +15,7 @@ from dasf.utils.funcs import is_dask_gpu_supported
 from dasf.utils.funcs import get_gpu_count
 from dasf.utils.funcs import get_dask_gpu_count
 from dasf.utils.funcs import block_chunk_reduce
+from dasf.utils.funcs import trim_chunk_location
 
 
 class TestArchitetures(unittest.TestCase):
@@ -163,3 +164,39 @@ class TestBlockChunkReduce(unittest.TestCase):
 
         self.assertTrue(np.array_equal(drop_axis, np.asarray([])))
         self.assertTrue(np.array_equal(new_axis, np.asarray([3, 4, 5])))
+
+    def test_trim_chunk_location_1d(self):
+        depth = (5,)
+
+        block_info = [{'array-location': [(40, 60)], 'chunk-location': (2,)}]
+
+        loc = np.asarray(trim_chunk_location(block_info, depth))
+
+        self.assertTrue(np.array_equal(loc, np.asarray([(20, 30)])))
+
+    def test_trim_chunk_location_2d(self):
+        depth = (5, 0)
+
+        block_info = [{'array-location': [(40, 60), (0, 40)], 'chunk-location': (2, 0)}]
+
+        loc = np.asarray(trim_chunk_location(block_info, depth))
+
+        self.assertTrue(np.array_equal(loc, np.asarray([(20, 30), (0, 40)])))
+
+    def test_trim_chunk_location_3d(self):
+        depth = (5, 0, 0)
+
+        block_info = [{'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
+
+        loc = np.asarray(trim_chunk_location(block_info, depth))
+
+        self.assertTrue(np.array_equal(loc, np.asarray([(20, 30), (0, 40), (0, 40)])))
+
+    def test_trim_chunk_location_3d_index6(self):
+        depth = (5, 0, 0)
+
+        block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
+
+        loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+
+        self.assertTrue(np.array_equal(loc, np.asarray([(20, 30), (0, 40), (0, 40)])))

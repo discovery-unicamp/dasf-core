@@ -384,6 +384,32 @@ def block_chunk_reduce(dask_data, output_chunk):
 
     return drop_axis[0].tolist(), new_axis[0].tolist()
 
+
+def trim_chunk_location(block_info, depth, index=0):
+    """
+    Trim an overlapped chunk to the exact size of the chunk.
+    """
+    if not 'array-location' in block_info[index]:
+        raise IndexError("Key 'array-location' was not found in block-info.")
+
+    if not 'chunk-location' in block_info[index]:
+        raise IndexError("Key 'chunk-location' was not found in block-info.")
+
+    loc = block_info[index]['array-location']
+
+    chunks = block_info[index]['chunk-location']
+
+    if len(depth) != len(loc) and len(depth) != len(chunks):
+        raise ValueError(f"Depth {len(depth)}, location {len(loc)} and/or chunks {len(chunks)} do not match.")
+
+    loc_orig = []
+    for i in range(0, len(depth)):
+        loc_orig.append((loc[i][0] - 2 * depth[i] * chunks[i],
+                         loc[i][1] - 2 * depth[i] - (loc[i][0] - 2 * depth[i] * chunks[i])))
+
+    return loc_orig
+
+
 def return_local_and_gpu(executor, local, gpu):
     """
     Return executor type based on passed preferences.
