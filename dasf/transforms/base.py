@@ -233,6 +233,7 @@ class MappedTransform(Transform):
                     dtype=X.dtype,
                     drop_axis=drop_axis,
                     new_axis=new_axis,
+                    chunks=__output_chunk,
                     meta=xp.array(()),
                     **kwargs,
                 )
