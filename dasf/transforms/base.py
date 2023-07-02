@@ -3,15 +3,19 @@
 import inspect
 import numpy as np
 import dask.array as da
+import dask.dataframe as ddf
 
 try:
     import cupy as cp
+    import dask_cudf as dcudf
 except ImportError:
     pass
 
 from dasf.utils.decorators import task_handler
 from dasf.utils.types import is_dask_array
 from dasf.utils.types import is_dask_dataframe
+from dasf.utils.types import is_dask_cpu_dataframe
+from dasf.utils.types import is_dask_gpu_dataframe
 from dasf.utils.funcs import block_chunk_reduce
 
 
@@ -267,4 +271,68 @@ class MappedTransform(Transform):
 
     @task_handler
     def transform(self, X, **kwargs):
+        ...
+
+
+class ReductionTransform(Transform):
+    def __init__(self, output_size, func_aggregate, func_chunk):
+        self.output_size = output_size
+
+        self.func_aggregate = func_aggregate
+        self.func_chunk = func_chunk
+
+    def _operation_aggregate_cpu(self, block, axis=None, keepdims=False):
+        return self.func_aggregate(block, axis, keepdims, xp=np)
+
+    def _operation_aggregate_gpu(self, block, axis=None, keepdims=False):
+        return self.func_aggregate(block, axis, keepdims, xp=cp)
+
+    def _operation_chunk_cpu(self, block, axis=None, keepdims=False):
+        return self.func_chunk(block, axis, keepdims, xp=np)
+
+    def _operation_chunk_gpu(self, block, axis=None, keepdims=False):
+        return self.func_chunk(block, axis, keepdims, xp=cp)
+
+    def _lazy_transform_cpu(self, X, *args, **kwargs):
+        if is_dask_cpu_dataframe(X):
+            return X.reduction(self._operation_chunk_cpu,
+                               self._operation_aggregate_cpu,
+                               meta=self.output_size,
+                               *args,
+                               **kwargs)
+        else:
+            return da.reduction(X,
+                                self._operation_chunk_cpu,
+                                self._operation_aggregate_cpu,
+                                dtype=X.dtype,
+                                meta=np.array(self.output_size,
+                                              dtype=X.dtype),
+                                *args,
+                                **kwargs)
+
+    def _lazy_transform_gpu(self, X, *args, **kwargs):
+        if is_dask_gpu_dataframe(X):
+            return X.reduction(self._operation_chunk_cpu,
+                               self._operation_aggregate_cpu,
+                               meta=self.output_size,
+                               *args,
+                               **kwargs)
+        else:
+            return da.reduction(X,
+                                self._operation_chunk_gpu,
+                                self._operation_aggregate_gpu,
+                                dtype=X.dtype,
+                                meta=cp.array(self.output_size,
+                                              dtype=X.dtype),
+                                *args,
+                                **kwargs)
+
+    def _transform_cpu(self, X, *args, **kwargs):
+        return self.func_chunk(block=X, xp=np, *args, **kwargs)
+
+    def _transform_gpu(self, X, *args, **kwargs):
+        return self.func_chunk(block=X, xp=cp, *args, **kwargs)
+
+    @task_handler
+    def transform(self, X, *args, **kwargs):
         ...

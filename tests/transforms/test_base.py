@@ -4,15 +4,21 @@ import os
 import shutil
 import tempfile
 import unittest
+import functools
 import numpy as np
+import pandas as pd
 import dask.array as da
+import dask.dataframe as dd
 
 try:
     import cupy as cp
+    import cudf
+    import dask_cudf as dcudf
 except ImportError:
     pass
 
 from dasf.transforms.base import MappedTransform
+from dasf.transforms.base import ReductionTransform
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
@@ -94,5 +100,216 @@ class TestMappedTransform(unittest.TestCase):
         # (1, 2), it means that the final size is (1 * 4, 2).
         self.assertEqual(X_t.compute().get().shape, (1, 2))
 
-        self.assertTrue(is_dask_gpu_array(X_t))
 
+class TestReductionTransformArray(unittest.TestCase):
+    def __internal_chunk_array(self, block, axis=None, keepdims=False, xp=np):
+        # Using `xp` parameter to avoid conflicts
+        return xp.array([xp.min(block), xp.max(block)])
+
+    def __internal_aggregate_array(self, block, axis=None, keepdims=False, xp=np):
+        # Using `xp` parameter to avoid conflicts
+        return xp.array([xp.min(block), xp.max(block)])
+
+    def test_reduction_min_max_cpu(self):
+        X = np.arange(40 * 40 * 40)
+        X.shape = (40, 40, 40)
+
+        reduction = ReductionTransform(func_aggregate=self.__internal_aggregate_array,
+                                       func_chunk=self.__internal_chunk_array,
+                                       output_size=[0, 0])
+
+        X_t = reduction._transform_cpu(X)
+
+        # Numpy does not use blocks.
+        self.assertEqual(len(X_t), 2)
+        self.assertTrue(is_cpu_array(X_t))
+
+        self.assertEqual(X_t[0], 0)
+        self.assertEqual(X_t[1], 40 * 40 * 40 - 1)
+
+    def test_reduction_min_max_mcpu(self):
+        X = np.arange(40 * 40 * 40)
+        X.shape = (40, 40, 40)
+
+        X = da.from_array(X, chunks=(10, 40, 40))
+
+        reduction = ReductionTransform(func_aggregate=self.__internal_aggregate_array,
+                                       func_chunk=self.__internal_chunk_array,
+                                       output_size=[0, 0])
+
+        X_t = reduction._lazy_transform_cpu(X, axis=[0])
+
+        self.assertTrue(is_dask_cpu_array(X_t))
+        self.assertEqual(len(X_t.compute()), 2)
+
+        self.assertEqual(X_t.compute()[0], 0)
+        self.assertEqual(X_t.compute()[1], 40 * 40 * 40 - 1)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_reduction_min_max_gpu(self):
+        X = cp.arange(40 * 40 * 40)
+        X.shape = (40, 40, 40)
+
+        reduction = ReductionTransform(func_aggregate=self.__internal_aggregate_array,
+                                       func_chunk=self.__internal_chunk_array,
+                                       output_size=[0, 0])
+
+        X_t = reduction._transform_gpu(X)
+
+        # Numpy does not use blocks.
+        self.assertEqual(len(X_t), 2)
+        self.assertTrue(is_gpu_array(X_t))
+
+        self.assertEqual(X_t[0].get(), 0)
+        self.assertEqual(X_t[1].get(), 40 * 40 * 40 - 1)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_reduction_min_max_mgpu(self):
+        X = cp.arange(40 * 40 * 40)
+        X.shape = (40, 40, 40)
+
+        X = da.from_array(X, chunks=(10, 40, 40), meta=cp.array(()))
+
+        reduction = ReductionTransform(func_aggregate=self.__internal_aggregate_array,
+                                       func_chunk=self.__internal_chunk_array,
+                                       output_size=[0, 0])
+
+        X_t = reduction._lazy_transform_gpu(X, axis=[0])
+
+        self.assertTrue(is_dask_gpu_array(X_t))
+        self.assertEqual(len(X_t.compute()), 2)
+
+        self.assertEqual(X_t.compute()[0].get(), 0)
+        self.assertEqual(X_t.compute()[1].get(), 40 * 40 * 40 - 1)
+
+
+class TestReductionTransformDataFrame(unittest.TestCase):
+    def _internal_chunk_max(self, row):
+        if row['A'] > row['B'] and row['A'] > row['C']:
+            return row['A']
+        elif row['B'] > row['A'] and row['B'] > row['C']:
+            return row['B']
+        else:
+            return row['C']
+
+    def _internal_chunk_min(self, row):
+        if row['A'] < row['B'] and row['A'] < row['C']:
+            return row['A']
+        elif row['B'] < row['A'] and row['B'] < row['C']:
+            return row['B']
+        else:
+            return row['C']
+
+    def _internal_aggregate_min_max(self, pds, xd):
+        return xd.DataFrame({
+            'min': [pds['min'].min()],
+            'max': [pds['max'].max()]
+        })
+
+    def _internal_chunk_partition_cpu(self, block, axis=None, keepdims=False, xp=None):
+        pds_max = block.apply(self._internal_chunk_min, axis=1)
+        pds_min = block.apply(self._internal_chunk_max, axis=1)
+
+        pds = pd.DataFrame({'min': pds_min, 'max': pds_max})
+        return self._internal_aggregate_min_max(pds, xd=pd)
+
+    def _internal_chunk_partition_gpu(self, block, axis=None, keepdims=False, xp=None):
+        pds_max = block.apply(self._internal_chunk_min, axis=1)
+        pds_min = block.apply(self._internal_chunk_max, axis=1)
+
+        pds = cudf.DataFrame({'min': pds_min, 'max': pds_max})
+        return self._internal_aggregate_min_max(pds, xd=cudf)
+
+    def _internal_aggregate_series_cpu(self, block, axis=None, keepdims=False, xp=None):
+        return self._internal_aggregate_min_max(block, xd=pd)
+
+    def _internal_aggregate_series_gpu(self, block, axis=None, keepdims=False, xp=None):
+        return self._internal_aggregate_min_max(block, xd=cudf)
+
+    def test_reduction_min_max_cpu(self):
+        df = pd.DataFrame({
+            'A': range(0, 1000),
+            'B': range(0, 1000),
+            'C': range(0, 1000)
+        })
+
+        reduction = ReductionTransform(func_aggregate=self._internal_aggregate_series_cpu,
+                                       func_chunk=self._internal_chunk_partition_cpu,
+                                       output_size={'min': 'int64',
+                                                    'max': 'int64'})
+
+        X_t = reduction._transform_cpu(X=df)
+
+        self.assertEqual(len(X_t.iloc[0]), 2)
+
+        self.assertEqual(X_t['min'].iloc[0], 0)
+        self.assertEqual(X_t['max'].iloc[0], 1000 - 1)
+
+    def test_reduction_min_max_mcpu(self):
+        df = pd.DataFrame({
+            'A': range(0, 1000),
+            'B': range(0, 1000),
+            'C': range(0, 1000)
+        })
+
+        ddf = dd.from_pandas(df, npartitions=8)
+
+        reduction = ReductionTransform(func_aggregate=self._internal_aggregate_series_cpu,
+                                       func_chunk=self._internal_chunk_partition_cpu,
+                                       output_size={'min': 'int64',
+                                                    'max': 'int64'})
+
+        X_t = reduction._lazy_transform_cpu(X=ddf, axis=[0])
+
+        self.assertTrue(is_dask_cpu_dataframe(X_t))
+        self.assertEqual(len(X_t.compute().iloc[0]), 2)
+
+        self.assertEqual(X_t.compute().iloc[0]['min'], 0)
+        self.assertEqual(X_t.compute().iloc[0]['max'], 1000 - 1)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_reduction_min_max_gpu(self):
+        df = cudf.DataFrame({
+            'A': range(0, 1000),
+            'B': range(0, 1000),
+            'C': range(0, 1000)
+        })
+
+        reduction = ReductionTransform(func_aggregate=self._internal_aggregate_series_gpu,
+                                       func_chunk=self._internal_chunk_partition_gpu,
+                                       output_size={'min': 'int64',
+                                                    'max': 'int64'})
+
+        X_t = reduction._transform_gpu(X=df)
+
+        self.assertEqual(len(X_t.iloc[0]), 2)
+
+        self.assertEqual(X_t['min'].iloc[0], 0)
+        self.assertEqual(X_t['max'].iloc[0], 1000 - 1)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_reduction_min_max_mgpu(self):
+        df = cudf.DataFrame({
+            'A': range(0, 1000),
+            'B': range(0, 1000),
+            'C': range(0, 1000)
+        })
+
+        ddf = dcudf.from_cudf(df, npartitions=8)
+
+        reduction = ReductionTransform(func_aggregate=self._internal_aggregate_series_gpu,
+                                       func_chunk=self._internal_chunk_partition_gpu,
+                                       output_size={'min': 'int64',
+                                                    'max': 'int64'})
+
+        X_t = reduction._lazy_transform_gpu(X=ddf, axis=[0])
+
+        self.assertTrue(is_dask_gpu_dataframe(X_t))
+        self.assertEqual(len(X_t.compute().iloc[0]), 2)
+
+        self.assertEqual(X_t.compute().iloc[0]['min'], 0)
+        self.assertEqual(X_t.compute().iloc[0]['max'], 1000 - 1)
