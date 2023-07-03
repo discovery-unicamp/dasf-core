@@ -1,0 +1,91 @@
+:py:mod:`dasf.profile.event`
+============================
+
+.. py:module:: dasf.profile.event
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.profile.event.Singleton
+   dasf.profile.event.TraceDatabase
+   dasf.profile.event.Profile
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.profile.event.get_time_ms
+   dasf.profile.event.add_trace_duration_begin
+   dasf.profile.event.add_trace_duration_end
+   dasf.profile.event.add_trace_complete
+   dasf.profile.event.get_traces
+   dasf.profile.event.to_chrome_event_format
+
+
+
+.. py:class:: Singleton
+
+
+   Bases: :py:obj:`type`
+
+   .. py:attribute:: _instances
+
+      
+
+   .. py:method:: __call__(*args, **kwargs)
+
+      Call self as a function.
+
+
+
+.. py:class:: TraceDatabase(database = None)
+
+
+   .. py:property:: database
+      :type: TraceDatabase
+
+
+   .. py:attribute:: db_name
+      :type: str
+      :value: 'traces.txt'
+
+      
+
+
+.. py:function:: get_time_ms()
+
+
+.. py:function:: add_trace_duration_begin(name, process_id, thread_id, category = None, timestamp = None, thread_timestamp = None, data = None)
+
+
+.. py:function:: add_trace_duration_end(name, process_id, thread_id, category = None, timestamp = None, thread_timestamp = None, data = None)
+
+
+.. py:function:: add_trace_complete(name, process_id, thread_id, timestamp, duration, thread_timestamp = None, thread_duration = None, category = None, data = None)
+
+
+.. py:function:: get_traces()
+
+
+.. py:function:: to_chrome_event_format(trace_events, trace_options = None, format_kwargs = None)
+
+
+.. py:class:: Profile(trace_file = 'traces.txt', remove_old_trace_file = True, processed_filename = 'profile.json', process_trace_options = None, process_trace_kwargs = None)
+
+
+   .. py:method:: __enter__()
+
+
+   .. py:method:: __exit__(exc_type, exc_val, exc_tb)
+
+
+

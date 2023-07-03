@@ -1,0 +1,119 @@
+:py:mod:`dasf.pipeline.executors.dask`
+======================================
+
+.. py:module:: dasf.pipeline.executors.dask
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.executors.dask.DaskPipelineExecutor
+   dasf.pipeline.executors.dask.DaskTasksPipelineExecutor
+   dasf.pipeline.executors.dask.DaskPBSPipelineExecutor
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.executors.dask.GPU_SUPPORTED
+
+
+.. py:data:: GPU_SUPPORTED
+
+   
+
+.. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
+
+
+   Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
+
+   A pipeline engine based on dask data flow.
+
+   Keyword arguments:
+   address -- address of the Dask scheduler (default None).
+   port -- port of the Dask scheduler (default 8786).
+   local -- kicks off a new local Dask cluster (default False).
+   use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
+               cluster (default False).
+   profiler -- sets a Dask profiler.
+   gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
+   cluster_kwargs -- extra Dask parameters like memory, processes, etc.
+   client_kwargs -- extra Client parameters.
+
+   .. py:property:: ngpus
+
+
+   .. py:property:: is_connected
+
+
+   .. py:method:: execute(fn, *args, **kwargs)
+
+
+   .. py:method:: register_dataset(**kwargs)
+
+
+   .. py:method:: has_dataset(key)
+
+
+   .. py:method:: get_dataset(key)
+
+
+   .. py:method:: shutdown(gracefully=True)
+
+
+
+.. py:class:: DaskTasksPipelineExecutor(address=None, port=8786, local=False, use_gpu=True, profiler=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
+
+
+   Bases: :py:obj:`DaskPipelineExecutor`
+
+   A not centric execution engine based on dask.
+
+   Keyword arguments:
+   address -- address of the Dask scheduler (default None).
+   port -- port of the Dask scheduler (default 8786).
+   local -- kicks off a new local Dask cluster (default False).
+   use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
+               cluster (default False).
+   profiler -- sets a Dask profiler.
+   gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
+   cluster_kwargs -- extra Dask parameters like memory, processes, etc.
+   client_kwargs -- extra Client parameters.
+
+   .. py:method:: pre_run(pipeline)
+
+
+   .. py:method:: post_run(pipeline)
+
+
+   .. py:method:: execute(fn, *args, **kwargs)
+
+
+   .. py:method:: register_dataset(**kwargs)
+
+
+   .. py:method:: has_dataset(key)
+
+
+   .. py:method:: get_dataset(key)
+
+
+   .. py:method:: shutdown(gracefully=True)
+
+
+
+.. py:class:: DaskPBSPipelineExecutor(**kwargs)
+
+
+   Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
+
+

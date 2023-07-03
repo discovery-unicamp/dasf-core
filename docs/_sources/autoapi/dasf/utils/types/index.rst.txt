@@ -1,0 +1,181 @@
+:py:mod:`dasf.utils.types`
+==========================
+
+.. py:module:: dasf.utils.types
+
+.. autoapi-nested-parse::
+
+   Data types handlers. 
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.utils.types.is_array
+   dasf.utils.types.is_dataframe
+   dasf.utils.types.is_cpu_array
+   dasf.utils.types.is_cpu_dataframe
+   dasf.utils.types.is_cpu_datatype
+   dasf.utils.types.is_gpu_array
+   dasf.utils.types.is_gpu_dataframe
+   dasf.utils.types.is_gpu_datatype
+   dasf.utils.types.is_dask_cpu_array
+   dasf.utils.types.is_dask_cpu_dataframe
+   dasf.utils.types.is_dask_gpu_array
+   dasf.utils.types.is_dask_gpu_dataframe
+   dasf.utils.types.is_dask_array
+   dasf.utils.types.is_dask_dataframe
+   dasf.utils.types.is_dask
+   dasf.utils.types.is_xarray_array
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.utils.types.ArrayCPU
+   dasf.utils.types.DataFrameCPU
+   dasf.utils.types.DataCPU
+   dasf.utils.types.DaskArray
+   dasf.utils.types.DaskDataFrameCPU
+   dasf.utils.types.XDataArray
+   dasf.utils.types.Array
+   dasf.utils.types.DaskDataFrame
+   dasf.utils.types.DataFrame
+   dasf.utils.types.DataDask
+   dasf.utils.types.ArrayGPU
+
+
+.. py:data:: ArrayCPU
+
+   
+
+.. py:data:: DataFrameCPU
+
+   
+
+.. py:data:: DataCPU
+
+   
+
+.. py:data:: DaskArray
+
+   
+
+.. py:data:: DaskDataFrameCPU
+
+   
+
+.. py:data:: XDataArray
+
+   
+
+.. py:data:: Array
+
+   
+
+.. py:data:: DaskDataFrame
+
+   
+
+.. py:data:: DataFrame
+
+   
+
+.. py:data:: DataDask
+
+   
+
+.. py:data:: ArrayGPU
+
+   
+
+.. py:function:: is_array(data)
+
+   Returns if data is a generic array.
+
+
+.. py:function:: is_dataframe(data)
+
+   Returns if data is a generic dataframe.
+
+
+.. py:function:: is_cpu_array(data)
+
+   Returns if data is a CPU arrau like Numpy.
+
+
+.. py:function:: is_cpu_dataframe(data)
+
+   Returns if data is a CPU dataframe like Pandas.
+
+
+.. py:function:: is_cpu_datatype(data)
+
+   Returns if data is a CPU data type.
+
+
+.. py:function:: is_gpu_array(data)
+
+   Returns if data is a GPU array like Cupy.
+
+
+.. py:function:: is_gpu_dataframe(data)
+
+   Returns if data is a GPU dataframe like Cudf.
+
+
+.. py:function:: is_gpu_datatype(data)
+
+   Returns if data is a GPU data type.
+
+
+.. py:function:: is_dask_cpu_array(data)
+
+   Returns if data is a Dask array with CPU internal array.
+
+
+.. py:function:: is_dask_cpu_dataframe(data)
+
+   Returns if data is a Dask dataframe with CPU internal dataframe.
+
+
+.. py:function:: is_dask_gpu_array(data)
+
+   Returns if data is a Dask array with GPU internal array.
+
+
+.. py:function:: is_dask_gpu_dataframe(data)
+
+   Returns if data is a Dask dataframe with GPU internal dataframe.
+
+
+.. py:function:: is_dask_array(data)
+
+   Returns if data is a Dask array.
+
+
+.. py:function:: is_dask_dataframe(data)
+
+   Returns if data is a Dask dataframe.
+
+
+.. py:function:: is_dask(data)
+
+   Returns if data is a Dask data type.
+
+
+.. py:function:: is_xarray_array(data)
+
+   Returns if data is a Xarray.
+
+

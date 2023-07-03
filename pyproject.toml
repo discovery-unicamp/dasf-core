@@ -62,6 +62,13 @@ pytest = "*"
 pytest-cov = "*"
 wheel = "*"
 
+[tool.poetry.docs-dependencies]
+sphinx = "*"
+sphinx-autoapi = "*"
+sphinx_rtd_theme = "*"
+nbsphinx = "*"
+pandoc = "*"
+
 [tool.isort]
 profile = "black"
 

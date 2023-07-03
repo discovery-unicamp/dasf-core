@@ -1,0 +1,78 @@
+:py:mod:`dasf.datasets.datasets`
+================================
+
+.. py:module:: dasf.datasets.datasets
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.datasets.datasets.make_blobs
+   dasf.datasets.datasets.make_classification
+   dasf.datasets.datasets.make_regression
+
+
+
+
+.. py:class:: make_blobs
+
+
+   .. py:method:: _lazy_make_blobs_cpu(**kwargs)
+
+
+   .. py:method:: _lazy_make_blobs_gpu(**kwargs)
+
+
+   .. py:method:: _make_blobs_cpu(**kwargs)
+
+
+   .. py:method:: _make_blobs_gpu(**kwargs)
+
+
+   .. py:method:: __call__(**kwargs)
+
+
+
+.. py:class:: make_classification
+
+
+   .. py:method:: _lazy_make_classification_cpu(**kwargs)
+
+
+   .. py:method:: _lazy_make_classification_gpu(**kwargs)
+
+
+   .. py:method:: _make_classification_cpu(**kwargs)
+
+
+   .. py:method:: _make_classification_gpu(**kwargs)
+
+
+   .. py:method:: __call__(**kwargs)
+
+
+
+.. py:class:: make_regression
+
+
+   .. py:method:: _lazy_make_regression_cpu(**kwargs)
+
+
+   .. py:method:: _lazy_make_regression_gpu(**kwargs)
+
+
+   .. py:method:: _make_regression_cpu(**kwargs)
+
+
+   .. py:method:: _make_regression_gpu(**kwargs)
+
+
+   .. py:method:: __call__(**kwargs)
+
+
+
