@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dasf.profile.plugins.dask &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="dasf.profile.plugins.resource_monitor" href="../resource_monitor/index.html" />
+    <link rel="prev" title="dasf.profile.plugins.dasf" href="../dasf/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            DASF
+          </a>
+              <div class="version">
+                1.0b5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../principles.html">Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../api.html">DASF API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../ml/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">DASF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../api.html">DASF API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile</span></code></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins.dask</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../../_sources/autoapi/dasf/profile/plugins/dask/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dasf.profile.plugins.dask">
+<span id="dasf-profile-plugins-dask"></span><h1><a class="reference internal" href="#module-dasf.profile.plugins.dask" title="dasf.profile.plugins.dask"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins.dask</span></code></a><a class="headerlink" href="#module-dasf.profile.plugins.dask" title="Permalink to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.profile.plugins.dask.TaskTimePlugin" title="dasf.profile.plugins.dask.TaskTimePlugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskTimePlugin</span></code></a></p></td>
+<td><p>Interface to extend the Worker</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.profile.plugins.dask.TaskTimePlugin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.profile.plugins.dask.</span></span><span class="sig-name descname"><span class="pre">TaskTimePlugin</span></span><a class="reference internal" href="../../../../../_modules/dasf/profile/plugins/dask.html#TaskTimePlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.dask.TaskTimePlugin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">distributed.diagnostics.plugin.WorkerPlugin</span></code></p>
+<p>Interface to extend the Worker</p>
+<p>A worker plugin enables custom code to run at different stages of the Workers’
+lifecycle.</p>
+<p>A plugin enables custom code to run at each of step of a Workers’s life. Whenever such
+an event happens, the corresponding method on this class will be called. Note that the
+user code always runs within the Worker’s main thread.</p>
+<p>To implement a plugin implement some of the methods of this class and register
+the plugin to your client in order to have it attached to every existing and
+future workers with <code class="docutils literal notranslate"><span class="pre">Client.register_worker_plugin</span></code>.</p>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ErrorLogger</span><span class="p">(</span><span class="n">WorkerPlugin</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">worker</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">finish</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">finish</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="gp">... </span>            <span class="n">exc_info</span> <span class="o">=</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">exception</span><span class="p">),</span> <span class="n">ts</span><span class="o">.</span><span class="n">exception</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">traceback</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+<span class="gp">... </span>                <span class="s2">&quot;Error during computation of &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">exc_info</span><span class="o">=</span><span class="n">exc_info</span>
+<span class="gp">... </span>            <span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plugin</span> <span class="o">=</span> <span class="n">ErrorLogger</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">register_worker_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>  
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.dask.TaskTimePlugin.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/profile/plugins/dask.html#TaskTimePlugin.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.dask.TaskTimePlugin.setup" title="Permalink to this definition"></a></dt>
+<dd><p>Run when the plugin is attached to a worker. This happens when the plugin is registered
+and attached to existing workers, or when a worker is created after the plugin has been
+registered.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.dask.TaskTimePlugin.transition">
+<span class="sig-name descname"><span class="pre">transition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finish</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/profile/plugins/dask.html#TaskTimePlugin.transition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.dask.TaskTimePlugin.transition" title="Permalink to this definition"></a></dt>
+<dd><p>Throughout the lifecycle of a task (see <span class="xref std std-doc">Worker State</span>), Workers are instructed by the scheduler to compute
+certain tasks, resulting in transitions in the state of each task. The
+Worker owning the task is then notified of this state transition.</p>
+<p>Whenever a task changes its state, this method will be called.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is an advanced feature and the transition mechanism and details
+of task states are subject to change without deprecation cycle.</p>
+</div>
+<section id="parameters">
+<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h5>
+<p>key : string
+start : string</p>
+<blockquote>
+<div><p>Start state of the transition.
+One of waiting, ready, executing, long-running, memory, error.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>finish<span class="classifier">string</span></dt><dd><p>Final state of the transition.</p>
+</dd>
+</dl>
+<p>kwargs : More options passed when transitioning</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../dasf/index.html" class="btn btn-neutral float-left" title="dasf.profile.plugins.dasf" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../resource_monitor/index.html" class="btn btn-neutral float-right" title="dasf.profile.plugins.resource_monitor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

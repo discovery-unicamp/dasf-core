@@ -1,0 +1,22 @@
+:py:mod:`dasf`
+==============
+
+.. py:module:: dasf
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   datasets/index.rst
+   debug/index.rst
+   feature_extraction/index.rst
+   ml/index.rst
+   pipeline/index.rst
+   profile/index.rst
+   transforms/index.rst
+   utils/index.rst
+
+

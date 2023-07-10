@@ -1,0 +1,17 @@
+:py:mod:`dasf.profile.plugins`
+==============================
+
+.. py:module:: dasf.profile.plugins
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   dasf/index.rst
+   dask/index.rst
+   resource_monitor/index.rst
+
+

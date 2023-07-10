@@ -1,0 +1,188 @@
+:py:mod:`dasf.feature_extraction`
+=================================
+
+.. py:module:: dasf.feature_extraction
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   histogram/index.rst
+   transform/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.feature_extraction.ConcatenateToArray
+   dasf.feature_extraction.SampleDataframe
+   dasf.feature_extraction.GetSubeCubeArray
+   dasf.feature_extraction.SliceDataframe
+   dasf.feature_extraction.GetSubDataframe
+   dasf.feature_extraction.Histogram
+
+
+
+
+.. py:class:: ConcatenateToArray(flatten = False)
+
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   Concatenate data from different Arrays into a single array.
+
+   Parameters
+   ----------
+   flatten : bool
+       If the arrays must be flatten prior concatenating. If `False`, the
+       arrays must share the shape of last dimansions in order to be
+       concatenated (the default is False).
+
+
+   .. py:method:: __transform_generic(xp, **kwargs)
+
+
+   .. py:method:: _transform_cpu(**kwargs)
+
+
+   .. py:method:: _transform_gpu(**kwargs)
+
+
+
+.. py:class:: SampleDataframe(percent)
+
+
+   Return a subset with random samples of the original dataset.
+
+   Parameters
+   ----------
+   percent : float
+       Percentage of the samples to get from the dataset.
+
+
+   .. py:method:: run(X)
+
+      Returns a subset with random samples from the dataset `X`.
+
+      Parameters
+      ----------
+      X : Any
+          The dataset.
+
+      Returns
+      -------
+      Any
+          The sampled subset.
+
+
+
+
+.. py:class:: GetSubeCubeArray(percent)
+
+
+   Get a subcube with x% of samples from the original one.
+
+   Parameters
+   ----------
+   percent : float
+       Percentage of the samples to get from the cube.
+
+
+   .. py:method:: transform(X)
+
+
+
+.. py:class:: SliceDataframe(iline_index)
+
+
+   Bases: :py:obj:`dasf.transforms.base.Fit`
+
+   Get a slice of a cube. An inline slice is a section over the x-axis.
+
+   Parameters
+   ----------
+   iline_index : int
+       The index of the inline to get.
+
+
+   .. py:method:: fit(X, y)
+
+
+
+.. py:class:: GetSubDataframe(percent)
+
+
+   Get the first x% samples from the dataset.
+
+   Parameters
+   ----------
+   percent : float
+       Percentage of the samples to get from the dataframe.
+
+
+   .. py:method:: transform(X)
+
+
+
+.. py:class:: Histogram(bins = None, range = None, normed = False, weights=None, density=None, *args, **kwargs)
+
+
+   Bases: :py:obj:`dasf.transforms.base.TargeteredTransform`, :py:obj:`dasf.transforms.base.Transform`
+
+   Operator to extract the histogram of a data.
+
+   Parameters
+   ----------
+   bins : Optional[int]
+       Number of bins (the default is None).
+   range : tuple
+       2-element tuple with the lower and upper range of the bins. If not
+       provided, range is simply (X.min(), X.max()) (the default is None).
+   normed : bool
+       If the historgram must be normalized (the default is False).
+   weights : type
+       An array of weights, of the same shape as X. Each value in a only
+       contributes its associated weight towards the bin count
+       (the default is None).
+   density : type
+       If False, the result will contain the number of samples in each bin.
+       If True, the result is the value of the probability density function
+       at the bin, normalized such that the integral over the range is 1
+       (the default is None).
+
+   Attributes
+   ----------
+   bins
+   range
+   normed
+   weights
+   density
+
+
+   .. py:method:: __lazy_transform_generic(X)
+
+
+   .. py:method:: __transform_generic(X, xp)
+
+
+   .. py:method:: _lazy_transform_cpu(X)
+
+
+   .. py:method:: _lazy_transform_gpu(X, **kwargs)
+
+
+   .. py:method:: _transform_cpu(X, **kwargs)
+
+
+   .. py:method:: _transform_gpu(X, **kwargs)
+
+
+

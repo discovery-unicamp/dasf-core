@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dasf.ml.cluster.agglomerative &mdash; DASF 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> DASF
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">DASF API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">DASF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dasf.ml.cluster.agglomerative</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dasf.ml.cluster.agglomerative</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AgglomerativeClustering</span> <span class="k">as</span> <span class="n">AgglomerativeClustering_CPU</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># noqa</span>
+
+<span class="kn">from</span> <span class="nn">dasf.ml.cluster.classifier</span> <span class="kn">import</span> <span class="n">ClusterClassifier</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_gpu_supported</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">cuml</span> <span class="kn">import</span> <span class="n">AgglomerativeClustering</span> <span class="k">as</span> <span class="n">AgglomerativeClustering_GPU</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="AgglomerativeClustering"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.agglomerative.AgglomerativeClustering">[docs]</a><span class="k">class</span> <span class="nc">AgglomerativeClustering</span><span class="p">(</span><span class="n">ClusterClassifier</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Agglomerative Clustering</span>
+
+<span class="sd">    Recursively merges the pair of clusters that minimally increases</span>
+<span class="sd">    a given linkage distance.</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;hierarchical_clustering&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_clusters : int or None, default=2</span>
+<span class="sd">        The number of clusters to find. It must be ``None`` if</span>
+<span class="sd">        ``distance_threshold`` is not ``None``.</span>
+
+<span class="sd">    affinity : str or callable, default=&#39;euclidean&#39;</span>
+<span class="sd">        Metric used to compute the linkage. Can be &quot;euclidean&quot;, &quot;l1&quot;, &quot;l2&quot;,</span>
+<span class="sd">        &quot;manhattan&quot;, &quot;cosine&quot;, or &quot;precomputed&quot;.</span>
+<span class="sd">        If linkage is &quot;ward&quot;, only &quot;euclidean&quot; is accepted.</span>
+<span class="sd">        If &quot;precomputed&quot;, a distance matrix (instead of a similarity matrix)</span>
+<span class="sd">        is needed as input for the fit method.</span>
+
+<span class="sd">    memory : str or object with the joblib.Memory interface, default=None</span>
+<span class="sd">        Used to cache the output of the computation of the tree.</span>
+<span class="sd">        By default, no caching is done. If a string is given, it is the</span>
+<span class="sd">        path to the caching directory.</span>
+
+<span class="sd">    connectivity : array-like or callable, default=None</span>
+<span class="sd">        Connectivity matrix. Defines for each sample the neighboring</span>
+<span class="sd">        samples following a given structure of the data.</span>
+<span class="sd">        This can be a connectivity matrix itself or a callable that transforms</span>
+<span class="sd">        the data into a connectivity matrix, such as derived from</span>
+<span class="sd">        kneighbors_graph. Default is ``None``, i.e, the</span>
+<span class="sd">        hierarchical clustering algorithm is unstructured.</span>
+
+<span class="sd">    compute_full_tree : &#39;auto&#39; or bool, default=&#39;auto&#39;</span>
+<span class="sd">        Stop early the construction of the tree at ``n_clusters``. This is</span>
+<span class="sd">        useful to decrease computation time if the number of clusters is not</span>
+<span class="sd">        small compared to the number of samples. This option is useful only</span>
+<span class="sd">        when specifying a connectivity matrix. Note also that when varying the</span>
+<span class="sd">        number of clusters and using caching, it may be advantageous to compute</span>
+<span class="sd">        the full tree. It must be ``True`` if ``distance_threshold`` is not</span>
+<span class="sd">        ``None``. By default `compute_full_tree` is &quot;auto&quot;, which is equivalent</span>
+<span class="sd">        to `True` when `distance_threshold` is not `None` or that `n_clusters`</span>
+<span class="sd">        is inferior to the maximum between 100 or `0.02 * n_samples`.</span>
+<span class="sd">        Otherwise, &quot;auto&quot; is equivalent to `False`.</span>
+
+<span class="sd">    linkage : {&#39;ward&#39;, &#39;complete&#39;, &#39;average&#39;, &#39;single&#39;}, default=&#39;ward&#39;</span>
+<span class="sd">        Which linkage criterion to use. The linkage criterion determines which</span>
+<span class="sd">        distance to use between sets of observation. The algorithm will merge</span>
+<span class="sd">        the pairs of cluster that minimize this criterion.</span>
+
+<span class="sd">        - &#39;ward&#39; minimizes the variance of the clusters being merged.</span>
+<span class="sd">        - &#39;average&#39; uses the average of the distances of each observation of</span>
+<span class="sd">          the two sets.</span>
+<span class="sd">        - &#39;complete&#39; or &#39;maximum&#39; linkage uses the maximum distances between</span>
+<span class="sd">          all observations of the two sets.</span>
+<span class="sd">        - &#39;single&#39; uses the minimum of the distances between all observations</span>
+<span class="sd">          of the two sets.</span>
+
+<span class="sd">        .. versionadded:: 0.20</span>
+<span class="sd">            Added the &#39;single&#39; option</span>
+
+<span class="sd">    distance_threshold : float, default=None</span>
+<span class="sd">        The linkage distance threshold above which, clusters will not be</span>
+<span class="sd">        merged. If not ``None``, ``n_clusters`` must be ``None`` and</span>
+<span class="sd">        ``compute_full_tree`` must be ``True``.</span>
+
+<span class="sd">        .. versionadded:: 0.21</span>
+
+<span class="sd">    compute_distances : bool, default=False</span>
+<span class="sd">        Computes distances between clusters even if `distance_threshold` is not</span>
+<span class="sd">        used. This can be used to make dendrogram visualization, but introduces</span>
+<span class="sd">        a computational and memory overhead.</span>
+
+<span class="sd">        .. versionadded:: 0.24</span>
+
+<span class="sd">    n_neighbors : int, default = 15</span>
+<span class="sd">        The number of neighbors to compute when connectivity = &quot;knn&quot;</span>
+
+<span class="sd">    output_type : {&#39;input&#39;, &#39;cudf&#39;, &#39;cupy&#39;, &#39;numpy&#39;, &#39;numba&#39;}, default=None</span>
+<span class="sd">        Variable to control output type of the results and attributes of the</span>
+<span class="sd">        estimator. If None, it&#39;ll inherit the output type set at the module</span>
+<span class="sd">        level, cuml.global_settings.output_type. See Output Data Type</span>
+<span class="sd">        Configuration for more info.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from dasf.ml.cluster import AgglomerativeClustering</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; X = np.array([[1, 2], [1, 4], [1, 0],</span>
+<span class="sd">    ...               [4, 2], [4, 4], [4, 0]])</span>
+<span class="sd">    &gt;&gt;&gt; clustering = AgglomerativeClustering().fit(X)</span>
+<span class="sd">    &gt;&gt;&gt; clustering</span>
+<span class="sd">    AgglomerativeClustering()</span>
+
+<span class="sd">    For further informations see:</span>
+<span class="sd">    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html</span>
+<span class="sd">    - https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">affinity</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+        <span class="n">connectivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">linkage</span><span class="o">=</span><span class="s2">&quot;single&quot;</span><span class="p">,</span>
+        <span class="n">memory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">compute_full_tree</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">distance_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">compute_distances</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">handle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">output_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">n_clusters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">affinity</span> <span class="o">=</span> <span class="n">affinity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connectivity</span> <span class="o">=</span> <span class="n">connectivity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linkage</span> <span class="o">=</span> <span class="n">linkage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="n">memory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_full_tree</span> <span class="o">=</span> <span class="n">compute_full_tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance_threshold</span> <span class="o">=</span> <span class="n">distance_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_distances</span> <span class="o">=</span> <span class="n">compute_distances</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="n">handle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">n_neighbors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">=</span> <span class="n">output_type</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__agg_cluster_cpu</span> <span class="o">=</span> <span class="n">AgglomerativeClustering_CPU</span><span class="p">(</span>
+            <span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span>
+            <span class="n">affinity</span><span class="o">=</span><span class="n">affinity</span><span class="p">,</span>
+            <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span>
+            <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">,</span>
+            <span class="n">compute_full_tree</span><span class="o">=</span><span class="n">compute_full_tree</span><span class="p">,</span>
+            <span class="n">linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span>
+            <span class="n">distance_threshold</span><span class="o">=</span><span class="n">distance_threshold</span><span class="p">,</span>
+            <span class="n">compute_distances</span><span class="o">=</span><span class="n">compute_distances</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">connectivity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">connectivity</span> <span class="o">=</span> <span class="s2">&quot;knn&quot;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">__agg_cluster_gpu</span> <span class="o">=</span> <span class="n">AgglomerativeClustering_GPU</span><span class="p">(</span>
+                <span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span>
+                <span class="n">affinity</span><span class="o">=</span><span class="n">affinity</span><span class="p">,</span>
+                <span class="n">linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span>
+                <span class="n">handle</span><span class="o">=</span><span class="n">handle</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">,</span>
+                <span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">,</span>
+                <span class="n">output_type</span><span class="o">=</span><span class="n">output_type</span><span class="p">,</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="AgglomerativeClustering._fit_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.agglomerative.AgglomerativeClustering._fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">convert_dtype</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agg_cluster_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AgglomerativeClustering._fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.agglomerative.AgglomerativeClustering._fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">convert_dtype</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agg_cluster_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">convert_dtype</span><span class="o">=</span><span class="n">convert_dtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AgglomerativeClustering._fit_predict_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.agglomerative.AgglomerativeClustering._fit_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agg_cluster_cpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AgglomerativeClustering._fit_predict_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.agglomerative.AgglomerativeClustering._fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agg_cluster_gpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, UNICAMP.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

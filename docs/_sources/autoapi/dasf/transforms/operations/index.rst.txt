@@ -1,0 +1,52 @@
+:py:mod:`dasf.transforms.operations`
+====================================
+
+.. py:module:: dasf.transforms.operations
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.transforms.operations.Reshape
+   dasf.transforms.operations.SliceArray
+   dasf.transforms.operations.SliceArrayByPercent
+
+
+
+
+.. py:class:: Reshape(shape)
+
+
+   Reshape data with a new shape.
+
+   Parameters
+   ----------
+   shape : tuple
+       The new shape of the data.
+
+
+   .. py:method:: run(X)
+
+
+
+.. py:class:: SliceArray(output_size)
+
+
+   .. py:method:: transform(X)
+
+
+
+.. py:class:: SliceArrayByPercent(x=100.0, y=100.0, z=100.0)
+
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   .. py:method:: transform(X)
+
+
+

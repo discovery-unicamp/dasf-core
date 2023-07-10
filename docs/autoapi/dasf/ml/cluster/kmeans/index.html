@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dasf.ml.cluster.kmeans &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="dasf.ml.cluster.som" href="../som/index.html" />
+    <link rel="prev" title="dasf.ml.cluster.hdbscan" href="../hdbscan/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            DASF
+          </a>
+              <div class="version">
+                1.0b5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../principles.html">Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../api.html">DASF API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../profile/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">DASF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../api.html">DASF API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.kmeans</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../../_sources/autoapi/dasf/ml/cluster/kmeans/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-dasf.ml.cluster.kmeans">
+<span id="dasf-ml-cluster-kmeans"></span><h1><a class="reference internal" href="#module-dasf.ml.cluster.kmeans" title="dasf.ml.cluster.kmeans"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.cluster.kmeans</span></code></a><a class="headerlink" href="#module-dasf.ml.cluster.kmeans" title="Permalink to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.ml.cluster.kmeans.KMeans" title="dasf.ml.cluster.kmeans.KMeans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KMeans</span></code></a></p></td>
+<td><p>K-Means clustering.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.cluster.kmeans.</span></span><span class="sig-name descname"><span class="pre">KMeans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oversampling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_samples_per_batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precompute_distances</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../classifier/index.html#dasf.ml.cluster.classifier.ClusterClassifier" title="dasf.ml.cluster.classifier.ClusterClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.ml.cluster.classifier.ClusterClassifier</span></code></a></p>
+<p>K-Means clustering.</p>
+<p>Read more in the <span class="xref std std-ref">User Guide</span>.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h4>
+<dl class="simple">
+<dt>n_clusters<span class="classifier">int, default=8</span></dt><dd><p>The number of clusters to form as well as the number of
+centroids to generate.</p>
+</dd>
+</dl>
+<p>init : {‘k-means++’, ‘random’}, callable or array-like of shape (n_clusters, n_features), default=’k-means++’</p>
+<blockquote>
+<div><p>Method for initialization:</p>
+<p>‘k-means++’ : selects initial cluster centers for k-mean
+clustering in a smart way to speed up convergence. See section
+Notes in k_init for more details.</p>
+<p>‘random’: choose <cite>n_clusters</cite> observations (rows) at random from data
+for the initial centroids.</p>
+<p>If an array is passed, it should be of shape (n_clusters, n_features)
+and gives the initial centers.</p>
+<p>If a callable is passed, it should take arguments X, n_clusters and a
+random state and return an initialization.</p>
+</div></blockquote>
+<dl>
+<dt>n_init<span class="classifier">int, default=10</span></dt><dd><p>Number of time the k-means algorithm will be run with different
+centroid seeds. The final results will be the best output of
+n_init consecutive runs in terms of inertia.</p>
+</dd>
+<dt>max_iter<span class="classifier">int, default=300</span></dt><dd><p>Maximum number of iterations of the k-means algorithm for a
+single run.</p>
+</dd>
+<dt>tol<span class="classifier">float, default=1e-4</span></dt><dd><p>Relative tolerance with regards to Frobenius norm of the difference
+in the cluster centers of two consecutive iterations to declare
+convergence.</p>
+</dd>
+<dt>precompute_distances<span class="classifier">{‘auto’, True, False}, default=’auto’</span></dt><dd><p>Precompute distances (faster but takes more memory).</p>
+<p>‘auto’ : do not precompute distances if n_samples * n_clusters &gt; 12
+million. This corresponds to about 100MB overhead per job using
+double precision. IMPORTANT: This is used only in Dask ML version.</p>
+<p>True : always precompute distances.</p>
+<p>False : never precompute distances.</p>
+</dd>
+<dt>verbose<span class="classifier">int, default=0</span></dt><dd><p>Verbosity mode.</p>
+</dd>
+<dt>random_state<span class="classifier">int, RandomState instance or None, default=None</span></dt><dd><p>Determines random number generation for centroid initialization. Use
+an int to make the randomness deterministic.
+See <span class="xref std std-term">Glossary</span>.</p>
+</dd>
+<dt>copy_x<span class="classifier">bool, default=True</span></dt><dd><p>When pre-computing distances it is more numerically accurate to center
+the data first. If copy_x is True (default), then the original data is
+not modified. If False, the original data is modified, and put back
+before the function returns, but small numerical differences may be
+introduced by subtracting and then adding the data mean. Note that if
+the original data is not C-contiguous, a copy will be made even if
+copy_x is False. If the original data is sparse, but not in CSR format,
+a copy will be made even if copy_x is False.</p>
+</dd>
+<dt>n_jobs<span class="classifier">int, default=1</span></dt><dd><p>The number of OpenMP threads to use for the computation. Parallelism is
+sample-wise on the main cython loop which assigns each sample to its
+closest center. IMPORTANT: This is used only in Dask ML version.</p>
+<p><code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors.</p>
+</dd>
+<dt>init_max_iter<span class="classifier">int, default=None</span></dt><dd><p>Number of iterations for init step.</p>
+</dd>
+<dt>algorithm<span class="classifier">{“auto”, “full”, “elkan”}, default=”full”</span></dt><dd><p>K-means algorithm to use. The classical EM-style algorithm is “full”.
+The “elkan” variation is more efficient on data with well-defined
+clusters, by using the triangle inequality. However it’s more memory
+intensive due to the allocation of an extra array of shape
+(n_samples, n_clusters).</p>
+<p>For now “auto” (kept for backward compatibiliy) chooses “elkan” but it
+might change in the future for a better heuristic.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.18: </span>Added Elkan algorithm</p>
+</div>
+</dd>
+<dt>oversampling_factor<span class="classifier">int, default=2</span></dt><dd><p>The amount of points to sample in scalable k-means++ initialization
+for potential centroids. Increasing this value can lead to better
+initial centroids at the cost of memory. The total number of centroids
+sampled in scalable k-means++ is oversampling_factor * n_clusters * 8.</p>
+</dd>
+<dt>max_samples_per_batch<span class="classifier">int, default=32768</span></dt><dd><p>The number of data samples to use for batches of the pairwise distance
+computation. This computation is done throughout both fit predict. The
+default should suit most cases. The total number of elements in the
+batched pairwise distance computation is max_samples_per_batch *
+n_clusters. It might become necessary to lower this number when
+n_clusters becomes prohibitively large.</p>
+</dd>
+<dt>output_type<span class="classifier">{‘input’, ‘cudf’, ‘cupy’, ‘numpy’, ‘numba’}, default=None</span></dt><dd><p>Variable to control output type of the results and attributes of the
+estimator. If None, it’ll inherit the output type set at the module
+level, cuml.global_settings.output_type. See Output Data Type
+Configuration for more info.</p>
+</dd>
+</dl>
+</section>
+<section id="see-also">
+<h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading"></a></h4>
+<dl class="simple">
+<dt>MiniBatchKMeans<span class="classifier">Alternative online implementation that does incremental</span></dt><dd><p>updates of the centers positions using mini-batches.
+For large scale learning (say n_samples &gt; 10k) MiniBatchKMeans is
+probably much faster than the default batch implementation.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading"></a></h4>
+<p>The k-means problem is solved using either Lloyd’s or Elkan’s algorithm.</p>
+<p>The average complexity is given by O(k n T), where n is the number of
+samples and T is the number of iteration.</p>
+<p>The worst case complexity is given by O(n^(k+2/p)) with
+n = n_samples, p = n_features. (D. Arthur and S. Vassilvitskii,
+‘How slow is the k-means method?’ SoCG2006)</p>
+<p>In practice, the k-means algorithm is very fast (one of the fastest
+clustering algorithms available), but it falls in local minima. That’s why
+it can be useful to restart it several times.</p>
+<p>If the algorithm stops before fully converging (because of <code class="docutils literal notranslate"><span class="pre">tol</span></code> or
+<code class="docutils literal notranslate"><span class="pre">max_iter</span></code>), <code class="docutils literal notranslate"><span class="pre">labels_</span></code> and <code class="docutils literal notranslate"><span class="pre">cluster_centers_</span></code> will not be consistent,
+i.e. the <code class="docutils literal notranslate"><span class="pre">cluster_centers_</span></code> will not be the means of the points in each
+cluster. Also, the estimator will reassign <code class="docutils literal notranslate"><span class="pre">labels_</span></code> after the last
+iteration to make <code class="docutils literal notranslate"><span class="pre">labels_</span></code> consistent with <code class="docutils literal notranslate"><span class="pre">predict</span></code> on the training
+set.</p>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dasf.ml.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kmeans</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="go">array([1, 0], dtype=int32)</span>
+</pre></div>
+</div>
+<p>For further informations see:
+- <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html">https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html</a>
+- <a class="reference external" href="https://ml.dask.org/modules/generated/dask_ml.cluster.KMeans.html">https://ml.dask.org/modules/generated/dask_ml.cluster.KMeans.html</a>
+- <a class="reference external" href="https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering">https://docs.rapids.ai/api/cuml/stable/api.html#k-means-clustering</a>
+- <a class="reference external" href="https://docs.rapids.ai/api/cuml/stable/api.html#cuml.dask.cluster.KMeans">https://docs.rapids.ai/api/cuml/stable/api.html#cuml.dask.cluster.KMeans</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._lazy_fit_cpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._lazy_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._lazy_fit_cpu" title="Permalink to this definition"></a></dt>
+<dd><p>Compute Dask k-means clustering.</p>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training instances to cluster. It must be noted that the data
+will be converted to C ordering, which will cause a memory
+copy if the given data is not C-contiguous.
+If a sparse matrix is passed, a copy will be made if it&amp;apos;s not in
+CSR format.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+<dt>sample_weight<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>self</dt><dd><p>Fitted estimator.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._lazy_fit_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._lazy_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._lazy_fit_gpu" title="Permalink to this definition"></a></dt>
+<dd><p>Compute Dask CuML k-means clustering.</p>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training instances to cluster. It must be noted that the data
+will be converted to C ordering, which will cause a memory
+copy if the given data is not C-contiguous.
+If a sparse matrix is passed, a copy will be made if it&amp;apos;s not in
+CSR format.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>self</dt><dd><p>Fitted estimator.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._fit_cpu">
+<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._fit_cpu" title="Permalink to this definition"></a></dt>
+<dd><p>Compute Scikit Learn k-means clustering.</p>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training instances to cluster. It must be noted that the data
+will be converted to C ordering, which will cause a memory
+copy if the given data is not C-contiguous.
+If a sparse matrix is passed, a copy will be made if it&amp;apos;s not in
+CSR format.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>self</dt><dd><p>Fitted estimator.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._fit_gpu">
+<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._fit_gpu" title="Permalink to this definition"></a></dt>
+<dd><p>Compute CuML k-means clustering.</p>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training instances to cluster. It must be noted that the data
+will be converted to C ordering, which will cause a memory
+copy if the given data is not C-contiguous.
+If a sparse matrix is passed, a copy will be made if it&amp;apos;s not in
+CSR format.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>self</dt><dd><p>Fitted estimator.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._lazy_fit_predict_cpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_predict_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._lazy_fit_predict_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._lazy_fit_predict_cpu" title="Permalink to this definition"></a></dt>
+<dd><p>Compute cluster centers and predict cluster index for each sample using
+Dask ML.</p>
+<p>Convenience method; equivalent to calling fit(X) followed by
+predict(X).</p>
+<section id="id8">
+<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to transform.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+<dt>sample_weight<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._lazy_fit_predict_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_predict_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._lazy_fit_predict_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._lazy_fit_predict_gpu" title="Permalink to this definition"></a></dt>
+<dd><p>Compute cluster centers and predict cluster index for each sample using
+Dask CuML.</p>
+<p>Convenience method; equivalent to calling fit(X) followed by
+predict(X).</p>
+<section id="id10">
+<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to transform.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._fit_predict_cpu">
+<span class="sig-name descname"><span class="pre">_fit_predict_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._fit_predict_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._fit_predict_cpu" title="Permalink to this definition"></a></dt>
+<dd><p>Compute cluster centers and predict cluster index for each sample using
+Scikit Learn.</p>
+<p>Convenience method; equivalent to calling fit(X) followed by
+predict(X).</p>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to transform.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+<dt>sample_weight<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._fit_predict_gpu">
+<span class="sig-name descname"><span class="pre">_fit_predict_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._fit_predict_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._fit_predict_gpu" title="Permalink to this definition"></a></dt>
+<dd><p>Compute cluster centers and predict cluster index for each sample using
+CuML.</p>
+<p>Convenience method; equivalent to calling fit(X) followed by
+predict(X).</p>
+<section id="id14">
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to transform.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id15">
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._lazy_predict_cpu">
+<span class="sig-name descname"><span class="pre">_lazy_predict_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._lazy_predict_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._lazy_predict_cpu" title="Permalink to this definition"></a></dt>
+<dd><p>Predict the closest cluster each sample in X belongs to using Dask ML.</p>
+<p>In the vector quantization literature, <cite>cluster_centers_</cite> is called
+the code book and each value returned by <cite>predict</cite> is the index of
+the closest code in the code book.</p>
+<section id="id16">
+<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to predict.</p>
+</dd>
+<dt>sample_weight<span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
+</dd>
+</dl>
+</section>
+<section id="id17">
+<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._lazy_predict_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_predict_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._lazy_predict_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._lazy_predict_gpu" title="Permalink to this definition"></a></dt>
+<dd><p>Predict the closest cluster each sample in X belongs to using Dask
+CuML.</p>
+<p>In the vector quantization literature, <cite>cluster_centers_</cite> is called
+the code book and each value returned by <cite>predict</cite> is the index of
+the closest code in the code book.</p>
+<section id="id18">
+<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to predict.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id19">
+<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._predict_cpu">
+<span class="sig-name descname"><span class="pre">_predict_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._predict_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._predict_cpu" title="Permalink to this definition"></a></dt>
+<dd><p>Predict the closest cluster each sample in X belongs to using Scikit
+Learn.</p>
+<p>In the vector quantization literature, <cite>cluster_centers_</cite> is called
+the code book and each value returned by <cite>predict</cite> is the index of
+the closest code in the code book.</p>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to predict.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._predict_gpu">
+<span class="sig-name descname"><span class="pre">_predict_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._predict_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._predict_gpu" title="Permalink to this definition"></a></dt>
+<dd><p>Predict the closest cluster each sample in X belongs to using CuML.</p>
+<p>In the vector quantization literature, <cite>cluster_centers_</cite> is called
+the code book and each value returned by <cite>predict</cite> is the index of
+the closest code in the code book.</p>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to predict.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._lazy_predict2_cpu">
+<span class="sig-name descname"><span class="pre">_lazy_predict2_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._lazy_predict2_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._lazy_predict2_cpu" title="Permalink to this definition"></a></dt>
+<dd><p>A block predict using Scikit Learn variant but for Dask.</p>
+<p>In the vector quantization literature, <cite>cluster_centers_</cite> is called
+the code book and each value returned by <cite>predict</cite> is the index of
+the closest code in the code book.</p>
+<section id="id24">
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to predict.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id25">
+<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._lazy_predict2_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_predict2_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._lazy_predict2_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._lazy_predict2_gpu" title="Permalink to this definition"></a></dt>
+<dd><p>A block predict using CuML variant but for Dask.</p>
+<p>In the vector quantization literature, <cite>cluster_centers_</cite> is called
+the code book and each value returned by <cite>predict</cite> is the index of
+the closest code in the code book.</p>
+<section id="id26">
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to predict.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
+are assigned equal weight.</p>
+</dd>
+</dl>
+</section>
+<section id="id27">
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading"></a></h5>
+<dl class="simple">
+<dt>labels<span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Index of the cluster each sample belongs to.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._predict2_cpu">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_predict2_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._predict2_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._predict2_cpu" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans._predict2_gpu">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_predict2_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans._predict2_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans._predict2_gpu" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.cluster.kmeans.KMeans.predict2">
+<span class="sig-name descname"><span class="pre">predict2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/kmeans.html#KMeans.predict2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.kmeans.KMeans.predict2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../hdbscan/index.html" class="btn btn-neutral float-left" title="dasf.ml.cluster.hdbscan" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../som/index.html" class="btn btn-neutral float-right" title="dasf.ml.cluster.som" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

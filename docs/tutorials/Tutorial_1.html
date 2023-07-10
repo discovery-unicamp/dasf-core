@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial 1 - A Quick Demo &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial 2 - How to extend DASF Datasets" href="Tutorial_2.html" />
+    <link rel="prev" title="Tutorials" href="../tutorials.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DASF
+          </a>
+              <div class="version">
+                1.0b5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../principles.html">Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial 1 - A Quick Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial_2.html">Tutorial 2 - How to extend DASF Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial_3.html">Tutorial 3 - How Create Your Own Trasform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tutorial_4.html">Tutorial 4 - How Create an Agnostic Pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">DASF API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Tutorial 1 - A Quick Demo</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/Tutorial_1.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Tutorial-1---A-Quick-Demo">
+<h1>Tutorial 1 - A Quick Demo<a class="headerlink" href="#Tutorial-1---A-Quick-Demo" title="Permalink to this heading"></a></h1>
+<p>In this first tutorial, we want to present some basics of DASF framework and how you can use it to manage your machine learning algorithms in a multi architecture environemnt like single machines, clusteres and GPUs.</p>
+<p>If you are familiar with all the <a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a> API, DASF has the same methodology of function notations. The only difference of DASF is that this framework is directly associated with the host environment. If you are using a clustered environment with <a class="reference external" href="https://www.dask.org/">Dask</a> for example, you will use the optimized functions for that environment type. If you are running your code in a single GPU host environment, your code will have the
+specific optimizations for that type and so on so forth.</p>
+<p>Let’s try our first example with some basic clustering algorithm. First, create a simple dataset using <code class="docutils literal notranslate"><span class="pre">make_blobs</span></code> function.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">500000</span>
+<span class="n">n_bins</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># Generate 3 blobs with 2 classes where the second blob contains</span>
+<span class="c1"># half positive samples and half negative samples. Probability in this</span>
+<span class="c1"># blob is therefore 0.5.</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Notice that we are using the same code available in scikit-learn tutorials and demos.</p>
+<p>To have a better view of the data distribution, we can plot the generated dataset.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Only to generate colors</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">dasf.utils.types</span> <span class="kn">import</span> <span class="n">is_gpu_array</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Check the data just to plot</span>
+<span class="k">if</span> <span class="n">is_gpu_array</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="n">X_cpu</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">X_cpu</span> <span class="o">=</span> <span class="n">X</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">rainbow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_cpu</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">X_cpu</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dataset&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Tutorial_1_3_0.png" src="../_images/tutorials_Tutorial_1_3_0.png" />
+</div>
+</div>
+<p>Once, we have the big picture of how our dataset is distributed, let’s run two clustering algorithms to understand how it can be classified.</p>
+<p>For this tutorial, we decided to use KMeans and SOM (Kohonen’s Self-Organized Map) as an example.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.ml.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">dasf.ml.cluster</span> <span class="kn">import</span> <span class="n">SOM</span>
+
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">som</span> <span class="o">=</span> <span class="n">SOM</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">input_len</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>As we know our dataset defines 3 centers with 2 classes, we set KMeans <code class="docutils literal notranslate"><span class="pre">n_clusters</span></code> parameter with the same number of classes of our dataset. On the other hand, SOM is based on an activation map and it does not necessary needs a 1-D map with 3 activation points, but we want to use here to help the classification algorithm also. See that as we also know that our dataset contains two classes, the parameter <code class="docutils literal notranslate"><span class="pre">input_len</span></code> of SOM needs to be set as <strong>2</strong> (same number of classes).</p>
+<p>Now, it is time to <code class="docutils literal notranslate"><span class="pre">fit_predict</span></code> both classifiers. Let’s analyze KMeans first.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> result_kmeans = kmeans.fit_predict(X)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 315 ms, sys: 7.29 ms, total: 322 ms
+Wall time: 326 ms
+</pre></div></div>
+</div>
+<p>KMeans is a fast algorithm compared to SOM. For further reference, let’s see the speed of the SOM algorithm.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> result_som = som.fit_predict(X)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 4min, sys: 210 ms, total: 4min
+Wall time: 4min 1s
+</pre></div></div>
+</div>
+<p>Now, let’s see the performance of each prediction. The first one is KMeans results.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
+
+<span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+    <span class="n">y_unique</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">rainbow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">y_unique</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">this_y</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y_unique</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_gpu_array</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="n">this_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">result</span> <span class="o">==</span> <span class="n">this_y</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">this_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">result</span> <span class="o">==</span> <span class="n">this_y</span><span class="p">]</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">this_X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">this_X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Class </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">this_y</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<span class="n">plot_results</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">result_kmeans</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Tutorial_1_11_0.png" src="../_images/tutorials_Tutorial_1_11_0.png" />
+</div>
+</div>
+<p>Now, let’s see how SOM results look like.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_results</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">result_som</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Tutorial_1_13_0.png" src="../_images/tutorials_Tutorial_1_13_0.png" />
+</div>
+</div>
+<p>As we can see, the results do not seem similar but they are accurated.</p>
+<p>The idea behind this tutorial is not to exaplain how both algorithms work, but how can you use DASF framework the same way you use the most famous Machine Learning libraries.</p>
+<p>If you are curious, try to run the same code using a machine with GPU. Compare the results and see if the behaviour is the same!</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tutorials.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Tutorial_2.html" class="btn btn-neutral float-right" title="Tutorial 2 - How to extend DASF Datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

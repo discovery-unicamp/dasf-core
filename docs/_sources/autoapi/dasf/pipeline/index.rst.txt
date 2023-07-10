@@ -1,0 +1,92 @@
+:py:mod:`dasf.pipeline`
+=======================
+
+.. py:module:: dasf.pipeline
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   executors/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   pipeline/index.rst
+   types/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.pipeline.Pipeline
+   dasf.pipeline.PipelinePlugin
+
+
+
+
+.. py:class:: Pipeline(name, executor=None, verbose=False, callbacks = None)
+
+
+   .. py:method:: register_plugin(plugin)
+
+
+   .. py:method:: execute_callbacks(func_name, *args, **kwargs)
+
+
+   .. py:method:: __add_into_dag(obj, func_name, parameters=None, itself=None)
+
+
+   .. py:method:: __inspect_element(obj)
+
+
+   .. py:method:: add(obj, **kwargs)
+
+
+   .. py:method:: visualize(filename=None)
+
+
+   .. py:method:: __register_dataset(dataset)
+
+
+   .. py:method:: __execute(func, params, name)
+
+
+   .. py:method:: get_result_from(obj)
+
+
+   .. py:method:: run()
+
+
+
+.. py:class:: PipelinePlugin
+
+
+   .. py:method:: on_pipeline_start(fn_keys)
+
+
+   .. py:method:: on_pipeline_end()
+
+
+   .. py:method:: on_task_start(func, params, name)
+
+
+   .. py:method:: on_task_end(func, params, name, ret)
+
+
+   .. py:method:: on_task_error(func, params, name, exception)
+
+
+
