@@ -13,6 +13,7 @@ from dasf.transforms.base import Predict, GetParams, SetParams  # noqa
 from dasf.transforms.base import Transform  # noqa
 from dasf.transforms.base import TargeteredTransform  # noqa
 from dasf.transforms.base import MappedTransform  # noqa
+from dasf.transforms.base import ReductionTransform  # noqa
 
 
 __all__ = [
@@ -25,6 +26,7 @@ __all__ = [
     "Transform",
     "TargeteredTransform",
     "MappedTransform",
+    "ReductionTransform",
     "Normalize",
     "ArrayToZarr",
     "ArrayToHDF5",

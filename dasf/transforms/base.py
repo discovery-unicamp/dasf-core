@@ -275,17 +275,24 @@ class MappedTransform(Transform):
 
 
 class ReductionTransform(Transform):
-    def __init__(self, output_size, func_aggregate, func_chunk):
+    def __init__(self, output_size, func_aggregate, func_chunk, func_combine=None):
         self.output_size = output_size
 
         self.func_aggregate = func_aggregate
         self.func_chunk = func_chunk
+        self.func_combine = func_combine
 
     def _operation_aggregate_cpu(self, block, axis=None, keepdims=False):
         return self.func_aggregate(block, axis, keepdims, xp=np)
 
     def _operation_aggregate_gpu(self, block, axis=None, keepdims=False):
         return self.func_aggregate(block, axis, keepdims, xp=cp)
+
+    def _operation_combine_cpu(self, block, axis=None, keepdims=False):
+        return self.func_combine(block, axis, keepdims, xp=np)
+
+    def _operation_combine_gpu(self, block, axis=None, keepdims=False):
+        return self.func_combine(block, axis, keepdims, xp=cp)
 
     def _operation_chunk_cpu(self, block, axis=None, keepdims=False):
         return self.func_chunk(block, axis, keepdims, xp=np)
@@ -294,16 +301,19 @@ class ReductionTransform(Transform):
         return self.func_chunk(block, axis, keepdims, xp=cp)
 
     def _lazy_transform_cpu(self, X, *args, **kwargs):
+        if self.func_combine is not None:
+            kwargs['combine'] = self._operation_combine_cpu
+
         if is_dask_cpu_dataframe(X):
-            return X.reduction(self._operation_chunk_cpu,
-                               self._operation_aggregate_cpu,
+            return X.reduction(chunk=self._operation_chunk_cpu,
+                               aggregate=self._operation_aggregate_cpu,
                                meta=self.output_size,
                                *args,
                                **kwargs)
         else:
             return da.reduction(X,
-                                self._operation_chunk_cpu,
-                                self._operation_aggregate_cpu,
+                                chunk=self._operation_chunk_cpu,
+                                aggregate=self._operation_aggregate_cpu,
                                 dtype=X.dtype,
                                 meta=np.array(self.output_size,
                                               dtype=X.dtype),
@@ -311,16 +321,19 @@ class ReductionTransform(Transform):
                                 **kwargs)
 
     def _lazy_transform_gpu(self, X, *args, **kwargs):
+        if self.func_combine is not None:
+            kwargs['combine'] = self._operation_combine_gpu
+
         if is_dask_gpu_dataframe(X):
-            return X.reduction(self._operation_chunk_cpu,
-                               self._operation_aggregate_cpu,
+            return X.reduction(chunk=self._operation_chunk_gpu,
+                               aggregate=self._operation_aggregate_gpu,
                                meta=self.output_size,
                                *args,
                                **kwargs)
         else:
             return da.reduction(X,
-                                self._operation_chunk_gpu,
-                                self._operation_aggregate_gpu,
+                                chunk=self._operation_chunk_gpu,
+                                aggregate=self._operation_aggregate_gpu,
                                 dtype=X.dtype,
                                 meta=cp.array(self.output_size,
                                               dtype=X.dtype),
