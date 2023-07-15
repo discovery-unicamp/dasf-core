@@ -32,6 +32,12 @@ try:
 except ImportError:
     GPU_SUPPORTED = False
 
+try:
+    import jax.numpy as jnp
+    JAX_SUPPORTED = isinstance(jnp.__name__, str)
+except ImportError:
+    JAX_SUPPORTED = False
+
 
 def human_readable_size(size, decimal=3) -> str:
     """
@@ -300,6 +306,13 @@ def is_gpu_supported() -> bool:
     Return if GPU is supported.
     """
     return GPU_SUPPORTED and get_gpu_count() >= 1
+
+
+def is_jax_supported() -> bool:
+    """
+    Return if JAX is supported.
+    """
+    return JAX_SUPPORTED
 
 
 def is_dask_local_supported() -> bool:
