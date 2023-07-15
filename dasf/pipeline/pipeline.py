@@ -46,12 +46,13 @@ class Pipeline:
         self._callbacks = callbacks or []
 
     def register_plugin(self, plugin):
-        if hasattr(self._executor, "register_plugin"):
-            self._executor.register_plugin(plugin)
-        elif isinstance(plugin, PipelinePlugin):
+        if isinstance(plugin, PipelinePlugin):
             self._callbacks.append(plugin)
         else:
-            raise TypeError(f"Invalid type from plugin {type(plugin)}")
+            self._executor.register_plugin(plugin)
+
+    def info(self):
+        print(self._executor.info)
 
     def execute_callbacks(self, func_name: str, *args, **kwargs):
         for callback in self._callbacks:
@@ -143,19 +144,13 @@ class Pipeline:
         return self._dag_g.view(filename)
 
     def __register_dataset(self, dataset):
-        if self._executor is not None:
-            if hasattr(self._executor, "client") and \
-               hasattr(self._executor.client, "datasets"):
-                key = str(hash(dataset.load))
-                kwargs = {key: dataset}
+        key = str(hash(dataset.load))
+        kwargs = {key: dataset}
 
-                if not self._executor.has_dataset(key):
-                    self._executor.register_dataset(**kwargs)
+        if not self._executor.has_dataset(key):
+            return self._executor.register_dataset(**kwargs)
 
-                return self._executor.get_dataset(key)
-
-        # Just bypass because executor does not support datasets
-        return dataset
+        return self._executor.get_dataset(key)
 
     def __execute(self, func, params, name):
         ret = None

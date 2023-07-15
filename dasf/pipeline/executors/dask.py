@@ -7,9 +7,8 @@ from typing import Union
 try:
     import rmm
     import cupy as cp
-    GPU_SUPPORTED = isinstance(cp.__version__, str)
 except ImportError:
-    GPU_SUPPORTED = False
+    pass
 
 import networkx as nx
 
@@ -30,6 +29,7 @@ from dasf.pipeline.executors.base import Executor
 from dasf.utils.funcs import is_dask_gpu_supported
 from dasf.utils.funcs import get_dask_gpu_count
 from dasf.utils.funcs import get_worker_info
+from dasf.utils.funcs import is_gpu_supported
 
 
 class DaskPipelineExecutor(Executor):
@@ -55,6 +55,7 @@ class DaskPipelineExecutor(Executor):
         local=False,
         use_gpu=False,
         profiler=None,
+
         gpu_allocator="cupy",
         cluster_kwargs=None,
         client_kwargs=None,
@@ -95,7 +96,7 @@ class DaskPipelineExecutor(Executor):
                 if gpu_allocator == "cupy":
                     # Nothing is required yet.
                     pass
-                elif gpu_allocator == "rmm" and GPU_SUPPORTED:
+                elif gpu_allocator == "rmm" and is_gpu_supported():
                     self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
                     rmm.reinitialize(managed_memory=True)
                     cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
@@ -111,8 +112,8 @@ class DaskPipelineExecutor(Executor):
 
         # Share which is the default backend of a cluster
         if not hasattr(self.client, "backend"):
-            if (self.dtype == TaskExecutorType.single_gpu or
-               self.dtype == TaskExecutorType.multi_gpu):
+            if self.dtype == TaskExecutorType.single_gpu or \
+               self.dtype == TaskExecutorType.multi_gpu:
                 setattr(self.client, "backend", "cupy")
             else:
                 setattr(self.client, "backend", "numpy")
@@ -216,7 +217,7 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
                 if gpu_allocator == "cupy":
                     # Nothing is required yet.
                     pass
-                elif gpu_allocator == "rmm" and GPU_SUPPORTED:
+                elif gpu_allocator == "rmm" and is_gpu_supported():
                     self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
                     rmm.reinitialize(managed_memory=True)
                     cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
