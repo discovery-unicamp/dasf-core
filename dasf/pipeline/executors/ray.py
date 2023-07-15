@@ -2,17 +2,17 @@
 
 try:
     import ray
-    
-    from ray.util.dask import ray_dask_get
+
     from ray.util.dask import enable_dask_on_ray
     from ray.util.dask import disable_dask_on_ray
 
-    USE_RAY=True
+    USE_RAY = True
 except ImportError:
-    USE_RAY=False
+    USE_RAY = False
 
 from dasf.pipeline.executors.base import Executor
 from dasf.utils.funcs import get_dask_gpu_count
+
 
 class RayPipelineExecutor(Executor):
     """
@@ -34,7 +34,10 @@ class RayPipelineExecutor(Executor):
         use_gpu=False,
         ray_kwargs=None,
     ):
-    
+        if not USE_RAY:
+            raise Exception("Ray executor is not support. "
+                            "Check if you have it installed first.")
+
         self.address = address
         self.port = port
 
@@ -46,7 +49,7 @@ class RayPipelineExecutor(Executor):
         if address:
             address_str = f"ray://{address}:{str(port)}"
 
-            ray.init(address=address, **ray_kwargs)
+            ray.init(address=address_str, **ray_kwargs)
         elif local:
             ray.init(**ray_kwargs)
 
@@ -56,7 +59,7 @@ class RayPipelineExecutor(Executor):
 
     @property
     def is_connected(self):
-        return ray.is_initialized()            
+        return ray.is_initialized()
 
     def execute(self, fn, *args, **kwargs):
         return fn(*args, **kwargs)

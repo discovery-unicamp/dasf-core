@@ -2,12 +2,14 @@
 
 import os
 
+from typing import Union
+
 try:
     import rmm
     import cupy as cp
     GPU_SUPPORTED = isinstance(cp.__version__, str)
 except ImportError:
-    GPU_SUPPORTED = False    
+    GPU_SUPPORTED = False
 
 import networkx as nx
 
@@ -17,6 +19,9 @@ from pathlib import Path
 
 from dask.distributed import Client, LocalCluster
 from dask_cuda import LocalCUDACluster
+
+from distributed.diagnostics.plugin import WorkerPlugin
+from distributed.diagnostics.plugin import NannyPlugin
 
 from dask_jobqueue import PBSCluster
 
@@ -95,13 +100,22 @@ class DaskPipelineExecutor(Executor):
                     rmm.reinitialize(managed_memory=True)
                     cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
                 else:
-                    raise Exception(f"'{gpu_allocator}' GPU Memory allocator is not known")
+                    raise Exception(f"'{gpu_allocator}' GPU Memory allocator is not "
+                                    "known")
             else:
                 self.dtype = TaskExecutorType.multi_cpu
 
         # Share dtype attribute to client
         if not hasattr(self.client, "dtype"):
             setattr(self.client, "dtype", self.dtype)
+
+        # Share which is the default backend of a cluster
+        if not hasattr(self.client, "backend"):
+            if (self.dtype == TaskExecutorType.single_gpu or
+               self.dtype == TaskExecutorType.multi_gpu):
+                setattr(self.client, "backend", "cupy")
+            else:
+                setattr(self.client, "backend", "numpy")
 
         if profiler == "memusage":
             profiler_dir = os.path.abspath(
@@ -126,6 +140,13 @@ class DaskPipelineExecutor(Executor):
 
     def execute(self, fn, *args, **kwargs):
         return fn(*args, **kwargs)
+
+    def register_plugin(self, plugin: Union[WorkerPlugin,
+                                            NannyPlugin]):
+        if isinstance(plugin, WorkerPlugin):
+            self.client.register_worker_plugin(plugin)
+        elif isinstance(plugin, NannyPlugin):
+            self.client.register_worker_plugin(plugin, nanny=True)
 
     def register_dataset(self, **kwargs):
         self.client.publish_dataset(**kwargs)
@@ -200,7 +221,8 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
                     rmm.reinitialize(managed_memory=True)
                     cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
                 else:
-                    raise Exception(f"'{gpu_allocator}' GPU Memory allocator is not known")
+                    raise Exception(f"'{gpu_allocator}' GPU Memory allocator is not "
+                                    "known")
             else:
                 self.dtype = TaskExecutorType.single_cpu
         else:

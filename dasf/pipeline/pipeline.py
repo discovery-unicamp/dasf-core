@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
 import inspect
-from typing import List, Union
+from typing import List
 import graphviz
 
 import networkx as nx
 
-from distributed.diagnostics.plugin import WorkerPlugin
 from dasf.utils.logging import init_logging
-
 
 
 class PipelinePlugin:
@@ -29,9 +27,15 @@ class PipelinePlugin:
 
 
 class Pipeline:
-    def __init__(self, name, executor=None, verbose=False, callbacks: List[PipelinePlugin] = None):
+    def __init__(self,
+                 name,
+                 executor=None,
+                 verbose=False,
+                 callbacks: List[PipelinePlugin] = None):
+        from dasf.pipeline.executors.wrapper import LocalExecutor
+
         self._name = name
-        self._executor = executor
+        self._executor = executor if executor is not None else LocalExecutor()
         self._verbose = verbose
 
         self._dag = nx.DiGraph()
@@ -41,9 +45,9 @@ class Pipeline:
         self._logger = init_logging()
         self._callbacks = callbacks or []
 
-    def register_plugin(self, plugin: Union[PipelinePlugin, WorkerPlugin]):
-        if isinstance(plugin, WorkerPlugin):
-            self._executor.client.register_worker_plugin(plugin)
+    def register_plugin(self, plugin):
+        if hasattr(self._executor, "register_plugin"):
+            self._executor.register_plugin(plugin)
         elif isinstance(plugin, PipelinePlugin):
             self._callbacks.append(plugin)
         else:
@@ -165,15 +169,9 @@ class Pipeline:
                 new_params[k] = self._dag_table[req_key]["ret"]
 
         if len(new_params) > 0:
-            if self._executor is not None:
-                ret = self._executor.execute(fn=func, **new_params)
-            else:
-                ret = func(**new_params)
+            ret = self._executor.execute(fn=func, **new_params)
         else:
-            if self._executor is not None:
-                ret = self._executor.execute(fn=func)
-            else:
-                ret = func()
+            ret = self._executor.execute(fn=func)
 
         return ret
 
@@ -192,23 +190,21 @@ class Pipeline:
         if not nx.is_directed_acyclic_graph(self._dag):
             raise Exception("Pipeline has not a DAG format.")
 
-        if self._executor and not hasattr(self._executor, "execute"):
+        if not hasattr(self._executor, "execute"):
             raise Exception(
                 f"Executor {self._executor.__name__} has not a execute() "
                 "method."
             )
 
-        if self._executor:
-            if not self._executor.is_connected:
-                raise Exception("Executor is not connected.")
+        if not self._executor.is_connected:
+            raise Exception("Executor is not connected.")
 
         fn_keys = list(nx.topological_sort(self._dag))
 
         self._logger.info(f"Beginning pipeline run for '{self._name}'")
         self.execute_callbacks("on_pipeline_start", fn_keys)
 
-        if self._executor:
-            self._executor.pre_run(self)
+        self._executor.pre_run(self)
 
         ret = None
         failed = False
@@ -227,13 +223,19 @@ class Pipeline:
                 if not failed:
                     # Execute DAG node only if there is no error during the
                     # execution. Otherwise, skip it.
-                    self.execute_callbacks("on_task_start", func=func, params=params, name=name)
+                    self.execute_callbacks("on_task_start", func=func,
+                                           params=params, name=name)
+
                     result = self.__execute(func, params, name)
                     self._dag_table[fn_key]["ret"] = result
-                    self.execute_callbacks("on_task_end", func=func, params=params, name=name, ret=result)
+
+                    self.execute_callbacks("on_task_end", func=func,
+                                           params=params, name=name,
+                                           ret=result)
 
             except Exception as e:
-                self.execute_callbacks("on_task_error", func=func, params=params, name=name, exception=e)
+                self.execute_callbacks("on_task_error", func=func,
+                                       params=params, name=name, exception=e)
                 failed = True
                 err = str(e)
                 self._logger.exception(f"Task '{name}': Failed with:\n{err}")
@@ -248,8 +250,7 @@ class Pipeline:
         else:
             self._logger.info("Pipeline run successfully")
 
-        if self._executor:
-            self._executor.post_run(self)
+        self._executor.post_run(self)
 
         self.execute_callbacks("on_pipeline_end")
         return ret
