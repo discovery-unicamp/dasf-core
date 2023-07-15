@@ -57,7 +57,7 @@ class TestSpectralClustering(unittest.TestCase):
         try:
             y = sc._lazy_fit_predict_cpu(da_X)
         except TypeError as te:
-            self.skipTest("BUG - SpectralClustering Dask Type Error:", str(te))
+            self.skipTest("BUG - SpectralClustering Dask Type Error: " + str(te))
 
         self.assertTrue(is_dask_cpu_array(y))
 
