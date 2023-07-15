@@ -16,6 +16,7 @@ from dasf.utils.funcs import get_gpu_count
 from dasf.utils.funcs import get_dask_gpu_count
 from dasf.utils.funcs import block_chunk_reduce
 from dasf.utils.funcs import trim_chunk_location
+from dasf.utils.funcs import get_backend_supported
 
 
 class TestArchitetures(unittest.TestCase):
@@ -200,3 +201,23 @@ class TestBlockChunkReduce(unittest.TestCase):
         loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
         self.assertTrue(np.array_equal(loc, np.asarray([(20, 30), (0, 40), (0, 40)])))
+
+
+class TestBackendSignature(unittest.TestCase):
+    def func1(self, a, b , c, d, e, f):
+        return a + b + c + d + e + f
+
+    def func2(self, a, b, backend=None):
+        return a + b
+
+    def func3(self, *args, **kwargs):
+        return False
+
+    def test_backend_func1(self):
+        self.assertFalse(get_backend_supported(self.func1))
+
+    def test_backend_func2(self):
+        self.assertTrue(get_backend_supported(self.func2))
+
+    def test_backend_func3(self):
+        self.assertFalse(get_backend_supported(self.func3))

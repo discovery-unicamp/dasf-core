@@ -3,6 +3,7 @@
 
 import os
 import time
+import inspect
 import threading
 
 from pathlib import Path
@@ -317,6 +318,16 @@ def get_dask_running_client():
     Get Dask runner stanza.
     """
     return Client.current()
+
+
+def get_backend_supported(func):
+    """
+    Get backend support.
+    """
+    par = inspect.signature(func)
+    if "backend" in par.parameters:
+        return True
+    return False
 
 
 def is_dask_supported() -> bool:
