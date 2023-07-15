@@ -62,7 +62,7 @@ pytest = "*"
 pytest-cov = "*"
 wheel = "*"
 
-[tool.poetry.docs-dependencies]
+[tool.poetry.group.docs.dependencies]
 sphinx = "*"
 sphinx-autoapi = "*"
 sphinx_rtd_theme = "*"
