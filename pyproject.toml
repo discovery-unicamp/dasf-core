@@ -51,7 +51,7 @@ zarr = "*"
 
 #xpysom = { git = "https://github.com/jcfaracco/xpysom/", branch = "dask2" }
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "*"
 coverage = "*"
 flake8 = "*"

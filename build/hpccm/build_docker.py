@@ -24,7 +24,10 @@ if python_version:
     python_version = f"-py{python_version}"
 
 gpu_image_devel = f"rapidsai/rapidsai-core-dev:{rapidsai_version}-cuda{cuda_version}-devel-ubuntu{ubuntu_version}{python_version}"
-gpu_image = f"rapidsai/rapidsai-core:{rapidsai_version}-cuda{cuda_version}-runtime-ubuntu{ubuntu_version}{python_version}"
+
+# GPU image needs to be fixed due to dependency matrix
+gpu_image = "nvcr.io/nvidia/pytorch:23.06-py3"
+
 cpu_image = f"ubuntu:{ubuntu_version}"
 
 if device_target.lower() == "cpu":
