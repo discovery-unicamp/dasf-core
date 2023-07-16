@@ -15,7 +15,7 @@ from dasf.transforms.base import FitTransform
 from dasf.transforms.base import TargeteredTransform
 
 
-class StantardScaler(Fit, FitTransform, TargeteredTransform):
+class StandardScaler(Fit, FitTransform, TargeteredTransform):
     def __init__(self, copy=True, with_mean=True, with_std=True, **kwargs):
         TargeteredTransform.__init__(self, **kwargs)
 
