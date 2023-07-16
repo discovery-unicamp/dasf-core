@@ -11,7 +11,7 @@ try:
 except ImportError:
     pass
 
-from dasf.ml.preprocessing import StantardScaler
+from dasf.ml.preprocessing import StandardScaler
 from dasf.utils.types import is_cpu_array
 from dasf.utils.types import is_gpu_array
 from dasf.utils.types import is_dask_cpu_array
@@ -31,7 +31,7 @@ class TestStandardScaler(unittest.TestCase):
         self.y = (self.X - mean) / std
 
     def test_standardscaler_cpu(self):
-        ss = StantardScaler()
+        ss = StandardScaler()
 
         y = ss._fit_transform_cpu(self.X)
 
@@ -39,7 +39,7 @@ class TestStandardScaler(unittest.TestCase):
         self.assertTrue(np.array_equal(self.y, y, equal_nan=True))
 
     def test_standardscaler_mcpu(self):
-        ss = StantardScaler()
+        ss = StandardScaler()
 
         y = ss._lazy_fit_transform_cpu(da.from_array(self.X))
 
@@ -49,7 +49,7 @@ class TestStandardScaler(unittest.TestCase):
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_standardscaler_gpu(self):
-        ss = StantardScaler()
+        ss = StandardScaler()
 
         y = ss._fit_transform_gpu(cp.asarray(self.X))
 
@@ -59,7 +59,7 @@ class TestStandardScaler(unittest.TestCase):
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_standardscaler_mgpu(self):
-        ss = StantardScaler()
+        ss = StandardScaler()
 
         y = ss._lazy_fit_transform_gpu(da.from_array(cp.asarray(self.X)))
 
@@ -70,7 +70,7 @@ class TestStandardScaler(unittest.TestCase):
     @patch('dasf.utils.decorators.is_dask_supported', Mock(return_value=True))
     @patch('dasf.utils.decorators.is_dask_gpu_supported', Mock(return_value=False))
     def test_standardscaler_mcpu_local(self):
-        ss = StantardScaler(run_local=True)
+        ss = StandardScaler(run_local=True)
 
         y = ss._fit_transform_cpu(self.X)
 
