@@ -75,6 +75,11 @@ class NNModule(LightningModule):
         like rotation.
         """
         target = torch.squeeze(target, dim=1)
+
+        print(input.device)
+        print(target.device)
+        print(weight.device)
+
         loss = F.cross_entropy(input, target, weight, reduction="sum", ignore_index=255)
 
         return loss
@@ -86,6 +91,13 @@ class NNModule(LightningModule):
         images, labels = batch
 
         outputs = self.forward(images)
+
+        self.class_weights = self.class_weights.type_as(labels)
+
+        if self.class_weights.is_cuda:
+            self.class_weights = self.class_weights.type(torch.cuda.FloatTensor)
+        else:
+            self.class_weights = self.class_weights.type(torch.FloatTensor)
 
         loss = self.cross_entropy_loss(
             input=outputs, target=labels, weight=self.class_weights
@@ -375,6 +387,10 @@ class TorchPatchDeConvNet(NNModule):
         conv17 = self.unpool(conv16, indices1, output_size=size0)
         conv18 = self.deconv_block18(conv17)
         out = self.seg_score19(conv18)
+
+        print(type(out), '- device: ', out.device)
+
+        out = out.type_as(x)
 
         return out
 
@@ -681,6 +697,10 @@ class TorchPatchDeConvNetSkip(NNModule):
         conv18 = self.deconv_block18(conv17)
         out = self.seg_score19(conv18)
 
+        print(type(out), '- device: ', out.device)
+
+        out = out.type_as(x)
+
         return out
 
     def init_vgg16_params(self, vgg16, copy_fc8=True):
@@ -986,6 +1006,10 @@ class TorchSectionDeConvNet(NNModule):
         conv18 = self.deconv_block18(conv17)
         out = self.seg_score19(conv18)
 
+        print(type(out), '- device: ', out.device)
+
+        out = out.type_as(x)
+
         return out
 
     def init_vgg16_params(self, vgg16, copy_fc8=True):
@@ -1290,6 +1314,10 @@ class TorchSectionDeConvNetSkip(NNModule):
         conv17 = self.unpool(conv16, indices1, output_size=size0)
         conv18 = self.deconv_block18(conv17)
         out = self.seg_score19(conv18)
+
+        print(type(out), '- device: ', out.device)
+
+        out = out.type_as(x)
 
         return out
 

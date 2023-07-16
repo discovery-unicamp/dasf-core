@@ -138,10 +138,10 @@ class NeuralNetClassifier(Fit):
         )
 
     def _lazy_fit_gpu(self, X, y=None):
-        self._lazy_fit_generic(X=X, y=y, accel="gpu", ngpus=len(get_dask_gpu_count()))
+        self._lazy_fit_generic(X=X, y=y, accel="gpu", ngpus=get_dask_gpu_count())
 
     def _lazy_fit_cpu(self, X, y=None):
-        self._lazy_fit_generic(X=X, y=y, accel="cpu", ngpus=len(get_dask_gpu_count()))
+        self._lazy_fit_generic(X=X, y=y, accel="cpu", ngpus=get_dask_gpu_count())
 
     def __fit_generic(self, X, y, accel, ngpus):
         self._accel = accel
@@ -157,7 +157,7 @@ class NeuralNetClassifier(Fit):
         self.__trainer.fit(self._model, datamodule=dataloader)
 
     def _fit_gpu(self, X, y=None):
-        self.__fit_generic(X, y, "gpu", len(get_gpu_count()))
+        self.__fit_generic(X, y, "gpu", get_gpu_count())
 
     def _fit_cpu(self, X, y=None):
         self.__fit_generic(X, y, "cpu", 0)
