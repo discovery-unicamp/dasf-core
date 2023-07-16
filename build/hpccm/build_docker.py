@@ -66,7 +66,7 @@ if device_target.lower() == "cpu":
 elif device_target.lower() == "gpu":
     Stage0 += apt_get(keys=apt_keys, ospackages=packages_list)
 
-    pip_package_install = ("conda run -n rapids %s cupy_xarray" % pip_package_install)
+    pip_package_install = ("%s cupy_xarray" % pip_package_install)
 
     if is_devel:
         pip_package_install = ("%s %s" % (pip_package_install, "git+https://github.com/cupy/cupy.git"))
@@ -77,9 +77,6 @@ Stage0 += shell(commands=[pip_package_install])
 
 # TODO: fix numpy issue with version 1.24 and other fixed reqs
 Stage0 += shell(commands=["pip install \"numpy<1.24\" bokeh==2.4.3 \"protobuf<=3.20.1\" \"charset-normalizer<3.0\" \"tornado<6.2\""])
-
-if device_target.lower() == "gpu":
-    Stage0 += shell(commands=["pip install \"dask==2022.7.1\" \"distributed==2022.7.1\""])
 
 Stage0 += workdir(directory='/dasf')
 
