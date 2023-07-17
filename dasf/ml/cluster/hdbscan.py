@@ -249,6 +249,7 @@ class HDBSCAN(ClusterClassifier):
                 allow_single_cluster=allow_single_cluster,
                 verbose=verbose,
                 connectivity=connectivity,
+                prediction_data=prediction_data,
                 output_type=output_type
             )
 
