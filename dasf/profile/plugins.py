@@ -41,8 +41,8 @@ class WorkerTaskPlugin(WorkerPlugin):
             )
             if startstops is not None:
                 # Add information about the task execution
-                shape = None
-                dtype = None
+                shape = tuple()
+                dtype = "unknown"
                 if hasattr(self.worker.data[key], "shape"):
                     if isinstance(getattr(self.worker.data[key], "shape"), tuple):
                         shape = getattr(self.worker.data[key], "shape")
@@ -51,6 +51,7 @@ class WorkerTaskPlugin(WorkerPlugin):
                     dtype = str(getattr(self.worker.data[key], "dtype"))
                         
                 task = self.worker.state.tasks[key]
+                nbytes = task.nbytes or 0
                 
                 self.database.record_complete_event(
                     name="Compute",
@@ -60,9 +61,9 @@ class WorkerTaskPlugin(WorkerPlugin):
                     thread_id=self.worker_id,
                     args={
                         "key": key,
-                        "name": "-".join(key.split(",")[0][2:-1].split("-")[:-1]) if "pdate" not in key else "update",
+                        "name": "-".join(key.split(",")[0][2:-1].split("-")[:-1]),
                         "state": finish,
-                        "size": task.nbytes,
+                        "size": nbytes,
                         "shape": shape,
                         "dtype": dtype,
                         "type": str(type(self.worker.data[key])),

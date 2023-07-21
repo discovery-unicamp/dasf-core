@@ -186,7 +186,7 @@ class FileDatabase(EventDatabase):
 
 
 # Singleton instance of the database
-class EventProfiler():
+class EventProfiler:
     traces_file_prefix = "traces-"
 
     default_database = FileDatabase
