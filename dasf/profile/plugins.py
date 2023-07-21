@@ -56,6 +56,7 @@ class WorkerTaskPlugin(WorkerPlugin):
                 self.database.record_complete_event(
                     name="Compute",
                     timestamp=now,
+                    # TODO check startstop returning None
                     duration=startstops["stop"] - startstops["start"],
                     process_id=self.hostname,
                     thread_id=self.worker_id,

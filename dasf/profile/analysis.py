@@ -6,6 +6,7 @@ from typing import List
 import networkx as nx
 import numpy as np
 import pandas as pd
+import tqdm
 
 from dasf.profile.profiler import EventProfiler
 from dasf.profile.utils import MultiEventDatabase
@@ -19,7 +20,7 @@ class TraceAnalyser:
     def create_annotated_task_graph(self) -> nx.DiGraph:
         graph = nx.DiGraph()
         
-        for event in self._database:
+        for event in tqdm.tqdm(self._database, desc="Creating annotated task graph"):
             if event.name == "Compute":
                 name = event.args["name"]
                 task_key = event.args['key']
@@ -48,11 +49,11 @@ class TraceAnalyser:
                     graph.add_edge(task_key, dependent)
         
         for node in graph.nodes:
-            input_data_size = sum([graph.nodes[dependency].get('size') for dependency in graph.predecessors(node)])
+            input_data_size = sum([graph.nodes[dependency].get('size', 0) for dependency in graph.predecessors(node)])
 
             # Set the input_data_size attribute for the current node
             graph.nodes[node]['input_data_size'] = input_data_size
-            graph.nodes[node]["bandwidth"] = input_data_size / graph.nodes[node].get("duration")
+            graph.nodes[node]["bandwidth"] = input_data_size / graph.nodes[node].get("duration", 1)
             
         return graph
     
@@ -68,7 +69,7 @@ class TraceAnalyser:
         task_name_keys = defaultdict(lambda: defaultdict(list))
 
         # Iterate over the traces to calculate task durations per thread_id
-        for event in self._database:
+        for event in tqdm.tqdm(self._database, desc="[function_bottleneck] Analysing traces"):
             if event.name == "Compute":
                 task_key = event.args['name']
                 task_duration = event.duration
@@ -95,7 +96,7 @@ class TraceAnalyser:
 
         # Create a list of dictionaries to store data for the DataFrame
         data = []
-        for (process_id, thread_id), durations in task_durations.items():
+        for (process_id, thread_id), durations in tqdm.tqdm(task_durations.items(), desc="[function_bottleneck] Creating dataframe"):
             total_duration = sum(durations.values())
             for task_key, duration in durations.items():
                 percentage = (duration / total_duration) * 100
@@ -145,7 +146,7 @@ class TraceAnalyser:
         end_time = float('-inf')
 
         # Iterate over the traces to calculate the number of tasks per worker at each timestamp
-        for event in self._database:
+        for event in tqdm.tqdm(self._database, desc="[task_balance] Analysing traces"):
             if event.name == "Managed Memory":
                 timestamp = int(event.timestamp)
                 thread_id = event.thread_id
@@ -162,7 +163,7 @@ class TraceAnalyser:
         # Calculate the mean number of tasks per thread in each time interval
         mean_tasks_per_interval = defaultdict(dict)
 
-        for timestamp in timestamps:
+        for timestamp in tqdm.tqdm(timestamps, desc="[task_balance] Creating dataframe"):
             shifted_timestamp = start_time + timestamp
             tasks_per_thread = tasks_per_worker[shifted_timestamp]
             for thread_id, tasks in tasks_per_thread.items():
@@ -200,7 +201,7 @@ class TraceAnalyser:
         task_name_keys = defaultdict(lambda: defaultdict(list))
 
         # Iterate over the traces to calculate task durations per thread_id
-        for event in self._database:
+        for event in tqdm.tqdm(self._database, desc="[task_bottleneck] Analysing traces"):
             if event.name == "Compute":
                 task_key = event.args['key']
                 task_duration = event.duration
@@ -229,7 +230,7 @@ class TraceAnalyser:
 
         # Create a list of dictionaries to store data for the DataFrame
         data = []
-        for (process_id, thread_id), durations in task_durations.items():
+        for (process_id, thread_id), durations in tqdm.tqdm(task_durations.items(), desc="[task_bottleneck] Creating dataframe"):
             total_duration = sum(durations.values())
             for task_key, duration in durations.items():
                 percentage = (duration / total_duration) * 100
