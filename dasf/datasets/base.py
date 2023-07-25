@@ -553,6 +553,21 @@ class DatasetZarr(Dataset):
 
         return self.inspect_metadata()
 
+    def __read_zarray(self, key):
+        """Returns the value of ZArray JSON metadata.
+
+        """
+        if self._root_file and os.path.isdir(self._root_file):
+            zarray = os.path.abspath(self._root_file + "/.zarray")
+            if os.path.exists(zarray):
+                try:
+                    with open(zarray) as fz:
+                        meta = json.load(fz)
+                        return meta[key]
+                except Exception:
+                    pass
+        return None
+
     @property
     def shape(self) -> tuple:
         """Returns the shape of an array.
@@ -564,18 +579,30 @@ class DatasetZarr(Dataset):
 
         """
         if not self._data:
-            if self._root_file and os.path.isdir(self._root_file):
-                zarray = os.path.abspath(self._root_file + "/.zarray")
-                if os.path.exists(zarray):
-                    try:
-                        with open(zarray) as fz:
-                            meta = json.load(fz)
-                            return tuple(meta["shape"])
-                    except Exception:
-                        pass
+            shape = self.__read_zarray("shape")
+            if shape is not None:
+                return tuple(shape)
             return tuple()
 
         return self._data.shape
+
+    @property
+    def chunksize(self):
+        """Returns the chunksize of an array.
+
+        Returns
+        -------
+        tuple
+            A tuple with the chunksize.
+
+        """
+        if not self._data:
+            chunks = self.__read_zarray("chunks")
+            if chunks is not None:
+                return tuple(chunks)
+            return tuple()
+
+        return self._data.chunksize
 
     def inspect_metadata(self) -> dict:
         """Return a dictionary with all metadata information from data.
@@ -594,6 +621,9 @@ class DatasetZarr(Dataset):
 
         if isinstance(self._chunks, bool) and self._chunks:
             self._chunks = info["Chunk shape"]
+
+        if self._chunks is None:
+            self._chunks = self.chunksize
 
         return {
             "size": human_readable_size(
