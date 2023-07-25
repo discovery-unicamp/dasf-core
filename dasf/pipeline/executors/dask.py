@@ -32,6 +32,19 @@ from dasf.utils.funcs import get_worker_info
 from dasf.utils.funcs import is_gpu_supported
 
 
+def setup_dask_protocol(protocol=None):
+    if protocol is None or protocol == "tcp":
+        return "tcp://"
+
+    if protocol == "ucx":
+        os.environ["UCX_MEMTYPE_REG_WHOLE_ALLOC_TYPES"] = "cuda"
+        os.environ["DASK_DISTRIBUTED__COMM__UCX__CREATE_CUDA_CONTEXT"] = "True"
+
+        return "ucx://"
+
+    raise ValueError(f"Protocol {protocol} is not supported."
+
+
 class DaskPipelineExecutor(Executor):
     """
     A pipeline engine based on dask data flow.
@@ -43,6 +56,7 @@ class DaskPipelineExecutor(Executor):
     use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
                 cluster (default False).
     profiler -- sets a Dask profiler.
+    protocol -- sets the Dask protocol (default TCP)
     gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
     cluster_kwargs -- extra Dask parameters like memory, processes, etc.
     client_kwargs -- extra Client parameters.
@@ -55,7 +69,7 @@ class DaskPipelineExecutor(Executor):
         local=False,
         use_gpu=False,
         profiler=None,
-
+        protocol=None,
         gpu_allocator="cupy",
         cluster_kwargs=None,
         client_kwargs=None,
@@ -73,7 +87,9 @@ class DaskPipelineExecutor(Executor):
         local = local or (address is None and "scheduler_file" not in client_kwargs)
 
         if address:
-            self.client = Client(address=f"{address}:{port}")
+            address = f"{setup_dask_protocol()}{address}:{port}"
+
+            self.client = Client(address=address)
         elif "scheduler_file" in client_kwargs:
             self.client = Client(scheduler_file=client_kwargs["scheduler_file"])
         elif local:
@@ -194,6 +210,7 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         local=False,
         use_gpu=True,
         profiler=None,
+        protocol=None,
         gpu_allocator="cupy",
         cluster_kwargs=None,
         client_kwargs=None,
@@ -205,6 +222,8 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
             local=local,
             use_gpu=use_gpu,
             profiler=profiler,
+            protocol=protocol,
+            gpu_allocator=gpu_allocator,
             cluster_kwargs=cluster_kwargs,
             client_kwargs=client_kwargs,
         )
@@ -213,17 +232,6 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         if use_gpu:
             if is_dask_gpu_supported():
                 self.dtype = TaskExecutorType.single_gpu
-
-                if gpu_allocator == "cupy":
-                    # Nothing is required yet.
-                    pass
-                elif gpu_allocator == "rmm" and is_gpu_supported():
-                    self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
-                    rmm.reinitialize(managed_memory=True)
-                    cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
-                else:
-                    raise Exception(f"'{gpu_allocator}' GPU Memory allocator is not "
-                                    "known")
             else:
                 self.dtype = TaskExecutorType.single_cpu
         else:
