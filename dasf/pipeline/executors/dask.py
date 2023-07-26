@@ -42,7 +42,7 @@ def setup_dask_protocol(protocol=None):
 
         return "ucx://"
 
-    raise ValueError(f"Protocol {protocol} is not supported."
+    raise ValueError(f"Protocol {protocol} is not supported.")
 
 
 class DaskPipelineExecutor(Executor):
