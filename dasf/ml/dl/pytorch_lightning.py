@@ -151,13 +151,13 @@ class NeuralNetClassifier(Fit):
         dataloader = TorchDataLoader(train=X, val=y, batch_size=self._batch_size)
 
         self.__trainer = pl.Trainer(
-            max_epochs=self._max_iter, accelerator=accel, gpus=ngpus
+            max_epochs=self._max_iter, accelerator=accel, devices=ngpus
         )
 
         self.__trainer.fit(self._model, datamodule=dataloader)
 
     def _fit_gpu(self, X, y=None):
-        self.__fit_generic(X, y, "gpu", len(get_gpu_count()))
+        self.__fit_generic(X, y, "gpu", get_gpu_count())
 
     def _fit_cpu(self, X, y=None):
         self.__fit_generic(X, y, "cpu", 0)
