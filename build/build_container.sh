@@ -11,6 +11,7 @@ CUDA_VERSION="11.8"
 UBUNTU_VERSION="20.04"
 PYTHON_VERSION="3.10"
 DOCKERFILE_DIR=docker/
+RECIPE_ONLY=0
 
 # For local hpccm installs
 OLD_PATH=$PATH
@@ -31,6 +32,7 @@ function print_help() {
     echo "    --format FORMAT                  Select the container backend for this build."
     echo "                                     Use 'docker' for Docker images."
     echo "                                     Use 'singularity' for SIF images (default='$FORMAT')."
+    echo "    --recipe-only                    Print the recipe of the target only. It does not generate an image."
     echo "    --devel                          Defines extra packages for development purpose."
     echo ""
 }
@@ -71,6 +73,10 @@ while [[ $# -gt 0 ]]; do
     --format)
       FORMAT="$2"
       shift
+      shift
+      ;;
+    --recipe-only)
+      RECIPE_ONLY=1
       shift
       ;;
     --devel)
@@ -147,12 +153,16 @@ hpccm --recipe hpccm/build_docker.py \
                 python-version=$PYTHON_VERSION \
       --format $FORMAT > $DOCKERFILE_DIR/$OUTPUT_FILE
 
-if [[ "$FORMAT" == "docker" ]]; then
-    FIND_CMD $CONTAINER_CMD "Docker binaries are not found."
-    $CONTAINER_CMD build $DOCKERFILE_DIR -t dasf:$ARCH_TYPE
+if [ $RECIPE_ONLY -eq 1 ]; then
+    cat $DOCKERFILE_DIR/$OUTPUT_FILE
 else
-    FIND_CMD singularity "Singularity binaries are not found."
-    singularity build dasf_$ARCH_TYPE.sif $DOCKERFILE_DIR/$OUTPUT_FILE
+    if [[ "$FORMAT" == "docker" ]]; then
+        FIND_CMD $CONTAINER_CMD "Docker binaries are not found."
+        $CONTAINER_CMD build $DOCKERFILE_DIR -t dasf:$ARCH_TYPE
+    else
+        FIND_CMD singularity "Singularity binaries are not found."
+        singularity build dasf_$ARCH_TYPE.sif $DOCKERFILE_DIR/$OUTPUT_FILE
+    fi
 fi
 
 rm -rf $DOCKERFILE_DIR
