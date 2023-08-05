@@ -19,6 +19,9 @@ from parameterized import parameterized_class
 from dasf.utils.funcs import is_gpu_supported
 
 
+IN_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
+
+
 class CellExecutionException(Exception):
     """Raised when a ipynb kernel returns an error"""
     pass
@@ -43,7 +46,7 @@ def parameterize_ipynb():
     return notebooks
 
 
-@unittest.skip('It is not working in CI/CD')
+@unittest.skipIf(IN_GITHUB_ACTIONS, 'It is not working in CI/CD')
 @parameterized_class(parameterize_ipynb())
 class TestNotebooks(unittest.TestCase):
     def __sanitize(self, s):
