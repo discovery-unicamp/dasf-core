@@ -50,17 +50,6 @@ def human_readable_size(size, decimal=3) -> str:
     return f"{size:.{decimal}f} {unit}"
 
 
-def get_full_qualname(obj) -> str:
-    """
-    Return fully qualified name of objects.
-    """
-    klass = obj.__class__
-    module = klass.__module__
-    if module == "builtins":
-        return klass.__qualname__
-    return module + "." + klass.__qualname__
-
-
 def get_worker_info(client) -> list:
     """
     Returns a list of workers (sorted), and the DNS name for the master host
