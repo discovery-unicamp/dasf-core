@@ -29,13 +29,13 @@ from ipywidgets import HBox, FloatProgress, Label
 try:
     import cupy as cp
     GPU_SUPPORTED = isinstance(cp.__version__, str)
-except ImportError:
+except ImportError: # pragma: no cover
     GPU_SUPPORTED = False
 
 try:
     import jax.numpy as jnp
     JAX_SUPPORTED = isinstance(jnp.__name__, str)
-except ImportError:
+except ImportError: # pragma: no cover
     JAX_SUPPORTED = False
 
 
@@ -364,8 +364,25 @@ def is_dask_gpu_supported() -> bool:
     Return if any node supports GPU.
     """
     if is_dask_supported():
-        if get_dask_gpu_count() > 0:
+        if get_gpu_from_workers():
             return True
+        elif get_dask_gpu_count() > 0:
+            return True
+
+    return False
+
+
+def get_gpu_from_workers() -> bool:
+    try:
+        cur = get_dask_running_client()
+
+        workers = cur.cluster.scheduler_info["workers"]
+
+        for worker_id, worker_meta in workers.items():
+            if 'gpu' in worker_meta:
+                return True
+    except Exception:
+        pass
 
     return False
 
