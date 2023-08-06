@@ -5,7 +5,7 @@ import dask.array as da
 
 try:
     import cupy as cp
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 
 from dasf.transforms.base import Transform

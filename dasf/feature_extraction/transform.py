@@ -4,7 +4,7 @@ import numpy as np
 
 try:
     import cupy as cp
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 
 from dasf.utils.types import is_array

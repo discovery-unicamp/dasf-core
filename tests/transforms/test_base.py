@@ -108,6 +108,8 @@ class TestReductionTransformArray(unittest.TestCase):
 
     def __internal_aggregate_array(self, block, axis=None, keepdims=False, xp=np):
         # Using `xp` parameter to avoid conflicts
+        block = xp.array(block)
+
         return xp.array([xp.min(block), xp.max(block)])
 
     def test_reduction_min_max_cpu(self):
@@ -131,13 +133,13 @@ class TestReductionTransformArray(unittest.TestCase):
         X = np.arange(40 * 40 * 40)
         X.shape = (40, 40, 40)
 
-        X = da.from_array(X, chunks=(10, 40, 40))
+        X = da.from_array(X, chunks=(10, 10, 10))
 
         reduction = ReductionTransform(func_aggregate=self.__internal_aggregate_array,
                                        func_chunk=self.__internal_chunk_array,
                                        output_size=[0, 0])
 
-        X_t = reduction._lazy_transform_cpu(X, axis=[0])
+        X_t = reduction._lazy_transform_cpu(X, concatenate=False)
 
         self.assertTrue(is_dask_cpu_array(X_t))
         self.assertEqual(len(X_t.compute()), 2)
@@ -170,13 +172,13 @@ class TestReductionTransformArray(unittest.TestCase):
         X = cp.arange(40 * 40 * 40)
         X.shape = (40, 40, 40)
 
-        X = da.from_array(X, chunks=(10, 40, 40), meta=cp.array(()))
+        X = da.from_array(X, chunks=(10, 10, 10), meta=cp.array(()))
 
         reduction = ReductionTransform(func_aggregate=self.__internal_aggregate_array,
                                        func_chunk=self.__internal_chunk_array,
                                        output_size=[0, 0])
 
-        X_t = reduction._lazy_transform_gpu(X, axis=[0])
+        X_t = reduction._lazy_transform_gpu(X, concatenate=False)
 
         self.assertTrue(is_dask_gpu_array(X_t))
         self.assertEqual(len(X_t.compute()), 2)

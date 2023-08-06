@@ -7,7 +7,7 @@ from time import perf_counter
 try:
     import memray
     USE_MEMRAY = True
-except ImportError:
+except ImportError: # pragma: no cover
     USE_MEMRAY = False
 
 import cProfile
@@ -19,7 +19,7 @@ try:
     from memory_profiler import memory_usage, choose_backend
 
     USE_MEM_PROF = True
-except ImportError:
+except ImportError: # pragma: no cover
     USE_MEM_PROF = False
 
 

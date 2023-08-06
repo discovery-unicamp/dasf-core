@@ -8,7 +8,7 @@ import dask.dataframe as ddf
 try:
     import cupy as cp
     import dask_cudf as dcudf
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 
 from dasf.utils.decorators import task_handler

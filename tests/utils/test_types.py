@@ -7,6 +7,8 @@ import dask.array as da
 import dask.dataframe as ddf
 import xarray as xr
 
+from mock import patch, Mock
+
 try:
     import cupy as cp
     import cudf
@@ -189,6 +191,16 @@ class TestTypes(unittest.TestCase):
 
         self.__assert_all_data(is_dask_cpu_dataframe)
 
+    @patch('dasf.utils.types.is_gpu_supported', Mock(return_value=False))
+    def test_is_dask_cpu_dataframe_no_gpu(self):
+        keys = [
+            "Dask DataFrame"
+        ]
+
+        self.__set_data(keys)
+
+        self.__assert_all_data(is_dask_cpu_dataframe)
+
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_is_dask_gpu_array(self):
@@ -222,6 +234,17 @@ class TestTypes(unittest.TestCase):
         self.__assert_all_data(is_dask_array)
 
     def test_is_dask_dataframe(self):
+        keys = [
+            "Dask DataFrame",
+            "Dask CuDF"
+        ]
+
+        self.__set_data(keys)
+
+        self.__assert_all_data(is_dask_dataframe)
+
+    @patch('dasf.utils.types.is_gpu_supported', Mock(return_value=False))
+    def test_is_dask_dataframe_no_gpu(self):
         keys = [
             "Dask DataFrame",
             "Dask CuDF"

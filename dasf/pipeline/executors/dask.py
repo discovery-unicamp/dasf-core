@@ -7,7 +7,7 @@ from typing import Union
 try:
     import rmm
     import cupy as cp
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 
 import networkx as nx

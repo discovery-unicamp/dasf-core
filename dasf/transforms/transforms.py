@@ -17,7 +17,7 @@ try:
     import cudf
 
     import dask_cudf as dcudf
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 
 

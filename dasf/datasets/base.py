@@ -21,7 +21,7 @@ try:
     import dask_cudf as dcudf
     # This is just to enable Xarray Cupy capabilities
     import cupy_xarray as cx   # noqa
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 
 from pathlib import Path

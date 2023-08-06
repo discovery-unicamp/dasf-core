@@ -112,6 +112,8 @@ def task_handler(func):
         func_type = ""
         arch = "cpu"
 
+        print(is_gpu_supported(), is_dask_gpu_supported())
+
         if is_forced_local(cls):
             new_args, kwargs = fetch_from_dask(*new_args, **kwargs)
 
@@ -129,6 +131,7 @@ def task_handler(func):
 
         wrapper_func_attr = f"{func_type}_{func_name}_{arch}"
 
+        print(cls, func, hasattr(cls, 'transform'), not hasattr(cls, wrapper_func_attr), wrapper_func_attr)
         if (not hasattr(cls, wrapper_func_attr) and
            hasattr(cls, func_name)):
             return func(*new_args, **kwargs)
@@ -136,7 +139,7 @@ def task_handler(func):
               not hasattr(cls, func_name)):
             raise NotImplementedError(
                 f"There is no implementation of {wrapper_func_attr} nor "
-                "{func_name}"
+                f"{func_name}"
             )
         return getattr(cls, wrapper_func_attr)(*new_args, **kwargs)
 

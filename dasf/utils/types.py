@@ -15,7 +15,7 @@ try:
     import cupy as cp
     import cudf
     import dask_cudf as dcudf
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 
 from dasf.utils.funcs import is_gpu_supported
@@ -47,7 +47,7 @@ try:
     DaskDataFrame = Union[DaskDataFrame, DaskDataFrameGPU]
     DataFrame = Union[DataFrame, DaskDataFrame, DataFrameGPU]
     DataDask = Union[DataDask, DaskDataFrame]
-except NameError:
+except NameError: # pragma: no cover
     pass
 
 
@@ -132,7 +132,7 @@ def is_dask_cpu_dataframe(data) -> bool:
             if isinstance(data._meta, DataFrameCPU):
                 return True
     # We need a Exception here due to Numpy bug.
-    except TypeError:
+    except TypeError: # pragma: no cover
         pass
     return False
 

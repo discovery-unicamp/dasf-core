@@ -7,7 +7,7 @@ try:
     from ray.util.dask import disable_dask_on_ray
 
     USE_RAY = True
-except ImportError:
+except ImportError: # pragma: no cover
     USE_RAY = False
 
 from dasf.pipeline.executors.base import Executor

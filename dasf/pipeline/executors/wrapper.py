@@ -5,12 +5,12 @@ import numpy as np
 try:
     import rmm
     import cupy as cp
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 
 try:
     from jax import jit
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 
 from dasf.utils.funcs import get_gpu_count
