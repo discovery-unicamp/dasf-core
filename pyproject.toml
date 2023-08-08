@@ -22,6 +22,7 @@ readme="README.md"
 exclude = ["tests/*", "docs/*"]
 
 [tool.poetry.dependencies]
+dacite = "*"
 dask = "*"
 dask_cuda = "*"
 dask_jobqueue = "*"
@@ -37,6 +38,7 @@ ipympl = "*"
 matplotlib = "*"
 memray = "*"
 networkx = "*"
+ormsgpack = "*"
 packaging = "*"
 protobuf = "~=3.20.1"
 psutil = "*"

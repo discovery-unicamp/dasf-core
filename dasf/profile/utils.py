@@ -3,7 +3,7 @@ import atexit
 from typing import List
 from dasf.profile.profiler import EventDatabase
 from dasf.pipeline import Pipeline
-from dasf.profile.plugins import WorkerTaskPlugin, ResourceMonitor
+from dasf.profile.plugins import WorkerTaskPlugin, ResourceMonitor, GPUAnnotationPlugin
 
 from typing import List
 
@@ -24,9 +24,13 @@ def register_default_profiler(pipeline: Pipeline, name: str = None):
         
     worker_plugin = WorkerTaskPlugin(name=f"{name}-TracePlugin")
     resource_plugin = ResourceMonitor(name=f"{name}-ResourceMonitor")
+    ptx_annotator = GPUAnnotationPlugin()
+    
     
     def close():
         resource_plugin.stop()
 
     pipeline.register_plugin(worker_plugin)
+    pipeline.register_plugin(ptx_annotator)
+    
     atexit.register(close)

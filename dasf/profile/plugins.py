@@ -7,6 +7,7 @@ from dasf.profile.profiler import EventProfiler
 from dask.distributed.system_monitor import SystemMonitor
 from dask.distributed.compatibility import PeriodicCallback
 
+import pynvml
 from pynvml import *
 import nvtx
 
@@ -138,8 +139,15 @@ class GPUAnnotationPlugin(WorkerPlugin):
     
     def transition(self, key, start, finish, *args, **kwargs):
         if finish == "executing":
-            mark = nvtx.start_range(message=key, color="blue")
+            handle = pynvml.nvmlDeviceGetHandleByIndex(self.worker)
+            pynvml.nvmlSetDevice(handle)
+            mark = nvtx.start_range(message=key)
             self.marks[key] = mark
         if start == "executing":
+            handle = pynvml.nvmlDeviceGetHandleByIndex(self.worker)
+            pynvml.nvmlSetDevice(handle)
             nvtx.end_range(self.marks[key])
             del self.marks[key]
+            
+    def teardown(self, *args, **kwargs):
+        pynvml.nvmlShutdown()
