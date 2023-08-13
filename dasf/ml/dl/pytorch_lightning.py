@@ -64,22 +64,26 @@ def run_dask_clustered(func, client=None, **kwargs):
     all_workers = get_worker_info(client)
 
     for worker in all_workers:
+        # Including worker metadata into kwargs
+        kwargs['meta'] = worker
+
         futures = client.submit(func, **kwargs, workers=[worker["worker"]])
 
     sync_future_loop(futures)
 
 
-def fit(
-    model, X, y, max_iter, accel, strategy, devices, ngpus, batch_size=32, plugins=None
-):
+def fit(model, X, y, max_iter, accel, strategy, devices, ngpus, batch_size=32,
+        plugins=None, meta=None):
 
-    # Variable world_size is based on the number of Dask workers
-    if plugins is not None and isinstance(plugins, list):
-        nodes = 1
-        for plugin in plugins:
-            if isinstance(plugin, DaskClusterEnvironment):
-                nodes = plugin.world_size()
-                break
+    if meta is None:
+        plugin = DaskClusterEnvironment(metadata=meta)
+
+        nodes = plugin.world_size()
+
+        if plugins is None:
+            plugins = list()
+
+        plugins.append(plugin)
     else:
         nodes = 1
 
