@@ -317,7 +317,7 @@ class DatasetArray(Dataset):
 
         local_data = dask.delayed(xp.load)(self._root_file, **kwargs)
 
-        local_data = da.from_delayed(local_data, shape=npy_shape, dtype=xp.float32)
+        local_data = da.from_delayed(local_data, shape=npy_shape, dtype=xp.float32, meta=xp.array(()))
         if isinstance(self._chunks, tuple):
             local_data = local_data.rechunk(self._chunks)
 
