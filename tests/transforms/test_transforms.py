@@ -119,6 +119,32 @@ class TestArrayToZarr(unittest.TestCase):
 
         self.assertTrue(isinstance(T_1, DatasetZarr))
 
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_array_to_zarr_gpu(self):
+        dataset = DatasetArray(root=self.array, download=False, name="Test Array")
+
+        dataset = dataset._load_gpu()
+
+        T = ArrayToZarr(chunks=(100,))
+
+        T_1 = T._transform_gpu(dataset)
+
+        self.assertTrue(isinstance(T_1, DatasetZarr))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_array_to_zarr_mgpu(self):
+        dataset = DatasetArray(root=self.array, download=False, name="Test Array")
+
+        dataset = dataset._lazy_load_gpu()
+
+        T = ArrayToZarr(chunks=(100,))
+
+        T_1 = T._lazy_transform_gpu(dataset)
+
+        self.assertTrue(isinstance(T_1, DatasetZarr))
+
     def tearDown(self):
         self.remove(self.array)
         self.remove(self.zarr)
