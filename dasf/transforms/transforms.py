@@ -52,6 +52,10 @@ class ArrayToZarr(Transform):
 
         url = self._convert_filename(url)
 
+        # XXX: Workaround to avoid error with CuPy and Zarr library
+        if is_dask_gpu_array(data):
+            data = data.map_blocks(lambda x: x.get())
+
         data.to_zarr(url)
 
         return url
