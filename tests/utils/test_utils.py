@@ -113,16 +113,23 @@ class TestArchitetures(unittest.TestCase):
 
     @patch('GPUtil.getGPUs', Mock(return_value=[0, 1]))
     def test_get_dask_gpu_count_2(self):
-        self.assertTrue(get_gpu_count() == 2)
+        self.assertTrue(get_dask_gpu_count() == 2)
+
+    @patch('GPUtil.getGPUs', Mock(return_value=[0, 1]))
+    def test_get_dask_gpu_count_2_no_fetch(self):
+        self.assertTrue(len(get_dask_gpu_count(fetch=False).compute()) == 2)
 
     @patch('GPUtil.getGPUs', Mock(return_value=[]))
     def test_get_gpu_count_0(self):
-        print(get_dask_gpu_count())
-        self.assertTrue(get_dask_gpu_count() == 0)
+        self.assertTrue(get_gpu_count() == 0)
 
     @patch('GPUtil.getGPUs', Mock(return_value=[]))
     def test_get_dask_gpu_count_0(self):
         self.assertTrue(get_dask_gpu_count() == 0)
+
+    @patch('GPUtil.getGPUs', Mock(return_value=[]))
+    def test_get_dask_gpu_count_0_no_fetch(self):
+        self.assertTrue(len(get_dask_gpu_count(fetch=False).compute()) == 0)
 
 
 class TestBlockChunkReduce(unittest.TestCase):
