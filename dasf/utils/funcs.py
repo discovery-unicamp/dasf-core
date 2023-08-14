@@ -24,6 +24,7 @@ from distributed.utils import TimeoutError as DistributedTimeoutError
 from dasf.pipeline.types import TaskExecutorType
 
 from IPython import display as disp
+from IPython import get_ipython
 from ipywidgets import HBox, FloatProgress, Label
 
 try:

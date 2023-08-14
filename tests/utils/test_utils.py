@@ -7,8 +7,11 @@ import dask.array as da
 
 from mock import patch, Mock
 
+from distributed.utils import TimeoutError as DistributedTimeoutError
+
 from dasf.utils.funcs import human_readable_size
 from dasf.utils.funcs import is_gpu_supported
+from dasf.utils.funcs import is_jax_supported
 from dasf.utils.funcs import is_dask_local_supported
 from dasf.utils.funcs import is_dask_supported
 from dasf.utils.funcs import is_dask_gpu_supported
@@ -17,6 +20,9 @@ from dasf.utils.funcs import get_dask_gpu_count
 from dasf.utils.funcs import block_chunk_reduce
 from dasf.utils.funcs import trim_chunk_location
 from dasf.utils.funcs import get_backend_supported
+from dasf.utils.funcs import get_worker_info
+from dasf.utils.funcs import sync_future_loop
+from dasf.utils.funcs import is_notebook
 
 
 class TestArchitetures(unittest.TestCase):
@@ -92,6 +98,14 @@ class TestArchitetures(unittest.TestCase):
     def test_is_dask_gpu_supported_nonzero_gpus(self, dask_check):
         self.assertTrue(is_dask_gpu_supported())
         dask_check.assert_called()
+
+    @patch('dasf.utils.funcs.JAX_SUPPORTED', True)
+    def test_is_jax_supported_true(self):
+        self.assertTrue(is_jax_supported())
+
+    @patch('dasf.utils.funcs.JAX_SUPPORTED', False)
+    def test_is_jax_supported_false(self):
+        self.assertFalse(is_jax_supported())
 
     @patch('GPUtil.getGPUs', Mock(return_value=[0, 1]))
     def test_get_gpu_count_2(self):
@@ -221,3 +235,83 @@ class TestBackendSignature(unittest.TestCase):
 
     def test_backend_func3(self):
         self.assertFalse(get_backend_supported(self.func3))
+
+
+class TestWorkerInfo(unittest.TestCase):
+    def test_get_worker_info_empty(self):
+        client = Mock()
+        client.scheduler_info.return_value = {'workers': {}}
+
+        workers = get_worker_info(client)
+
+        self.assertEqual(len(workers), 0)
+
+    def test_get_worker_info_regular(self):
+        worker_data = {'workers': {
+                           'tcp://127.0.0.1:11111': {
+                               'host': '127.0.0.1',
+                               'nthreads': 4,
+                               },
+                           'tcp://127.0.0.1:22222': {
+                               'host': '127.0.0.1',
+                               'nthreads': 4,
+                               }
+                           }
+                      }
+        client = Mock()
+        client.scheduler_info.return_value = worker_data
+
+        workers = get_worker_info(client)
+
+        self.assertEqual(len(workers), 2)
+
+        for worker in workers:
+            self.assertEqual(worker['local_rank'], 0)
+            self.assertEqual(worker['world_size'], 1)
+
+
+class TestSyncFutureLoop(unittest.TestCase):
+    @patch('dasf.utils.funcs.wait', return_value=None)
+    def test_sync_future_loop_no_futures(self, wait):
+        sync_future_loop(None)
+
+        self.assertFalse(wait.called)
+
+    @patch('dasf.utils.funcs.wait', return_value=Mock())
+    def test_sync_future_loop_with_futures(self, wait):
+        futures = [None, None]
+
+        result = Mock()
+
+        ret_1 = Mock()
+        ret_2 = Mock()
+
+        ret_1.result.return_value = None
+        ret_2.result.return_value = None
+
+        result.done = [ret_1, ret_2]
+        result.not_done = []
+
+        wait.side_effect = [DistributedTimeoutError(), result]
+
+        sync_future_loop(futures)
+
+        self.assertTrue(wait.called)
+
+
+class TestIsNotebook(unittest.TestCase):
+    @patch('dasf.utils.funcs.get_ipython', return_value=Mock())
+    def test_is_notebook_zmq(self, get_ipython):
+        get_ipython.return_value.__class__.__name__ = "ZMQInteractiveShell"
+
+        self.assertTrue(is_notebook())
+
+    @patch('dasf.utils.funcs.get_ipython', return_value=Mock())
+    def test_is_notebook_terminal(self, get_ipython):
+        get_ipython.return_value.__class__.__name__ = "TerminalInteractiveShell"
+
+        self.assertFalse(is_notebook())
+
+    @patch('dasf.utils.funcs.get_ipython', side_effect=NameError())
+    def test_is_notebook_exception(self, get_ipython):
+        self.assertFalse(is_notebook())
