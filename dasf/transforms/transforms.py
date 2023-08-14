@@ -318,14 +318,8 @@ class ArraysToDataFrame(Transform):
 
                     if dfs is None:
                         dfs = flat.to_dask_dataframe(columns=[y[i]])
-                        if is_dask_gpu_array(x):
-                            dfs = dcudf.from_dask_dataframe(dfs)
                     else:
-                        if is_dask_gpu_array(x):
-                            dfs_aux = flat.to_dask_dataframe(columns=[y[i]])
-                            dfs = dfs.join(dcudf.from_dask_dataframe(dfs_aux))
-                        else:
-                            dfs = dfs.join(flat.to_dask_dataframe(columns=[y[i]]))
+                        dfs = dfs.join(flat.to_dask_dataframe(columns=[y[i]]))
                 else:
                     flat = x.flatten()
 
