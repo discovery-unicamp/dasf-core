@@ -298,6 +298,28 @@ class TestSyncFutureLoop(unittest.TestCase):
 
         self.assertTrue(wait.called)
 
+    @patch('dasf.utils.funcs.wait', return_value=Mock())
+    def test_sync_future_loop_with_futures_and_exception(self, wait):
+        futures = [None, None]
+
+        result = Mock()
+
+        ret_1 = Mock()
+        ret_2 = Mock()
+
+        ret_1.result.return_value = None
+        ret_2.result.side_effect = Exception("Test mock")
+
+        result.done = [ret_1, ret_2]
+        result.not_done = []
+
+        wait.side_effect = [DistributedTimeoutError(), result]
+
+        with self.assertRaises(Exception) as context:
+            sync_future_loop(futures)
+
+        self.assertTrue('Test mock' in str(context.exception))
+
 
 class TestIsNotebook(unittest.TestCase):
     @patch('dasf.utils.funcs.get_ipython', return_value=Mock())
