@@ -53,7 +53,7 @@ class TraceAnalyser:
 
             # Set the input_data_size attribute for the current node
             graph.nodes[node]['input_data_size'] = input_data_size
-            graph.nodes[node]["bandwidth"] = input_data_size / graph.nodes[node].get("duration", 1)
+            graph.nodes[node]["throughput"] = input_data_size / graph.nodes[node].get("duration", 1)
             
         return graph
     
@@ -104,14 +104,14 @@ class TraceAnalyser:
                 gpu_memory_used_values = task_resources[task_key]['gpu_memory_used']
                 num_tasks = len(task_name_keys[(process_id, thread_id)][task_key])
                 mean_data_size = 0
-                mean_bandwidth = 0
+                mean_throughput = 0
                 count  = 0
                 for name_key in task_name_keys[(process_id, thread_id)][task_key]:
                     mean_data_size += graph.nodes[name_key]["input_data_size"]
-                    mean_bandwidth += graph.nodes[name_key]["bandwidth"]
+                    mean_throughput += graph.nodes[name_key]["throughput"]
                     count += 1
                 mean_data_size /= count
-                mean_bandwidth /= count
+                mean_throughput /= count
                 
                 mean_gpu_utilization = sum(gpu_utilization_values) / len(gpu_utilization_values) if len(
                     gpu_utilization_values) > 0 else 0
@@ -126,7 +126,7 @@ class TraceAnalyser:
                     'Mean GPU Utilization (%)': mean_gpu_utilization, 
                     'Mean GPU Memory Used (GB)': mean_gpu_memory_used / 1e9,
                     "Mean Data Size (MB)": mean_data_size / 1e6, 
-                    "Mean Bandwidth (MB/s)": mean_bandwidth/1e6,
+                    "Mean Throughput (MB/s)": mean_throughput/1e6,
                     "Num Tasks (chunks)": num_tasks,
                     "Mean Task time (s)": duration / num_tasks
                 })
@@ -238,14 +238,14 @@ class TraceAnalyser:
                 gpu_memory_used_values = task_resources[task_key]['gpu_memory_used']
                 num_tasks = len(task_name_keys[(process_id, thread_id)][task_key])
                 mean_data_size = 0
-                mean_bandwidth = 0
+                mean_throughput = 0
                 count  = 0
                 for name_key in task_name_keys[(process_id, thread_id)][task_key]:
                     mean_data_size += graph.nodes[name_key]["input_data_size"]
-                    mean_bandwidth += graph.nodes[name_key]["bandwidth"]
+                    mean_throughput += graph.nodes[name_key]["throughput"]
                     count += 1
                 mean_data_size /= count
-                mean_bandwidth /= count
+                mean_throughput /= count
                 
                 mean_gpu_utilization = sum(gpu_utilization_values) / len(gpu_utilization_values) if len(
                     gpu_utilization_values) > 0 else 0
@@ -261,7 +261,7 @@ class TraceAnalyser:
                     # 'Mean GPU Utilization (%)': mean_gpu_utilization, 
                     # 'Mean GPU Memory Used (GB)': mean_gpu_memory_used / 1e9,
                     # "Mean Data Size (MB)": mean_data_size / 1e6, 
-                    # "Mean Bandwidth (B/s)": mean_bandwidth,
+                    # "Mean throughput (B/s)": mean_throughput,
                     # "Num Tasks (chunks)": num_tasks,
                 })
 
