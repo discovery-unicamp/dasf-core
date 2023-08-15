@@ -16,21 +16,22 @@ class MultiEventDatabase:
             yield from database.get_traces()
             
             
-def register_default_profiler(pipeline: Pipeline, name: str = None):
+def register_default_profiler(pipeline: Pipeline, name: str = None, enable_nvtx: bool = False):
     if name is None:
         name = "default"
         
     name += f"-{int(time.time())}"
         
     worker_plugin = WorkerTaskPlugin(name=f"{name}-TracePlugin")
-    resource_plugin = ResourceMonitor(name=f"{name}-ResourceMonitor")
-    ptx_annotator = GPUAnnotationPlugin()
+    pipeline.register_plugin(worker_plugin)
     
+    resource_plugin = ResourceMonitor(name=f"{name}-ResourceMonitor")   
     
     def close():
         resource_plugin.stop()
 
-    pipeline.register_plugin(worker_plugin)
-    pipeline.register_plugin(ptx_annotator)
+    if enable_nvtx:
+        ptx_annotator = GPUAnnotationPlugin()
+        pipeline.register_plugin(ptx_annotator)
     
     atexit.register(close)
