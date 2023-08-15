@@ -270,7 +270,6 @@ class TraceAnalyser:
         df.set_index(['Host', 'GPU'], append=True)
         df.sort_values(by='Duration (s)', ascending=False, inplace=True)
         return df
-    
 
 valid_analyses = [
     "function_bottleneck",

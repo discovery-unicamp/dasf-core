@@ -1,5 +1,6 @@
 import time
 import socket
+import os
 from typing import Any
 from distributed.diagnostics.plugin import WorkerPlugin
 from dasf.profile.profiler import EventProfiler
@@ -123,31 +124,27 @@ class ResourceMonitor:
     def stop(self):
         self.database.commit()
         self.callback.stop()
-        
-        
+
 class GPUAnnotationPlugin(WorkerPlugin):
     def __init__(
         self,
         name: str = "GPUAnnotationPlugin",
     ):
         self.name = name
+        self.gpu_num = None
         self.marks = {}
         
     def setup(self, worker):
-        pynvml.nvmlInit()
         self.worker = worker
+        self.gpu_num =  int(os.environ['CUDA_VISIBLE_DEVICES'].split(",")[0])        
+        print(f"Setting up GPU annotation plugin for worker {self.worker.name}. GPU: {self.gpu_num}")
     
     def transition(self, key, start, finish, *args, **kwargs):
         if finish == "executing":
-            handle = pynvml.nvmlDeviceGetHandleByIndex(self.worker)
-            pynvml.nvmlSetDevice(handle)
-            mark = nvtx.start_range(message=key)
+            handle = pynvml.nvmlDeviceGetHandleByIndex(self.gpu_num)
+            mark = nvtx.start_range(message=key, domain="compute")
             self.marks[key] = mark
         if start == "executing":
-            handle = pynvml.nvmlDeviceGetHandleByIndex(self.worker)
-            pynvml.nvmlSetDevice(handle)
+            handle = pynvml.nvmlDeviceGetHandleByIndex(self.gpu_num)
             nvtx.end_range(self.marks[key])
             del self.marks[key]
-            
-    def teardown(self, *args, **kwargs):
-        pynvml.nvmlShutdown()
