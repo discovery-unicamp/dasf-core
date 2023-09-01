@@ -155,7 +155,7 @@ class NeuralNetClassifier(Fit):
         dataloader = TorchDataLoader(train=X, val=y, batch_size=self._batch_size)
 
         self.__trainer = pl.Trainer(
-            max_epochs=self._max_iter, accelerator=accel, gpus=ngpus
+            max_epochs=self._max_iter, accelerator=accel, devices=ngpus
         )
 
         self.__trainer.fit(self._model, datamodule=dataloader)
