@@ -37,9 +37,6 @@ def setup_dask_protocol(protocol=None):
         return "tcp://"
 
     if protocol == "ucx":
-        os.environ["UCX_MEMTYPE_REG_WHOLE_ALLOC_TYPES"] = "cuda"
-        os.environ["DASK_DISTRIBUTED__COMM__UCX__CREATE_CUDA_CONTEXT"] = "True"
-
         return "ucx://"
 
     raise ValueError(f"Protocol {protocol} is not supported.")
