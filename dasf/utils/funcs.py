@@ -328,6 +328,13 @@ def is_gds_supported() -> bool:
     return False
 
 
+def is_kvikio_compat_mode() -> bool:
+    """
+    Return if Kvikio is running in compatibility mode.
+    """
+    return kvikio.defaults.compat_mode()
+
+
 def is_nvcomp_codec_supported() -> bool:
     """
     Return if NVidia Compressor Codecs are supported.

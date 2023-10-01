@@ -37,6 +37,7 @@ from pathlib import Path
 from dasf.utils.funcs import human_readable_size
 from dasf.utils.funcs import is_kvikio_supported
 from dasf.utils.funcs import is_gds_supported
+from dasf.utils.funcs import is_kvikio_compat_mode
 from dasf.utils.funcs import is_nvcomp_codec_supported
 from dasf.utils.decorators import task_handler
 from dasf.utils.types import is_array
@@ -496,7 +497,8 @@ class DatasetZarr(Dataset):
 
         """
         if (self._backend == "kvikio" and is_kvikio_supported() and
-            is_gds_supported() and is_nvcomp_codec_supported()):
+            (is_gds_supported() or is_kvikio_compat_mode())
+            and is_nvcomp_codec_supported()):
             store = GDSStore(self._root_file)
             meta = json.loads(store[".zarray"])
             meta["compressor"] = NvCompBatchCodec("lz4").get_config()
