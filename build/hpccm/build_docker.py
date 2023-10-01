@@ -70,6 +70,10 @@ elif device_target.lower() == "gpu":
 
     if is_devel:
         pip_package_install = ("%s %s" % (pip_package_install, "git+https://github.com/cupy/cupy.git"))
+    else:
+        pip_package_install = ("%s %s" % (pip_package_install, "cupy==13.0.0b1"))
+        Stage0 += shell(commands=["rm -r /usr/local/lib/python3.10/dist-packages/cupy_cuda12x-12.0.0b3.dist-info"]) # not the best solution but it works
+
 
 Stage0 += shell(commands=["pip3 install pip --upgrade"])
 
