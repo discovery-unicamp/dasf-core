@@ -39,6 +39,18 @@ try:
 except ImportError: # pragma: no cover
     JAX_SUPPORTED = False
 
+try:
+    import kvikio
+    KVIKIO_SUPPORTED = True
+except ImportError: # pragma: no cover
+    KVIKIO_SUPPORTED = False
+
+try:
+    from kvikio.nvcomp_codec import NvCompBatchCodec
+    NV_COMP_BATCH_CODEC_SUPPORTED = True
+except ImportError: # pragma: no cover
+    NV_COMP_BATCH_CODEC_SUPPORTED = False
+
 
 def human_readable_size(size, decimal=3) -> str:
     """
@@ -296,6 +308,31 @@ def is_gpu_supported() -> bool:
     Return if GPU is supported.
     """
     return GPU_SUPPORTED and get_gpu_count() >= 1
+
+
+def is_kvikio_supported() -> bool:
+    """
+    Return if kvikio is supported (installed).
+    """
+    return KVIKIO_SUPPORTED
+
+
+def is_gds_supported() -> bool:
+    """
+    Return if GPU Direct Store is supported.
+    """
+    if is_kvikio_supported():
+        props = kvikio.DriverProperties()
+        return props.is_gds_available
+
+    return False
+
+
+def is_nvcomp_codec_supported() -> bool:
+    """
+    Return if NVidia Compressor Codecs are supported.
+    """
+    return NV_COMP_BATCH_CODEC_SUPPORTED
 
 
 def is_jax_supported() -> bool:

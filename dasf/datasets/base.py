@@ -29,13 +29,15 @@ try:
 
     from kvikio.nvcomp_codec import NvCompBatchCodec
     from kvikio.zarr import GDSStore
-    USE_KVIKIO=True
 except ImportError: # pragma: no cover
-    USE_KVIKIO=False
+    pass
 
 from pathlib import Path
 
 from dasf.utils.funcs import human_readable_size
+from dasf.utils.funcs import is_kvikio_supported
+from dasf.utils.funcs import is_gds_supported
+from dasf.utils.funcs import is_nvcomp_codec_supported
 from dasf.utils.decorators import task_handler
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dask_array
@@ -493,7 +495,8 @@ class DatasetZarr(Dataset):
             The data (or a Future load object, for `_lazy` operations).
 
         """
-        if self._backend == "kvikio" and USE_KVIKIO:
+        if (self._backend == "kvikio" and is_kvikio_supported() and
+            is_gds_supported() and is_nvcomp_codec_supported()):
             store = GDSStore(self._root_file)
             meta = json.loads(store[".zarray"])
             meta["compressor"] = NvCompBatchCodec("lz4").get_config()
