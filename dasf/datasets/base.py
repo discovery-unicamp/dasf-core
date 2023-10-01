@@ -24,6 +24,15 @@ try:
 except ImportError: # pragma: no cover
     pass
 
+try:
+    import numcodecs
+
+    from kvikio.nvcomp_codec import NvCompBatchCodec
+    from kvikio.zarr import GDSStore
+    USE_KVIKIO=True
+except ImportError: # pragma: no cover
+    USE_KVIKIO=False
+
 from pathlib import Path
 
 from dasf.utils.funcs import human_readable_size
@@ -452,10 +461,12 @@ class DatasetZarr(Dataset):
                  name: str,
                  download: bool = False,
                  root: str = None,
+                 backend: str = None,
                  chunks=None):
 
         Dataset.__init__(self, name, download, root)
 
+        self._backend = backend
         self._chunks = chunks
 
         self._root_file = root
@@ -482,7 +493,16 @@ class DatasetZarr(Dataset):
             The data (or a Future load object, for `_lazy` operations).
 
         """
-        return da.from_zarr(self._root_file, chunks=self._chunks).map_blocks(xp.asarray)
+        if self._backend == "kvikio" and USE_KVIKIO:
+            store = GDSStore(self._root_file)
+            meta = json.loads(store[".zarray"])
+            meta["compressor"] = NvCompBatchCodec("lz4").get_config()
+            store[".zarray"] = json.dumps(meta).encode()
+
+            array = zarr.open_array(store, meta_array=xp.empty(()))
+            return da.from_zarr(array, chunks=self._chunks).map_blocks(xp.asarray)
+
+        return da.from_zarr(self._root_file, chunks=array.chunks).map_blocks(xp.asarray)
 
     def _load(self, xp, **kwargs):
         """Load data using CPU container.
