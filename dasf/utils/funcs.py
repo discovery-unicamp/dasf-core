@@ -41,6 +41,7 @@ except ImportError: # pragma: no cover
 
 try:
     import kvikio
+    import kvikio.defaults
     KVIKIO_SUPPORTED = True
 except ImportError: # pragma: no cover
     KVIKIO_SUPPORTED = False
