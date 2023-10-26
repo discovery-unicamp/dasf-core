@@ -3,7 +3,7 @@
 import inspect
 import numpy as np
 import dask.array as da
-import dask.dataframe as ddf
+from uuid import uuid4
 
 try:
     import cupy as cp
@@ -18,8 +18,13 @@ from dasf.utils.types import is_dask_cpu_dataframe
 from dasf.utils.types import is_dask_gpu_dataframe
 from dasf.utils.funcs import block_chunk_reduce
 
+class UUIDObject:
+    def get_uuid(self):
+        if not hasattr(self, "_uuid"):
+            self._uuid = uuid4()
+        return self._uuid
 
-class Fit:
+class Fit(UUIDObject):
     def _lazy_fit_cpu(self, X, y=None, **kwargs):
         raise NotImplementedError
 
@@ -41,7 +46,7 @@ class Fit:
         return model.fit(X=X, y=y, sample_weight=sample_weight, **kwargs)
 
 
-class FitPredict:
+class FitPredict(UUIDObject):
     def _lazy_fit_predict_cpu(self, X, y=None, **kwargs):
         raise NotImplementedError
 
@@ -64,7 +69,7 @@ class FitPredict:
                                  **kwargs)
 
 
-class FitTransform:
+class FitTransform(UUIDObject):
     def _lazy_fit_transform_cpu(self, X, y=None, **kwargs):
         raise NotImplementedError
 
@@ -87,7 +92,7 @@ class FitTransform:
                                    **kwargs)
 
 
-class Predict:
+class Predict(UUIDObject):
     def _lazy_predict_cpu(self, X, sample_weight=None, **kwargs):
         raise NotImplementedError
 
@@ -111,7 +116,7 @@ class Predict:
         return model.predict(X=X, sample_weight=sample_weight, **kwargs)
 
 
-class GetParams:
+class GetParams(UUIDObject):
     def _lazy_get_params_cpu(self, deep=True, **kwargs):
         raise NotImplementedError
 
@@ -129,7 +134,7 @@ class GetParams:
         ...
 
 
-class SetParams:
+class SetParams(UUIDObject):
     def _lazy_set_params_cpu(self, **params):
         raise NotImplementedError
 
@@ -147,7 +152,7 @@ class SetParams:
         ...
 
 
-class Transform:
+class Transform(UUIDObject):
     def _lazy_transform_cpu(self, X, **kwargs):
         raise NotImplementedError
 
