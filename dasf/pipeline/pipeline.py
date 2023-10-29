@@ -59,7 +59,6 @@ class Pipeline:
             getattr(callback, func_name)(*args, **kwargs)
 
     def __add_into_dag(self, obj, func_name, key, parameters=None, itself=None):
-
         if key not in self._dag_table:
             self._dag.add_node(key)
             self._dag_g.node(str(key), func_name)
@@ -110,7 +109,7 @@ class Pipeline:
             return (obj.load,
                     generate_name(obj.__class__.__name__,
                                   "load"),
-                    hash(obj),
+                    obj.get_uuid(),
                     obj)
         elif issubclass(obj.__class__, Fit) and hasattr(obj, "fit"):
             return (obj.fit,
