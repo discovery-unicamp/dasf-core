@@ -58,11 +58,11 @@ class Pipeline:
         for callback in self._callbacks:
             getattr(callback, func_name)(*args, **kwargs)
 
-    def __add_into_dag(self, obj, func_name, parameters=None, itself=None):
-        key = hash(obj)
+    def __add_into_dag(self, obj, func_name, key, parameters=None, itself=None):
 
         if key not in self._dag_table:
             self._dag.add_node(key)
+            self._dag_g.node(str(key), func_name)
             self._dag_table[key] = dict()
             self._dag_table[key]["fn"] = obj
             self._dag_table[key]["name"] = func_name
@@ -78,17 +78,12 @@ class Pipeline:
             # If we are adding a object which require parameters,
             # we need to make sure they are mapped into DAG.
             for k, v in parameters.items():
-                dep_obj, dep_func_name, _ = self.__inspect_element(v)
+                dep_obj, dep_func_name, dep_key, _ = self.__inspect_element(v)
                 self.add(dep_obj)
-                if not self._dag.has_node(str(key)):
-                    self._dag_g.node(str(key), func_name)
 
-                if not self._dag.has_node(str(hash(dep_obj))):
-                    self._dag_g.node(str(hash(dep_obj)), dep_func_name)
+                self._dag.add_edge(dep_key, key)
 
-                self._dag.add_edge(hash(dep_obj), key)
-
-                self._dag_g.edge(str(hash(dep_obj)), str(key), label=k)
+                self._dag_g.edge(str(dep_key), str(key), label=k)
 
     def __inspect_element(self, obj):
         from dasf.datasets.base import Dataset
@@ -100,11 +95,13 @@ class Pipeline:
         if inspect.isfunction(obj) and callable(obj):
             return (obj,
                     obj.__qualname__,
+                    hash(obj),
                     None)
         elif inspect.ismethod(obj):
             return (obj,
                     generate_name(obj.__self__.__class__.__name__,
                                   obj.__name__),
+                    obj.__self__.get_uuid() if hasattr(obj.__self__, "get_uuid") else hash(obj),
                     obj.__self__)
         elif issubclass(obj.__class__, Dataset) and hasattr(obj, "load"):
             # (Disabled) Register dataset for reusability
@@ -113,16 +110,19 @@ class Pipeline:
             return (obj.load,
                     generate_name(obj.__class__.__name__,
                                   "load"),
+                    hash(obj),
                     obj)
         elif issubclass(obj.__class__, Fit) and hasattr(obj, "fit"):
             return (obj.fit,
                     generate_name(obj.__class__.__name__,
                                   "fit"),
+                    obj.get_uuid(),
                     obj)
         elif issubclass(obj.__class__, Transform) and hasattr(obj, "transform"):
             return (obj.transform,
                     generate_name(obj.__class__.__name__,
                                   "transform"),
+                    obj.get_uuid(),
                     obj)
         else:
             raise ValueError(
@@ -131,8 +131,8 @@ class Pipeline:
             )
 
     def add(self, obj, **kwargs):
-        obj, func_name, objref = self.__inspect_element(obj)
-        self.__add_into_dag(obj, func_name, kwargs, objref)
+        obj, func_name, uuid, objref = self.__inspect_element(obj)
+        self.__add_into_dag(obj, func_name, uuid, kwargs, objref)
 
         return self
 
@@ -142,6 +142,10 @@ class Pipeline:
         if is_notebook():
             return self._dag_g
         return self._dag_g.view(filename)
+
+    def save_image(self, filename):
+        self._dag_g.render(outfile=filename, cleanup=True)
+
 
     def __register_dataset(self, dataset):
         key = str(hash(dataset.load))
@@ -158,8 +162,8 @@ class Pipeline:
         new_params = dict()
         if params:
             for k, v in params.items():
-                dep_obj, *_ = self.__inspect_element(v)
-                req_key = hash(dep_obj)
+                _, _, uuid, *_ = self.__inspect_element(v)
+                req_key = uuid
 
                 new_params[k] = self._dag_table[req_key]["ret"]
 
@@ -171,15 +175,13 @@ class Pipeline:
         return ret
 
     def get_result_from(self, obj):
-        _, obj_name, *_ = self.__inspect_element(obj)
+        _, obj_name, key, *_ = self.__inspect_element(obj)
 
-        for key in self._dag_table:
-            if self._dag_table[key]["name"] == obj_name:
-                if self._dag_table[key]["ret"] is None:
-                    raise Exception("Pipeline was not executed yet.")
-                return self._dag_table[key]["ret"]
-
-        raise Exception(f"Function {obj_name} was not added into pipeline.")
+        if key in self._dag_table:
+            if self._dag_table[key]["ret"] is None:
+                raise Exception("Pipeline was not executed yet.")
+            return self._dag_table[key]["ret"]
+        raise Exception(f"Function {obj_name}-{key} was not added into pipeline.")
 
     def run(self):
         if not nx.is_directed_acyclic_graph(self._dag):
