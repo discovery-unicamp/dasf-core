@@ -20,7 +20,7 @@ class Reshape:
         return X.reshape(self.shape)
 
 
-class SliceArray:
+class SliceArray(Transform):
     def __init__(self, output_size):
         self.x = list(output_size)
 

@@ -151,7 +151,7 @@ class XGBRegressor(Fit, FitPredict, Predict):
                 verbosity=verbosity,
                 objective=objective,
                 booster=booster,
-                tree_method=tree_method,
+                tree_method='gpu_hist',
                 n_jobs=n_jobs,
                 gamma=gamma,
                 min_child_weight=min_child_weight,

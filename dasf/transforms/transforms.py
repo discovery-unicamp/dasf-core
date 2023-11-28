@@ -6,6 +6,8 @@ import zarr
 
 import numpy as np
 import pandas as pd
+import dask
+import dask.dataframe as ddf
 
 from dasf.utils.types import is_array
 from dasf.utils.types import is_dask_array
@@ -15,8 +17,6 @@ from dasf.transforms.base import Transform
 try:
     import cupy as cp
     import cudf
-
-    import dask_cudf as dcudf
 except ImportError: # pragma: no cover
     pass
 
@@ -305,69 +305,50 @@ class ZarrToArray(Transform):
 
 
 class ArraysToDataFrame(Transform):
-    def __transform_generic(self, X, y):
+    def _build_dataframe(self, data, columns, xp, df):
+        data = [d.flatten() for d in data]
+        stacked_data = xp.stack(data, axis=1)
+        return df.DataFrame(
+            stacked_data,
+            columns=columns
+        )
+
+    def _lazy_transform(self, xp, df, **kwargs):
+        X = list(kwargs.values())
+        y = list(kwargs.keys())
         assert len(X) == len(y), "Data and labels should have the same length."
 
-        dfs = None
-        for i, x in enumerate(X):
-            if is_array(x):
-                # Dask has some facilities to convert to DataFrame
-                if is_dask_array(x):
-                    new_chunk = math.prod(x.chunksize)
-                    flat = x.flatten().rechunk(new_chunk)
+        meta = ddf.utils.make_meta([
+            (col, data.dtype)
+            for col, data in zip(y, X)
+        ],
+            parent_meta=None if df == pd else cudf.DataFrame
+        )
 
-                    if dfs is None:
-                        dfs = flat.to_dask_dataframe(columns=[y[i]])
-                    else:
-                        dfs = dfs.join(flat.to_dask_dataframe(columns=[y[i]]))
-                else:
-                    flat = x.flatten()
+        lazy_dataframe_build = dask.delayed(self._build_dataframe)
+        data_chunks = [x.to_delayed().ravel() for x in X]
+        partial_dataframes = [
+            ddf.from_delayed(lazy_dataframe_build(data=mapped_chunks, columns=y, xp=xp, df=df), meta=meta)
+            for mapped_chunks in zip(*data_chunks)
+        ]
 
-                    if dfs is None:
-                        dfs = list()
-                    dfs.append(flat)
-            else:
-                raise Exception("This is not an array. This is a '%s'."
-                                % str(type(x)))
-
-        return dfs
+        return ddf.concat(partial_dataframes)
 
     def _lazy_transform_cpu(self, X=None, **kwargs):
-        X = list(kwargs.values())
-        y = list(kwargs.keys())
-
-        return self.__transform_generic(X, y)
-
+        return self._lazy_transform(np, pd, **kwargs)
+    
     def _lazy_transform_gpu(self, X=None, **kwargs):
+        return self._lazy_transform(cp, cudf, **kwargs)
+    
+    def _transform(self, xp, df, **kwargs):
         X = list(kwargs.values())
         y = list(kwargs.keys())
+        assert len(X) == len(y), "Data and labels should have the same length."
 
-        return self.__transform_generic(X, y)
-
-    def _transform_gpu(self, X=None, **kwargs):
-        X = list(kwargs.values())
-        y = list(kwargs.keys())
-
-        dfs = self.__transform_generic(X, y)
-
-        if is_array(dfs) and not is_dask_array(dfs):
-            datas = cp.stack(dfs, axis=-1)
-            datas = cudf.DataFrame(datas, columns=y)
-        else:
-            datas = dfs
-
-        return datas
+        return self._build_dataframe(data=X, columns=y, xp=xp, df=df)
 
     def _transform_cpu(self, X=None, **kwargs):
-        X = list(kwargs.values())
-        y = list(kwargs.keys())
+        return self._transform(np, pd, **kwargs)
 
-        dfs = self.__transform_generic(X, y)
-
-        if is_array(dfs) and not is_dask_array(dfs):
-            datas = np.stack(dfs, axis=-1)
-            datas = pd.DataFrame(datas, columns=y)
-        else:
-            datas = dfs
-
-        return datas
+    def _transform_gpu(self, X=None, **kwargs):
+        return self._transform(cp, cudf, **kwargs)
