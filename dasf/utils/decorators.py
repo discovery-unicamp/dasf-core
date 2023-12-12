@@ -8,6 +8,7 @@ from dasf.utils.types import is_gpu_array
 from dasf.utils.funcs import is_gpu_supported
 from dasf.utils.funcs import is_dask_supported
 from dasf.utils.funcs import is_dask_gpu_supported
+from dasf.utils.funcs import get_dask_running_client
 
 
 def is_forced_local(cls):
@@ -111,21 +112,25 @@ def task_handler(func):
         func_name = func.__name__
         func_type = ""
         arch = "cpu"
+        client = get_dask_running_client()
+        if client is not None: # Runs task according to current client configuration, i.e, Pipeline Executor
+            func_type = "_lazy"
+            arch = "gpu" if getattr(client, "backend", None) == "gpu" else "cpu"
+        else:
+            if not is_forced_local(cls) and (is_dask_gpu_supported() or is_dask_supported()):
+                func_type = "_lazy"
+            if is_dask_gpu_supported() or is_gpu_supported():
+                arch = "gpu"
 
         if is_forced_local(cls):
+            func_type = ""
             new_args, kwargs = fetch_from_dask(*new_args, **kwargs)
-
-        if not is_forced_local(cls) and (is_dask_gpu_supported() or is_dask_supported()):
-            func_type = "_lazy"
-
-        if is_forced_gpu(cls) is not None:
-            if is_forced_gpu(cls):
+        
+        if is_forced_gpu(cls):
                 arch = "gpu"
-            else:
-                new_args, kwargs = fetch_from_gpu(*new_args, **kwargs)
-                arch = "cpu"
-        elif is_dask_gpu_supported() or is_gpu_supported():
-            arch = "gpu"
+
+        if arch == "cpu":
+            new_args, kwargs = fetch_from_gpu(*new_args, **kwargs)
 
         wrapper_func_attr = f"{func_type}_{func_name}_{arch}"
 
