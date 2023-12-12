@@ -365,7 +365,11 @@ def get_dask_running_client():
     """
     Get Dask runner stanza.
     """
-    return Client.current()
+    try:
+        return Client.current()
+    except:
+        return None
+    
 
 
 def get_backend_supported(func):
