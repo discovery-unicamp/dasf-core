@@ -115,7 +115,7 @@ def task_handler(func):
         client = get_dask_running_client()
         if client is not None: # Runs task according to current client configuration, i.e, Pipeline Executor
             func_type = "_lazy"
-            arch = "gpu" if getattr(client, "backend", None) == "gpu" else "cpu"
+            arch = "gpu" if getattr(client, "backend", None) == "cupy" else "cpu"
         else:
             if not is_forced_local(cls) and (is_dask_gpu_supported() or is_dask_supported()):
                 func_type = "_lazy"
