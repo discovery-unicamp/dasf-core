@@ -51,4 +51,4 @@ jobs:
           ssh -T ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686
       - name: Run remote tests for GPU
         run: |
-          ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 'ssh ${{ secrets.CLUSTER_GPU_ID }} \'\$HOME/ci-core.sh\''
+          ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"\$HOME/ci-core.sh\""
