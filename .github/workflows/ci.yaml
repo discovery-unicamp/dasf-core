@@ -38,10 +38,6 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
-      - name: Install dependencies 👨💻
-        run: npm i
-      - name: Build for production 🏗️
-        run: npm run build
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh/
