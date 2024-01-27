@@ -7,7 +7,7 @@ on:
   pull_request: {}
 
 jobs:
-  build:
+  test_cpu:
     runs-on: ubuntu-latest
     environment: continuous_test
     container:
@@ -32,3 +32,24 @@ jobs:
       - name: Run test cases
         run: |
           pytest tests/
+  test_gpu:
+    runs-on: ubuntu-latest
+    environment: continuous_test
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+      - name: Install dependencies 👨💻
+        run: npm i
+      - name: Build for production 🏗️
+        run: npm run build
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.CLUSTER_SSH_PRIV_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.CLUSTER_SSH_PUB_KEY }}" > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa.pub
+          ssh-keyscan -H ${{ secrets.CLUSTER_ADDRESS }} >> ~/.ssh/known_hosts
+      - name: Test SSH connection
+        run: |
+          ssh -T ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }}
