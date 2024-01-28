@@ -16,14 +16,14 @@ if is_devel:
 else:
     cuda_version = USERARG.get('cuda-version', '11.2')
 
-rapidsai_version = USERARG.get('rapids-version', '23.02')
+rapidsai_version = USERARG.get('rapids-version', '23.08')
 ubuntu_version = USERARG.get('ubuntu-version', '20.04')
 python_version = USERARG.get('python-version', '3.10')
 
 if python_version:
     python_version = f"-py{python_version}"
 
-gpu_image_devel = f"rapidsai/rapidsai-core-dev:{rapidsai_version}-cuda{cuda_version}-devel-ubuntu{ubuntu_version}{python_version}"
+gpu_image_devel = f"rapidsai/base:{rapidsai_version}-cuda{cuda_version}{python_version}"
 
 # GPU image needs to be fixed due to dependency matrix
 gpu_image = "nvcr.io/nvidia/pytorch:23.06-py3"
@@ -48,7 +48,7 @@ apt_keys = [
     f"https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu{ubuntu_unified_version}/x86_64/7fa2af80.pub"
 ]
 
-packages_list = ["git", "graphviz", "gcc", "python3-dev", "g++", "openssh-client"]
+packages_list = ["git", "graphviz", "gcc", "python3-dev", "g++", "openssh-client", "wget"]
 
 if is_devel:
     # Install NVIDIA NSight packages
@@ -64,7 +64,11 @@ if device_target.lower() == "cpu":
     pip_package_install = ("%s jupyterlab" % pip_package_install)
 
 elif device_target.lower() == "gpu":
-    Stage0 += apt_get(keys=apt_keys, ospackages=packages_list)
+    if is_devel:
+        Stage0 += shell(commands=["conda install -n base -c rapidsai git graphviz gcc cxx-compiler openssh wget kvikio -y"])
+    else:
+        Stage0 += apt_get(keys=apt_keys, ospackages=packages_list)
+        Stage0 += apt_get(ospackages=packages_list)
 
     pip_package_install = ("%s cupy_xarray" % pip_package_install)
 
@@ -81,6 +85,13 @@ Stage0 += shell(commands=[pip_package_install])
 
 # TODO: fix numpy issue with version 1.24 and other fixed reqs
 Stage0 += shell(commands=["pip install \"numpy<1.24\" bokeh==2.4.3 \"protobuf<=3.20.1\" \"charset-normalizer<3.0\" \"tornado<6.2\""])
+
+if is_devel:
+    Stage0 += shell(commands=["wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && bash Miniconda3-latest-Linux-x86_64.sh -b && cp /root/miniconda3/bin/conda /usr/bin/conda"])
+
+    Stage0 += shell(commands=["conda create -n kvikio -c rapidsai"])
+
+    Stage0 += shell(commands=["conda install -n kvikio -c rapidsai kvikio -y"])
 
 Stage0 += workdir(directory='/dasf')
 
