@@ -35,6 +35,8 @@ jobs:
   test_gpu:
     runs-on: ubuntu-latest
     environment: continuous_test
+    # Skip this test for PRs due to dangerous code submitted.
+    if: ${{ github.event_name != 'pull_request' }}
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
