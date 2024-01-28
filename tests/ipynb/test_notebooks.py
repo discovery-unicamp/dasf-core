@@ -190,7 +190,7 @@ class TestNotebooks(unittest.TestCase):
         del km
 
     def test_notebook_execution(self):
-        with open(self.notebook) as f:
+        with open(self.notebook, encoding="utf-16") as f:
             nb = nbformat.reads(f.read(), nbformat.current_nbformat)
 
             if 'test_requirements' in nb.metadata:
