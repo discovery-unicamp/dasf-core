@@ -6,6 +6,9 @@ the most common libraries to increase the speed up of most algorithms. Part
 of this is to use Dask data to scale computation and RAPIDS AI algorithms to 
 extend the support to GPUs as well.
 
+### CI Results
+[![Continuous Test](https://github.com/discovery-unicamp/dasf-core/actions/workflows/ci.yaml/badge.svg)](https://github.com/discovery-unicamp/dasf-core/actions/workflows/ci.yaml)
+
 ## Installation
 
 For now, the installation can be done using docker or singularity (if available).
@@ -81,3 +84,5 @@ For further reference, below the authors list:
 * Julio Faracco
 * Otavio Napoli
 * Edson Borin
+
+
