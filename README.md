@@ -81,6 +81,7 @@ The table below is a list of supported machine learning algorithms by DASF frame
 For further reference, below the authors list:
 
 * Julio Faracco
+* João Seródio
 * Otavio Napoli
 * Edson Borin
 
