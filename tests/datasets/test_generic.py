@@ -67,8 +67,8 @@ class TestDatasetArray(unittest.TestCase):
         dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
         dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
 
-        dataset1.load()
-        dataset2.load()
+        dataset1._load_cpu()
+        dataset2._load_cpu()
 
         np1 = np.load(raw_path)
         np2 = np.load(raw_path)
@@ -87,8 +87,8 @@ class TestDatasetArray(unittest.TestCase):
         dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
         dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
 
-        dataset1.load()
-        dataset2.load()
+        dataset1._load_cpu()
+        dataset2._load_cpu()
 
         np1 = np.load(raw_path)
         np2 = np.load(raw_path)
@@ -107,8 +107,8 @@ class TestDatasetArray(unittest.TestCase):
         dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
         dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
 
-        dataset1.load()
-        dataset2.load()
+        dataset1._load_cpu()
+        dataset2._load_cpu()
 
         np1 = np.load(raw_path)
         np2 = np.load(raw_path)
