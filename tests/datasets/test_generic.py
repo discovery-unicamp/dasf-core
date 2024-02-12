@@ -3,6 +3,8 @@
 import os
 import unittest
 
+import numpy as np
+
 from pytest import fixture
 from parameterized import parameterized_class
 
@@ -45,3 +47,105 @@ class TestTypes(unittest.TestCase):
 
         self.assertTrue(hasattr(dataset, '_metadata'))
         self.assertTrue("size" in dataset._metadata)
+
+
+class TestDatasetArray(unittest.TestCase):
+    def test_shape(self):
+        filename = os.getenv('PYTEST_CURRENT_TEST')
+        test_dir, _ = os.path.splitext(filename)
+        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+
+        dataset = DatasetArray(name="Array", root=raw_path, download=False)
+
+        self.assertEqual(dataset.shape, (40, 40, 40))
+
+    def test_add(self):
+        filename = os.getenv('PYTEST_CURRENT_TEST')
+        test_dir, _ = os.path.splitext(filename)
+        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+
+        dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
+        dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
+
+        dataset1.load()
+        dataset2.load()
+
+        np1 = np.load(raw_path)
+        np2 = np.load(raw_path)
+
+        dataset3 = dataset1 + dataset2
+
+        np3 = np1 + np2
+
+        self.assertTrue(np.array_equal(dataset3, np3))
+
+    def test_sub(self):
+        filename = os.getenv('PYTEST_CURRENT_TEST')
+        test_dir, _ = os.path.splitext(filename)
+        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+
+        dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
+        dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
+
+        dataset1.load()
+        dataset2.load()
+
+        np1 = np.load(raw_path)
+        np2 = np.load(raw_path)
+
+        dataset3 = dataset1 - dataset2
+
+        np3 = np1 - np2
+
+        self.assertTrue(np.array_equal(dataset3, np3))
+
+    def test_mul(self):
+        filename = os.getenv('PYTEST_CURRENT_TEST')
+        test_dir, _ = os.path.splitext(filename)
+        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+
+        dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
+        dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
+
+        dataset1.load()
+        dataset2.load()
+
+        np1 = np.load(raw_path)
+        np2 = np.load(raw_path)
+
+        dataset3 = dataset1 * dataset2
+
+        np3 = np1 * np2
+
+        self.assertTrue(np.array_equal(dataset3, np3))
+
+#    def test_div(self):
+#        filename = os.getenv('PYTEST_CURRENT_TEST')
+#        test_dir, _ = os.path.splitext(filename)
+#        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+#
+#        dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
+#        dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
+#
+#        dataset1.load()
+#        dataset2.load()
+#
+#        np1 = np.load(raw_path)
+#        np2 = np.load(raw_path)
+#
+#        dataset3 = dataset1 / dataset2
+#
+#        np3 = np1 / np2
+#
+#        self.assertTrue(np.array_equal(dataset3, np3))
+
+    def test_avg(self):
+        filename = os.getenv('PYTEST_CURRENT_TEST')
+        test_dir, _ = os.path.splitext(filename)
+        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+
+        dataset = DatasetArray(name="Array", root=raw_path, download=False)
+
+        dataset.load()
+
+        self.assertEqual(dataset.avg(), 0.0)
