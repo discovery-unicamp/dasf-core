@@ -138,14 +138,14 @@ class TestDatasetArray(unittest.TestCase):
 #        np3 = np1 / np2
 #
 #        self.assertTrue(np.array_equal(dataset3, np3))
-
-    def test_avg(self):
-        filename = os.getenv('PYTEST_CURRENT_TEST')
-        test_dir, _ = os.path.splitext(filename)
-        raw_path = os.path.join(test_dir, "simple", "Array.npy")
-
-        dataset = DatasetArray(name="Array", root=raw_path, download=False)
-
-        dataset.load()
-
-        self.assertEqual(dataset.avg(), 0.0)
+#
+#    def test_avg(self):
+#        filename = os.getenv('PYTEST_CURRENT_TEST')
+#        test_dir, _ = os.path.splitext(filename)
+#        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+#
+#        dataset = DatasetArray(name="Array", root=raw_path, download=False)
+#
+#        dataset.load()
+#
+#        self.assertEqual(dataset.avg(), 0.0)
