@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+import numpy as np
+
+try:
+    import cupy as cp
+except ImportError: # pragma: no cover
+    pass
+
 from dasf.transforms.base import Transform, ReductionTransform
 
 
