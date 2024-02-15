@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from dasf.transforms.base import Transform
+from dasf.transforms.base import Transform, ReductionTransform
 
 
 class Reshape:
@@ -57,3 +57,85 @@ class SliceArrayByPercent(Transform):
             ]
         else:
             raise Exception("The dimmension is not known")
+
+
+class SliceArrayByPercentile(Transform):
+    def __init__(self, percentile):
+        self.p = percentile
+
+    def __internal_chunk_array_positive(self, block, axis=None, keepdims=False, xp=np):
+        block[block < 0] = 0
+        block[block != 0]
+        return xp.array([xp.percentile(block.flatten(), self.p)])
+
+    def __internal_aggregate_array_positive(self, block, axis=None, keepdims=False, xp=np):
+        return xp.array([xp.max(block)])
+
+    def __internal_chunk_array_negative(self, block, axis=None, keepdims=False, xp=np):
+        block *= -1
+        block[block < 0] = 0
+        block[block != 0]
+        return xp.array([-xp.percentile(block.flatten(), self.p)])
+
+    def __internal_aggregate_array_negative(self, block, axis=None, keepdims=False, xp=np):
+        return xp.array([xp.min(block)])
+
+    def _lazy_transform_cpu(self, X):
+        positive = ReductionTransform(func_chunk=self.__internal_chunk_array_positive,
+                                      func_aggregate=self.__internal_aggregate_array_positive,
+                                      output_size=[0])
+
+        negative = ReductionTransform(func_chunk=self.__internal_chunk_array_negative,
+                                      func_aggregate=self.__internal_aggregate_array_negative,
+                                      output_size=[0])
+
+        p = positive._lazy_transform_cpu(X, axis=[0])
+        n = negative._lazy_transform_cpu(X, axis=[0])
+
+        # Unfortunately, we need to compute first.
+        pos_cutoff = p.compute()[0]
+        neg_cutoff = n.compute()[0]
+
+        X[X > pos_cutoff] = pos_cutoff
+        X[X < neg_cutoff] = neg_cutoff
+
+        return X
+
+    def _lazy_transform_gpu(self, X):
+        positive = ReductionTransform(func_chunk=self.__internal_aggregate_array_positive,
+                                      func_aggregate=self.__internal_aggregate_array_positive,
+                                      output_size=[0])
+
+        negative = ReductionTransform(func_chunk=self.__internal_aggregate_array_negative,
+                                      func_aggregate=self.__internal_aggregate_array_negative,
+                                      output_size=[0])
+
+        p = positive._lazy_transform_gpu(X)
+        n = negative._lazy_transform_gpu(X)
+
+        # Unfortunately, we need to compute first.
+        pos_cutoff = p.compute()[0]
+        neg_cutoff = n.compute()[0]
+
+        X[X > pos_cutoff] = pos_cutoff
+        X[X < neg_cutoff] = neg_cutoff
+
+        return X
+
+    def _transform_cpu(self, X):
+        pos_cufoff = self.__internal_chunk_array_positive(X, xp=np)
+        neg_cutoff = self.__internal_chunk_array_negative(X, xp=np)
+
+        X[X > pos_cutoff] = pos_cutoff
+        X[X < neg_cutoff] = neg_cutoff
+
+        return X
+
+    def _transform_gpu(self, X):
+        pos_cufoff = self.__internal_chunk_array_positive(X, xp=cp)
+        neg_cutoff = self.__internal_chunk_array_negative(X, xp=cp)
+
+        X[X > pos_cutoff] = pos_cutoff
+        X[X < neg_cutoff] = neg_cutoff
+
+        return X
