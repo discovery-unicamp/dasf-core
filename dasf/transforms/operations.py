@@ -130,7 +130,7 @@ class SliceArrayByPercentile(Transform):
         return X
 
     def _transform_cpu(self, X):
-        pos_cufoff = self.__internal_chunk_array_positive(X, xp=np)
+        pos_cutoff = self.__internal_chunk_array_positive(X, xp=np)
         neg_cutoff = self.__internal_chunk_array_negative(X, xp=np)
 
         X[X > pos_cutoff] = pos_cutoff
@@ -139,7 +139,7 @@ class SliceArrayByPercentile(Transform):
         return X
 
     def _transform_gpu(self, X):
-        pos_cufoff = self.__internal_chunk_array_positive(X, xp=cp)
+        pos_cutoff = self.__internal_chunk_array_positive(X, xp=cp)
         neg_cutoff = self.__internal_chunk_array_negative(X, xp=cp)
 
         X[X > pos_cutoff] = pos_cutoff
