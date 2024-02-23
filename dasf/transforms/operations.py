@@ -2,6 +2,7 @@
 
 import numpy as np
 import dask.array as da
+from scipy import stats
 try:
     import cupy as cp
 except ImportError: # pragma: no cover
@@ -148,13 +149,14 @@ class SliceArrayByPercentile(Transform):
 
         return X
 
-class ApplyPatches(Transform):
-    def __init__(self, function, input_size, overlap, offsets, combine_function):
+
+class ApplyPatchesBase(Transform):
+    def __init__(self, function, weight_function, input_size, overlap, offsets):
         self._function = function
+        self._weight_function = weight_function
         self._input_size = input_size
         self._overlap_config = overlap
         self._offsets = offsets
-        self._combine_function = combine_function
 
     def _apply_patches(self, patch_set):
         if callable(self._function):
@@ -163,47 +165,67 @@ class ApplyPatches(Transform):
             return self._function.predict(patch_set)
         raise NotImplementedError("Requested Apply Method not supported")
 
-    def _reconstruct_patches(self, patches, index):
+    def _reconstruct_patches(self, patches, index, weights, inner_dim=None):
         reconstruct_shape = np.array(self._input_size) * np.array(index)
+        if weights:
+            weight = np.zeros(reconstruct_shape)
+            base_weight = (
+                self._weight_function(self._input_size)
+                if self._weight_function
+                else np.ones(self._input_size)
+            )
+        else:
+            weight = None
+        if inner_dim is not None:
+            reconstruct_shape = np.append(reconstruct_shape, inner_dim)
         reconstruct = np.zeros(reconstruct_shape)
-        weight = np.ones(reconstruct_shape)
         for patch_index, patch in zip(np.ndindex(index), patches):
             sl = [
                 slice(idx * patch_len, (idx + 1) * patch_len, None)
                 for idx, patch_len in zip(patch_index, self._input_size)
             ]
+            if weights:
+                weight[tuple(sl)] = base_weight
+            if inner_dim is not None:
+                sl.append(slice(None, None, None))
             reconstruct[tuple(sl)] = patch
         return reconstruct, weight
 
-    def _adjust_patches(self, patches, weight, ref_shape, offset):
+    def _adjust_patches(self, arrays, ref_shape, offset, pad_value=0):
         pad_width = []
         sl = []
-        for idx, lenght, ref in zip(offset, patches.shape, ref_shape):
-
+        ref_shape = list(ref_shape)
+        arr_shape = list(arrays[0].shape)
+        if len(offset) < len(ref_shape):
+            ref_shape = ref_shape[:-1]
+            arr_shape = arr_shape[:-1]
+        for idx, lenght, ref in zip(offset, arr_shape, ref_shape):
             if idx > 0:
                 sl.append(slice(0, min(lenght, ref), None))
                 pad_width.append((idx, max(ref - lenght - idx, 0)))
             else:
                 sl.append(slice(np.abs(idx), min(lenght, ref - idx), None))
                 pad_width.append((0, max(ref - lenght - idx, 0)))
-        reconstruct = np.pad(patches[tuple(sl)], pad_width=pad_width, mode="constant")
-        weight = np.pad(weight[tuple(sl)], pad_width=pad_width, mode="constant")
-        return reconstruct, weight
+        adjusted = [
+            np.pad(
+                arr[tuple([*sl, slice(None, None, None)])],
+                pad_width=[*pad_width, (0, 0)],
+                mode="constant",
+                constant_values=pad_value,
+            )
+            if len(offset) < len(arr.shape)
+            else np.pad(
+                arr[tuple(sl)],
+                pad_width=pad_width,
+                mode="constant",
+                constant_values=pad_value,
+            )
+            for arr in arrays
+        ]
+        return adjusted
 
     def _combine_patches(self, results, offsets, indexes):
-        reconstructed = []
-        weights = []
-        for patches, offset, shape in zip(results, offsets, indexes):
-            reconstruct, weight = self._reconstruct_patches(patches, shape)
-            if len(reconstructed) > 0:
-                reconstruct, weight = self._adjust_patches(
-                    reconstruct, weight, reconstructed[0].shape, offset
-                )
-            reconstructed.append(reconstruct)
-            weights.append(weight)
-        reconstructed = np.stack(reconstructed, axis=0)
-        weights = np.stack(weights, axis=0)
-        return np.sum(reconstructed * weights, axis=0) / np.sum(weights, axis=0)
+        raise NotImplementedError("Combine patches method must be implemented")
 
     def _extract_patches(self, data, patch_shape):
         indexes = tuple(np.array(data.shape) // np.array(patch_shape))
@@ -271,3 +293,81 @@ class ApplyPatches(Transform):
     def _transform_gpu(self, X, **kwargs):
         X = cp.asnumpy(X)
         return cp.asarray(self._transform(X))
+
+
+class ApplyPatchesWeightedAvg(ApplyPatchesBase):
+    def _combine_patches(self, results, offsets, indexes):
+        reconstructed = []
+        weights = []
+        for patches, offset, shape in zip(results, offsets, indexes):
+            reconstruct, weight = self._reconstruct_patches(
+                patches, shape, weights=True
+            )
+            if len(reconstructed) > 0:
+                adjusted = self._adjust_patches(
+                    [reconstruct, weight], reconstructed[0].shape, offset
+                )
+                reconstruct = adjusted[0]
+                weight = adjusted[1]
+            reconstructed.append(reconstruct)
+            weights.append(weight)
+        reconstructed = np.stack(reconstructed, axis=0)
+        weights = np.stack(weights, axis=0)
+        return np.sum(reconstructed * weights, axis=0) / np.sum(weights, axis=0)
+
+
+class ApplyPatchesVoting(ApplyPatchesBase):
+    def __init__(
+        self,
+        function,
+        weight_function,
+        input_size,
+        overlap,
+        offsets,
+        voting,
+        num_classes,
+    ):
+        super().__init__(function, weight_function, input_size, overlap, offsets)
+        self._voting = voting  # Types: Hard Voting, Soft Voting
+        self._num_classes = num_classes
+
+    def _combine_patches(self, results, offsets, indexes):
+        if self._voting == "hard":
+            result = self._hard_voting(results, offsets, indexes)
+        elif self._voting == "soft":
+            result = self._soft_voting(results, offsets, indexes)
+        else:
+            raise ValueError("Invalid Voting Type. Should be either soft or hard.")
+        return result
+
+    def _hard_voting(self, results, offsets, indexes):
+        reconstructed = []
+        for patches, offset, shape in zip(results, offsets, indexes):
+            reconstruct, _ = self._reconstruct_patches(
+                patches, shape, weights=False, inner_dim=self._num_classes
+            )
+            reconstruct = np.argmax(reconstruct, axis=-1).astype(np.float32)
+            if len(reconstructed) > 0:
+                adjusted = self._adjust_patches(
+                    [reconstruct], reconstructed[0].shape, offset, pad_value=np.nan
+                )
+                reconstruct = adjusted[0]
+            reconstructed.append(reconstruct)
+        reconstructed = np.stack(reconstructed, axis=0)
+        ret = stats.mode(reconstructed, axis=0, nan_policy="omit", keepdims=False)[0]
+        return ret
+
+    def _soft_voting(self, results, offsets, indexes):
+        reconstructed = []
+        for patches, offset, shape in zip(results, offsets, indexes):
+            reconstruct, _ = self._reconstruct_patches(
+                patches, shape, weights=False, inner_dim=self._num_classes
+            )
+            if len(reconstructed) > 0:
+                adjusted = self._adjust_patches(
+                    [reconstruct], reconstructed[0].shape, offset
+                )
+                reconstruct = adjusted[0]
+            reconstructed.append(reconstruct)
+        reconstructed = np.stack(reconstructed, axis=0)
+        return np.argmax(np.sum(reconstructed, axis=0), axis=-1)
