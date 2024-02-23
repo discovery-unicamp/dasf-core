@@ -67,4 +67,12 @@ class BaseLoader:
             model = self.model_instances["local"]
         else:
             model = Worker.model
-        return self.inference(model, data)
+        data = self.preprocessing(data)
+        output = self.inference(model, data)
+        return self.postprocessing(output)
+
+    def preprocessing(self, data):
+        return data
+
+    def postprocessing(self, data):
+        return data
