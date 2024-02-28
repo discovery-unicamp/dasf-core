@@ -6,9 +6,19 @@ from .base import BaseLoader
 
 
 class TorchLoader(BaseLoader):
+    """
+    Model Loader for Torch models
+    """
+
     def __init__(
         self, model_class_or_file, dtype=torch.float32, checkpoint=None, device=None
     ):
+        """
+        model_class_or_file: class or file with model definition
+        dtype: data type of model input
+        checkpoint: model chekpoint file
+        device: device to place model ("cpu" or "gpu")
+        """
         super().__init__()
         self.model_class_or_file = model_class_or_file
         self.dtype = dtype

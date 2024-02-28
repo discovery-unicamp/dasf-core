@@ -5,6 +5,10 @@ from dasf.utils.decorators import task_handler
 
 
 class BaseLoader:
+    """
+    BaseLoader for DL models. When running in a Dask Cluster instantiates a model per worker that will be reused on every subsequent prediction task.
+    """
+
     def __init__(self):
         self.model_instances = {}
 
@@ -12,15 +16,20 @@ class BaseLoader:
         raise NotImplementedError("Inference must be implemented")
 
     def load_model(self):
+        """
+        Load Model method is specific for each framework/model.
+        """
         raise NotImplementedError("Load Model must be implemented")
 
     def load_model_distributed(self, **kwargs):
-        # try:
-        Worker.model = self.load_model(**kwargs)
-        return "UP"
-
-    # except:
-    # return "DOWN"
+        """
+        Distributed model instantiation
+        """
+        try:
+            Worker.model = self.load_model(**kwargs)
+            return "UP"
+        except:
+            return "DOWN"
 
     def _lazy_load(self, **kwargs):
         client = get_dask_running_client()
@@ -59,6 +68,9 @@ class BaseLoader:
         ...
 
     def predict(self, data):
+        """
+        Predict method called on prediction tasks.
+        """
         if not self.model_instances:
             raise RuntimeError(
                 "Models have not been loaded. load method must be executed beforehand."
@@ -72,7 +84,19 @@ class BaseLoader:
         return self.postprocessing(output)
 
     def preprocessing(self, data):
+        """
+        Preprocessing stage which is called before inference
+        """
         return data
 
+    def inference(self, model, data):
+        """
+        Inference method, receives model and input data
+        """
+        raise NotImplementedError("Inference must be implemented")
+
     def postprocessing(self, data):
+        """
+        Postprocessing stage which is called after inference
+        """
         return data

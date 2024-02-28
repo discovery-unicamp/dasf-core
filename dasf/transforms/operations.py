@@ -3,6 +3,7 @@
 import numpy as np
 import dask.array as da
 from scipy import stats
+
 try:
     import cupy as cp
 except ImportError: # pragma: no cover
@@ -21,6 +22,7 @@ class Reshape:
         The new shape of the data.
 
     """
+
     def __init__(self, shape: tuple):
         self.shape = shape
 
@@ -35,11 +37,11 @@ class SliceArray(Transform):
 
     def transform(self, X):
         if len(self.x) == 1:
-            return X[0:self.x[0]]
+            return X[0 : self.x[0]]
         elif len(self.x) == 2:
-            return X[0:self.x[0], 0:self.x[1]]
+            return X[0 : self.x[0], 0 : self.x[1]]
         elif len(self.x) == 3:
-            return X[0:self.x[0], 0:self.x[1], 0:self.x[2]]
+            return X[0 : self.x[0], 0 : self.x[1], 0 : self.x[2]]
         else:
             raise Exception("The dimmension is not known")
 
@@ -55,14 +57,14 @@ class SliceArrayByPercent(Transform):
             raise Exception("Percentages cannot be higher than 100% (1.0)")
 
         if X.ndim == 1:
-            return X[0:int(self.x * X.shape[0])]
+            return X[0 : int(self.x * X.shape[0])]
         elif X.ndim == 2:
-            return X[0:int(self.x * X.shape[0]), 0:int(self.y * X.shape[1])]
+            return X[0 : int(self.x * X.shape[0]), 0 : int(self.y * X.shape[1])]
         elif X.ndim == 3:
             return X[
-                0:int(self.x * X.shape[0]),
-                0:int(self.y * X.shape[1]),
-                0:int(self.z * X.shape[2]),
+                0 : int(self.x * X.shape[0]),
+                0 : int(self.y * X.shape[1]),
+                0 : int(self.z * X.shape[2]),
             ]
         else:
             raise Exception("The dimmension is not known")
@@ -151,14 +153,33 @@ class SliceArrayByPercentile(Transform):
 
 
 class ApplyPatchesBase(Transform):
+    """
+    Base Class for ApplyPatches Functionalities
+    """
+
     def __init__(self, function, weight_function, input_size, overlap, offsets):
+        """
+        function: function to be applied to each patch, can be eiter a Python Function or a ModelLoader
+        weight_function: weight attribution function, must receive a shape and produce a NDArray with the respective weights for each array position
+        input_size: size of input to the function to be applied,
+        overlap: dictionary containing overlapping/padding configurations to use with np.pad or dask.overlap.overlap. Its important that for the base patch set the whole "chunk core" is covered by the patches.
+        offsets: list of offsets for overlapping patches extraction
+        """
         self._function = function
         self._weight_function = weight_function
         self._input_size = input_size
-        self._overlap_config = overlap
-        self._offsets = offsets
+        self._offsets = offsets if offsets is not None else []
+        overlap = overlap if overlap is not None else {}
+        self._overlap_config = {
+            "padding": overlap.get("padding", tuple(len(input_size) * [0])),
+            "boundary": overlap.get("boundary", 0),
+        }
 
     def _apply_patches(self, patch_set):
+        """
+        Applies function to each patch in a patch set
+
+        """
         if callable(self._function):
             return np.array(list(map(self._function, patch_set)))
         if isinstance(self._function, BaseLoader):
@@ -166,6 +187,9 @@ class ApplyPatchesBase(Transform):
         raise NotImplementedError("Requested Apply Method not supported")
 
     def _reconstruct_patches(self, patches, index, weights, inner_dim=None):
+        """
+        Rearranges patches to reconstruct area of interest from patches and weights
+        """
         reconstruct_shape = np.array(self._input_size) * np.array(index)
         if weights:
             weight = np.zeros(reconstruct_shape)
@@ -192,6 +216,9 @@ class ApplyPatchesBase(Transform):
         return reconstruct, weight
 
     def _adjust_patches(self, arrays, ref_shape, offset, pad_value=0):
+        """
+        Pads reconstructed_patches with 0s to have same shape as the reference shape from the base patch set
+        """
         pad_width = []
         sl = []
         ref_shape = list(ref_shape)
@@ -225,9 +252,17 @@ class ApplyPatchesBase(Transform):
         return adjusted
 
     def _combine_patches(self, results, offsets, indexes):
+        """
+        How results are combined is dependent on what is being combined.
+        ApplyPatchesWeightedAvg uses Weighted Average
+        ApplyPatchesVoting uses Voting (hard or soft)
+        """
         raise NotImplementedError("Combine patches method must be implemented")
 
     def _extract_patches(self, data, patch_shape):
+        """
+        Patch extraction method. It will be called once for the base patch set and also for the requested offsets (overlapping patch sets)
+        """
         indexes = tuple(np.array(data.shape) // np.array(patch_shape))
         patches = []
         for patch_index in np.ndindex(indexes):
@@ -239,6 +274,9 @@ class ApplyPatchesBase(Transform):
         return np.asarray(patches), indexes
 
     def _operation(self, chunk):
+        """
+        Operation to be performed on each chunk
+        """
         offsets = list(self._offsets)
         base = self._overlap_config["padding"]
         offsets.insert(0, tuple([0] * len(base)))
@@ -259,11 +297,19 @@ class ApplyPatchesBase(Transform):
         return self._combine_patches(results, offsets, indexes)[output_slice]
 
     def _transform(self, X):
-        X_overlap = np.pad(
-            X,
-            pad_width=[(pad, pad) for pad in self._overlap_config["padding"]],
-            mode=self._overlap_config["boundary"],
-        )
+        if isinstance(self._overlap_config["boundary"], int):
+            X_overlap = np.pad(
+                X,
+                pad_width=[(pad, pad) for pad in self._overlap_config["padding"]],
+                mode="constant",
+                constant_values=self._overlap_config["boundary"],
+            )
+        else:
+            X_overlap = np.pad(
+                X,
+                pad_width=[(pad, pad) for pad in self._overlap_config["padding"]],
+                mode=self._overlap_config["boundary"],
+            )
 
         return self._operation(X_overlap)
 
@@ -296,6 +342,10 @@ class ApplyPatchesBase(Transform):
 
 
 class ApplyPatchesWeightedAvg(ApplyPatchesBase):
+    """
+    ApplyPatches with Weighted Average combination function.
+    """
+
     def _combine_patches(self, results, offsets, indexes):
         reconstructed = []
         weights = []
@@ -317,6 +367,10 @@ class ApplyPatchesWeightedAvg(ApplyPatchesBase):
 
 
 class ApplyPatchesVoting(ApplyPatchesBase):
+    """
+    ApplyPatches with Voting combination function.
+    """
+
     def __init__(
         self,
         function,
@@ -327,6 +381,15 @@ class ApplyPatchesVoting(ApplyPatchesBase):
         voting,
         num_classes,
     ):
+        """
+        function: function to be applied to each patch, can be eiter a Python Function or a ModelLoader
+        weight_function: weight attribution function, must receive a shape and produce a NDArray with the respective weights for each array position
+        input_size: size of input to the function to be applied,
+        overlap: dictionary containing overlapping/padding configurations to use with np.pad or dask.overlap.overlap. Its important that for the base patch set the whole "chunk core" is covered by the patches.
+        offsets: list of offsets for overlapping patches extraction
+        voting: voting method. "hard"  or "soft"
+        num_classes: number of classes possible
+        """
         super().__init__(function, weight_function, input_size, overlap, offsets)
         self._voting = voting  # Types: Hard Voting, Soft Voting
         self._num_classes = num_classes
@@ -341,6 +404,9 @@ class ApplyPatchesVoting(ApplyPatchesBase):
         return result
 
     def _hard_voting(self, results, offsets, indexes):
+        """
+        Hard voting combination function
+        """
         reconstructed = []
         for patches, offset, shape in zip(results, offsets, indexes):
             reconstruct, _ = self._reconstruct_patches(
@@ -358,6 +424,9 @@ class ApplyPatchesVoting(ApplyPatchesBase):
         return ret
 
     def _soft_voting(self, results, offsets, indexes):
+        """
+        Soft voting combination function
+        """
         reconstructed = []
         for patches, offset, shape in zip(results, offsets, indexes):
             reconstruct, _ = self._reconstruct_patches(
