@@ -93,6 +93,7 @@ class Pipeline:
     def __inspect_element(self, obj):
         from dasf.datasets.base import Dataset
         from dasf.transforms.base import Transform, Fit
+        from dasf.ml.inference.loader.base import BaseLoader
 
         def generate_name(class_name, func_name):
             return ("%s.%s" % (class_name, func_name))
@@ -118,6 +119,11 @@ class Pipeline:
             return (obj.fit,
                     generate_name(obj.__class__.__name__,
                                   "fit"),
+                    obj)
+        elif issubclass(obj.__class__, BaseLoader) and hasattr(obj, "load"):
+            return (obj.load,
+                    generate_name(obj.__class__.__name__,
+                                  "load"),
                     obj)
         elif issubclass(obj.__class__, Transform) and hasattr(obj, "transform"):
             return (obj.transform,
