@@ -1,0 +1,20 @@
+name: Commit Check Policy
+
+on:
+  push:
+  pull_request:
+    branches: 'main'
+
+jobs:
+  commit-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: commit-check/commit-check-action@v1
+        with:
+          message: true
+          branch: true
+          author-name: true
+          author-email: true
+          commit-signoff: true
+          dry-run: true
