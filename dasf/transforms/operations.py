@@ -7,24 +7,39 @@ try:
 except ImportError: # pragma: no cover
     pass
 
+from dasf.utils.types import is_array
 from dasf.transforms.base import Transform, ReductionTransform
+from dasf.transforms.base import Fit
 
 
-class Reshape:
-    """Reshape data with a new shape.
+class Reshape(Fit):
+    """Get a slice of a cube. An inline slice is a section over the x-axis.
 
     Parameters
     ----------
-    shape : tuple
-        The new shape of the data.
+    iline_index : int
+        The index of the inline to get.
 
     """
-    def __init__(self, shape: tuple):
+    def __init__(self, shape: tuple = None):
         self.shape = shape
 
-    def run(self, X):
-        print(X.shape)
-        return X.reshape(self.shape)
+    def fit(self, X, y=None):
+        if self.shape:
+            cube_shape = self.shape
+        elif y is not None and hasattr(y, "shape"):
+            cube_shape = y.shape
+        else:
+            raise Exception("Missing shape input.")
+
+        if is_array(X):
+            slice_array = X
+        elif is_dataframe(X):
+            slice_array = X.values
+        else:
+            raise ValueError("X is not a known datatype.")
+
+        return slice_array.reshape(cube_shape)
 
 
 class SliceArray(Transform):

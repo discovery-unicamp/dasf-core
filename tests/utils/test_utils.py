@@ -46,6 +46,10 @@ class TestArchitetures(unittest.TestCase):
         b = 42 * (1000 ** 4)
         self.assertTrue(human_readable_size(b).endswith(" TB"))
 
+    def test_human_readable_size_pbytes(self):
+        b = 42 * (1000 ** 5)
+        self.assertTrue(human_readable_size(b).endswith(" TB"))
+
     def test_human_readable_size_decimal(self):
         b = 42 * (1000 ** 3)
         decimal = 5

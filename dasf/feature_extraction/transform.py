@@ -7,9 +7,8 @@ try:
 except ImportError: # pragma: no cover
     pass
 
-from dasf.utils.types import is_array
 from dasf.utils.types import is_dataframe
-from dasf.transforms.base import Transform, Fit
+from dasf.transforms.base import Transform
 
 
 class ConcatenateToArray(Transform):
@@ -120,31 +119,6 @@ class GetSubeCubeArray:
         return X[i_start_idx:i_end_idx,
                  x_start_idx:x_end_idx,
                  t_start_idx:t_end_idx]
-
-
-class SliceDataframe(Fit):
-    """Get a slice of a cube. An inline slice is a section over the x-axis.
-
-    Parameters
-    ----------
-    iline_index : int
-        The index of the inline to get.
-
-    """
-    def __init__(self, iline_index: int):
-        self.iline_index = iline_index
-
-    def fit(self, X, y):
-        cube_shape = y.shape
-
-        if is_array(X):
-            slice_array = X
-        elif is_dataframe(X):
-            slice_array = X.values
-        else:
-            raise ValueError("X is not a known datatype.")
-
-        return slice_array.reshape(cube_shape)
 
 
 class GetSubDataframe:

@@ -5,7 +5,6 @@ from dasf.feature_extraction.transform import ConcatenateToArray  # noqa
 # from dasf.feature_extraction.transform import ConcatenateToDataframe  # noqa
 from dasf.feature_extraction.transform import SampleDataframe  # noqa
 from dasf.feature_extraction.transform import GetSubeCubeArray  # noqa
-from dasf.feature_extraction.transform import SliceDataframe  # noqa
 from dasf.feature_extraction.transform import GetSubDataframe  # noqa
 from dasf.feature_extraction.histogram import Histogram  # noqa
 
@@ -15,7 +14,6 @@ __all__ = [
     #   "ConcatenateToDataframe",
     "SampleDataframe",
     "GetSubeCubeArray",
-    "SliceDataframe",
     "GetSubDataframe",
     "Histogram",
 ]
