@@ -10,6 +10,7 @@ except ImportError: # pragma: no cover
     pass
 
 from dasf.utils.types import is_array
+from dasf.utils.types import is_dataframe
 from dasf.transforms.base import Transform, ReductionTransform
 from dasf.transforms.base import Fit
 from dasf.ml.inference.loader.base import BaseLoader
