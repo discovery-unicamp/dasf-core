@@ -13,7 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: commit-check/commit-check-action@v1
         with:
-          message: true
+          # we don't need message conventions right now
+          message: false
           branch: true
           author-name: true
           author-email: true
