@@ -548,3 +548,26 @@ def is_notebook() -> bool:
         pass
 
     return False
+
+
+def weight_gaussian(shape):
+    """
+    Produces a NDArray for a given shape with a Gaussian Distribution in all directions starting from the center
+    """
+    center = np.array(shape) / 2
+    distances = np.zeros(shape)
+    for idx in np.ndindex(shape):
+        distances[idx] = np.linalg.norm(np.array(idx) - center)
+    distances = distances / np.max(distances)
+    return np.exp(-2 * (distances**2)) / (np.sqrt(2 * np.pi) / 2)
+
+
+def weight_radial(shape):
+    """
+    Produces a NDArray for a given shape with a decreasing rate starting from the center
+    """
+    center = np.array(shape) / 2
+    distances = np.zeros(shape)
+    for idx in np.ndindex(shape):
+        distances[idx] = np.linalg.norm(np.array(idx) - center)
+    return 1 / (1 + distances)
