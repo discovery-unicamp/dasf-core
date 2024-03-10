@@ -7,11 +7,13 @@ on:
   pull_request: {}
 
 jobs:
-  test_cpu:
-    runs-on: ubuntu-latest
+  lint:
     environment: continuous_test
-    container:
-      image: docker.io/jcfaracco/dasf:cpu_ci
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10']
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -37,12 +39,23 @@ jobs:
         run: |
           # We should have at least 80% of docs covered
           interrogate -vv -i --fail-under=15
+    
+  test_cpu:
+    runs-on: ubuntu-latest
+    environment: continuous_test
+    needs: [lint]
+    container:
+      image: docker.io/jcfaracco/dasf:cpu_ci
+    steps:
+      - uses: actions/checkout@v4
       - name: Run test cases
         run: |
           pytest tests/
+
   test_gpu:
     runs-on: ubuntu-latest
     environment: continuous_test
+    needs: [lint]
     # Skip this test for PRs due to dangerous code submitted.
     if: ${{ github.event_name != 'pull_request' }}
     steps:
