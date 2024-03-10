@@ -18,7 +18,5 @@ jobs:
           branch: true
           author-name: true
           author-email: true
-          # Disable right now because it is broken.
-          # https://github.com/commit-check/commit-check/pull/141
-          commit-signoff: false
+          commit-signoff: true
           job-summary: true
