@@ -8,18 +8,39 @@ on:
 
 jobs:
   test_cpu:
-    workflows: ["Code Sanity Checks", "Commit Check Policy"]
     runs-on: ubuntu-latest
     environment: continuous_test
     container:
       image: docker.io/jcfaracco/dasf:cpu_ci
     steps:
       - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          poetry config virtualenvs.create false
+          poetry build
+          # Uninstall any stanza of dasf
+          pip uninstall dasf -y
+          # Install requirements
+          pip install -i https://test.pypi.org/simple/ XPySom-dask
+          pip install dist/*.whl
+      - name: Check imports with isort
+        run: |
+          # Show the diffs for debugging
+          isort -c --df dasf/
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 dasf/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 dasf/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Doc lint with interrogate
+        run: |
+          # We should have at least 80% of docs covered
+          interrogate -vv -i --fail-under=15
       - name: Run test cases
         run: |
           pytest tests/
   test_gpu:
-    workflows: ["Code Sanity Checks", "Commit Check Policy"]
     runs-on: ubuntu-latest
     environment: continuous_test
     # Skip this test for PRs due to dangerous code submitted.
