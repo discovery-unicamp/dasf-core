@@ -18,13 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: |
-          poetry config virtualenvs.create false
-          poetry build
-          # Uninstall any stanza of dasf
-          pip uninstall dasf -y
-          # Install requirements
-          pip install -i https://test.pypi.org/simple/ XPySom-dask
-          pip install dist/*.whl
+          pip install isort flake8 interrogate
       - name: Check imports with isort
         run: |
           # Show the diffs for debugging
