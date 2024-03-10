@@ -3,12 +3,13 @@
 
 from functools import wraps
 
-from dasf.utils.types import is_dask_array
-from dasf.utils.types import is_gpu_array
-from dasf.utils.funcs import is_gpu_supported
-from dasf.utils.funcs import is_dask_supported
-from dasf.utils.funcs import is_dask_gpu_supported
-from dasf.utils.funcs import get_dask_running_client
+from dasf.utils.funcs import (
+    get_dask_running_client,
+    is_dask_gpu_supported,
+    is_dask_supported,
+    is_gpu_supported,
+)
+from dasf.utils.types import is_dask_array, is_gpu_array
 
 
 def is_forced_local(cls):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from sklearn.preprocessing import StandardScaler as StandardScaler_CPU
 from dask_ml.preprocessing import StandardScaler as StandardScaler_MCPU
+from sklearn.preprocessing import StandardScaler as StandardScaler_CPU
 
 from dasf.utils.funcs import is_gpu_supported
 
@@ -10,9 +10,7 @@ try:
 except ImportError:
     pass
 
-from dasf.transforms.base import Fit
-from dasf.transforms.base import FitTransform
-from dasf.transforms.base import TargeteredTransform
+from dasf.transforms.base import Fit, FitTransform, TargeteredTransform
 
 
 class StandardScaler(Fit, FitTransform, TargeteredTransform):

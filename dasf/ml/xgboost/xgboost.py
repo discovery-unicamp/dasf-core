@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 
 import GPUtil
-
 import xgboost as xgb
 
-from dasf.transforms import Fit
-from dasf.transforms import Predict
-from dasf.transforms import FitPredict
-
+from dasf.transforms import Fit, FitPredict, Predict
 from dasf.utils.funcs import is_gpu_supported
 
 

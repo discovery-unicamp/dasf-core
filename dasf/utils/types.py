@@ -1,25 +1,23 @@
 """ Data types handlers. """
 #!/usr/bin/env python3
 
-import zarr
-
 from typing import Union, get_args
 
-import numpy as np
-import pandas as pd
 import dask.array as da
 import dask.dataframe as ddf
+import numpy as np
+import pandas as pd
 import xarray as xr
+import zarr
 
 try:
-    import cupy as cp
     import cudf
+    import cupy as cp
     import dask_cudf as dcudf
 except ImportError: # pragma: no cover
     pass
 
 from dasf.utils.funcs import is_gpu_supported
-
 
 ArrayCPU = Union[list, np.ndarray, zarr.core.Array]
 DataFrameCPU = Union[pd.DataFrame]

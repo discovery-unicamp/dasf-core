@@ -1,35 +1,31 @@
 #!/usr/bin/env python3
 
 import os
-
 from typing import Union
 
 try:
-    import rmm
     import cupy as cp
+    import rmm
 except ImportError: # pragma: no cover
     pass
 
-import networkx as nx
-
-import dask_memusage as dmem
-
 from pathlib import Path
 
+import dask_memusage as dmem
+import networkx as nx
 from dask.distributed import Client, LocalCluster
 from dask_cuda import LocalCUDACluster
-
-from distributed.diagnostics.plugin import WorkerPlugin
-from distributed.diagnostics.plugin import NannyPlugin
-
 from dask_jobqueue import PBSCluster
+from distributed.diagnostics.plugin import NannyPlugin, WorkerPlugin
 
-from dasf.pipeline.types import TaskExecutorType
 from dasf.pipeline.executors.base import Executor
-from dasf.utils.funcs import is_dask_gpu_supported
-from dasf.utils.funcs import get_dask_gpu_count
-from dasf.utils.funcs import get_worker_info
-from dasf.utils.funcs import is_gpu_supported
+from dasf.pipeline.types import TaskExecutorType
+from dasf.utils.funcs import (
+    get_dask_gpu_count,
+    get_worker_info,
+    is_dask_gpu_supported,
+    is_gpu_supported,
+)
 
 
 def setup_dask_protocol(protocol=None):

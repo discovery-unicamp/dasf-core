@@ -1,14 +1,15 @@
-from abc import ABC, abstractmethod
-from typing import Iterable, Union
-import ormsgpack
-from queue import SimpleQueue
+import atexit
 import fcntl
+import os
+import uuid
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
-import atexit
-import uuid
+from queue import SimpleQueue
+from typing import Iterable, Union
+
+import ormsgpack
 import portalocker
-import os
 
 
 class EventPhases:

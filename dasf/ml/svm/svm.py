@@ -13,11 +13,8 @@ try:
 except ImportError:
     pass
 
+from dasf.transforms.base import Fit, GetParams, Predict, SetParams
 from dasf.utils.funcs import is_gpu_supported
-from dasf.transforms.base import Fit
-from dasf.transforms.base import Predict
-from dasf.transforms.base import GetParams
-from dasf.transforms.base import SetParams
 
 
 class SVC(Fit, Predict, GetParams, SetParams):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import numpy as np
 import dask.array as da
+import numpy as np
 from scipy import stats
 
 try:
@@ -9,11 +9,9 @@ try:
 except ImportError: # pragma: no cover
     pass
 
-from dasf.utils.types import is_array
-from dasf.utils.types import is_dataframe
-from dasf.transforms.base import Transform, ReductionTransform
-from dasf.transforms.base import Fit
 from dasf.ml.inference.loader.base import BaseLoader
+from dasf.transforms.base import Fit, ReductionTransform, Transform
+from dasf.utils.types import is_array, is_dataframe
 
 
 class Reshape(Fit):

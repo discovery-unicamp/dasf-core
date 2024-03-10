@@ -2,9 +2,9 @@
 
 from threading import Lock
 
-from dask.core import get_dependencies, ishashable, istask
 from dask.base import is_dask_collection
-from dask.dot import to_graphviz, graphviz_to_file
+from dask.core import get_dependencies, ishashable, istask
+from dask.dot import graphviz_to_file, to_graphviz
 
 inside_with = Lock()
 

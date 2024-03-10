@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-from sklearn.cluster import KMeans as KMeans_CPU
 from dask_ml.cluster import KMeans as KMeans_MCPU
+from sklearn.cluster import KMeans as KMeans_CPU
 
 from dasf.ml.cluster.classifier import ClusterClassifier
-from dasf.utils.funcs import is_gpu_supported
 from dasf.utils.decorators import task_handler
+from dasf.utils.funcs import is_gpu_supported
 
 try:
     from cuml.cluster import KMeans as KMeans_GPU

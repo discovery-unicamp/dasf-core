@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
 import inspect
-import numpy as np
-import dask.array as da
 from uuid import uuid4
+
+import dask.array as da
+import numpy as np
 
 try:
     import cupy as cp
@@ -12,11 +13,14 @@ except ImportError: # pragma: no cover
     pass
 
 from dasf.utils.decorators import task_handler
-from dasf.utils.types import is_dask_array
-from dasf.utils.types import is_dask_dataframe
-from dasf.utils.types import is_dask_cpu_dataframe
-from dasf.utils.types import is_dask_gpu_dataframe
 from dasf.utils.funcs import block_chunk_reduce
+from dasf.utils.types import (
+    is_dask_array,
+    is_dask_cpu_dataframe,
+    is_dask_dataframe,
+    is_dask_gpu_dataframe,
+)
+
 
 class Operator:
     def get_uuid(self):

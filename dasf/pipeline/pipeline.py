@@ -2,8 +2,8 @@
 
 import inspect
 from typing import List
-import graphviz
 
+import graphviz
 import networkx as nx
 
 from dasf.utils.logging import init_logging
@@ -92,8 +92,8 @@ class Pipeline:
 
     def __inspect_element(self, obj):
         from dasf.datasets.base import Dataset
-        from dasf.transforms.base import Transform, Fit
         from dasf.ml.inference.loader.base import BaseLoader
+        from dasf.transforms.base import Fit, Transform
 
         def generate_name(class_name, func_name):
             return ("%s.%s" % (class_name, func_name))

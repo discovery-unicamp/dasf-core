@@ -1,31 +1,27 @@
 """ Generic and regular functions. """
 #!/usr/bin/env python3
 
-import os
-import time
 import inspect
+import os
 import threading
-
+import time
 from pathlib import Path
-
-import gdown
-import pandas
-import psutil
-import GPUtil
-import numpy as np
 
 import dask
 import dask.delayed as dd
+import gdown
+import GPUtil
+import numpy as np
+import pandas
+import psutil
 from dask.distributed import Client
-
-from distributed.client import wait, FIRST_COMPLETED
+from distributed.client import FIRST_COMPLETED, wait
 from distributed.utils import TimeoutError as DistributedTimeoutError
-
-from dasf.pipeline.types import TaskExecutorType
-
 from IPython import display as disp
 from IPython import get_ipython
-from ipywidgets import HBox, FloatProgress, Label
+from ipywidgets import FloatProgress, HBox, Label
+
+from dasf.pipeline.types import TaskExecutorType
 
 try:
     import cupy as cp

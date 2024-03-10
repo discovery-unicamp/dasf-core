@@ -1,11 +1,11 @@
-import time
 import atexit
+import time
 from typing import List
-from dasf.profile.profiler import EventDatabase
-from dasf.pipeline import Pipeline
-from dasf.profile.plugins import WorkerTaskPlugin, ResourceMonitor, GPUAnnotationPlugin
 
-from typing import List
+from dasf.pipeline import Pipeline
+from dasf.profile.plugins import GPUAnnotationPlugin, ResourceMonitor, WorkerTaskPlugin
+from dasf.profile.profiler import EventDatabase
+
 
 class MultiEventDatabase:
     def __init__(self, databases: List[EventDatabase]):

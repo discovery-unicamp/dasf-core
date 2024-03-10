@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-from dasf.utils.funcs import download_file
-from dasf.utils.funcs import download_file_from_gdrive
 from dasf.datasets.base import Dataset
+from dasf.utils.funcs import download_file, download_file_from_gdrive
 
 
 class DownloadWget(Dataset):

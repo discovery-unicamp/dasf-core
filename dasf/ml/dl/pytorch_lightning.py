@@ -2,19 +2,19 @@
 
 import uuid
 
+import pytorch_lightning as pl
+from dask_pytorch_ddp.results import DaskResultsHandler
 from torch.utils.data import DataLoader
 
-import pytorch_lightning as pl
-
-from dask_pytorch_ddp.results import DaskResultsHandler
-
 from dasf.ml.dl.clusters import DaskClusterEnvironment
-from dasf.utils.funcs import get_gpu_count
-from dasf.utils.funcs import get_dask_gpu_count
-from dasf.utils.funcs import get_worker_info
-from dasf.utils.funcs import get_dask_running_client
-from dasf.utils.funcs import sync_future_loop
 from dasf.transforms.base import Fit
+from dasf.utils.funcs import (
+    get_dask_gpu_count,
+    get_dask_running_client,
+    get_gpu_count,
+    get_worker_info,
+    sync_future_loop,
+)
 
 
 class TorchDataLoader(pl.LightningDataModule):

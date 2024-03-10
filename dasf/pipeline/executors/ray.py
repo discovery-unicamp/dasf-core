@@ -2,9 +2,7 @@
 
 try:
     import ray
-
-    from ray.util.dask import enable_dask_on_ray
-    from ray.util.dask import disable_dask_on_ray
+    from ray.util.dask import disable_dask_on_ray, enable_dask_on_ray
 
     USE_RAY = True
 except ImportError: # pragma: no cover

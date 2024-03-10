@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import timeit
-
 from time import perf_counter
 
 try:
@@ -15,8 +14,8 @@ from pstats import Stats
 
 try:
     from functools import partial
-    from memory_profiler import show_results, LineProfiler
-    from memory_profiler import memory_usage, choose_backend
+
+    from memory_profiler import LineProfiler, choose_backend, memory_usage, show_results
 
     USE_MEM_PROF = True
 except ImportError: # pragma: no cover

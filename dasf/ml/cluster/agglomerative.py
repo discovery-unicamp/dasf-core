@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from sklearn.cluster import (
+from sklearn.cluster import (  # noqa
     AgglomerativeClustering as AgglomerativeClustering_CPU,
-)  # noqa
+)
 
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.funcs import is_gpu_supported

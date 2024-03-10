@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from sklearn.cluster import SpectralClustering as SpectralClustering_CPU
 from dask_ml.cluster import SpectralClustering as SpectralClustering_MCPU
+from sklearn.cluster import SpectralClustering as SpectralClustering_CPU
 
 from dasf.ml.cluster.classifier import ClusterClassifier
 

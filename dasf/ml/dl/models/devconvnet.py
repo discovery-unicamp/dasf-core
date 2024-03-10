@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 
-import torch
 import numpy as np
-
-from torch.nn import MaxUnpool2d
-from torch.nn import MaxPool2d, ConvTranspose2d
-from torch.nn import Sequential, Conv2d
-from torch.nn import BatchNorm2d, ReLU
-
-from torch.nn import functional as F
-
-from torchmetrics import Metric
-
+import torch
 from pytorch_lightning import LightningModule
+from torch.nn import (
+    BatchNorm2d,
+    Conv2d,
+    ConvTranspose2d,
+    MaxPool2d,
+    MaxUnpool2d,
+    ReLU,
+    Sequential,
+)
+from torch.nn import functional as F
+from torchmetrics import Metric
 
 
 class MyAccuracy(Metric):

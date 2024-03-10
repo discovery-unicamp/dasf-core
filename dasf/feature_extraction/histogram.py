@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
-import numpy as np
 import dask.array as da
+import numpy as np
 
 try:
     import cupy as cp
 except ImportError: # pragma: no cover
     pass
 
-from dasf.transforms.base import Transform
-from dasf.transforms.base import TargeteredTransform
+from dasf.transforms.base import TargeteredTransform, Transform
 
 
 class Histogram(TargeteredTransform, Transform):

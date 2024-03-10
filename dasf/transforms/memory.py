@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-from dasf.utils.types import is_dask_array
-from dasf.utils.types import is_dask_dataframe
 from dasf.transforms.base import Transform
+from dasf.utils.types import is_dask_array, is_dask_dataframe
 
 
 class PersistDaskData(Transform):

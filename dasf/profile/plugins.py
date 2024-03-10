@@ -1,16 +1,16 @@
-import time
-import socket
 import os
+import socket
+import time
 from typing import Any
-from distributed.diagnostics.plugin import WorkerPlugin
-from dasf.profile.profiler import EventProfiler
 
-from dask.distributed.system_monitor import SystemMonitor
-from dask.distributed.compatibility import PeriodicCallback
-
-import pynvml
-from pynvml import *
 import nvtx
+import pynvml
+from dask.distributed.compatibility import PeriodicCallback
+from dask.distributed.system_monitor import SystemMonitor
+from distributed.diagnostics.plugin import WorkerPlugin
+from pynvml import *
+
+from dasf.profile.profiler import EventProfiler
 
 
 class WorkerTaskPlugin(WorkerPlugin):

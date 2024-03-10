@@ -11,6 +11,7 @@ import tqdm
 from dasf.profile.profiler import EventProfiler
 from dasf.profile.utils import MultiEventDatabase
 
+
 class TraceAnalyser:
     def __init__(self, database: MultiEventDatabase, process_trace_before: bool = True):
         self._database = database

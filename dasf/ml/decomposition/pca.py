@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 
-from sklearn.decomposition import PCA as PCA_CPU
 from dask_ml.decomposition import PCA as PCA_MCPU
+from sklearn.decomposition import PCA as PCA_CPU
 
-from dasf.utils.funcs import is_dask_supported
-from dasf.utils.funcs import is_gpu_supported
-from dasf.transforms.base import Fit, FitTransform
-from dasf.transforms.base import TargeteredTransform
+from dasf.transforms.base import Fit, FitTransform, TargeteredTransform
+from dasf.utils.funcs import is_dask_supported, is_gpu_supported
 
 try:
-    from cuml.decomposition import PCA as PCA_GPU
     from cuml.dask.decomposition import PCA as PCA_MGPU
+    from cuml.decomposition import PCA as PCA_GPU
 except ImportError:
     pass
 

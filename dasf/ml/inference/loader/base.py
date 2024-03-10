@@ -1,7 +1,7 @@
 from dask.distributed import Worker
 
-from dasf.utils.funcs import get_dask_running_client
 from dasf.utils.decorators import task_handler
+from dasf.utils.funcs import get_dask_running_client
 
 
 class BaseLoader:

@@ -3,8 +3,8 @@
 import numpy as np
 
 try:
-    import rmm
     import cupy as cp
+    import rmm
 except ImportError: # pragma: no cover
     pass
 
@@ -13,11 +13,13 @@ try:
 except ImportError: # pragma: no cover
     pass
 
-from dasf.utils.funcs import get_gpu_count
-from dasf.utils.funcs import get_backend_supported
-from dasf.utils.funcs import is_gpu_supported
-from dasf.utils.funcs import is_jax_supported
 from dasf.pipeline.types import TaskExecutorType
+from dasf.utils.funcs import (
+    get_backend_supported,
+    get_gpu_count,
+    is_gpu_supported,
+    is_jax_supported,
+)
 
 
 class LocalExecutor:

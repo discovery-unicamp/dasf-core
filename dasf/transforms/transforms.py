@@ -1,22 +1,20 @@
 #!/usr/bin/env python3
 
-import h5py
 import math
-import zarr
 
-import numpy as np
-import pandas as pd
 import dask
 import dask.dataframe as ddf
+import h5py
+import numpy as np
+import pandas as pd
+import zarr
 
-from dasf.utils.types import is_array
-from dasf.utils.types import is_dask_array
-from dasf.utils.types import is_dask_gpu_array
 from dasf.transforms.base import Transform
+from dasf.utils.types import is_array, is_dask_array, is_dask_gpu_array
 
 try:
-    import cupy as cp
     import cudf
+    import cupy as cp
 except ImportError: # pragma: no cover
     pass
 
@@ -83,8 +81,7 @@ class ArrayToZarr(Transform):
 
     def _lazy_transform_generic(self, X, **kwargs):
         # XXX: Avoid circular dependency
-        from dasf.datasets.base import DatasetArray
-        from dasf.datasets.base import DatasetZarr
+        from dasf.datasets.base import DatasetArray, DatasetZarr
 
         name = None
 
@@ -107,8 +104,7 @@ class ArrayToZarr(Transform):
 
     def _transform_generic(self, X, **kwargs):
         # XXX: Avoid circular dependency
-        from dasf.datasets.base import DatasetArray
-        from dasf.datasets.base import DatasetZarr
+        from dasf.datasets.base import DatasetArray, DatasetZarr
 
         name = None
         url = None
@@ -152,8 +148,7 @@ class ArrayToZarr(Transform):
 class ArrayToHDF5(Transform):
     def __init__(self, dataset_path, chunks=None, save=True, filename=None):
         # Avoid circular dependency
-        from dasf.datasets.base import DatasetArray
-        from dasf.datasets.base import DatasetHDF5
+        from dasf.datasets.base import DatasetArray, DatasetHDF5
 
         self.dataset_path = dataset_path
         self.chunks = chunks
@@ -203,8 +198,7 @@ class ArrayToHDF5(Transform):
 
     def _lazy_transform_generic(self, X, **kwargs):
         # XXX: Avoid circular dependency
-        from dasf.datasets.base import DatasetArray
-        from dasf.datasets.base import DatasetHDF5
+        from dasf.datasets.base import DatasetArray, DatasetHDF5
 
         name = None
         chunks = None
@@ -229,8 +223,7 @@ class ArrayToHDF5(Transform):
 
     def _transform_generic(self, X, **kwargs):
         # XXX: Avoid circular dependency
-        from dasf.datasets.base import DatasetArray
-        from dasf.datasets.base import DatasetHDF5
+        from dasf.datasets.base import DatasetArray, DatasetHDF5
 
         name = None
         url = None

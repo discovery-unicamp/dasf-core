@@ -1,32 +1,31 @@
 #!/usr/bin/env python3
 
-import os
 import json
-import zarr
-import h5py
-import dask
+import os
+from numbers import Number
 
+import dask
+import dask.array as da
+import dask.dataframe as ddf
+import h5py
 import numpy as np
 import numpy.lib.format
 import pandas as pd
-import dask.array as da
-import dask.dataframe as ddf
 import xarray as xr
-
-from numbers import Number
+import zarr
 
 try:
-    import cupy as cp
     import cudf
-    import dask_cudf as dcudf
+    import cupy as cp
+
     # This is just to enable Xarray Cupy capabilities
-    import cupy_xarray as cx   # noqa
+    import cupy_xarray as cx  # noqa
+    import dask_cudf as dcudf
 except ImportError: # pragma: no cover
     pass
 
 try:
     import numcodecs
-
     from kvikio.nvcomp_codec import NvCompBatchCodec
     from kvikio.zarr import GDSStore
 except ImportError: # pragma: no cover
@@ -34,15 +33,16 @@ except ImportError: # pragma: no cover
 
 from pathlib import Path
 
-from dasf.utils.funcs import human_readable_size
-from dasf.utils.funcs import is_kvikio_supported
-from dasf.utils.funcs import is_gds_supported
-from dasf.utils.funcs import is_kvikio_compat_mode
-from dasf.utils.funcs import is_nvcomp_codec_supported
-from dasf.utils.decorators import task_handler
-from dasf.utils.types import is_array
-from dasf.utils.types import is_dask_array
 from dasf.transforms.base import TargeteredTransform
+from dasf.utils.decorators import task_handler
+from dasf.utils.funcs import (
+    human_readable_size,
+    is_gds_supported,
+    is_kvikio_compat_mode,
+    is_kvikio_supported,
+    is_nvcomp_codec_supported,
+)
+from dasf.utils.types import is_array, is_dask_array
 
 
 class Dataset(TargeteredTransform):

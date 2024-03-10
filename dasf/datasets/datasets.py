@@ -1,38 +1,35 @@
 #!/usr/bin/env python3
 
-from sklearn.datasets import make_blobs as make_blobs_CPU
 from dask_ml.datasets import make_blobs as make_blobs_MCPU
+from sklearn.datasets import make_blobs as make_blobs_CPU
 
 try:
     import cupy as cp
-
-    from cuml.datasets import make_blobs as make_blobs_GPU
     from cuml.dask.datasets import make_blobs as make_blobs_MGPU
+    from cuml.datasets import make_blobs as make_blobs_GPU
 except ImportError: # pragma: no cover
     pass
 
-from sklearn.datasets import make_classification as make_classification_CPU
 from dask_ml.datasets import make_classification as make_classification_MCPU
+from sklearn.datasets import make_classification as make_classification_CPU
 
 try:
-    from cuml.datasets import make_classification as make_classification_GPU
     from cuml.dask.datasets import make_classification as make_classification_MGPU
+    from cuml.datasets import make_classification as make_classification_GPU
 except ImportError: # pragma: no cover
     pass
 
-from sklearn.datasets import make_regression as make_regression_CPU
 from dask_ml.datasets import make_regression as make_regression_MCPU
+from sklearn.datasets import make_regression as make_regression_CPU
 
 try:
-    from cuml.datasets import make_regression as make_regression_GPU
     from cuml.dask.datasets import make_regression as make_regression_MGPU
+    from cuml.datasets import make_regression as make_regression_GPU
 except ImportError: # pragma: no cover
     pass
 
+from dasf.utils.funcs import is_dask_gpu_supported, is_dask_supported, is_gpu_supported
 from dasf.utils.types import is_cpu_array
-from dasf.utils.funcs import is_gpu_supported
-from dasf.utils.funcs import is_dask_supported
-from dasf.utils.funcs import is_dask_gpu_supported
 
 
 class make_blobs:

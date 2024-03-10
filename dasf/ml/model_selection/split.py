@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from sklearn.model_selection import train_test_split as train_test_split_cpu
 from dask_ml.model_selection import train_test_split as train_test_split_mcpu
+from sklearn.model_selection import train_test_split as train_test_split_cpu
 
 from dasf.transforms import TargeteredTransform, Transform
 

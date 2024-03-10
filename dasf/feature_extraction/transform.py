@@ -7,8 +7,8 @@ try:
 except ImportError: # pragma: no cover
     pass
 
-from dasf.utils.types import is_dataframe
 from dasf.transforms.base import Transform
+from dasf.utils.types import is_dataframe
 
 
 class ConcatenateToArray(Transform):

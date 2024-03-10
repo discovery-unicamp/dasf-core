@@ -3,9 +3,8 @@
 from IPython.core.display import HTML as iHTML
 from IPython.core.display import display as idisplay
 
-from dasf.utils.types import is_dask_array
-from dasf.utils.types import is_dask_dataframe
 from dasf.utils.funcs import is_notebook
+from dasf.utils.types import is_dask_array, is_dask_dataframe
 
 
 class Debug:

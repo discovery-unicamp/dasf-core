@@ -2,7 +2,6 @@
 #!/usr/bin/env python3
 
 import sys
-
 from logging import INFO, Formatter, Logger, StreamHandler, getLogger
 
 
