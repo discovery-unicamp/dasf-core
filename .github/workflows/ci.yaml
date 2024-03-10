@@ -23,6 +23,10 @@ jobs:
           # Install requirements
           pip install -i https://test.pypi.org/simple/ XPySom-dask
           pip install dist/*.whl
+      - name: Check imports with isort
+        run: |
+          # Show the diffs for debugging
+          isort -c --df dasf/
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
