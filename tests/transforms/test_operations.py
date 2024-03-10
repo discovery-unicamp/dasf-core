@@ -121,7 +121,7 @@ class TestReshape(unittest.TestCase):
         self.assertEqual(y.shape, (1000, ))
 
     def test_reshape_array_list(self):
-        data = cp.random.random((2, 5))
+        data = np.random.random((2, 5))
         copy = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
         reshape = Reshape()
@@ -309,7 +309,7 @@ class TestSliceArray(unittest.TestCase):
         self.assertEqual(y.shape, (10, 10, 10))
 
     def test_slice_array_unknown_dim(self):
-        data = cp.random.random((2, 2, 2, 2))
+        data = np.random.random((2, 2, 2, 2))
 
         slice_t = SliceArray(output_size=(1, 1, 1, 1))
 
