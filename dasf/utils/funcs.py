@@ -65,7 +65,12 @@ def get_worker_info(client) -> list:
     Returns a list of workers (sorted), and the DNS name for the master host
     The master is the 0th worker's host
     """
-    workers = client.scheduler_info()["workers"]
+    info = client.scheduler_info()
+
+    if "workers" not in info:
+        return []
+
+    workers = info["workers"]
     worker_keys = sorted(workers.keys())
     workers_by_host = {}
     for key in worker_keys:

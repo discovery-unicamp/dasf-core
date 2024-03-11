@@ -69,6 +69,9 @@ class SliceArrayByPercent(Transform):
         if self.x > 1 or self.y > 1 or self.z > 1:
             raise Exception("Percentages cannot be higher than 100% (1.0)")
 
+        if self.x <= 0 or self.y <= 0 or self.z <= 0:
+            raise Exception("Percentages cannot be negative or 0")
+
         if X.ndim == 1:
             return X[0 : int(self.x * X.shape[0])]
         elif X.ndim == 2:

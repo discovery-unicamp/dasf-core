@@ -111,8 +111,8 @@ class DaskPipelineExecutor(Executor):
                     rmm.reinitialize(managed_memory=True)
                     cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
                 else:
-                    raise Exception(f"'{gpu_allocator}' GPU Memory allocator is not "
-                                    "known")
+                    raise ValueError(f"'{gpu_allocator}' GPU Memory allocator is not "
+                                     "known")
             else:
                 self.dtype = TaskExecutorType.multi_cpu
 
@@ -141,7 +141,7 @@ class DaskPipelineExecutor(Executor):
 
     @property
     def ngpus(self):
-        return len(get_dask_gpu_count())
+        return get_dask_gpu_count()
 
     @property
     def is_connected(self):
@@ -180,6 +180,9 @@ class DaskPipelineExecutor(Executor):
                 self.client.retire_workers(worker_names, close_workers=True)
         else:
             self.client.shutdown()
+
+    def close(self):
+        self.client.close()
 
 
 class DaskTasksPipelineExecutor(DaskPipelineExecutor):
@@ -292,6 +295,9 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
                 self.client.retire_workers(worker_names, close_workers=True)
         else:
             self.client.shutdown()
+
+    def close(self):
+        self.client.close()
 
 
 class DaskPBSPipelineExecutor(Executor):
