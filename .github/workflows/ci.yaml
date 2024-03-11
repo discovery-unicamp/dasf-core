@@ -32,7 +32,7 @@ jobs:
       - name: Doc lint with interrogate
         run: |
           # We should have at least 80% of docs covered
-          interrogate -vv -i --fail-under=15
+          interrogate -vv -i --fail-under=15 --badge-format svg -g .
     
   test_cpu:
     runs-on: ubuntu-latest
