@@ -20,12 +20,12 @@ class Debug:
 
     """
     def display(self, X):
-        if hasattr(X, "shape"):
-            print("Datashape is:", X.shape)
-
         if (is_dask_array(X) or is_dask_dataframe(X)) and is_notebook():
             idisplay(iHTML(X._repr_html_()))
         else:
+            if hasattr(X, "shape"):
+                print("Datashape is:", X.shape)
+
             print("Datatype is:", type(X))
             print("Data content is:", X)
 
