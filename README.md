@@ -3,6 +3,7 @@
 [![Continuous Test](https://github.com/discovery-unicamp/dasf-core/actions/workflows/ci.yaml/badge.svg)](https://github.com/discovery-unicamp/dasf-core/actions/workflows/ci.yaml)
 [![Commit Check Policy](https://github.com/discovery-unicamp/dasf-core/actions/workflows/commit-check.yaml/badge.svg)](https://github.com/discovery-unicamp/dasf-core/actions/workflows/commit-check.yaml)
 ![Interrogate](https://raw.githubusercontent.com/discovery-unicamp/dasf-core/badges/badges/interrogate_badge.svg)
+![Coverage](https://raw.githubusercontent.com/discovery-unicamp/dasf-core/badges/badges/coverage.svg)
 
 DASF is a generic framework specialized in acceleration and scaling common 
 techniques for Machine Learning. DASF uses most methods and function from 
