@@ -19,18 +19,20 @@ jobs:
       - name: Install dependencies
         run: |
           pip install isort flake8 interrogate
-          echo "## CI/CD Summary :rocket:\n--------------\n\n" >> $GITHUB_STEP_SUMMARY
+          echo "## CI/CD Summary :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "-------------------------" >> $GITHUB_STEP_SUMMARY
       - name: Check imports with isort
         run: |
           # Show the diffs for debugging
           isort -c dasf/
           if [[ $? -ne 0 ]] ; then
-              echo "* isort results:\n\n```diff\n" >> $GITHUB_STEP_SUMMARY
+              echo "* **isort results:**" >> $GITHUB_STEP_SUMMARY
+              echo "```diff" >> $GITHUB_STEP_SUMMARY
               isort -c --df dasf/ >> $GITHUB_STEP_SUMMARY
-              echo "\n```\n" >> $GITHUB_STEP_SUMMARY
+              echo "```" >> $GITHUB_STEP_SUMMARY
               exit 1
           else
-              echo "* isort results: :white_check_mark:\n" >> $GITHUB_STEP_SUMMARY
+              echo "* **isort results:** :white_check_mark:" >> $GITHUB_STEP_SUMMARY
               exit 0
           fi
       - name: Lint with flake8
@@ -39,6 +41,16 @@ jobs:
           flake8 dasf/ --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 dasf/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          if [[ $? -ne 0 ]] ; then
+              echo "* **flake8 results:**" >> $GITHUB_STEP_SUMMARY
+              echo "```python" >> $GITHUB_STEP_SUMMARY
+              flake8 dasf/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics >> $GITHUB_STEP_SUMMARY
+              echo "```" >> $GITHUB_STEP_SUMMARY
+              exit 1
+          else
+              echo "* **flake8 results:** :white_check_mark:" >> $GITHUB_STEP_SUMMARY
+              exit 0
+          fi
       - name: Doc lint with interrogate
         run: |
           # We should have at least 80% of docs covered

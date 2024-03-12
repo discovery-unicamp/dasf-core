@@ -20,6 +20,7 @@ class Debug:
 
     """
     def display(self, X):
+        print(is_notebook())
         if (is_dask_array(X) or is_dask_dataframe(X)) and is_notebook():
             idisplay(iHTML(X._repr_html_()))
         else:
