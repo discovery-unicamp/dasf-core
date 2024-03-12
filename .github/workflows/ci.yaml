@@ -19,10 +19,20 @@ jobs:
       - name: Install dependencies
         run: |
           pip install isort flake8 interrogate
+          echo "## CI/CD Summary :rocket:\n--------------\n\n" >> $GITHUB_STEP_SUMMARY
       - name: Check imports with isort
         run: |
           # Show the diffs for debugging
-          isort -c --df dasf/
+          isort -c dasf/
+          if [[ $? -ne 0 ]] ; then
+              echo "* isort results:\n\n```diff\n" >> $GITHUB_STEP_SUMMARY
+              isort -c --df dasf/ >> $GITHUB_STEP_SUMMARY
+              echo "\n```\n" >> $GITHUB_STEP_SUMMARY
+              exit 1
+          else
+              echo "* isort results: :white_check_mark:\n" >> $GITHUB_STEP_SUMMARY
+              exit 0
+          fi
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
@@ -71,4 +81,4 @@ jobs:
           ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker pull jcfaracco/dasf:gpu\""
       - name: Run test cases remotely
         run: |
-          ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --rm --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest tests/ && cd -'\""
+          ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --rm --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ tests/ && cd -'\""
