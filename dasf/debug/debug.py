@@ -49,7 +49,7 @@ class VisualizeDaskData:
 
     def display(self, X):
         if not is_dask_array(X) and not is_dask_dataframe(X):
-            self.logger.warning("This is not a Dask element.")
+            print("WARNING: This is not a Dask element.")
             return X
 
         if self.filename is not None:
