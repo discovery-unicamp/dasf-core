@@ -94,4 +94,4 @@ jobs:
           ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker pull jcfaracco/dasf:gpu\""
       - name: Run test cases remotely
         run: |
-          ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --rm --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ tests/ && cd -'\""
+          ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --rm --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ tests/ && cd -'\""
