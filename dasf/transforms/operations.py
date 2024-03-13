@@ -96,6 +96,8 @@ class SliceArrayByPercentile(Transform):
         return xp.array([xp.percentile(block.flatten(), self.p)])
 
     def __internal_aggregate_array_positive(self, block, axis=None, keepdims=False, xp=np):
+        block = xp.array(block)
+
         return xp.array([xp.max(block)])
 
     def __internal_chunk_array_negative(self, block, axis=None, keepdims=False, xp=np):
@@ -105,6 +107,8 @@ class SliceArrayByPercentile(Transform):
         return xp.array([-xp.percentile(block.flatten(), self.p)])
 
     def __internal_aggregate_array_negative(self, block, axis=None, keepdims=False, xp=np):
+        block = xp.array(block)
+
         return xp.array([xp.min(block)])
 
     def _lazy_transform_cpu(self, X):
@@ -116,8 +120,8 @@ class SliceArrayByPercentile(Transform):
                                       func_aggregate=self.__internal_aggregate_array_negative,
                                       output_size=[0])
 
-        p = positive._lazy_transform_cpu(X, axis=[0])
-        n = negative._lazy_transform_cpu(X, axis=[0])
+        p = positive._lazy_transform_cpu(X, concatenate=False)
+        n = negative._lazy_transform_cpu(X, concatenate=False)
 
         # Unfortunately, we need to compute first.
         pos_cutoff = p.compute()[0]
@@ -137,8 +141,8 @@ class SliceArrayByPercentile(Transform):
                                       func_aggregate=self.__internal_aggregate_array_negative,
                                       output_size=[0])
 
-        p = positive._lazy_transform_gpu(X)
-        n = negative._lazy_transform_gpu(X)
+        p = positive._lazy_transform_gpu(X, concatenate=False)
+        n = negative._lazy_transform_gpu(X, concatenate=False)
 
         # Unfortunately, we need to compute first.
         pos_cutoff = p.compute()[0]

@@ -24,6 +24,7 @@ from dasf.utils.funcs import is_gpu_supported
 from dasf.transforms.operations import Reshape
 from dasf.transforms.operations import SliceArray
 from dasf.transforms.operations import SliceArrayByPercent
+from dasf.transforms.operations import SliceArrayByPercentile
 
 
 class TestReshape(unittest.TestCase):
@@ -495,3 +496,53 @@ class TestSliceArrayByPercent(unittest.TestCase):
             y = slice_t.transform(data)
 
         self.assertTrue('Percentages cannot be negative or 0' in str(context.exception))
+
+
+class TestSliceArrayByPercentile(unittest.TestCase):
+    def test_slice_array_by_percentile_cpu(self):
+        data = np.arange(40 * 40 * 40).reshape((40, 40, 40))
+
+        slice_p = SliceArrayByPercentile(percentile=90.0)
+
+        y = slice_p._transform_cpu(X=data)
+
+        self.assertTrue(is_cpu_array(y))
+        self.assertEqual(y.shape, (40, 40, 40))
+        self.assertGreater(len(np.where(y == 57599.1)), 0)
+
+    def test_slice_array_by_percentile_mcpu(self):
+        data = da.from_array(np.arange(40 * 40 * 40).reshape((40, 40, 40)), chunks=(5, 5, 5))
+
+        slice_p = SliceArrayByPercentile(percentile=90.0)
+
+        y = slice_p._lazy_transform_cpu(X=data)
+
+        self.assertTrue(is_dask_cpu_array(y))
+        self.assertEqual(y.shape, (40, 40, 40))
+        self.assertGreater(len(np.where(y.compute() == 63916.6)), 0)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_slice_array_by_percentile_gpu(self):
+        data = cp.arange(40 * 40 * 40).reshape((40, 40, 40))
+
+        slice_p = SliceArrayByPercentile(percentile=90.0)
+
+        y = slice_p._transform_gpu(X=data)
+
+        self.assertTrue(is_gpu_array(y))
+        self.assertEqual(y.shape, (40, 40, 40))
+        self.assertGreater(len(cp.where(y == 57599.1)), 0)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_slice_array_by_percentile_mcpu(self):
+        data = da.from_array(cp.arange(40 * 40 * 40).reshape((40, 40, 40)), chunks=(5, 5, 5))
+
+        slice_p = SliceArrayByPercentile(percentile=90.0)
+
+        y = slice_p._lazy_transform_gpu(X=data)
+
+        self.assertTrue(is_dask_gpu_array(y))
+        self.assertEqual(y.shape, (40, 40, 40))
+        self.assertGreater(len(cp.where(y.compute() == 63916.6)), 0)
