@@ -235,8 +235,7 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
             self.dtype = TaskExecutorType.single_cpu
 
         # Share dtype attribute to client
-        if not hasattr(self.client, "dtype"):
-            setattr(self.client, "dtype", self.dtype)
+        setattr(self.client, "dtype", self.dtype)
 
         self._tasks_map = dict()
 
@@ -245,6 +244,7 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
 
         # TODO: we need to consider other branches for complex pipelines
         dag_paths = nx.all_simple_paths(pipeline._dag, nodes[0], nodes[-1])
+
         all_paths = []
         for path in dag_paths:
             all_paths.append(path)

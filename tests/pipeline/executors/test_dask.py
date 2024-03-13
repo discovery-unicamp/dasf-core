@@ -4,13 +4,15 @@ import os
 import tempfile
 import unittest
 import urllib.parse
+import networkx as nx
 
-from mock import patch
+from mock import patch, Mock
 
 from dask.distributed import Client, LocalCluster
 
 from dasf.utils.funcs import is_gpu_supported
 from dasf.pipeline.executors import DaskPipelineExecutor
+from dasf.pipeline.executors import DaskTasksPipelineExecutor
 from dasf.pipeline.executors.dask import setup_dask_protocol
 
 
@@ -144,6 +146,7 @@ class TestDaskExecutor(unittest.TestCase):
             dask.shutdown(gracefully=True)
             dask.close()
 
+            self.assertTrue('\'foo\' GPU Memory allocator is not known' in str(context.exception))
             self.assertFalse(dask.is_connected)
 
     def test_dask_executor_scheduler_file(self):
@@ -168,6 +171,79 @@ class TestDaskExecutor(unittest.TestCase):
             dask.close()
 
             self.assertFalse(dask.is_connected)
+
+    def tearDown(self):
+        if os.path.isfile(self.scheduler_file) or os.path.islink(self.scheduler_file):
+            os.remove(self.scheduler_file)
+
+
+class TestDaskTasksPipelineExecutor(unittest.TestCase):
+    def setUp(self):
+        self.scheduler_file = os.path.abspath(f"{tempfile.gettempdir()}/scheduler.json")
+
+    def test_dask_tasks_executor_remote(self):
+
+        with LocalCluster() as cluster:
+            conn = urllib.parse.urlsplit(cluster.scheduler.address)
+
+            dask = DaskTasksPipelineExecutor(address=conn.hostname, port=conn.port, use_gpu=False)
+
+            # Compute everything to gracefully shutdown
+            dask.shutdown(gracefully=True)
+            dask.close()
+
+            self.assertFalse(dask.is_connected)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_dask_tasks_executor_local_gpu(self):
+        with patch.dict(os.environ, {'CUDA_VISIBLE_DEVICES': '0'}):
+            dask = DaskTasksPipelineExecutor(local=True, use_gpu=True)
+
+            # Compute everything to gracefully shutdown
+            dask.shutdown(gracefully=False)
+            dask.close()
+
+            self.assertFalse(dask.is_connected)
+
+    def test_dask_tasks_executor_local_execution(self):
+
+        dask = DaskTasksPipelineExecutor(local=True, use_gpu=False)
+
+        def func1():
+            return 2
+
+        def func2(X):
+            return X + 4
+
+        def func3(X):
+            return X - 4
+
+        def func4(X, Y):
+            return X + Y
+
+        pipeline = Mock()
+        pipeline._dag = nx.DiGraph([(hash(func1), hash(func2)),
+                                    (hash(func1), hash(func3)),
+                                    (hash(func2), hash(func4)),
+                                    (hash(func3), hash(func4))])
+
+        dask.pre_run(pipeline)
+
+        X_1 = dask.execute(func1)
+        X_2 = dask.execute(func2, X_1)
+        X_3 = dask.execute(func3, X_1)
+        X_4 = dask.execute(func4, X=X_2, Y=X_3)
+
+        self.assertEqual(X_4.result(), 4)
+
+        dask.post_run(pipeline)
+
+        # Compute everything to gracefully shutdown
+        dask.shutdown(gracefully=True)
+        dask.close()
+
+        self.assertFalse(dask.is_connected)
 
     def tearDown(self):
         if os.path.isfile(self.scheduler_file) or os.path.islink(self.scheduler_file):

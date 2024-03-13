@@ -8,6 +8,7 @@ try:
 except ImportError:
     pass
 
+from mock import patch, Mock
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import AgglomerativeClustering
@@ -64,5 +65,29 @@ class TestAgglomerativeClustering(unittest.TestCase):
         self.assertTrue(is_gpu_array(y))
 
         y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
+
+        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+
+    @patch('dasf.ml.cluster.agglomerative.is_gpu_supported', Mock(return_value=False))
+    def test_agglomerative_cpu_labels(self):
+        sc = AgglomerativeClustering(n_clusters=self.centers)
+
+        y = sc._fit_cpu(self.X)
+
+        y1, y2 = self.__match_randomly_labels_created(y.labels_, self.y)
+
+        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_agglomerative_gpu_labels(self):
+        # For GPUs we need to specify which data we are handling with `output_type`.
+        sc = AgglomerativeClustering(n_clusters=self.centers, output_type='cupy')
+
+        cp_X = cp.asarray(self.X)
+
+        y = sc._fit_gpu(cp_X)
+
+        y1, y2 = self.__match_randomly_labels_created(y.labels_.get(), self.y)
 
         self.assertTrue(np.array_equal(y1, y2, equal_nan=True))

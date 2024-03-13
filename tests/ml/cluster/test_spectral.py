@@ -49,8 +49,7 @@ class TestSpectralClustering(unittest.TestCase):
 
     def test_spectral_mcpu(self):
         sc = SpectralClustering(n_clusters=self.centers,
-                                random_state=self.random_state,
-                                n_components=250)
+                                random_state=self.random_state)
 
         da_X = da.from_array(self.X)
 
@@ -65,3 +64,14 @@ class TestSpectralClustering(unittest.TestCase):
 
         # Check if the accurary is higher than 99%.
         self.assertTrue(len(np.setdiff1d(y1, y2)) <= int(self.size*0.01))
+
+    def test_spectral_cpu_labels(self):
+        sc = SpectralClustering(n_clusters=2,
+                                random_state=self.random_state,
+                                assign_labels='discretize')
+
+        y = sc._fit_cpu(self.X)
+
+        y1, y2 = self.__match_randomly_labels_created(y.labels_, self.y)
+
+        self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
