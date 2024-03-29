@@ -323,139 +323,151 @@ class TestSliceArray(unittest.TestCase):
 
 class TestSliceArrayByPercent(unittest.TestCase):
     def test_slice_array_cpu_1d(self):
-        data = np.random.random((40,))
+        data = np.random.random((100,))
 
         slice_t = SliceArrayByPercent(x=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_cpu_array(y))
-        self.assertEqual(y.shape, (10,))
+        self.assertEqual(y.shape, (25,))
 
     def test_slice_dask_array_cpu_1d(self):
-        data = da.random.random((40,), chunks=(5))
+        data = da.random.random((100,), chunks=(10))
 
         slice_t = SliceArrayByPercent(x=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_dask_cpu_array(y))
-        self.assertEqual(y.shape, (10,))
+        self.assertEqual(y.shape, (25,))
+
+        res = y.compute()
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_slice_array_gpu_1d(self):
-        data = cp.random.random((40,))
+        data = cp.random.random((100,))
 
         slice_t = SliceArrayByPercent(x=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_gpu_array(y))
-        self.assertEqual(y.shape, (10,))
+        self.assertEqual(y.shape, (25,))
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_slice_dask_array_gpu_1d(self):
-        data = cp.random.random((40,))
-        data = da.from_array(data, chunks=(5))
+        data = cp.random.random((100,))
+        data = da.from_array(data, chunks=(10))
 
         slice_t = SliceArrayByPercent(x=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_dask_gpu_array(y))
-        self.assertEqual(y.shape, (10,))
+        self.assertEqual(y.shape, (25,))
+
+        res = y.compute()
 
     def test_slice_array_cpu_2d(self):
-        data = np.random.random((40, 40))
+        data = np.random.random((100, 100))
 
         slice_t = SliceArrayByPercent(x=25.0, y=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_cpu_array(y))
-        self.assertEqual(y.shape, (10, 10))
+        self.assertEqual(y.shape, (25, 25))
 
     def test_slice_dask_array_cpu_2d(self):
-        data = da.random.random((40, 40), chunks=(5, 5))
+        data = da.random.random((100, 100), chunks=(10, 10))
 
         slice_t = SliceArrayByPercent(x=25.0, y=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_dask_cpu_array(y))
-        self.assertEqual(y.shape, (10, 10))
+        self.assertEqual(y.shape, (25, 25))
+
+        res = y.compute()
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_slice_array_gpu_2d(self):
-        data = cp.random.random((40, 40))
+        data = cp.random.random((100, 100))
 
         slice_t = SliceArrayByPercent(x=25.0, y=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_gpu_array(y))
-        self.assertEqual(y.shape, (10, 10))
+        self.assertEqual(y.shape, (25, 25))
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_slice_dask_array_gpu_2d(self):
-        data = cp.random.random((40, 40))
-        data = da.from_array(data, chunks=(5, 5))
+        data = cp.random.random((100, 100))
+        data = da.from_array(data, chunks=(10, 10))
 
         slice_t = SliceArrayByPercent(x=25.0, y=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_dask_gpu_array(y))
-        self.assertEqual(y.shape, (10, 10))
+        self.assertEqual(y.shape, (25, 25))
+
+        res = y.compute()
 
     def test_slice_array_cpu_3d(self):
-        data = np.random.random((40, 40, 40))
+        data = np.random.random((100, 100, 100))
 
         slice_t = SliceArrayByPercent(x=25.0, y=25.0, z=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_cpu_array(y))
-        self.assertEqual(y.shape, (10, 10, 10))
+        self.assertEqual(y.shape, (25, 25, 25))
 
     def test_slice_dask_array_cpu_3d(self):
-        data = da.random.random((40, 40, 40), chunks=(5, 5, 5))
+        data = da.random.random((100, 100, 100), chunks=(10, 10, 10))
 
         slice_t = SliceArrayByPercent(x=25.0, y=25.0, z=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_dask_cpu_array(y))
-        self.assertEqual(y.shape, (10, 10, 10))
+        self.assertEqual(y.shape, (25, 25, 25))
+
+        res = y.compute()
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_slice_array_gpu_3d(self):
-        data = cp.random.random((40, 40, 40))
+        data = cp.random.random((100, 100, 100))
 
         slice_t = SliceArrayByPercent(x=25.0, y=25.0, z=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_gpu_array(y))
-        self.assertEqual(y.shape, (10, 10, 10))
+        self.assertEqual(y.shape, (25, 25, 25))
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_slice_dask_array_gpu_3d(self):
-        data = cp.random.random((40, 40, 40))
-        data = da.from_array(data, chunks=(5, 5, 5))
+        data = cp.random.random((100, 100, 100))
+        data = da.from_array(data, chunks=(10, 10, 10))
 
         slice_t = SliceArrayByPercent(x=25.0, y=25.0, z=25.0)
 
         y = slice_t.transform(data)
 
         self.assertTrue(is_dask_gpu_array(y))
-        self.assertEqual(y.shape, (10, 10, 10))
+        self.assertEqual(y.shape, (25, 25, 25))
+
+        res = y.compute()
 
     def test_slice_array_unknown_dim(self):
         data = np.random.random((2, 2, 2, 2))
