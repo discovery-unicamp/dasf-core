@@ -370,8 +370,7 @@ class DatasetArray(Dataset):
 
         """
         self._metadata = self._load_meta()
-        self._data = self._lazy_load(cp)
-        self.__copy_attrs_from_data()
+        self.from_array(self._lazy_load(cp))
         return self
 
     def _lazy_load_cpu(self):
@@ -379,8 +378,7 @@ class DatasetArray(Dataset):
 
         """
         self._metadata = self._load_meta()
-        self._data = self._lazy_load(np)
-        self.__copy_attrs_from_data()
+        self.from_array(self._lazy_load(np))
         return self
 
     def _load_gpu(self):
@@ -388,8 +386,7 @@ class DatasetArray(Dataset):
 
         """
         self._metadata = self._load_meta()
-        self._data = self._load(cp)
-        self.__copy_attrs_from_data()
+        self.from_array(self._load(cp))
         return self
 
     def _load_cpu(self):
@@ -397,9 +394,12 @@ class DatasetArray(Dataset):
 
         """
         self._metadata = self._load_meta()
-        self._data = self._load(np)
-        self.__copy_attrs_from_data()
+        self.from_array(self._load(np))
         return self
+
+    def from_array(self, array):
+        self._data = array
+        self.__copy_attrs_from_data()
 
     @task_handler
     def load(self):
@@ -418,6 +418,9 @@ class DatasetArray(Dataset):
             A tuple with the shape.
 
         """
+        if self._data:
+            return self._data.shape
+
         return self.__npy_header()[0]
 
     def inspect_metadata(self) -> dict:
