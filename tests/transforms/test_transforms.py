@@ -220,8 +220,6 @@ class TestZarrToArray(unittest.TestCase):
 
         T_1 = T.transform(dataset)
 
-        print(type(T_1))
-
         self.assertTrue(is_cpu_array(T_1))
 
     def test_zarr_to_array_mcpu(self):
@@ -231,11 +229,23 @@ class TestZarrToArray(unittest.TestCase):
 
         T = ZarrToArray()
 
-        print(dataset._data)
-
         T_1 = T.transform(dataset)
 
         self.assertTrue(is_dask_cpu_array(T_1))
+
+    def test_zarr_to_array_wrong_input(self):
+        with self.assertRaises(Exception) as context:
+            dataset = DatasetArray(download=False, name="Test Zarr as an Array")
+
+            np.save(self.array, np.random.random(10))
+
+            dataset.from_array(np.load(self.array))
+
+            T = ZarrToArray()
+
+            T_1 = T.transform(dataset)
+
+        self.assertTrue('Input is not a Zarr dataset' in str(context.exception))
 
     def tearDown(self):
         self.remove(self.array)
