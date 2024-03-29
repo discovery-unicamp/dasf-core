@@ -270,11 +270,32 @@ def set_executor_default():
     return TaskExecutorType.single_cpu
 
 
+def set_executor_cpu():
+    """
+    Return executor as a CPU instance.
+    """
+    return set_executor_default()
+
+
 def set_executor_gpu():
     """
     Return executor as a GPU instance.
     """
     return TaskExecutorType.single_gpu
+
+
+def set_executor_multi_cpu():
+    """
+    Return executor as a Multi CPU instance.
+    """
+    return TaskExecutorType.multi_cpu
+
+
+def set_executor_multi_gpu():
+    """
+    Return executor as a GPU instance.
+    """
+    return TaskExecutorType.multi_gpu
 
 
 def is_executor_single(dtype) -> bool:
@@ -303,6 +324,16 @@ def is_executor_gpu(dtype) -> bool:
     Return if the executor is a GPU instance.
     """
     return dtype in (TaskExecutorType.single_gpu, TaskExecutorType.multi_gpu)
+
+
+def executor_to_string(dtype) -> str:
+    """
+    Return the executor type as a string.
+    """
+    prefix = 'Multi ' if is_executor_cluster(dtype) else ''
+    suffix = 'GPU' if is_executor_gpu(dtype) else 'CPU'
+
+    return prefix + suffix
 
 
 def is_gpu_supported() -> bool:
@@ -445,6 +476,17 @@ def get_dask_gpu_count(fetch=True) -> int:
     return ret
 
 
+def get_dask_gpu_names(fetch=True) -> list:
+    """
+    Get all GPU names of each worker.
+    """
+    # pylint: disable=not-callable
+    ret = dd(GPUtil.getGPUs)()
+    if fetch:
+        return [x.name + f", {x.memoryTotal} MB" for x in ret.compute()]
+    return ret
+
+
 def block_chunk_reduce(dask_data, output_chunk):
     """
     Reduce the chunk according the new output size.
@@ -498,9 +540,9 @@ def return_local_and_gpu(executor, local, gpu):
     # pylint: disable=too-many-return-statements
     if local is not None and gpu is None:
         if local is True:
-            return TaskExecutorType(executor.dtype.value & 2)
+            return TaskExecutorType(executor.dtype & 2)
         if local is False:
-            return TaskExecutorType(executor.dtype.value | 1)
+            return TaskExecutorType(executor.dtype | 1)
     elif local is None and gpu is not None:
         if gpu is True:
             return TaskExecutorType((executor.dtype >> 1) + 2)
