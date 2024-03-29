@@ -21,10 +21,14 @@ from distributed.diagnostics.plugin import NannyPlugin, WorkerPlugin
 from dasf.pipeline.executors.base import Executor
 from dasf.pipeline.types import TaskExecutorType
 from dasf.utils.funcs import (
+    executor_to_string,
     get_dask_gpu_count,
+    get_dask_gpu_names,
     get_worker_info,
     is_dask_gpu_supported,
     is_gpu_supported,
+    set_executor_multi_cpu,
+    set_executor_multi_gpu,
 )
 
 
@@ -97,11 +101,11 @@ class DaskPipelineExecutor(Executor):
 
         # Ask workers for GPUs
         if local and not use_gpu:
-            self.dtype = TaskExecutorType.multi_cpu
+            self.dtype = set_executor_multi_cpu()
         else:
             # Ask workers for GPUs
             if is_dask_gpu_supported():
-                self.dtype = TaskExecutorType.multi_gpu
+                self.dtype = set_executor_multi_gpu()
 
                 if gpu_allocator == "cupy":
                     # Nothing is required yet.
@@ -114,7 +118,7 @@ class DaskPipelineExecutor(Executor):
                     raise ValueError(f"'{gpu_allocator}' GPU Memory allocator is not "
                                      "known")
             else:
-                self.dtype = TaskExecutorType.multi_cpu
+                self.dtype = set_executor_multi_cpu()
 
         # Share dtype attribute to client
         if not hasattr(self.client, "dtype"):
@@ -122,8 +126,8 @@ class DaskPipelineExecutor(Executor):
 
         # Share which is the default backend of a cluster
         if not hasattr(self.client, "backend"):
-            if self.dtype == TaskExecutorType.single_gpu or \
-               self.dtype == TaskExecutorType.multi_gpu:
+            if self.dtype == set_executor_gpu() or \
+               self.dtype == set_executor_multi_gpu():
                 setattr(self.client, "backend", "cupy")
             else:
                 setattr(self.client, "backend", "numpy")
@@ -140,14 +144,31 @@ class DaskPipelineExecutor(Executor):
             )
 
     @property
-    def ngpus(self):
+    def ngpus(self) -> int:
         return get_dask_gpu_count()
 
     @property
-    def is_connected(self):
+    def is_connected(self) -> bool:
         if "running" in self.client.status:
             return True
         return False
+
+    @property
+    def info(self) -> str:
+        if self.is_connected:
+            print("Executor is connected!")
+        else:
+            print("Executor not is connected!")
+
+        print(f"Executor Type: {executor_to_string(self.dtype)}")
+        print(f"Executor Backend: {self.client.backend}")
+
+        if self.is_connected && self.ngpus > 0:
+            print(f"With {self.ngpus} GPUs")
+
+            print("Available GPUs:")
+            for gpu_name in list(set(get_dask_gpu_names())):
+                print(f"- {gpu_name}")
 
     def execute(self, fn, *args, **kwargs):
         return fn(*args, **kwargs)
