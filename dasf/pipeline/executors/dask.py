@@ -27,6 +27,7 @@ from dasf.utils.funcs import (
     get_worker_info,
     is_dask_gpu_supported,
     is_gpu_supported,
+    set_executor_gpu,
     set_executor_multi_cpu,
     set_executor_multi_gpu,
 )
