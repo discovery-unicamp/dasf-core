@@ -18,7 +18,7 @@ cluster_methods = [
 import joblib  # noqa
 from packaging import version  # noqa
 
-if version.parse(joblib.__version__) < version.parse("1.2.0"):
+if version.parse(joblib.__version__) < version.parse("1.2.0"): # pragma: no cover
     # Do not include HDBSCAN while it is not safe
     from dasf.ml.cluster.hdbscan import HDBSCAN  # noqa
 
