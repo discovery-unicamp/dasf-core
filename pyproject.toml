@@ -87,6 +87,11 @@ source = ["dasf"]
 [tool.coverage.report]
 exclude_also = [
     "except ImportError",
+    ".*NV_COMP.*",
+    ".*kvikio.*",
+    ".*KVIKIO.*",
+    ".*jax.*",
+    ".*JAX.*",
     ]
 
 [build-system]
