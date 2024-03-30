@@ -533,34 +533,6 @@ def trim_chunk_location(block_info, depth, index=0):
     return loc_orig
 
 
-def return_local_and_gpu(executor, local, gpu):
-    """
-    Return executor type based on passed preferences.
-    """
-    # pylint: disable=too-many-return-statements
-    if local is not None and gpu is None:
-        if local is True:
-            return TaskExecutorType(executor.dtype & 2)
-        if local is False:
-            return TaskExecutorType(executor.dtype | 1)
-    elif local is None and gpu is not None:
-        if gpu is True:
-            return TaskExecutorType((executor.dtype >> 1) + 2)
-        if gpu is False:
-            return TaskExecutorType(executor.dtype & 1)
-    elif local is not None and gpu is not None:
-        if local is True and gpu is False:
-            return TaskExecutorType.single_cpu
-        if local is False and gpu is False:
-            return TaskExecutorType.multi_cpu
-        if local is True and gpu is True:
-            return TaskExecutorType.single_gpu
-        if local is False and gpu is True:
-            return TaskExecutorType.multi_gpu
-
-    return executor.dtype
-
-
 def get_dask_mem_usage(profiler):
     """
     Get Dask memory usage profile.
