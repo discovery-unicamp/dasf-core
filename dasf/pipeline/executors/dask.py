@@ -163,7 +163,7 @@ class DaskPipelineExecutor(Executor):
         print(f"Executor Type: {executor_to_string(self.dtype)}")
         print(f"Executor Backend: {self.client.backend}")
 
-        if self.is_connected && self.ngpus > 0:
+        if self.is_connected and self.ngpus > 0:
             print(f"With {self.ngpus} GPUs")
 
             print("Available GPUs:")
