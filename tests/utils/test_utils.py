@@ -5,7 +5,9 @@ import unittest
 import numpy as np
 import dask.array as da
 
+from dask.delayed import Delayed
 from mock import patch, Mock
+from parameterized import parameterized
 
 from distributed.utils import TimeoutError as DistributedTimeoutError
 
@@ -17,12 +19,26 @@ from dasf.utils.funcs import is_dask_supported
 from dasf.utils.funcs import is_dask_gpu_supported
 from dasf.utils.funcs import get_gpu_count
 from dasf.utils.funcs import get_dask_gpu_count
+from dasf.utils.funcs import get_dask_gpu_names
 from dasf.utils.funcs import block_chunk_reduce
 from dasf.utils.funcs import trim_chunk_location
 from dasf.utils.funcs import get_backend_supported
 from dasf.utils.funcs import get_worker_info
 from dasf.utils.funcs import sync_future_loop
 from dasf.utils.funcs import is_notebook
+from dasf.utils.funcs import set_executor_default
+from dasf.utils.funcs import set_executor_cpu
+from dasf.utils.funcs import set_executor_gpu
+from dasf.utils.funcs import set_executor_multi_cpu
+from dasf.utils.funcs import set_executor_multi_gpu
+from dasf.utils.funcs import is_executor_single
+from dasf.utils.funcs import is_executor_cluster
+from dasf.utils.funcs import is_executor_cpu
+from dasf.utils.funcs import is_executor_gpu
+from dasf.utils.funcs import executor_to_string
+from dasf.utils.funcs import get_machine_memory_avail
+
+from dasf.pipeline.types import TaskExecutorType
 
 
 class TestArchitetures(unittest.TestCase):
@@ -88,6 +104,10 @@ class TestArchitetures(unittest.TestCase):
     def test_is_dask_supported_false(self, dask_config_get, client_current):
         self.assertFalse(is_dask_supported())
 
+    @patch('dasf.utils.funcs.is_dask_local_supported', side_effect=Exception('Test'))
+    def test_is_dask_supported_exception(self, local_supported):
+        self.assertFalse(is_dask_supported())
+
     @patch('dasf.utils.funcs.is_dask_supported', return_value=False)
     def test_is_dask_gpu_supported_false(self, dask_check):
         self.assertFalse(is_dask_gpu_supported())
@@ -102,6 +122,11 @@ class TestArchitetures(unittest.TestCase):
     def test_is_dask_gpu_supported_nonzero_gpus(self, dask_check):
         self.assertTrue(is_dask_gpu_supported())
         dask_check.assert_called()
+
+    @patch('dasf.utils.funcs.is_dask_supported', return_value=True)
+    @patch('dasf.utils.funcs.get_dask_gpu_count', return_value=0)
+    def test_is_dask_gpu_supported_zero_gpus_count(self, dask_check, dask_gpu_count):
+        self.assertFalse(is_dask_gpu_supported())
 
     @patch('dasf.utils.funcs.JAX_SUPPORTED', True)
     def test_is_jax_supported_true(self):
@@ -134,6 +159,22 @@ class TestArchitetures(unittest.TestCase):
     @patch('GPUtil.getGPUs', Mock(return_value=[]))
     def test_get_dask_gpu_count_0_no_fetch(self):
         self.assertTrue(len(get_dask_gpu_count(fetch=False).compute()) == 0)
+
+    def test_get_dask_gpu_names(self):
+        gpu = Mock()
+        gpu.configure_mock(name='GPU Foo Bar(tm)',
+                           memoryTotal=1024.0)
+
+        with patch('GPUtil.getGPUs', Mock(return_value=[gpu])):
+            self.assertEqual(get_dask_gpu_names(fetch=True), ["GPU Foo Bar(tm), 1024.0 MB"])
+
+    def test_get_dask_gpu_names_as_dd(self):
+        gpu = Mock()
+        gpu.configure_mock(name='GPU Foo Bar(tm)',
+                           memoryTotal=1024.0)
+
+        with patch('GPUtil.getGPUs', Mock(return_value=[gpu])):
+            self.assertTrue(isinstance(get_dask_gpu_names(fetch=False), Delayed))
 
 
 class TestBlockChunkReduce(unittest.TestCase):
@@ -218,7 +259,7 @@ class TestBlockChunkReduce(unittest.TestCase):
 
         self.assertTrue(np.array_equal(loc, np.asarray([(20, 30), (0, 40), (0, 40)])))
 
-    def test_trim_chunk_location_3d_index6(self):
+    def test_trim_chunk_location_3d_index(self):
         depth = (5, 0, 0)
 
         block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
@@ -226,6 +267,36 @@ class TestBlockChunkReduce(unittest.TestCase):
         loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
         self.assertTrue(np.array_equal(loc, np.asarray([(20, 30), (0, 40), (0, 40)])))
+
+    def test_trim_chunk_location_3d_no_array_location(self):
+        depth = (5, 0, 0)
+
+        block_info = [{}, {}, {}, {}, {}, {'chunk-location': (2, 0, 0)}]
+
+        with self.assertRaises(IndexError) as context:
+            loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+
+        self.assertTrue('Key \'array-location\' was not found in block-info' in str(context.exception))
+
+    def test_trim_chunk_location_3d_no_chunk_location(self):
+        depth = (5, 0, 0)
+
+        block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)]}]
+
+        with self.assertRaises(IndexError) as context:
+            loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+
+        self.assertTrue('Key \'chunk-location\' was not found in block-info' in str(context.exception))
+
+    def test_trim_chunk_location_3d_wrong_len(self):
+        depth = (5, 0)
+
+        block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
+
+        with self.assertRaises(ValueError) as context:
+            loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+
+        self.assertTrue("Depth 2, location 3 and/or chunks 3 do not match.")
 
 
 class TestBackendSignature(unittest.TestCase):
@@ -348,3 +419,53 @@ class TestIsNotebook(unittest.TestCase):
     @patch('dasf.utils.funcs.get_ipython', side_effect=NameError())
     def test_is_notebook_exception(self, get_ipython):
         self.assertFalse(is_notebook())
+
+
+class TestGetMachineMemoryAvailable(unittest.TestCase):
+    def test_get_machine_memory_avail(self):
+        mem_mock = Mock()
+        mem_mock.configure_mock(free=1024)
+        with patch('psutil.virtual_memory', return_value=mem_mock):
+            self.assertEqual(get_machine_memory_avail(), 1024)
+
+
+class TestDTypes(unittest.TestCase):
+    @parameterized.expand([
+       (TaskExecutorType.single_cpu, set_executor_default),
+       (TaskExecutorType.single_cpu, set_executor_cpu),
+       (TaskExecutorType.single_gpu, set_executor_gpu),
+       (TaskExecutorType.multi_cpu, set_executor_multi_cpu),
+       (TaskExecutorType.multi_gpu, set_executor_multi_gpu),
+    ])
+    def test_set_executor(self, dtype, func):
+        self.assertEqual(dtype, func())
+
+    @parameterized.expand([
+       (TaskExecutorType.single_cpu, is_executor_single, True),
+       (TaskExecutorType.single_gpu, is_executor_single, True),
+       (TaskExecutorType.multi_cpu, is_executor_single, False),
+       (TaskExecutorType.multi_gpu, is_executor_single, False),
+       (TaskExecutorType.single_cpu, is_executor_cluster, False),
+       (TaskExecutorType.single_gpu, is_executor_cluster, False),
+       (TaskExecutorType.multi_cpu, is_executor_cluster, True),
+       (TaskExecutorType.multi_gpu, is_executor_cluster, True),
+       (TaskExecutorType.single_cpu, is_executor_cpu, True),
+       (TaskExecutorType.single_gpu, is_executor_cpu, False),
+       (TaskExecutorType.multi_cpu, is_executor_cpu, True),
+       (TaskExecutorType.multi_gpu, is_executor_cpu, False),
+       (TaskExecutorType.single_cpu, is_executor_gpu, False),
+       (TaskExecutorType.single_gpu, is_executor_gpu, True),
+       (TaskExecutorType.multi_cpu, is_executor_gpu, False),
+       (TaskExecutorType.multi_gpu, is_executor_gpu, True),
+    ])
+    def test_is_executor(self, dtype, func, ret):
+        self.assertEqual(func(dtype), ret)
+
+    @parameterized.expand([
+       (TaskExecutorType.single_cpu, "CPU"),
+       (TaskExecutorType.single_gpu, "GPU"),
+       (TaskExecutorType.multi_cpu, "Multi CPU"),
+       (TaskExecutorType.multi_gpu, "Multi GPU"),
+    ])
+    def test_executor_strings(self, dtype, ret):
+        self.assertEqual(executor_to_string(dtype), ret)
