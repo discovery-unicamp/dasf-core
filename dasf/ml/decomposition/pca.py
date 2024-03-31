@@ -4,7 +4,7 @@ from dask_ml.decomposition import PCA as PCA_MCPU
 from sklearn.decomposition import PCA as PCA_CPU
 
 from dasf.transforms.base import Fit, FitTransform, TargeteredTransform
-from dasf.utils.funcs import is_dask_supported, is_gpu_supported
+from dasf.utils.funcs import is_dask_gpu_supported, is_dask_supported, is_gpu_supported
 
 try:
     from cuml.dask.decomposition import PCA as PCA_MGPU
@@ -49,6 +49,9 @@ class PCA(Fit, FitTransform, TargeteredTransform):
         )
         if is_gpu_supported():
             try:
+                if not isinstance(iterated_power, int):
+                    iterated_power = 15  # Default
+
                 self.__pca_gpu = PCA_GPU(
                     n_components=n_components,
                     copy=copy,
@@ -60,37 +63,39 @@ class PCA(Fit, FitTransform, TargeteredTransform):
                 )
             except TypeError:
                 self.__pca_gpu = None
+        else:
+            self.__pca_gpu = None
 
-            # XXX: PCA in Multi GPU requires a Client instance,
-            # skip if not present.
-            try:
-                self.__pca_mgpu = PCA_MGPU(
-                    n_components=n_components,
-                    copy=copy,
-                    whiten=whiten,
-                    svd_solver=svd_solver,
-                    tol=tol,
-                    iterated_power=iterated_power,
-                    random_state=random_state,
-                )
-            except ValueError:
-                self.__pca_mgpu = None
+        # XXX: PCA in Multi GPU requires a Client instance,
+        # skip if not present.
+        if is_dask_gpu_supported():
+            self.__pca_mgpu = PCA_MGPU(
+                n_components=n_components,
+                copy=copy,
+                whiten=whiten,
+                svd_solver=svd_solver,
+                tol=tol,
+                iterated_power=iterated_power,
+                random_state=random_state,
+            )
+        else:
+            self.__pca_mgpu = None
 
     def _lazy_fit_cpu(self, X, y=None, sample_weights=None):
-        return self.__pca_mcpu.fit(X)
+        return self.__pca_mcpu.fit(X=X)
 
     def _lazy_fit_gpu(self, X, y=None, sample_weights=None):
         if self.__pca_mgpu is None:
             raise NotImplementedError
-        return self.__pca_mgpu.fit(X)
+        return self.__pca_mgpu.fit(X=X)
 
     def _fit_cpu(self, X, y=None, sample_weights=None):
-        return self.__pca_cpu.fit(X)
+        return self.__pca_cpu.fit(X=X)
 
     def _fit_gpu(self, X, y=None, sample_weights=None):
         if self.__pca_gpu is None:
             raise NotImplementedError
-        return self.__pca_gpu.fit(X)
+        return self.__pca_gpu.fit(X=X)
 
     def _lazy_fit_transform_cpu(self, X, y=None, sample_weights=None):
         return self.__pca_mcpu.fit_transform(X, y)
@@ -98,7 +103,8 @@ class PCA(Fit, FitTransform, TargeteredTransform):
     def _lazy_fit_transform_gpu(self, X, y=None, sample_weights=None):
         if self.__pca_mgpu is None:
             raise NotImplementedError
-        return self.__pca_mgpu.fit_transform(X, y)
+        # The argument 'y' is just to keep the API consistent
+        return self.__pca_mgpu.fit_transform(X)
 
     def _fit_transform_cpu(self, X, y=None, sample_weights=None):
         return self.__pca_cpu.fit_transform(X, y)

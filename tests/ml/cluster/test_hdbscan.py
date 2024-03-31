@@ -44,6 +44,20 @@ class TestHDBSCAN(unittest.TestCase):
 
         return y1, y2
 
+    def test_hdbscan_cpu_only_fit(self):
+        sc = HDBSCAN()
+
+        y = sc._fit_cpu(self.X)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_hdbscan_gpu_only_fit(self):
+        sc = HDBSCAN()
+
+        cp_X = cp.asarray(self.X)
+
+        y = sc._fit_gpu(cp_X)
+
     def test_hdbscan_cpu(self):
         sc = HDBSCAN()
 

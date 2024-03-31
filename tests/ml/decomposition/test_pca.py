@@ -4,11 +4,16 @@ import unittest
 import numpy as np
 import dask.array as da
 
+from dask.distributed import Client
+
 try:
     import cupy as cp
+
+    from dask_cuda import LocalCUDACluster
 except ImportError:
     pass
 
+from mock import patch, Mock
 from sklearn import datasets
 from parameterized import parameterized
 
@@ -75,10 +80,150 @@ class TestPCA(unittest.TestCase):
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_pca_gpu(self, svd_solver):
-        raise unittest.SkipTest("Check why PCA is not working for floats")
+        try:
+            data_X = cp.asarray(self.data)
+
+            pca = PCA(n_components=self.n_components, svd_solver=svd_solver)
+
+            # check the shape of fit.transform
+            X_r = pca._fit_gpu(data_X).transform(data_X)
+            self.assertEqual(X_r.shape[1], self.n_components)
+
+            # check the equivalence of fit.transform and fit_transform
+            X_r2 = pca._fit_transform_gpu(data_X)
+            np.testing.assert_allclose(X_r.get(), X_r2.get())
+            X_r = pca._transform_gpu(data_X)
+            np.testing.assert_allclose(X_r.get(), X_r2.get())
+        except AttributeError:
+            unittest.SkipTest(f"Skipped due to Dask-ML bug.")
 
     @parameterized.expand(PCA_SOLVERS_GPU)
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_pca_mgpu(self, svd_solver):
-        raise unittest.SkipTest("Check why PCA is not working for floats")
+        try:
+            with LocalCUDACluster() as cluster:
+                client = Client(cluster)
+
+                data_X = da.from_array(self.data,
+                                       chunks=(int(self.data.shape[0]/4), self.data.shape[1]),
+                                       meta=cp.array(()))
+
+                pca = PCA(n_components=self.n_components, svd_solver=svd_solver)
+
+                # check the shape of fit.transform
+                X_r = pca._lazy_fit_gpu(data_X).transform(data_X)
+                self.assertEqual(X_r.compute().shape[1], self.n_components)
+
+                # check the equivalence of fit.transform and fit_transform
+                X_r2 = pca._lazy_fit_transform_gpu(data_X)
+                np.testing.assert_allclose(X_r.compute().get(), X_r2.compute().get())
+                X_r = pca._lazy_transform_gpu(data_X)
+                np.testing.assert_allclose(X_r.compute().get(), X_r2.compute().get())
+        except AttributeError:
+            unittest.SkipTest(f"Skipped due to Dask-ML bug.")
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_pca_mgpu_without_dask_client(self):
+        with self.assertRaises(NotImplementedError) as context:
+            data_X = da.from_array(self.data,
+                                   chunks=(int(self.data.shape[0]/4), self.data.shape[1]),
+                                   meta=cp.array(()))
+
+            pca = PCA(n_components=self.n_components)
+
+            # check the shape of fit.transform
+            X_r = pca._lazy_fit_gpu(data_X).transform(data_X)
+
+    @patch('dasf.ml.decomposition.pca.is_gpu_supported', Mock(return_value=False))
+    def test_pca_cpu_cov_and_prec(self):
+        pca = PCA(n_components=self.n_components)
+
+        # check the shape of fit.transform
+        X_r = pca._fit_cpu(self.data).transform(self.data)
+        self.assertEqual(X_r.shape[1], self.n_components)
+
+        # check the equivalence of fit.transform and fit_transform
+        X_r2 = pca._fit_transform_cpu(self.data)
+        np.testing.assert_allclose(X_r, X_r2)
+        X_r = pca._transform_cpu(self.data)
+        np.testing.assert_allclose(X_r, X_r2)
+
+        # Test get_covariance and get_precision
+        cov = pca.get_covariance()
+        precision = pca.get_precision()
+        np.testing.assert_allclose(np.dot(cov, precision),
+                                       np.eye(self.data.shape[1]),
+                                       atol=1e-12)
+
+    @patch('dasf.ml.decomposition.pca.is_gpu_supported', Mock(return_value=True))
+    def test_pca_cpu_cov_exception(self):
+        with self.assertRaises(NotImplementedError) as context:
+            pca = PCA(n_components=self.n_components)
+
+            # check the shape of fit.transform
+            X_r = pca._fit_cpu(self.data).transform(self.data)
+            self.assertEqual(X_r.shape[1], self.n_components)
+
+            # check the equivalence of fit.transform and fit_transform
+            X_r2 = pca._fit_transform_cpu(self.data)
+            np.testing.assert_allclose(X_r, X_r2)
+            X_r = pca._transform_cpu(self.data)
+            np.testing.assert_allclose(X_r, X_r2)
+
+            # Test get_covariance and get_precision
+            cov = pca.get_covariance()
+
+    @patch('dasf.ml.decomposition.pca.is_gpu_supported', Mock(return_value=True))
+    def test_pca_cpu_prec_exception(self):
+        with self.assertRaises(NotImplementedError) as context:
+            pca = PCA(n_components=self.n_components)
+
+            # check the shape of fit.transform
+            X_r = pca._fit_cpu(self.data).transform(self.data)
+            self.assertEqual(X_r.shape[1], self.n_components)
+
+            # check the equivalence of fit.transform and fit_transform
+            X_r2 = pca._fit_transform_cpu(self.data)
+            np.testing.assert_allclose(X_r, X_r2)
+            X_r = pca._transform_cpu(self.data)
+            np.testing.assert_allclose(X_r, X_r2)
+
+            # Test get_covariance and get_precision
+            cov = pca.get_precision()
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    @patch('dasf.ml.decomposition.pca.is_gpu_supported', Mock(return_value=False))
+    def test_pca_gpu_fit_exception(self):
+        with self.assertRaises(NotImplementedError) as context:
+            data_X = cp.asarray(self.data)
+
+            pca = PCA(n_components=self.n_components)
+
+            # check the shape of fit.transform
+            X_r = pca._fit_gpu(data_X).transform(data_X)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    @patch('dasf.ml.decomposition.pca.is_gpu_supported', Mock(return_value=False))
+    def test_pca_gpu_fit_transform_exception(self):
+        with self.assertRaises(NotImplementedError) as context:
+            data_X = cp.asarray(self.data)
+
+            pca = PCA(n_components=self.n_components)
+
+            # check the equivalence of fit.transform and fit_transform
+            X_r2 = pca._fit_transform_gpu(data_X)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    @patch('dasf.ml.decomposition.pca.is_gpu_supported', Mock(return_value=False))
+    def test_pca_gpu_transform_exception(self):
+        with self.assertRaises(NotImplementedError) as context:
+            data_X = cp.asarray(self.data)
+
+            pca = PCA(n_components=self.n_components)
+
+            X_r = pca._transform_gpu(data_X)
