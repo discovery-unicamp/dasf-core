@@ -31,16 +31,20 @@ class StandardScaler(Fit, FitTransform, TargeteredTransform):
             )
 
     def _lazy_fit_cpu(self, X, y=None):
-        return self.__std_scaler_dask.fit(X=X, y=y)
+        self.__std_scaler_dask = self.__std_scaler_dask.fit(X=X, y=y)
+        return self
 
     def _lazy_fit_gpu(self, X, y=None):
-        return self.__std_scaler_dask.fit(X=X, y=y)
+        self.__std_scaler_dask = self.__std_scaler_dask.fit(X=X, y=y)
+        return self
 
     def _fit_cpu(self, X, y=None):
-        return self.__std_scaler_cpu.fit(X=X, y=y)
+        self.__std_scaler_cpu = self.__std_scaler_cpu.fit(X=X, y=y)
+        return self
 
     def _fit_gpu(self, X, y=None):
-        return self.__std_scaler_gpu.fit(X=X, y=y)
+        self.__std_scaler_gpu = self.__std_scaler_gpu.fit(X=X, y=y)
+        return self
 
     def _lazy_fit_transform_cpu(self, X, y=None):
         return self.__std_scaler_dask.fit_transform(X=X, y=y)
@@ -56,16 +60,20 @@ class StandardScaler(Fit, FitTransform, TargeteredTransform):
         return ret.transform(X=X)
 
     def _lazy_partial_fit_cpu(self, X, y=None):
-        return self.__std_scaler_dask.partial_fit(X=X, y=y)
+        self.__std_scaler_dask = self.__std_scaler_dask.partial_fit(X=X, y=y)
+        return self
 
     def _lazy_partial_fit_gpu(self, X, y=None):
-        return self.__std_scaler_dask.partial_fit(X=X, y=y)
+        self.__std_scaler_dask = self.__std_scaler_dask.partial_fit(X=X, y=y)
+        return self
 
-    def _fit_partial_cpu(self, X, y=None):
-        return self.__std_scaler_cpu.partial_fit(X=X, y=y)
+    def _partial_fit_cpu(self, X, y=None):
+        self.__std_scaler_cpu = self.__std_scaler_cpu.partial_fit(X=X, y=y)
+        return self
 
-    def _fit_partial_gpu(self, X, y=None):
-        return self.__std_scaler_gpu.partial_fit(X=X, y=y)
+    def _partial_fit_gpu(self, X, y=None):
+        self.__std_scaler_gpu = self.__std_scaler_gpu.partial_fit(X=X, y=y)
+        return self
 
     def _lazy_transform_cpu(self, X, copy=None):
         return self.__std_scaler_dask.transform(X=X, copy=copy)
