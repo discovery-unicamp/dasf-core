@@ -56,7 +56,7 @@ jobs:
         run: |
           echo "* **interrogate results:** $(interrogate -i --fail-under=15 dasf/ | cut -d: -d" " -f4)" >> $GITHUB_STEP_SUMMARY
           # We should have at least 80% of docs covered
-          interrogate -vv -i --fail-under=20 --badge-format svg -g dasf
+          interrogate -vv -i --fail-under=20 --badge-format svg -g . -e build/ -e tests/
     
   test_cpu:
     runs-on: ubuntu-latest
