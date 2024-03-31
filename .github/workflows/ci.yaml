@@ -54,9 +54,9 @@ jobs:
           fi
       - name: Doc lint with interrogate
         run: |
-          echo "* **interrogate results:** $(interrogate -i --fail-under=15 . | cut -d: -d" " -f4)" >> $GITHUB_STEP_SUMMARY
+          echo "* **interrogate results:** $(interrogate -i --fail-under=15 dasf/ | cut -d: -d" " -f4)" >> $GITHUB_STEP_SUMMARY
           # We should have at least 80% of docs covered
-          interrogate -vv -i --fail-under=15 --badge-format svg -g .
+          interrogate -vv -i --fail-under=20 --badge-format svg -g dasf
     
   test_cpu:
     runs-on: ubuntu-latest
