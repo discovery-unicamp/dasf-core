@@ -90,34 +90,34 @@ class SliceArrayByPercentile(Transform):
     def __init__(self, percentile):
         self.p = percentile
 
-    def __internal_chunk_array_positive(self, block, axis=None, keepdims=False, xp=np):
+    def _internal_chunk_array_positive(self, block, axis=None, keepdims=False, xp=np):
         block[block < 0] = 0
         block[block != 0]
         return xp.array([xp.percentile(block.flatten(), self.p)])
 
-    def __internal_aggregate_array_positive(self, block, axis=None, keepdims=False, xp=np):
+    def _internal_aggregate_array_positive(self, block, axis=None, keepdims=False, xp=np):
         block = xp.array(block)
 
         return xp.array([xp.max(block)])
 
-    def __internal_chunk_array_negative(self, block, axis=None, keepdims=False, xp=np):
+    def _internal_chunk_array_negative(self, block, axis=None, keepdims=False, xp=np):
         block *= -1
         block[block < 0] = 0
         block[block != 0]
         return xp.array([-xp.percentile(block.flatten(), self.p)])
 
-    def __internal_aggregate_array_negative(self, block, axis=None, keepdims=False, xp=np):
+    def _internal_aggregate_array_negative(self, block, axis=None, keepdims=False, xp=np):
         block = xp.array(block)
 
         return xp.array([xp.min(block)])
 
     def _lazy_transform_cpu(self, X):
-        positive = ReductionTransform(func_chunk=self.__internal_chunk_array_positive,
-                                      func_aggregate=self.__internal_aggregate_array_positive,
+        positive = ReductionTransform(func_chunk=self._internal_chunk_array_positive,
+                                      func_aggregate=self._internal_aggregate_array_positive,
                                       output_size=[0])
 
-        negative = ReductionTransform(func_chunk=self.__internal_chunk_array_negative,
-                                      func_aggregate=self.__internal_aggregate_array_negative,
+        negative = ReductionTransform(func_chunk=self._internal_chunk_array_negative,
+                                      func_aggregate=self._internal_aggregate_array_negative,
                                       output_size=[0])
 
         p = positive._lazy_transform_cpu(X, concatenate=False)
@@ -133,12 +133,12 @@ class SliceArrayByPercentile(Transform):
         return X
 
     def _lazy_transform_gpu(self, X):
-        positive = ReductionTransform(func_chunk=self.__internal_aggregate_array_positive,
-                                      func_aggregate=self.__internal_aggregate_array_positive,
+        positive = ReductionTransform(func_chunk=self._internal_aggregate_array_positive,
+                                      func_aggregate=self._internal_aggregate_array_positive,
                                       output_size=[0])
 
-        negative = ReductionTransform(func_chunk=self.__internal_aggregate_array_negative,
-                                      func_aggregate=self.__internal_aggregate_array_negative,
+        negative = ReductionTransform(func_chunk=self._internal_aggregate_array_negative,
+                                      func_aggregate=self._internal_aggregate_array_negative,
                                       output_size=[0])
 
         p = positive._lazy_transform_gpu(X, concatenate=False)
@@ -154,8 +154,8 @@ class SliceArrayByPercentile(Transform):
         return X
 
     def _transform_cpu(self, X):
-        pos_cutoff = self.__internal_chunk_array_positive(X, xp=np)
-        neg_cutoff = self.__internal_chunk_array_negative(X, xp=np)
+        pos_cutoff = self._internal_chunk_array_positive(X, xp=np)
+        neg_cutoff = self._internal_chunk_array_negative(X, xp=np)
 
         X[X > pos_cutoff] = pos_cutoff
         X[X < neg_cutoff] = neg_cutoff
@@ -163,8 +163,8 @@ class SliceArrayByPercentile(Transform):
         return X
 
     def _transform_gpu(self, X):
-        pos_cutoff = self.__internal_chunk_array_positive(X, xp=cp)
-        neg_cutoff = self.__internal_chunk_array_negative(X, xp=cp)
+        pos_cutoff = self._internal_chunk_array_positive(X, xp=cp)
+        neg_cutoff = self._internal_chunk_array_negative(X, xp=cp)
 
         X[X > pos_cutoff] = pos_cutoff
         X[X < neg_cutoff] = neg_cutoff

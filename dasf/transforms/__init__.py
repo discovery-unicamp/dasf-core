@@ -39,6 +39,7 @@ __all__ = [
     "ArraysToDataFrame",
     "SliceArray",
     "SliceArrayByPercent",
+    "SliceArrayByPercentile",
     "Reshape",
     "PersistDaskData",
     "ComputeDaskData",
