@@ -63,6 +63,8 @@ class PCA(Fit, FitTransform, TargeteredTransform):
                 )
             except TypeError:
                 self.__pca_gpu = None
+            except NameError:
+                self.__pca_gpu = None
         else:
             self.__pca_gpu = None
 
