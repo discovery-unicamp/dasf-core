@@ -83,6 +83,9 @@ def fetch_args_from_dask(func):
     Fetches to CPU all function parameters in a Dask data type.
     """
     def wrapper(*args, **kwargs):
+        """
+        Wrapper to fetch parameters from Dask data.
+        """
         new_args, new_kwargs = fetch_from_dask(*args, **kwargs)
 
         return func(*new_args, **new_kwargs)
@@ -95,6 +98,9 @@ def fetch_args_from_gpu(func):
     Fetches to CPU all function parameters in a GPU data type.
     """
     def wrapper(*args, **kwargs):
+        """
+        Wrapper to fetch parameters from GPU.
+        """
         new_args, new_kwargs = fetch_from_gpu(*args, **kwargs)
 
         return func(*new_args, **new_kwargs)
@@ -108,6 +114,9 @@ def task_handler(func):
     """
     @wraps(func)
     def wrapper(*args, **kwargs):
+        """
+        Wrapper of the function to map the proper object function.
+        """
         cls = args[0]
         new_args = args[1:]
         func_name = func.__name__

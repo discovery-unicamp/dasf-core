@@ -129,10 +129,17 @@ def sync_future_loop(futures):
 
 
 class NotebookProgressBar(threading.Thread):
+    """
+    ProgressBar representation for ipython notebooks only.
+    """
+
     MIN_CUR = -2
     MIN_TOTAL = -1
 
     def __init__(self):
+        """
+        Constructor of the Progress Bar
+        """
         threading.Thread.__init__(self)
 
         # pylint: disable=disallowed-name
@@ -146,6 +153,9 @@ class NotebookProgressBar(threading.Thread):
         self.__error = False
 
     def show(self):
+        """
+        Return the HTML representation of the ProgressBar.
+        """
         self.bar = FloatProgress(value=0, min=0, max=100)
         self.percentage = Label(value='0 %')
         self.data = Label(value='')
@@ -153,14 +163,23 @@ class NotebookProgressBar(threading.Thread):
         disp.display(box)
 
     def set_current(self, current, total):
+        """
+        Set current value of the bar progress
+        """
         with self.__lock:
             self.__current = current
             self.__total = total
 
     def set_error(self, error):
+        """
+        Set an error if it exists.
+        """
         self.__error = error
 
     def run(self):
+        """
+        Thread main loop that updates the bar progress.
+        """
         while (not self.__error and self.__current < self.__total):
             time.sleep(1)
 
@@ -189,6 +208,9 @@ def download_file(url, filename=None, directory=None):
         progressbar = NotebookProgressBar()
 
         def update_notebook_bar(current, total):
+            """
+            Update progress bar with the current download size.
+            """
             progressbar.set_current(current, total)
 
     try:
@@ -444,6 +466,9 @@ def is_dask_gpu_supported() -> bool:
 
 
 def get_gpu_from_workers() -> bool:
+    """
+    Return if any worker has a GPU available.
+    """
     try:
         cur = get_dask_running_client()
 
