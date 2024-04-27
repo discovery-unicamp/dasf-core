@@ -15,7 +15,6 @@ Classes
    dasf.feature_extraction.transform.ConcatenateToArray
    dasf.feature_extraction.transform.SampleDataframe
    dasf.feature_extraction.transform.GetSubeCubeArray
-   dasf.feature_extraction.transform.SliceDataframe
    dasf.feature_extraction.transform.GetSubDataframe
 
 
@@ -41,8 +40,12 @@ Classes
 
    .. py:method:: _transform_cpu(**kwargs)
 
+      Respective immediate transform mocked function for local CPU(s).
+
 
    .. py:method:: _transform_gpu(**kwargs)
+
+      Respective immediate transform mocked function for local GPU(s).
 
 
 
@@ -86,23 +89,6 @@ Classes
 
 
    .. py:method:: transform(X)
-
-
-
-.. py:class:: SliceDataframe(iline_index)
-
-
-   Bases: :py:obj:`dasf.transforms.base.Fit`
-
-   Get a slice of a cube. An inline slice is a section over the x-axis.
-
-   Parameters
-   ----------
-   iline_index : int
-       The index of the inline to get.
-
-
-   .. py:method:: fit(X, y)
 
 
 

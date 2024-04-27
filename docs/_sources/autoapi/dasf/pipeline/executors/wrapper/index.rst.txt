@@ -12,17 +12,32 @@ Classes
 
 .. autoapisummary::
 
-   dasf.pipeline.executors.wrapper.PrefectPipelineExecutor
+   dasf.pipeline.executors.wrapper.LocalExecutor
 
 
 
 
-.. py:class:: PrefectPipelineExecutor
+.. py:class:: LocalExecutor(use_gpu=None, backend='numpy', gpu_allocator='cupy')
 
 
-   Bases: :py:obj:`prefect.executors.local.LocalExecutor`
+   .. py:property:: ngpus
+      :type: int
 
-   .. py:property:: dtype
+
+   .. py:property:: is_connected
+      :type: bool
+
+
+   .. py:method:: pre_run(pipeline)
+
+
+   .. py:method:: post_run(pipeline)
+
+
+   .. py:method:: get_backend()
+
+
+   .. py:method:: execute(fn, *args, **kwargs)
 
 
 

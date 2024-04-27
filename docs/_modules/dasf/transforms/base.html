@@ -1,328 +1,581 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>dasf.transforms.base &mdash; DASF 1.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
+  <title>dasf.transforms.base &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
 
   
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home"> DASF
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            DASF
           </a>
-
-          
-            
-            
               <div class="version">
-                1.0
+                1.0b5
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../principles.html">Principles</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">DASF API Reference</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">DASF</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>dasf.transforms.base</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dasf.transforms.base</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for dasf.transforms.base</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/python3</span>
+<span></span><span class="sd">&quot;&quot;&quot; Definition of the generic operators of the pipeline. &quot;&quot;&quot;</span>
+<span class="c1">#!/usr/bin/python3</span>
 
 <span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">uuid4</span>
+
 <span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+    <span class="kn">import</span> <span class="nn">dask_cudf</span> <span class="k">as</span> <span class="nn">dcudf</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+    <span class="k">pass</span>
 
 <span class="kn">from</span> <span class="nn">dasf.utils.decorators</span> <span class="kn">import</span> <span class="n">task_handler</span>
-<span class="kn">from</span> <span class="nn">dasf.utils.types</span> <span class="kn">import</span> <span class="n">is_dask_array</span>
-<span class="kn">from</span> <span class="nn">dasf.utils.types</span> <span class="kn">import</span> <span class="n">is_dask_dataframe</span>
 <span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">block_chunk_reduce</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">is_dask_array</span><span class="p">,</span>
+    <span class="n">is_dask_cpu_dataframe</span><span class="p">,</span>
+    <span class="n">is_dask_dataframe</span><span class="p">,</span>
+    <span class="n">is_dask_gpu_dataframe</span><span class="p">,</span>
+<span class="p">)</span>
 
 
-<div class="viewcode-block" id="Fit"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit">[docs]</a><span class="k">class</span> <span class="nc">Fit</span><span class="p">:</span>
-<div class="viewcode-block" id="Fit._lazy_fit_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit._lazy_fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Operator">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Operator">[docs]</a>
+<span class="k">class</span> <span class="nc">Operator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a generic Operator of the pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Operator.get_uuid">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Operator.get_uuid">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_uuid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the UUID representation of the Operator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_uuid&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_uuid</span> <span class="o">=</span> <span class="n">uuid4</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uuid</span></div>
+</div>
+
+
+<div class="viewcode-block" id="Fit">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit">[docs]</a>
+<span class="k">class</span> <span class="nc">Fit</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a Fit operation of the pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Fit._lazy_fit_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit._lazy_fit_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy fit mocked function for CPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Fit._lazy_fit_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit._lazy_fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Fit._lazy_fit_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit._lazy_fit_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy fit mocked function for GPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Fit._fit_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit._fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Fit._fit_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit._fit_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate fit mocked function for local CPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Fit._fit_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit._fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Fit._fit_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit._fit_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate fit mocked function for local GPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Fit.fit"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit.fit">[docs]</a>    <span class="nd">@task_handler</span>
+
+<div class="viewcode-block" id="Fit.fit">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit.fit">[docs]</a>
+    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic fit funtion according executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-<div class="viewcode-block" id="Fit.fit_from_model"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit.fit_from_model">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Fit.fit_from_model">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Fit.fit_from_model">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">fit_from_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the model of a previous created object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="FitPredict"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict">[docs]</a><span class="k">class</span> <span class="nc">FitPredict</span><span class="p">:</span>
-<div class="viewcode-block" id="FitPredict._lazy_fit_predict_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict._lazy_fit_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FitPredict">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict">[docs]</a>
+<span class="k">class</span> <span class="nc">FitPredict</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a Fit with Predict operation of the pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FitPredict._lazy_fit_predict_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict._lazy_fit_predict_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy fit with predict mocked function for CPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="FitPredict._lazy_fit_predict_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict._lazy_fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FitPredict._lazy_fit_predict_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict._lazy_fit_predict_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy fit with predict mocked function for GPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="FitPredict._fit_predict_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict._fit_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FitPredict._fit_predict_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict._fit_predict_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate fit with predict mocked function for local CPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="FitPredict._fit_predict_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict._fit_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FitPredict._fit_predict_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict._fit_predict_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate fit with predict mocked function for local GPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="FitPredict.fit_predict"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict.fit_predict">[docs]</a>    <span class="nd">@task_handler</span>
+
+<div class="viewcode-block" id="FitPredict.fit_predict">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict.fit_predict">[docs]</a>
+    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">fit_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic fit with predict funtion according executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-<div class="viewcode-block" id="FitPredict.fit_predict_from_model"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict.fit_predict_from_model">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="FitPredict.fit_predict_from_model">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitPredict.fit_predict_from_model">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">fit_predict_from_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the model of a previous created object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">,</span>
-                                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+                                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="FitTransform"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform">[docs]</a><span class="k">class</span> <span class="nc">FitTransform</span><span class="p">:</span>
-<div class="viewcode-block" id="FitTransform._lazy_fit_transform_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform._lazy_fit_transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FitTransform">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform">[docs]</a>
+<span class="k">class</span> <span class="nc">FitTransform</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a Fit with Transform operation of the pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FitTransform._lazy_fit_transform_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform._lazy_fit_transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy fit with transform mocked function for CPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="FitTransform._lazy_fit_transform_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform._lazy_fit_transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FitTransform._lazy_fit_transform_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform._lazy_fit_transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy fit with transform mocked function for GPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="FitTransform._fit_transform_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform._fit_transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FitTransform._fit_transform_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform._fit_transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate fit with transform mocked function for local CPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="FitTransform._fit_transform_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform._fit_transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FitTransform._fit_transform_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform._fit_transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate fit with transform mocked function for local GPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="FitTransform.fit_transform"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform.fit_transform">[docs]</a>    <span class="nd">@task_handler</span>
+
+<div class="viewcode-block" id="FitTransform.fit_transform">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform.fit_transform">[docs]</a>
+    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic fit with transform funtion according executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-<div class="viewcode-block" id="FitTransform.fit_transform_from_model"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform.fit_transform_from_model">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="FitTransform.fit_transform_from_model">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.FitTransform.fit_transform_from_model">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">fit_transform_from_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the model of a previous created object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">,</span>
-                                   <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+                                   <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Predict"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict">[docs]</a><span class="k">class</span> <span class="nc">Predict</span><span class="p">:</span>
-<div class="viewcode-block" id="Predict._lazy_predict_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict._lazy_predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Predict">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict">[docs]</a>
+<span class="k">class</span> <span class="nc">Predict</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a Predict operation of the pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Predict._lazy_predict_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict._lazy_predict_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy predict mocked function for CPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Predict._lazy_predict_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict._lazy_predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Predict._lazy_predict_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict._lazy_predict_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy predict mocked function for GPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Predict._predict_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict._predict_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Predict._predict_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict._predict_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate predict mocked function for local CPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Predict._predict_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict._predict_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Predict._predict_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict._predict_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate predict mocked function for local GPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Predict.predict"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict.predict">[docs]</a>    <span class="nd">@task_handler</span>
+
+<div class="viewcode-block" id="Predict.predict">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict.predict">[docs]</a>
+    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic predict funtion according executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-<div class="viewcode-block" id="Predict.predict_from_model"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict.predict_from_model">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Predict.predict_from_model">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.Predict.predict_from_model">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">predict_from_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the model of a previous created object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;sample_weight&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="GetParams"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams">[docs]</a><span class="k">class</span> <span class="nc">GetParams</span><span class="p">:</span>
-<div class="viewcode-block" id="GetParams._lazy_get_params_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams._lazy_get_params_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_get_params_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GetParams">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams">[docs]</a>
+<span class="k">class</span> <span class="nc">GetParams</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a Get Parameters operation of the pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GetParams._lazy_get_params_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams._lazy_get_params_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_get_params_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy get_params mocked function for CPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="GetParams._lazy_get_params_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams._lazy_get_params_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_get_params_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GetParams._lazy_get_params_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams._lazy_get_params_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_get_params_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy get_params mocked function for GPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="GetParams._get_params_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams._get_params_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_get_params_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GetParams._get_params_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams._get_params_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_get_params_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate get_params mocked function for local CPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="GetParams._get_params_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams._get_params_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_get_params_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GetParams._get_params_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams._get_params_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_get_params_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate get_params mocked function for local GPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="GetParams.get_params"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams.get_params">[docs]</a>    <span class="nd">@task_handler</span>
+
+<div class="viewcode-block" id="GetParams.get_params">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.GetParams.get_params">[docs]</a>
+    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="o">...</span></div></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic get_params funtion according executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+</div>
 
 
-<div class="viewcode-block" id="SetParams"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams">[docs]</a><span class="k">class</span> <span class="nc">SetParams</span><span class="p">:</span>
-<div class="viewcode-block" id="SetParams._lazy_set_params_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams._lazy_set_params_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_set_params_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SetParams">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams">[docs]</a>
+<span class="k">class</span> <span class="nc">SetParams</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+<div class="viewcode-block" id="SetParams._lazy_set_params_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams._lazy_set_params_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_set_params_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy set_params mocked function for CPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="SetParams._lazy_set_params_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams._lazy_set_params_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_set_params_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SetParams._lazy_set_params_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams._lazy_set_params_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_set_params_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy set_params mocked function for GPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="SetParams._set_params_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams._set_params_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_set_params_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SetParams._set_params_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams._set_params_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_set_params_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate set_params mocked function for local CPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="SetParams._set_params_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams._set_params_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_set_params_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SetParams._set_params_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams._set_params_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_set_params_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate set_params mocked function for local GPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="SetParams.set_params"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams.set_params">[docs]</a>    <span class="nd">@task_handler</span>
+
+<div class="viewcode-block" id="SetParams.set_params">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.SetParams.set_params">[docs]</a>
+    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
-        <span class="o">...</span></div></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic set_params funtion according executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Transform"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform">[docs]</a><span class="k">class</span> <span class="nc">Transform</span><span class="p">:</span>
-<div class="viewcode-block" id="Transform._lazy_transform_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform._lazy_transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Transform">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform">[docs]</a>
+<span class="k">class</span> <span class="nc">Transform</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a Transform operation of the pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Transform._lazy_transform_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform._lazy_transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy transform mocked function for CPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Transform._lazy_transform_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform._lazy_transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Transform._lazy_transform_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform._lazy_transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective lazy transform mocked function for GPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Transform._transform_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform._transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Transform._transform_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform._transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate transform mocked function for local CPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Transform._transform_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform._transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Transform._transform_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform._transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Respective immediate transform mocked function for local GPU(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Transform.transform"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform.transform">[docs]</a>    <span class="nd">@task_handler</span>
+
+<div class="viewcode-block" id="Transform.transform">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform.transform">[docs]</a>
+    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic transform funtion according executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 
-<div class="viewcode-block" id="Transform.transform_from_model"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform.transform_from_model">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Transform.transform_from_model">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/base/index.html#dasf.transforms.base.Transform.transform_from_model">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">transform_from_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the model of a previous created object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="TargeteredTransform"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.TargeteredTransform">[docs]</a><span class="k">class</span> <span class="nc">TargeteredTransform</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TargeteredTransform">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.TargeteredTransform">[docs]</a>
+<span class="k">class</span> <span class="nc">TargeteredTransform</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a Targetered Transform operation of the pipeline.</span>
+<span class="sd">    </span>
+<span class="sd">    This specific transform operates according the parameters of the</span>
+<span class="sd">    constructor.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    run_local : bool</span>
+<span class="sd">        Define that the operator will run locally and not distributed.</span>
+<span class="sd">    run_gpu : bool</span>
+<span class="sd">        Define if the operator will use GPU(s) or not.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_local</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">run_gpu</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -330,7 +583,43 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_run_gpu</span> <span class="o">=</span> <span class="n">run_gpu</span></div>
 
 
-<div class="viewcode-block" id="MappedTransform"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform">[docs]</a><span class="k">class</span> <span class="nc">MappedTransform</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
+
+<div class="viewcode-block" id="MappedTransform">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform">[docs]</a>
+<span class="k">class</span> <span class="nc">MappedTransform</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representing a MappedTransform based on Transform</span>
+<span class="sd">    object.</span>
+
+<span class="sd">    This object refers to any operation that can be done in blocks.</span>
+<span class="sd">    In special, for Dask chunks. There are several ways of doing</span>
+<span class="sd">    that. This class tries to simplify how the functions are applied</span>
+<span class="sd">    into a block.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    function : Callable</span>
+<span class="sd">        A function that will be applied in a block.</span>
+<span class="sd">    depth : tuple</span>
+<span class="sd">        The value of the boundary elements per axis (the default is</span>
+<span class="sd">        None).</span>
+<span class="sd">    boundary : str</span>
+<span class="sd">        The type of the boundary. See Dask boundaries for more</span>
+<span class="sd">        examples (the default is None).</span>
+<span class="sd">    trim : bool</span>
+<span class="sd">        Option to trim the data after an overlap (the default is</span>
+<span class="sd">        True).</span>
+<span class="sd">    output_chunk : tuple</span>
+<span class="sd">        New shape of the output after computing the function (the</span>
+<span class="sd">        default is None).</span>
+<span class="sd">    drop_axis : tuple</span>
+<span class="sd">        Which axis should be deleted after computing the function</span>
+<span class="sd">        (the default is None).</span>
+<span class="sd">    new_axis : tuple</span>
+<span class="sd">        Which axis represent a new axis after computing the function</span>
+<span class="sd">        (the default is None).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">function</span><span class="p">,</span>
@@ -338,6 +627,8 @@
         <span class="n">boundary</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">output_chunk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">drop_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">new_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">function</span>
@@ -345,6 +636,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="o">=</span> <span class="n">boundary</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">trim</span> <span class="o">=</span> <span class="n">trim</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_chunk</span> <span class="o">=</span> <span class="n">output_chunk</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drop_axis</span> <span class="o">=</span> <span class="n">drop_axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_axis</span> <span class="o">=</span> <span class="n">new_axis</span>
 
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="ow">is</span> <span class="kc">None</span>
@@ -355,8 +648,16 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Both boundary and depth should be passed &quot;</span>
                             <span class="s2">&quot;together&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__lazy_transform_generic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">drop_axis</span><span class="p">,</span> <span class="n">new_axis</span> <span class="o">=</span> <span class="n">block_chunk_reduce</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_chunk</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__lazy_transform_generic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">drop_axis</span><span class="p">,</span> <span class="n">new_axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_axis</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">drop_axis</span><span class="p">,</span> <span class="n">new_axis</span> <span class="o">=</span> <span class="n">block_chunk_reduce</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_chunk</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_chunk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">__output_chunk</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">chunks</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">__output_chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_chunk</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trim</span><span class="p">:</span>
@@ -366,6 +667,7 @@
                     <span class="n">dtype</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
                     <span class="n">depth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
                     <span class="n">boundary</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary</span><span class="p">,</span>
+                    <span class="n">meta</span><span class="o">=</span><span class="n">xp</span><span class="o">.</span><span class="n">array</span><span class="p">(()),</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">data_blocks</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">overlap</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span>
@@ -377,6 +679,8 @@
                     <span class="n">dtype</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
                     <span class="n">drop_axis</span><span class="o">=</span><span class="n">drop_axis</span><span class="p">,</span>
                     <span class="n">new_axis</span><span class="o">=</span><span class="n">new_axis</span><span class="p">,</span>
+                    <span class="n">chunks</span><span class="o">=</span><span class="n">__output_chunk</span><span class="p">,</span>
+                    <span class="n">meta</span><span class="o">=</span><span class="n">xp</span><span class="o">.</span><span class="n">array</span><span class="p">(()),</span>
                     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -386,6 +690,8 @@
                     <span class="n">dtype</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
                     <span class="n">drop_axis</span><span class="o">=</span><span class="n">drop_axis</span><span class="p">,</span>
                     <span class="n">new_axis</span><span class="o">=</span><span class="n">new_axis</span><span class="p">,</span>
+                    <span class="n">chunks</span><span class="o">=</span><span class="n">__output_chunk</span><span class="p">,</span>
+                    <span class="n">meta</span><span class="o">=</span><span class="n">xp</span><span class="o">.</span><span class="n">array</span><span class="p">(()),</span>
                     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">elif</span> <span class="n">is_dask_dataframe</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
@@ -393,64 +699,195 @@
 
         <span class="k">return</span> <span class="n">new_data</span>
 
-<div class="viewcode-block" id="MappedTransform._lazy_transform_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform._lazy_transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lazy_transform_generic</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+<div class="viewcode-block" id="MappedTransform._lazy_transform_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform._lazy_transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lazy_transform_generic</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">np</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MappedTransform._lazy_transform_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform._lazy_transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lazy_transform_generic</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MappedTransform._transform_cpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform._transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="MappedTransform._lazy_transform_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform._lazy_transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lazy_transform_generic</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">cp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MappedTransform._transform_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform._transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MappedTransform._transform_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform._transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="MappedTransform._transform_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform._transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MappedTransform.transform"><a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform.transform">[docs]</a>    <span class="nd">@task_handler</span>
+
+<div class="viewcode-block" id="MappedTransform.transform">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.MappedTransform.transform">[docs]</a>
+    <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="o">...</span></div></div>
+        <span class="o">...</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ReductionTransform">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform">[docs]</a>
+<span class="k">class</span> <span class="nc">ReductionTransform</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representing a Reduction based on Transform</span>
+<span class="sd">    object.</span>
+
+<span class="sd">    This is a simple MapReduction operation using Dask.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    output_size : tuple</span>
+<span class="sd">        The size of the new output.</span>
+<span class="sd">    func_aggregate : Callable</span>
+<span class="sd">        The function called to aggregate the result of each chunk.</span>
+<span class="sd">    func_chunk : Callable</span>
+<span class="sd">        The function applied in each chunk.</span>
+<span class="sd">    func_combine : Callable</span>
+<span class="sd">        The function to combine each reduction of aggregate (the</span>
+<span class="sd">        default is None).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_size</span><span class="p">,</span> <span class="n">func_aggregate</span><span class="p">,</span> <span class="n">func_chunk</span><span class="p">,</span> <span class="n">func_combine</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_size</span> <span class="o">=</span> <span class="n">output_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_aggregate</span> <span class="o">=</span> <span class="n">func_aggregate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_chunk</span> <span class="o">=</span> <span class="n">func_chunk</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_combine</span> <span class="o">=</span> <span class="n">func_combine</span>
+
+<div class="viewcode-block" id="ReductionTransform._operation_aggregate_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._operation_aggregate_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_operation_aggregate_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_aggregate</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">np</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform._operation_aggregate_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._operation_aggregate_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_operation_aggregate_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_aggregate</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">cp</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform._operation_combine_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._operation_combine_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_operation_combine_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_combine</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">np</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform._operation_combine_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._operation_combine_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_operation_combine_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_combine</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">cp</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform._operation_chunk_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._operation_chunk_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_operation_chunk_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_chunk</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">np</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform._operation_chunk_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._operation_chunk_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_operation_chunk_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_chunk</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">cp</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform._lazy_transform_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._lazy_transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_combine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;combine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation_combine_cpu</span>
+
+        <span class="k">if</span> <span class="n">is_dask_cpu_dataframe</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">reduction</span><span class="p">(</span><span class="n">chunk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_chunk_cpu</span><span class="p">,</span>
+                               <span class="n">aggregate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_aggregate_cpu</span><span class="p">,</span>
+                               <span class="n">meta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output_size</span><span class="p">,</span>
+                               <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                               <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">da</span><span class="o">.</span><span class="n">reduction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span>
+                                <span class="n">chunk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_chunk_cpu</span><span class="p">,</span>
+                                <span class="n">aggregate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_aggregate_cpu</span><span class="p">,</span>
+                                <span class="n">dtype</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                                <span class="n">meta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_size</span><span class="p">,</span>
+                                              <span class="n">dtype</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
+                                <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform._lazy_transform_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._lazy_transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_combine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;combine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation_combine_gpu</span>
+
+        <span class="k">if</span> <span class="n">is_dask_gpu_dataframe</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">reduction</span><span class="p">(</span><span class="n">chunk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_chunk_gpu</span><span class="p">,</span>
+                               <span class="n">aggregate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_aggregate_gpu</span><span class="p">,</span>
+                               <span class="n">meta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output_size</span><span class="p">,</span>
+                               <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                               <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">da</span><span class="o">.</span><span class="n">reduction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span>
+                                <span class="n">chunk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_chunk_gpu</span><span class="p">,</span>
+                                <span class="n">aggregate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_aggregate_gpu</span><span class="p">,</span>
+                                <span class="n">dtype</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                                <span class="n">meta</span><span class="o">=</span><span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_size</span><span class="p">,</span>
+                                              <span class="n">dtype</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
+                                <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform._transform_cpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_chunk</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">np</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform._transform_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform._transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_chunk</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">xp</span><span class="o">=</span><span class="n">cp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReductionTransform.transform">
+<a class="viewcode-back" href="../../../autoapi/dasf/transforms/index.html#dasf.transforms.base.ReductionTransform.transform">[docs]</a>
+    <span class="nd">@task_handler</span>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="o">...</span></div>
+</div>
+
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2022, UNICAMP.
-
-    </p>
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -27,29 +27,42 @@ Functions
 .. autoapisummary::
 
    dasf.utils.funcs.human_readable_size
-   dasf.utils.funcs.get_full_qualname
    dasf.utils.funcs.get_worker_info
    dasf.utils.funcs.sync_future_loop
    dasf.utils.funcs.download_file
    dasf.utils.funcs.download_file_from_gdrive
    dasf.utils.funcs.get_machine_memory_avail
    dasf.utils.funcs.set_executor_default
+   dasf.utils.funcs.set_executor_cpu
    dasf.utils.funcs.set_executor_gpu
+   dasf.utils.funcs.set_executor_multi_cpu
+   dasf.utils.funcs.set_executor_multi_gpu
    dasf.utils.funcs.is_executor_single
    dasf.utils.funcs.is_executor_cluster
    dasf.utils.funcs.is_executor_cpu
    dasf.utils.funcs.is_executor_gpu
+   dasf.utils.funcs.executor_to_string
    dasf.utils.funcs.is_gpu_supported
+   dasf.utils.funcs.is_kvikio_supported
+   dasf.utils.funcs.is_gds_supported
+   dasf.utils.funcs.is_kvikio_compat_mode
+   dasf.utils.funcs.is_nvcomp_codec_supported
+   dasf.utils.funcs.is_jax_supported
    dasf.utils.funcs.is_dask_local_supported
    dasf.utils.funcs.get_dask_running_client
+   dasf.utils.funcs.get_backend_supported
    dasf.utils.funcs.is_dask_supported
    dasf.utils.funcs.is_dask_gpu_supported
+   dasf.utils.funcs.get_gpu_from_workers
    dasf.utils.funcs.get_gpu_count
    dasf.utils.funcs.get_dask_gpu_count
+   dasf.utils.funcs.get_dask_gpu_names
    dasf.utils.funcs.block_chunk_reduce
-   dasf.utils.funcs.return_local_and_gpu
+   dasf.utils.funcs.trim_chunk_location
    dasf.utils.funcs.get_dask_mem_usage
    dasf.utils.funcs.is_notebook
+   dasf.utils.funcs.weight_gaussian
+   dasf.utils.funcs.weight_radial
 
 
 
@@ -59,20 +72,32 @@ Attributes
 .. autoapisummary::
 
    dasf.utils.funcs.GPU_SUPPORTED
+   dasf.utils.funcs.JAX_SUPPORTED
+   dasf.utils.funcs.KVIKIO_SUPPORTED
+   dasf.utils.funcs.NV_COMP_BATCH_CODEC_SUPPORTED
 
 
 .. py:data:: GPU_SUPPORTED
 
    
 
+.. py:data:: JAX_SUPPORTED
+
+   
+
+.. py:data:: KVIKIO_SUPPORTED
+   :value: True
+
+   
+
+.. py:data:: NV_COMP_BATCH_CODEC_SUPPORTED
+   :value: True
+
+   
+
 .. py:function:: human_readable_size(size, decimal=3)
 
    converts data size into the proper measurement
-
-
-.. py:function:: get_full_qualname(obj)
-
-   Return fully qualified name of objects.
 
 
 .. py:function:: get_worker_info(client)
@@ -91,33 +116,9 @@ Attributes
 
    Bases: :py:obj:`threading.Thread`
 
-   A class that represents a thread of control.
+   ProgressBar representation for ipython notebooks only.
 
-   This class can be safely subclassed in a limited fashion. There are two ways
-   to specify the activity: by passing a callable object to the constructor, or
-   by overriding the run() method in a subclass.
-
-
-   This constructor should always be called with keyword arguments. Arguments are:
-
-   *group* should be None; reserved for future extension when a ThreadGroup
-   class is implemented.
-
-   *target* is the callable object to be invoked by the run()
-   method. Defaults to None, meaning nothing is called.
-
-   *name* is the thread name. By default, a unique name is constructed of
-   the form "Thread-N" where N is a small decimal number.
-
-   *args* is the argument tuple for the target invocation. Defaults to ().
-
-   *kwargs* is a dictionary of keyword arguments for the target
-   invocation. Defaults to {}.
-
-   If a subclass overrides the constructor, it must make sure to invoke
-   the base class constructor (Thread.__init__()) before doing anything
-   else to the thread.
-
+   Constructor of the Progress Bar
 
    .. py:attribute:: MIN_CUR
 
@@ -129,22 +130,22 @@ Attributes
 
    .. py:method:: show()
 
+      Return the HTML representation of the ProgressBar.
+
 
    .. py:method:: set_current(current, total)
+
+      Set current value of the bar progress
 
 
    .. py:method:: set_error(error)
 
+      Set an error if it exists.
+
 
    .. py:method:: run()
 
-      Method representing the thread's activity.
-
-      You may override this method in a subclass. The standard run() method
-      invokes the callable object passed to the object's constructor as the
-      target argument, if any, with sequential and keyword arguments taken
-      from the args and kwargs arguments, respectively.
-
+      Thread main loop that updates the bar progress.
 
 
 
@@ -168,7 +169,22 @@ Attributes
    Return executor as a CPU (default) instance.
 
 
+.. py:function:: set_executor_cpu()
+
+   Return executor as a CPU instance.
+
+
 .. py:function:: set_executor_gpu()
+
+   Return executor as a GPU instance.
+
+
+.. py:function:: set_executor_multi_cpu()
+
+   Return executor as a Multi CPU instance.
+
+
+.. py:function:: set_executor_multi_gpu()
 
    Return executor as a GPU instance.
 
@@ -193,9 +209,39 @@ Attributes
    Return if the executor is a GPU instance.
 
 
+.. py:function:: executor_to_string(dtype)
+
+   Return the executor type as a string.
+
+
 .. py:function:: is_gpu_supported()
 
    Return if GPU is supported.
+
+
+.. py:function:: is_kvikio_supported()
+
+   Return if kvikio is supported (installed).
+
+
+.. py:function:: is_gds_supported()
+
+   Return if GPU Direct Store is supported.
+
+
+.. py:function:: is_kvikio_compat_mode()
+
+   Return if Kvikio is running in compatibility mode.
+
+
+.. py:function:: is_nvcomp_codec_supported()
+
+   Return if NVidia Compressor Codecs are supported.
+
+
+.. py:function:: is_jax_supported()
+
+   Return if JAX is supported.
 
 
 .. py:function:: is_dask_local_supported()
@@ -208,6 +254,11 @@ Attributes
    Get Dask runner stanza.
 
 
+.. py:function:: get_backend_supported(func)
+
+   Get backend support.
+
+
 .. py:function:: is_dask_supported()
 
    Return if Dask is supported by the executor.
@@ -216,6 +267,11 @@ Attributes
 .. py:function:: is_dask_gpu_supported()
 
    Return if any node supports GPU.
+
+
+.. py:function:: get_gpu_from_workers()
+
+   Return if any worker has a GPU available.
 
 
 .. py:function:: get_gpu_count()
@@ -228,14 +284,19 @@ Attributes
    Get how many GPUs are available in each worker.
 
 
+.. py:function:: get_dask_gpu_names(fetch=True)
+
+   Get all GPU names of each worker.
+
+
 .. py:function:: block_chunk_reduce(dask_data, output_chunk)
 
    Reduce the chunk according the new output size.
 
 
-.. py:function:: return_local_and_gpu(executor, local, gpu)
+.. py:function:: trim_chunk_location(block_info, depth, index=0)
 
-   Return executor type based on passed preferences.
+   Trim an overlapped chunk to the exact size of the chunk.
 
 
 .. py:function:: get_dask_mem_usage(profiler)
@@ -246,5 +307,15 @@ Attributes
 .. py:function:: is_notebook()
 
    Return if the code is being executed in a IPyNotebook.
+
+
+.. py:function:: weight_gaussian(shape)
+
+   Produces a NDArray for a given shape with a Gaussian Distribution in all directions starting from the center
+
+
+.. py:function:: weight_radial(shape)
+
+   Produces a NDArray for a given shape with a decreasing rate starting from the center
 
 

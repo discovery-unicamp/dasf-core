@@ -294,6 +294,9 @@ Classes
               
 
 
+   .. py:method:: from_array(array)
+
+
    .. py:method:: load()
 
       Placeholder for load function.
@@ -313,7 +316,7 @@ Classes
 
 
 
-.. py:class:: DatasetZarr(name, download = False, root = None, chunks=None)
+.. py:class:: DatasetZarr(name, download = False, root = None, backend = None, chunks=None)
 
 
    Bases: :py:obj:`Dataset`
@@ -342,6 +345,17 @@ Classes
       -------
       tuple
           A tuple with the shape.
+
+
+
+   .. py:property:: chunksize
+
+      Returns the chunksize of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the chunksize.
 
 
 
@@ -420,6 +434,13 @@ Classes
       dict
           A dictionary with metadata information.
 
+
+
+   .. py:method:: __read_zarray(key)
+
+      Returns the value of ZArray JSON metadata.
+
+              
 
 
    .. py:method:: inspect_metadata()

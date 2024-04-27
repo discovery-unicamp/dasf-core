@@ -12,38 +12,56 @@ Classes
 
 .. autoapisummary::
 
-   dasf.ml.preprocessing.standardscaler.StantardScaler
+   dasf.ml.preprocessing.standardscaler.StandardScaler
 
 
 
 
-.. py:class:: StantardScaler(copy=True, with_mean=True, with_std=True, **kwargs)
+.. py:class:: StandardScaler(copy=True, with_mean=True, with_std=True, **kwargs)
 
 
    Bases: :py:obj:`dasf.transforms.base.Fit`, :py:obj:`dasf.transforms.base.FitTransform`, :py:obj:`dasf.transforms.base.TargeteredTransform`
 
+   Class representing a Fit operation of the pipeline.
+
    .. py:method:: _lazy_fit_cpu(X, y=None)
+
+      Respective lazy fit mocked function for CPUs.
 
 
    .. py:method:: _lazy_fit_gpu(X, y=None)
 
+      Respective lazy fit mocked function for GPUs.
+
 
    .. py:method:: _fit_cpu(X, y=None)
+
+      Respective immediate fit mocked function for local CPU(s).
 
 
    .. py:method:: _fit_gpu(X, y=None)
 
+      Respective immediate fit mocked function for local GPU(s).
+
 
    .. py:method:: _lazy_fit_transform_cpu(X, y=None)
+
+      Respective lazy fit with transform mocked function for CPUs.
 
 
    .. py:method:: _lazy_fit_transform_gpu(X, y=None)
 
+      Respective lazy fit with transform mocked function for GPUs.
+
 
    .. py:method:: _fit_transform_cpu(X, y=None)
 
+      Respective immediate fit with transform mocked function for local CPU(s).
+
 
    .. py:method:: _fit_transform_gpu(X, y=None)
+
+      Respective immediate fit with transform mocked function for local GPU(s).
 
 
    .. py:method:: _lazy_partial_fit_cpu(X, y=None)
@@ -52,22 +70,30 @@ Classes
    .. py:method:: _lazy_partial_fit_gpu(X, y=None)
 
 
-   .. py:method:: _fit_partial_cpu(X, y=None)
+   .. py:method:: _partial_fit_cpu(X, y=None)
 
 
-   .. py:method:: _fit_partial_gpu(X, y=None)
+   .. py:method:: _partial_fit_gpu(X, y=None)
 
 
    .. py:method:: _lazy_transform_cpu(X, copy=None)
 
+      Respective lazy transform mocked function for CPUs.
+
 
    .. py:method:: _lazy_transform_gpu(X, copy=None)
+
+      Respective lazy transform mocked function for GPUs.
 
 
    .. py:method:: _transform_cpu(X, copy=None)
 
+      Respective immediate transform mocked function for local CPU(s).
+
 
    .. py:method:: _transform_gpu(X, copy=None)
+
+      Respective immediate transform mocked function for local GPU(s).
 
 
    .. py:method:: _lazy_inverse_transform_cpu(X, copy=None)

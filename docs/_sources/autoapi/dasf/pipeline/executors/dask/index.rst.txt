@@ -18,20 +18,19 @@ Classes
 
 
 
-
-Attributes
-~~~~~~~~~~
+Functions
+~~~~~~~~~
 
 .. autoapisummary::
 
-   dasf.pipeline.executors.dask.GPU_SUPPORTED
+   dasf.pipeline.executors.dask.setup_dask_protocol
 
 
-.. py:data:: GPU_SUPPORTED
 
-   
+.. py:function:: setup_dask_protocol(protocol=None)
 
-.. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
+
+.. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, protocol=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
 
 
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
@@ -45,17 +44,27 @@ Attributes
    use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
                cluster (default False).
    profiler -- sets a Dask profiler.
+   protocol -- sets the Dask protocol (default TCP)
    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
 
    .. py:property:: ngpus
+      :type: int
 
 
    .. py:property:: is_connected
+      :type: bool
+
+
+   .. py:property:: info
+      :type: str
 
 
    .. py:method:: execute(fn, *args, **kwargs)
+
+
+   .. py:method:: register_plugin(plugin)
 
 
    .. py:method:: register_dataset(**kwargs)
@@ -70,8 +79,11 @@ Attributes
    .. py:method:: shutdown(gracefully=True)
 
 
+   .. py:method:: close()
 
-.. py:class:: DaskTasksPipelineExecutor(address=None, port=8786, local=False, use_gpu=True, profiler=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
+
+
+.. py:class:: DaskTasksPipelineExecutor(address=None, port=8786, local=False, use_gpu=True, profiler=None, protocol=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
 
 
    Bases: :py:obj:`DaskPipelineExecutor`
@@ -108,6 +120,9 @@ Attributes
 
 
    .. py:method:: shutdown(gracefully=True)
+
+
+   .. py:method:: close()
 
 
 

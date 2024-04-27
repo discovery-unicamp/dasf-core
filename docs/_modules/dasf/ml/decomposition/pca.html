@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dasf.ml.decomposition.pca &mdash; DASF 1.0 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <title>dasf.ml.decomposition.pca &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -34,7 +36,7 @@
             DASF
           </a>
               <div class="version">
-                1.0
+                1.0b5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -45,6 +47,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../principles.html">Principles</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
@@ -78,22 +81,22 @@
   <h1>Source code for dasf.ml.decomposition.pca</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="k">as</span> <span class="n">PCA_CPU</span>
 <span class="kn">from</span> <span class="nn">dask_ml.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="k">as</span> <span class="n">PCA_MCPU</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="k">as</span> <span class="n">PCA_CPU</span>
 
-<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_dask_supported</span>
-<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_gpu_supported</span>
-<span class="kn">from</span> <span class="nn">dasf.transforms.base</span> <span class="kn">import</span> <span class="n">Fit</span><span class="p">,</span> <span class="n">FitTransform</span>
-<span class="kn">from</span> <span class="nn">dasf.transforms.base</span> <span class="kn">import</span> <span class="n">TargeteredTransform</span>
+<span class="kn">from</span> <span class="nn">dasf.transforms.base</span> <span class="kn">import</span> <span class="n">Fit</span><span class="p">,</span> <span class="n">FitTransform</span><span class="p">,</span> <span class="n">TargeteredTransform</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_dask_gpu_supported</span><span class="p">,</span> <span class="n">is_dask_supported</span><span class="p">,</span> <span class="n">is_gpu_supported</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">cuml.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="k">as</span> <span class="n">PCA_GPU</span>
     <span class="kn">from</span> <span class="nn">cuml.dask.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="k">as</span> <span class="n">PCA_MGPU</span>
+    <span class="kn">from</span> <span class="nn">cuml.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="k">as</span> <span class="n">PCA_GPU</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="PCA"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA">[docs]</a><span class="k">class</span> <span class="nc">PCA</span><span class="p">(</span><span class="n">Fit</span><span class="p">,</span> <span class="n">FitTransform</span><span class="p">,</span> <span class="n">TargeteredTransform</span><span class="p">):</span>
+<div class="viewcode-block" id="PCA">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA">[docs]</a>
+<span class="k">class</span> <span class="nc">PCA</span><span class="p">(</span><span class="n">Fit</span><span class="p">,</span> <span class="n">FitTransform</span><span class="p">,</span> <span class="n">TargeteredTransform</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n_components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -129,6 +132,9 @@
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterated_power</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                    <span class="n">iterated_power</span> <span class="o">=</span> <span class="mi">15</span>  <span class="c1"># Default</span>
+
                 <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="o">=</span> <span class="n">PCA_GPU</span><span class="p">(</span>
                     <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
                     <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span>
@@ -140,87 +146,141 @@
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="c1"># XXX: PCA in Multi GPU requires a Client instance,</span>
-            <span class="c1"># skip if not present.</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="o">=</span> <span class="n">PCA_MGPU</span><span class="p">(</span>
-                    <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
-                    <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span>
-                    <span class="n">whiten</span><span class="o">=</span><span class="n">whiten</span><span class="p">,</span>
-                    <span class="n">svd_solver</span><span class="o">=</span><span class="n">svd_solver</span><span class="p">,</span>
-                    <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>
-                    <span class="n">iterated_power</span><span class="o">=</span><span class="n">iterated_power</span><span class="p">,</span>
-                    <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># XXX: PCA in Multi GPU requires a Client instance,</span>
+        <span class="c1"># skip if not present.</span>
+        <span class="k">if</span> <span class="n">is_dask_gpu_supported</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="o">=</span> <span class="n">PCA_MGPU</span><span class="p">(</span>
+                <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
+                <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span>
+                <span class="n">whiten</span><span class="o">=</span><span class="n">whiten</span><span class="p">,</span>
+                <span class="n">svd_solver</span><span class="o">=</span><span class="n">svd_solver</span><span class="p">,</span>
+                <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>
+                <span class="n">iterated_power</span><span class="o">=</span><span class="n">iterated_power</span><span class="p">,</span>
+                <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="PCA._lazy_fit_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mcpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+<div class="viewcode-block" id="PCA._lazy_fit_cpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mcpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._lazy_fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._lazy_fit_gpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._fit_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._fit_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PCA._fit_cpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PCA._fit_gpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._lazy_fit_transform_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._lazy_fit_transform_cpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mcpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._lazy_fit_transform_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._lazy_fit_transform_gpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
+        <span class="c1"># The argument &#39;y&#39; is just to keep the API consistent</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._fit_transform_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._fit_transform_cpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._fit_transform_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._fit_transform_gpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._lazy_transform_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._lazy_transform_cpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mcpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._lazy_transform_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_lazy_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._lazy_transform_gpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_lazy_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._transform_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._transform_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._transform_cpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._transform_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._transform_gpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._transform_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._transform_gpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._transform_gpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PCA._get_covariance_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._get_covariance_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_get_covariance_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._get_covariance_cpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._get_covariance_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_get_covariance_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">get_covariance</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PCA.get_covariance"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA.get_covariance">[docs]</a>    <span class="k">def</span> <span class="nf">get_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA.get_covariance">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA.get_covariance">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_dask_supported</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_covariance_cpu</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="PCA._get_precision_cpu"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._get_precision_cpu">[docs]</a>    <span class="k">def</span> <span class="nf">_get_precision_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA._get_precision_cpu">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._get_precision_cpu">[docs]</a>
+    <span class="k">def</span> <span class="nf">_get_precision_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">get_precision</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PCA.get_precision"><a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA.get_precision">[docs]</a>    <span class="k">def</span> <span class="nf">get_precision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PCA.get_precision">
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA.get_precision">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_precision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_dask_supported</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_precision_cpu</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+</div>
+
 </pre></div>
 
            </div>
@@ -230,7 +290,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, UNICAMP.</p>
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

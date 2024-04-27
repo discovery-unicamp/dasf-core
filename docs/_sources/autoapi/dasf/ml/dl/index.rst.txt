@@ -41,13 +41,19 @@ Classes
 
    Bases: :py:obj:`dasf.transforms.base.Fit`
 
+   Class representing a Fit operation of the pipeline.
+
    .. py:method:: _lazy_fit_generic(X, y, accel, ngpus)
 
 
    .. py:method:: _lazy_fit_gpu(X, y=None)
 
+      Respective lazy fit mocked function for GPUs.
+
 
    .. py:method:: _lazy_fit_cpu(X, y=None)
+
+      Respective lazy fit mocked function for CPUs.
 
 
    .. py:method:: __fit_generic(X, y, accel, ngpus)
@@ -55,8 +61,12 @@ Classes
 
    .. py:method:: _fit_gpu(X, y=None)
 
+      Respective immediate fit mocked function for local GPU(s).
+
 
    .. py:method:: _fit_cpu(X, y=None)
+
+      Respective immediate fit mocked function for local CPU(s).
 
 
 

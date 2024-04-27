@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.pipeline.executors.wrapper &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=fd3f3429" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../../_static/jquery.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-        <script src="../../../../../_static/doctools.js"></script>
-        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
@@ -100,25 +102,59 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.pipeline.executors.wrapper">
-<span id="dasf-pipeline-executors-wrapper"></span><h1><a class="reference internal" href="#module-dasf.pipeline.executors.wrapper" title="dasf.pipeline.executors.wrapper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.wrapper</span></code></a><a class="headerlink" href="#module-dasf.pipeline.executors.wrapper" title="Permalink to this heading"></a></h1>
+<span id="dasf-pipeline-executors-wrapper"></span><h1><a class="reference internal" href="#module-dasf.pipeline.executors.wrapper" title="dasf.pipeline.executors.wrapper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.wrapper</span></code></a><a class="headerlink" href="#module-dasf.pipeline.executors.wrapper" title="Link to this heading"></a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.pipeline.executors.wrapper.PrefectPipelineExecutor" title="dasf.pipeline.executors.wrapper.PrefectPipelineExecutor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PrefectPipelineExecutor</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.pipeline.executors.wrapper.LocalExecutor" title="dasf.pipeline.executors.wrapper.LocalExecutor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LocalExecutor</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="dasf.pipeline.executors.wrapper.PrefectPipelineExecutor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.wrapper.</span></span><span class="sig-name descname"><span class="pre">PrefectPipelineExecutor</span></span><a class="headerlink" href="#dasf.pipeline.executors.wrapper.PrefectPipelineExecutor" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">prefect.executors.local.LocalExecutor</span></code></p>
+<dt class="sig sig-object py" id="dasf.pipeline.executors.wrapper.LocalExecutor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.wrapper.</span></span><span class="sig-name descname"><span class="pre">LocalExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_allocator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cupy'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/wrapper.html#LocalExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.wrapper.LocalExecutor" title="Link to this definition"></a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.wrapper.LocalExecutor.ngpus">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ngpus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dasf.pipeline.executors.wrapper.LocalExecutor.ngpus" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
-<dt class="sig sig-object py" id="dasf.pipeline.executors.wrapper.PrefectPipelineExecutor.dtype">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><a class="headerlink" href="#dasf.pipeline.executors.wrapper.PrefectPipelineExecutor.dtype" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.pipeline.executors.wrapper.LocalExecutor.is_connected">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_connected</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#dasf.pipeline.executors.wrapper.LocalExecutor.is_connected" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.wrapper.LocalExecutor.pre_run">
+<span class="sig-name descname"><span class="pre">pre_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipeline</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/wrapper.html#LocalExecutor.pre_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.wrapper.LocalExecutor.pre_run" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.wrapper.LocalExecutor.post_run">
+<span class="sig-name descname"><span class="pre">post_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipeline</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/wrapper.html#LocalExecutor.post_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.wrapper.LocalExecutor.post_run" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.wrapper.LocalExecutor.get_backend">
+<span class="sig-name descname"><span class="pre">get_backend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/wrapper.html#LocalExecutor.get_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.wrapper.LocalExecutor.get_backend" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.wrapper.LocalExecutor.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/wrapper.html#LocalExecutor.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.wrapper.LocalExecutor.execute" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>

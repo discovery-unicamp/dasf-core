@@ -22,10 +22,16 @@ Classes
 
    Bases: :py:obj:`dasf.ml.mixture.classifier.MixtureClassifier`
 
+   Class representing a Fit operation of the pipeline.
+
    .. py:method:: _fit_cpu(X, y=None)
+
+      Respective immediate fit mocked function for local CPU(s).
 
 
    .. py:method:: _fit_predict_cpu(X, y=None)
+
+      Respective immediate fit with predict mocked function for local CPU(s).
 
 
    .. py:method:: _predict_cpu(X, y=None)
@@ -33,8 +39,12 @@ Classes
 
    .. py:method:: _set_params_cpu(**params)
 
+      Respective immediate set_params mocked function for local CPU(s).
+
 
    .. py:method:: _get_params_cpu(deep=True)
+
+      Respective immediate get_params mocked function for local CPU(s).
 
 
 

@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.profile.plugins &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="dasf.profile.plugins.dasf" href="dasf/index.html" />
-    <link rel="prev" title="dasf.profile" href="../index.html" /> 
+    <link rel="next" title="dasf.profile.profiler" href="../profiler/index.html" />
+    <link rel="prev" title="dasf.profile.analysis" href="../analysis/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -99,16 +101,236 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.profile.plugins">
-<span id="dasf-profile-plugins"></span><h1><a class="reference internal" href="#module-dasf.profile.plugins" title="dasf.profile.plugins"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins</span></code></a><a class="headerlink" href="#module-dasf.profile.plugins" title="Permalink to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="dasf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins.dasf</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dask/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins.dask</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="resource_monitor/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins.resource_monitor</span></code></a></li>
-</ul>
+<span id="dasf-profile-plugins"></span><h1><a class="reference internal" href="#module-dasf.profile.plugins" title="dasf.profile.plugins"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins</span></code></a><a class="headerlink" href="#module-dasf.profile.plugins" title="Link to this heading"></a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.profile.plugins.WorkerTaskPlugin" title="dasf.profile.plugins.WorkerTaskPlugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WorkerTaskPlugin</span></code></a></p></td>
+<td><p>Interface to extend the Worker</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dasf.profile.plugins.ResourceMonitor" title="dasf.profile.plugins.ResourceMonitor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResourceMonitor</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.profile.plugins.GPUAnnotationPlugin" title="dasf.profile.plugins.GPUAnnotationPlugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPUAnnotationPlugin</span></code></a></p></td>
+<td><p>Interface to extend the Worker</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.profile.plugins.WorkerTaskPlugin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.profile.plugins.</span></span><span class="sig-name descname"><span class="pre">WorkerTaskPlugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TracePlugin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#WorkerTaskPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.WorkerTaskPlugin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">distributed.diagnostics.plugin.WorkerPlugin</span></code></p>
+<p>Interface to extend the Worker</p>
+<p>A worker plugin enables custom code to run at different stages of the Workers’
+lifecycle.</p>
+<p>A plugin enables custom code to run at each of step of a Workers’s life. Whenever such
+an event happens, the corresponding method on this class will be called. Note that the
+user code always runs within the Worker’s main thread.</p>
+<p>To implement a plugin:</p>
+<ol class="arabic simple">
+<li><p>inherit from this class</p></li>
+<li><p>override some of its methods</p></li>
+<li><p>register the plugin using <code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.register_plugin</span></code>.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">idempotent</span></code> attribute is used to control whether or not the plugin should
+be ignored upon registration if a worker plugin with the same name already exists.
+If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the plugin is ignored, otherwise the existing plugin is replaced.
+Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ErrorLogger</span><span class="p">(</span><span class="n">WorkerPlugin</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">worker</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">finish</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">finish</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="gp">... </span>            <span class="n">exc_info</span> <span class="o">=</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">exception</span><span class="p">),</span> <span class="n">ts</span><span class="o">.</span><span class="n">exception</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">traceback</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+<span class="gp">... </span>                <span class="s2">&quot;Error during computation of &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">exc_info</span><span class="o">=</span><span class="n">exc_info</span>
+<span class="gp">... </span>            <span class="p">)</span>
+</pre></div>
 </div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plugin</span> <span class="o">=</span> <span class="n">ErrorLogger</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">register_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>  
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.WorkerTaskPlugin.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#WorkerTaskPlugin.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.WorkerTaskPlugin.setup" title="Link to this definition"></a></dt>
+<dd><p>Run when the plugin is attached to a worker. This happens when the plugin is registered
+and attached to existing workers, or when a worker is created after the plugin has been
+registered.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.WorkerTaskPlugin.transition">
+<span class="sig-name descname"><span class="pre">transition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finish</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#WorkerTaskPlugin.transition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.WorkerTaskPlugin.transition" title="Link to this definition"></a></dt>
+<dd><p>Throughout the lifecycle of a task (see <span class="xref std std-doc">Worker State</span>), Workers are instructed by the scheduler to compute
+certain tasks, resulting in transitions in the state of each task. The
+Worker owning the task is then notified of this state transition.</p>
+<p>Whenever a task changes its state, this method will be called.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is an advanced feature and the transition mechanism and details
+of task states are subject to change without deprecation cycle.</p>
+</div>
+<section id="parameters">
+<h5>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h5>
+<p>key :
+start :</p>
+<blockquote>
+<div><p>Start state of the transition.
+One of waiting, ready, executing, long-running, memory, error.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>finish :</dt><dd><p>Final state of the transition.</p>
+</dd>
+<dt>kwargs :</dt><dd><p>More options passed when transitioning</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.profile.plugins.</span></span><span class="sig-name descname"><span class="pre">ResourceMonitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autostart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ResourceMonitor'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">monitor_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#ResourceMonitor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>autostart</strong> (<em>bool</em>)</p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.__del__">
+<span class="sig-name descname"><span class="pre">__del__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#ResourceMonitor.__del__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.__del__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#ResourceMonitor.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#ResourceMonitor.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.start" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#ResourceMonitor.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.stop" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dasf.profile.plugins.GPUAnnotationPlugin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.profile.plugins.</span></span><span class="sig-name descname"><span class="pre">GPUAnnotationPlugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GPUAnnotationPlugin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#GPUAnnotationPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.GPUAnnotationPlugin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">distributed.diagnostics.plugin.WorkerPlugin</span></code></p>
+<p>Interface to extend the Worker</p>
+<p>A worker plugin enables custom code to run at different stages of the Workers’
+lifecycle.</p>
+<p>A plugin enables custom code to run at each of step of a Workers’s life. Whenever such
+an event happens, the corresponding method on this class will be called. Note that the
+user code always runs within the Worker’s main thread.</p>
+<p>To implement a plugin:</p>
+<ol class="arabic simple">
+<li><p>inherit from this class</p></li>
+<li><p>override some of its methods</p></li>
+<li><p>register the plugin using <code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.register_plugin</span></code>.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">idempotent</span></code> attribute is used to control whether or not the plugin should
+be ignored upon registration if a worker plugin with the same name already exists.
+If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the plugin is ignored, otherwise the existing plugin is replaced.
+Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<section id="id1">
+<h4>Examples<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ErrorLogger</span><span class="p">(</span><span class="n">WorkerPlugin</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">worker</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">finish</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">finish</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="gp">... </span>            <span class="n">exc_info</span> <span class="o">=</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">exception</span><span class="p">),</span> <span class="n">ts</span><span class="o">.</span><span class="n">exception</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">traceback</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+<span class="gp">... </span>                <span class="s2">&quot;Error during computation of &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">exc_info</span><span class="o">=</span><span class="n">exc_info</span>
+<span class="gp">... </span>            <span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plugin</span> <span class="o">=</span> <span class="n">ErrorLogger</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">register_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>  
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.GPUAnnotationPlugin.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#GPUAnnotationPlugin.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.GPUAnnotationPlugin.setup" title="Link to this definition"></a></dt>
+<dd><p>Run when the plugin is attached to a worker. This happens when the plugin is registered
+and attached to existing workers, or when a worker is created after the plugin has been
+registered.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.profile.plugins.GPUAnnotationPlugin.transition">
+<span class="sig-name descname"><span class="pre">transition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finish</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#GPUAnnotationPlugin.transition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.GPUAnnotationPlugin.transition" title="Link to this definition"></a></dt>
+<dd><p>Throughout the lifecycle of a task (see <span class="xref std std-doc">Worker State</span>), Workers are instructed by the scheduler to compute
+certain tasks, resulting in transitions in the state of each task. The
+Worker owning the task is then notified of this state transition.</p>
+<p>Whenever a task changes its state, this method will be called.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is an advanced feature and the transition mechanism and details
+of task states are subject to change without deprecation cycle.</p>
+</div>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<p>key :
+start :</p>
+<blockquote>
+<div><p>Start state of the transition.
+One of waiting, ready, executing, long-running, memory, error.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>finish :</dt><dd><p>Final state of the transition.</p>
+</dd>
+<dt>kwargs :</dt><dd><p>More options passed when transitioning</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 </section>
 
@@ -116,8 +338,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="dasf.profile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dasf/index.html" class="btn btn-neutral float-right" title="dasf.profile.plugins.dasf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../analysis/index.html" class="btn btn-neutral float-left" title="dasf.profile.analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../profiler/index.html" class="btn btn-neutral float-right" title="dasf.profile.profiler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

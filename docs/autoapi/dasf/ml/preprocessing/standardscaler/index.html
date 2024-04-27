@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.preprocessing.standardscaler &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=fd3f3429" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../../_static/jquery.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-        <script src="../../../../../_static/doctools.js"></script>
-        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
@@ -100,120 +102,133 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.ml.preprocessing.standardscaler">
-<span id="dasf-ml-preprocessing-standardscaler"></span><h1><a class="reference internal" href="#module-dasf.ml.preprocessing.standardscaler" title="dasf.ml.preprocessing.standardscaler"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.preprocessing.standardscaler</span></code></a><a class="headerlink" href="#module-dasf.ml.preprocessing.standardscaler" title="Permalink to this heading"></a></h1>
+<span id="dasf-ml-preprocessing-standardscaler"></span><h1><a class="reference internal" href="#module-dasf.ml.preprocessing.standardscaler" title="dasf.ml.preprocessing.standardscaler"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.preprocessing.standardscaler</span></code></a><a class="headerlink" href="#module-dasf.ml.preprocessing.standardscaler" title="Link to this heading"></a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.ml.preprocessing.standardscaler.StantardScaler" title="dasf.ml.preprocessing.standardscaler.StantardScaler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StantardScaler</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.ml.preprocessing.standardscaler.StandardScaler" title="dasf.ml.preprocessing.standardscaler.StandardScaler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StandardScaler</span></code></a></p></td>
+<td><p>Class representing a Fit operation of the pipeline.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.preprocessing.standardscaler.</span></span><span class="sig-name descname"><span class="pre">StantardScaler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.preprocessing.standardscaler.</span></span><span class="sig-name descname"><span class="pre">StandardScaler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.Fit" title="dasf.transforms.base.Fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Fit</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.FitTransform" title="dasf.transforms.base.FitTransform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.FitTransform</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.TargeteredTransform" title="dasf.transforms.base.TargeteredTransform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.TargeteredTransform</span></code></a></p>
+<p>Class representing a Fit operation of the pipeline.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_fit_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_fit_cpu" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_cpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy fit mocked function for CPUs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy fit mocked function for GPUs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._fit_cpu">
+<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate fit mocked function for local CPU(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._fit_gpu">
+<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate fit mocked function for local GPU(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_transform_cpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy fit with transform mocked function for CPUs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_transform_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_fit_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy fit with transform mocked function for GPUs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._fit_transform_cpu">
+<span class="sig-name descname"><span class="pre">_fit_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate fit with transform mocked function for local CPU(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._fit_transform_gpu">
+<span class="sig-name descname"><span class="pre">_fit_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate fit with transform mocked function for local GPU(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_cpu">
+<span class="sig-name descname"><span class="pre">_lazy_partial_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_partial_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_cpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_fit_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_fit_gpu" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_partial_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_partial_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_gpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._fit_cpu">
-<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._fit_cpu" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_cpu">
+<span class="sig-name descname"><span class="pre">_partial_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._partial_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_cpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._fit_gpu">
-<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._fit_gpu" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_gpu">
+<span class="sig-name descname"><span class="pre">_partial_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._partial_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_gpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_fit_transform_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_fit_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_fit_transform_cpu" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_transform_cpu">
+<span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy transform mocked function for CPUs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_transform_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy transform mocked function for GPUs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._transform_cpu">
+<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate transform mocked function for local CPU(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._transform_gpu">
+<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate transform mocked function for local GPU(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_inverse_transform_cpu">
+<span class="sig-name descname"><span class="pre">_lazy_inverse_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_inverse_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_inverse_transform_cpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_fit_transform_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_fit_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_fit_transform_gpu" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_inverse_transform_gpu">
+<span class="sig-name descname"><span class="pre">_lazy_inverse_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_inverse_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_inverse_transform_gpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._fit_transform_cpu">
-<span class="sig-name descname"><span class="pre">_fit_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._fit_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._fit_transform_cpu" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._inverse_transform_cpu">
+<span class="sig-name descname"><span class="pre">_inverse_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._inverse_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._inverse_transform_cpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._fit_transform_gpu">
-<span class="sig-name descname"><span class="pre">_fit_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._fit_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._fit_transform_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_partial_fit_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_partial_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_partial_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_partial_fit_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_partial_fit_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_partial_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_partial_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_partial_fit_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._fit_partial_cpu">
-<span class="sig-name descname"><span class="pre">_fit_partial_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._fit_partial_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._fit_partial_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._fit_partial_gpu">
-<span class="sig-name descname"><span class="pre">_fit_partial_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._fit_partial_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._fit_partial_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_transform_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_transform_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_transform_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._transform_cpu">
-<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._transform_gpu">
-<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._transform_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_inverse_transform_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_inverse_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_inverse_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_inverse_transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_inverse_transform_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_inverse_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._lazy_inverse_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._lazy_inverse_transform_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._inverse_transform_cpu">
-<span class="sig-name descname"><span class="pre">_inverse_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._inverse_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._inverse_transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StantardScaler._inverse_transform_gpu">
-<span class="sig-name descname"><span class="pre">_inverse_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StantardScaler._inverse_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StantardScaler._inverse_transform_gpu" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._inverse_transform_gpu">
+<span class="sig-name descname"><span class="pre">_inverse_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._inverse_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._inverse_transform_gpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>

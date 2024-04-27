@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.transforms.transforms &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -99,187 +101,216 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.transforms.transforms">
-<span id="dasf-transforms-transforms"></span><h1><a class="reference internal" href="#module-dasf.transforms.transforms" title="dasf.transforms.transforms"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms.transforms</span></code></a><a class="headerlink" href="#module-dasf.transforms.transforms" title="Permalink to this heading"></a></h1>
+<span id="dasf-transforms-transforms"></span><h1><a class="reference internal" href="#module-dasf.transforms.transforms" title="dasf.transforms.transforms"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms.transforms</span></code></a><a class="headerlink" href="#module-dasf.transforms.transforms" title="Link to this heading"></a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.transforms.transforms.Normalize" title="dasf.transforms.transforms.Normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Normalize</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Class representing a Transform operation of the pipeline.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.transforms.transforms.ArrayToZarr" title="dasf.transforms.transforms.ArrayToZarr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ArrayToZarr</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Class representing a Transform operation of the pipeline.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.transforms.transforms.ArrayToHDF5" title="dasf.transforms.transforms.ArrayToHDF5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ArrayToHDF5</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Class representing a Transform operation of the pipeline.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.transforms.transforms.ZarrToArray" title="dasf.transforms.transforms.ZarrToArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZarrToArray</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Class representing a Transform operation of the pipeline.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.transforms.transforms.ArraysToDataFrame" title="dasf.transforms.transforms.ArraysToDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ArraysToDataFrame</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Class representing a Transform operation of the pipeline.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.Normalize">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">Normalize</span></span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#Normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.Normalize" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">Normalize</span></span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#Normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.Normalize" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
+<p>Class representing a Transform operation of the pipeline.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.Normalize.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#Normalize.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.Normalize.transform" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#Normalize.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.Normalize.transform" title="Link to this definition"></a></dt>
+<dd><p>Generic transform funtion according executor.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">ArrayToZarr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">ArrayToZarr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
+<p>Class representing a Transform operation of the pipeline.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr._convert_filename">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._convert_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._convert_filename" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._convert_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._convert_filename" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr._lazy_transform_generic_all">
-<span class="sig-name descname"><span class="pre">_lazy_transform_generic_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._lazy_transform_generic_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._lazy_transform_generic_all" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_lazy_transform_generic_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._lazy_transform_generic_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._lazy_transform_generic_all" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr._transform_generic_all">
-<span class="sig-name descname"><span class="pre">_transform_generic_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunks</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._transform_generic_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._transform_generic_all" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_transform_generic_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunks</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._transform_generic_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._transform_generic_all" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr._lazy_transform_generic">
-<span class="sig-name descname"><span class="pre">_lazy_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._lazy_transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._lazy_transform_generic" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_lazy_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._lazy_transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._lazy_transform_generic" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr._transform_generic">
-<span class="sig-name descname"><span class="pre">_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._transform_generic" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._transform_generic" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr._lazy_transform_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._lazy_transform_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._lazy_transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy transform mocked function for GPUs.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr._lazy_transform_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._lazy_transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._lazy_transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy transform mocked function for CPUs.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr._transform_gpu">
-<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._transform_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate transform mocked function for local GPU(s).</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToZarr._transform_cpu">
-<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToZarr._transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate transform mocked function for local CPU(s).</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">ArrayToHDF5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">ArrayToHDF5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
+<p>Class representing a Transform operation of the pipeline.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5._convert_filename">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._convert_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._convert_filename" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._convert_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._convert_filename" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5._lazy_transform_generic_all">
-<span class="sig-name descname"><span class="pre">_lazy_transform_generic_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._lazy_transform_generic_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._lazy_transform_generic_all" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_lazy_transform_generic_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._lazy_transform_generic_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._lazy_transform_generic_all" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5._transform_generic_all">
-<span class="sig-name descname"><span class="pre">_transform_generic_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._transform_generic_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._transform_generic_all" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_transform_generic_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._transform_generic_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._transform_generic_all" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5._lazy_transform_generic">
-<span class="sig-name descname"><span class="pre">_lazy_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._lazy_transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._lazy_transform_generic" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_lazy_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._lazy_transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._lazy_transform_generic" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5._transform_generic">
-<span class="sig-name descname"><span class="pre">_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._transform_generic" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._transform_generic" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5._lazy_transform_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._lazy_transform_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._lazy_transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy transform mocked function for GPUs.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5._lazy_transform_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._lazy_transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._lazy_transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy transform mocked function for CPUs.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5._transform_gpu">
-<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._transform_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate transform mocked function for local GPU(s).</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArrayToHDF5._transform_cpu">
-<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArrayToHDF5._transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate transform mocked function for local CPU(s).</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ZarrToArray">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">ZarrToArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ZarrToArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ZarrToArray" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">ZarrToArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ZarrToArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ZarrToArray" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
+<p>Class representing a Transform operation of the pipeline.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ZarrToArray._convert_filename">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ZarrToArray._convert_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ZarrToArray._convert_filename" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ZarrToArray._convert_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ZarrToArray._convert_filename" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ZarrToArray.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ZarrToArray.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ZarrToArray.transform" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ZarrToArray.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ZarrToArray.transform" title="Link to this definition"></a></dt>
+<dd><p>Generic transform funtion according executor.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">ArraysToDataFrame</span></span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.transforms.</span></span><span class="sig-name descname"><span class="pre">ArraysToDataFrame</span></span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
+<p>Class representing a Transform operation of the pipeline.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame.__transform_generic">
-<span class="sig-name descname"><span class="pre">__transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame.__transform_generic" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame._build_dataframe">
+<span class="sig-name descname"><span class="pre">_build_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._build_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._build_dataframe" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame._lazy_transform">
+<span class="sig-name descname"><span class="pre">_lazy_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._lazy_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._lazy_transform" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame._lazy_transform_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._lazy_transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._lazy_transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy transform mocked function for CPUs.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame._lazy_transform_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._lazy_transform_gpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._lazy_transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective lazy transform mocked function for GPUs.</p>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame._transform_gpu">
-<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._transform_gpu" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame._transform">
+<span class="sig-name descname"><span class="pre">_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._transform" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame._transform_cpu">
-<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._transform_cpu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._transform_cpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate transform mocked function for local CPU(s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.transforms.transforms.ArraysToDataFrame._transform_gpu">
+<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/transforms.html#ArraysToDataFrame._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.transforms.ArraysToDataFrame._transform_gpu" title="Link to this definition"></a></dt>
+<dd><p>Respective immediate transform mocked function for local GPU(s).</p>
+</dd></dl>
 
 </dd></dl>
 

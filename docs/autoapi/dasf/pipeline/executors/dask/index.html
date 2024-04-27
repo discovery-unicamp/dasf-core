@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.pipeline.executors.dask &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=fd3f3429" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../../_static/jquery.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-        <script src="../../../../../_static/doctools.js"></script>
-        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
@@ -100,11 +102,11 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.pipeline.executors.dask">
-<span id="dasf-pipeline-executors-dask"></span><h1><a class="reference internal" href="#module-dasf.pipeline.executors.dask" title="dasf.pipeline.executors.dask"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.dask</span></code></a><a class="headerlink" href="#module-dasf.pipeline.executors.dask" title="Permalink to this heading"></a></h1>
+<span id="dasf-pipeline-executors-dask"></span><h1><a class="reference internal" href="#module-dasf.pipeline.executors.dask" title="dasf.pipeline.executors.dask"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.dask</span></code></a><a class="headerlink" href="#module-dasf.pipeline.executors.dask" title="Link to this heading"></a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor" title="dasf.pipeline.executors.dask.DaskPipelineExecutor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DaskPipelineExecutor</span></code></a></p></td>
@@ -119,23 +121,23 @@
 </tbody>
 </table>
 </section>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.pipeline.executors.dask.GPU_SUPPORTED" title="dasf.pipeline.executors.dask.GPU_SUPPORTED"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPU_SUPPORTED</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.pipeline.executors.dask.setup_dask_protocol" title="dasf.pipeline.executors.dask.setup_dask_protocol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_dask_protocol</span></code></a>([protocol])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py data">
-<dt class="sig sig-object py" id="dasf.pipeline.executors.dask.GPU_SUPPORTED">
-<span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.dask.</span></span><span class="sig-name descname"><span class="pre">GPU_SUPPORTED</span></span><a class="headerlink" href="#dasf.pipeline.executors.dask.GPU_SUPPORTED" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.dask.setup_dask_protocol">
+<span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.dask.</span></span><span class="sig-name descname"><span class="pre">setup_dask_protocol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#setup_dask_protocol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.setup_dask_protocol" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.dask.</span></span><span class="sig-name descname"><span class="pre">DaskPipelineExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8786</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_allocator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cupy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.dask.</span></span><span class="sig-name descname"><span class="pre">DaskPipelineExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8786</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_allocator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cupy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.pipeline.executors.base.Executor" title="dasf.pipeline.executors.base.Executor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.executors.base.Executor</span></code></a></p>
 <p>A pipeline engine based on dask data flow.</p>
 <p>Keyword arguments:
@@ -147,49 +149,85 @@ use_gpu – in conjunction with <cite>local</cite>, it kicks off a local CUDA Da
 <div><p>cluster (default False).</p>
 </div></blockquote>
 <p>profiler – sets a Dask profiler.
+protocol – sets the Dask protocol (default TCP)
 gpu_allocator – sets which is the memory allocator for GPU (default cupy).
 cluster_kwargs – extra Dask parameters like memory, processes, etc.
 client_kwargs – extra Client parameters.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.ngpus">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ngpus</span></span><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.ngpus" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ngpus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.ngpus" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.is_connected">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_connected</span></span><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.is_connected" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_connected</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.is_connected" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.info">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.info" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.execute">
-<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.execute" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.execute" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.register_plugin">
+<span class="sig-name descname"><span class="pre">register_plugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plugin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.register_plugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.register_plugin" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plugin</strong> (<em>Union</em><em>[</em><em>distributed.diagnostics.plugin.WorkerPlugin</em><em>, </em><em>distributed.diagnostics.plugin.NannyPlugin</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.register_dataset">
-<span class="sig-name descname"><span class="pre">register_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.register_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.register_dataset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">register_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.register_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.register_dataset" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.has_dataset">
-<span class="sig-name descname"><span class="pre">has_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.has_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.has_dataset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">has_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.has_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.has_dataset" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.get_dataset">
-<span class="sig-name descname"><span class="pre">get_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.get_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.get_dataset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.get_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.get_dataset" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.shutdown">
-<span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gracefully</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.shutdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.shutdown" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gracefully</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.shutdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.shutdown" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPipelineExecutor.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPipelineExecutor.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor.close" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskTasksPipelineExecutor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.dask.</span></span><span class="sig-name descname"><span class="pre">DaskTasksPipelineExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8786</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_allocator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cupy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.dask.</span></span><span class="sig-name descname"><span class="pre">DaskTasksPipelineExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8786</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_allocator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cupy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#dasf.pipeline.executors.dask.DaskPipelineExecutor" title="dasf.pipeline.executors.dask.DaskPipelineExecutor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DaskPipelineExecutor</span></code></a></p>
 <p>A not centric execution engine based on dask.</p>
 <p>Keyword arguments:
@@ -206,44 +244,49 @@ cluster_kwargs – extra Dask parameters like memory, processes, etc.
 client_kwargs – extra Client parameters.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.pre_run">
-<span class="sig-name descname"><span class="pre">pre_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipeline</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.pre_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.pre_run" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">pre_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipeline</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.pre_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.pre_run" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.post_run">
-<span class="sig-name descname"><span class="pre">post_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipeline</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.post_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.post_run" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">post_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipeline</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.post_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.post_run" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.execute">
-<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.execute" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.execute" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.register_dataset">
-<span class="sig-name descname"><span class="pre">register_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.register_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.register_dataset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">register_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.register_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.register_dataset" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.has_dataset">
-<span class="sig-name descname"><span class="pre">has_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.has_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.has_dataset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">has_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.has_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.has_dataset" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.get_dataset">
-<span class="sig-name descname"><span class="pre">get_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.get_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.get_dataset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.get_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.get_dataset" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.shutdown">
-<span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gracefully</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.shutdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.shutdown" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gracefully</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.shutdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.shutdown" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskTasksPipelineExecutor.close" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.dask.DaskPBSPipelineExecutor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.dask.</span></span><span class="sig-name descname"><span class="pre">DaskPBSPipelineExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPBSPipelineExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPBSPipelineExecutor" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.dask.</span></span><span class="sig-name descname"><span class="pre">DaskPBSPipelineExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/pipeline/executors/dask.html#DaskPBSPipelineExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.dask.DaskPBSPipelineExecutor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.pipeline.executors.base.Executor" title="dasf.pipeline.executors.base.Executor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.executors.base.Executor</span></code></a></p>
 </dd></dl>
 

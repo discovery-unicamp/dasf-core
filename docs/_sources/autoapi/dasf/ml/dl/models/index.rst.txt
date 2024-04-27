@@ -69,7 +69,7 @@ Classes
 
    .. py:method:: forward(x)
 
-      Same as :meth:`torch.nn.Module.forward`.
+      Same as :meth:`torch.nn.Module.forward()`.
 
       Args:
           *args: Whatever you decide to pass into the forward method.
@@ -128,7 +128,7 @@ Classes
 
    .. py:method:: forward(x)
 
-      Same as :meth:`torch.nn.Module.forward`.
+      Same as :meth:`torch.nn.Module.forward()`.
 
       Args:
           *args: Whatever you decide to pass into the forward method.
@@ -187,7 +187,7 @@ Classes
 
    .. py:method:: forward(x)
 
-      Same as :meth:`torch.nn.Module.forward`.
+      Same as :meth:`torch.nn.Module.forward()`.
 
       Args:
           *args: Whatever you decide to pass into the forward method.
@@ -246,7 +246,7 @@ Classes
 
    .. py:method:: forward(x)
 
-      Same as :meth:`torch.nn.Module.forward`.
+      Same as :meth:`torch.nn.Module.forward()`.
 
       Args:
           *args: Whatever you decide to pass into the forward method.

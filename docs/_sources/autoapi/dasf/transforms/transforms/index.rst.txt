@@ -26,7 +26,11 @@ Classes
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
+   Class representing a Transform operation of the pipeline.
+
    .. py:method:: transform(X)
+
+      Generic transform funtion according executor.
 
 
 
@@ -34,6 +38,8 @@ Classes
 
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   Class representing a Transform operation of the pipeline.
 
    .. py:method:: _convert_filename(url)
       :staticmethod:
@@ -53,14 +59,22 @@ Classes
 
    .. py:method:: _lazy_transform_gpu(X, **kwargs)
 
+      Respective lazy transform mocked function for GPUs.
+
 
    .. py:method:: _lazy_transform_cpu(X, **kwargs)
+
+      Respective lazy transform mocked function for CPUs.
 
 
    .. py:method:: _transform_gpu(X, **kwargs)
 
+      Respective immediate transform mocked function for local GPU(s).
+
 
    .. py:method:: _transform_cpu(X, **kwargs)
+
+      Respective immediate transform mocked function for local CPU(s).
 
 
 
@@ -68,6 +82,8 @@ Classes
 
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   Class representing a Transform operation of the pipeline.
 
    .. py:method:: _convert_filename(url)
       :staticmethod:
@@ -87,14 +103,22 @@ Classes
 
    .. py:method:: _lazy_transform_gpu(X, **kwargs)
 
+      Respective lazy transform mocked function for GPUs.
+
 
    .. py:method:: _lazy_transform_cpu(X, **kwargs)
+
+      Respective lazy transform mocked function for CPUs.
 
 
    .. py:method:: _transform_gpu(X, **kwargs)
 
+      Respective immediate transform mocked function for local GPU(s).
+
 
    .. py:method:: _transform_cpu(X, **kwargs)
+
+      Respective immediate transform mocked function for local CPU(s).
 
 
 
@@ -103,11 +127,15 @@ Classes
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
+   Class representing a Transform operation of the pipeline.
+
    .. py:method:: _convert_filename(url)
       :staticmethod:
 
 
    .. py:method:: transform(X)
+
+      Generic transform funtion according executor.
 
 
 
@@ -116,19 +144,35 @@ Classes
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
-   .. py:method:: __transform_generic(X, y)
+   Class representing a Transform operation of the pipeline.
+
+   .. py:method:: _build_dataframe(data, columns, xp, df)
+
+
+   .. py:method:: _lazy_transform(xp, df, **kwargs)
 
 
    .. py:method:: _lazy_transform_cpu(X=None, **kwargs)
 
+      Respective lazy transform mocked function for CPUs.
+
 
    .. py:method:: _lazy_transform_gpu(X=None, **kwargs)
+
+      Respective lazy transform mocked function for GPUs.
+
+
+   .. py:method:: _transform(xp, df, **kwargs)
+
+
+   .. py:method:: _transform_cpu(X=None, **kwargs)
+
+      Respective immediate transform mocked function for local CPU(s).
 
 
    .. py:method:: _transform_gpu(X=None, **kwargs)
 
-
-   .. py:method:: _transform_cpu(X=None, **kwargs)
+      Respective immediate transform mocked function for local GPU(s).
 
 
 

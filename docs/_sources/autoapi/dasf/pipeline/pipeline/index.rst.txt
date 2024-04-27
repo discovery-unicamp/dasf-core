@@ -43,6 +43,9 @@ Classes
    .. py:method:: register_plugin(plugin)
 
 
+   .. py:method:: info()
+
+
    .. py:method:: execute_callbacks(func_name, *args, **kwargs)
 
 

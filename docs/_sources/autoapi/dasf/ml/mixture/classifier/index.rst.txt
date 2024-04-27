@@ -22,24 +22,36 @@ Classes
 
    Bases: :py:obj:`dasf.transforms.base.Fit`, :py:obj:`dasf.transforms.base.FitPredict`, :py:obj:`dasf.transforms.base.FitTransform`, :py:obj:`dasf.transforms.base.GetParams`, :py:obj:`dasf.transforms.base.SetParams`
 
+   Class representing a Fit operation of the pipeline.
+
    .. py:method:: fit(X, y=None, sample_weight=None)
       :abstractmethod:
+
+      Generic fit funtion according executor.
 
 
    .. py:method:: fit_predict(X, y=None, sample_weight=None)
       :abstractmethod:
 
+      Generic fit with predict funtion according executor.
+
 
    .. py:method:: fit_transform(X, y=None)
       :abstractmethod:
+
+      Generic fit with transform funtion according executor.
 
 
    .. py:method:: get_params()
       :abstractmethod:
 
+      Generic get_params funtion according executor.
+
 
    .. py:method:: set_params()
       :abstractmethod:
+
+      Generic set_params funtion according executor.
 
 
 

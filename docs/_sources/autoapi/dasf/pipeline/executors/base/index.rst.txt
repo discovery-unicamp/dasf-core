@@ -20,12 +20,25 @@ Classes
 .. py:class:: Executor
 
 
-   .. py:property:: ngpus
-      :type: int
-
-
    .. py:property:: is_connected
       :type: bool
+
+
+   .. py:property:: info
+      :type: str
+
+
+   .. py:method:: has_dataset(key)
+
+
+   .. py:method:: register_dataset(**kwargs)
+
+
+   .. py:method:: get_dataset(key)
+      :abstractmethod:
+
+
+   .. py:method:: register_plugin(plugin)
 
 
    .. py:method:: pre_run(pipeline)
@@ -35,6 +48,9 @@ Classes
 
 
    .. py:method:: execute(fn, *args, **kwargs)
+
+
+   .. py:method:: shutdown()
 
 
 

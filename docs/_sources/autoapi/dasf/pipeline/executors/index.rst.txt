@@ -25,9 +25,10 @@ Classes
 .. autoapisummary::
 
    dasf.pipeline.executors.Executor
-   dasf.pipeline.executors.DaskPipelineExecutor
    dasf.pipeline.executors.DaskPBSPipelineExecutor
+   dasf.pipeline.executors.DaskPipelineExecutor
    dasf.pipeline.executors.DaskTasksPipelineExecutor
+   dasf.pipeline.executors.LocalExecutor
 
 
 
@@ -35,12 +36,25 @@ Classes
 .. py:class:: Executor
 
 
-   .. py:property:: ngpus
-      :type: int
-
-
    .. py:property:: is_connected
       :type: bool
+
+
+   .. py:property:: info
+      :type: str
+
+
+   .. py:method:: has_dataset(key)
+
+
+   .. py:method:: register_dataset(**kwargs)
+
+
+   .. py:method:: get_dataset(key)
+      :abstractmethod:
+
+
+   .. py:method:: register_plugin(plugin)
 
 
    .. py:method:: pre_run(pipeline)
@@ -52,8 +66,17 @@ Classes
    .. py:method:: execute(fn, *args, **kwargs)
 
 
+   .. py:method:: shutdown()
 
-.. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
+
+
+.. py:class:: DaskPBSPipelineExecutor(**kwargs)
+
+
+   Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
+
+
+.. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, protocol=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
 
 
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
@@ -67,17 +90,27 @@ Classes
    use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
                cluster (default False).
    profiler -- sets a Dask profiler.
+   protocol -- sets the Dask protocol (default TCP)
    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
 
    .. py:property:: ngpus
+      :type: int
 
 
    .. py:property:: is_connected
+      :type: bool
+
+
+   .. py:property:: info
+      :type: str
 
 
    .. py:method:: execute(fn, *args, **kwargs)
+
+
+   .. py:method:: register_plugin(plugin)
 
 
    .. py:method:: register_dataset(**kwargs)
@@ -92,14 +125,11 @@ Classes
    .. py:method:: shutdown(gracefully=True)
 
 
-
-.. py:class:: DaskPBSPipelineExecutor(**kwargs)
-
-
-   Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
+   .. py:method:: close()
 
 
-.. py:class:: DaskTasksPipelineExecutor(address=None, port=8786, local=False, use_gpu=True, profiler=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
+
+.. py:class:: DaskTasksPipelineExecutor(address=None, port=8786, local=False, use_gpu=True, profiler=None, protocol=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
 
 
    Bases: :py:obj:`DaskPipelineExecutor`
@@ -136,6 +166,33 @@ Classes
 
 
    .. py:method:: shutdown(gracefully=True)
+
+
+   .. py:method:: close()
+
+
+
+.. py:class:: LocalExecutor(use_gpu=None, backend='numpy', gpu_allocator='cupy')
+
+
+   .. py:property:: ngpus
+      :type: int
+
+
+   .. py:property:: is_connected
+      :type: bool
+
+
+   .. py:method:: pre_run(pipeline)
+
+
+   .. py:method:: post_run(pipeline)
+
+
+   .. py:method:: get_backend()
+
+
+   .. py:method:: execute(fn, *args, **kwargs)
 
 
 

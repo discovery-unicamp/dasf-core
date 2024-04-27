@@ -128,20 +128,32 @@ Classes
 
    .. py:method:: _lazy_fit_gpu(X, y=None, out_dtype='int32')
 
+      Respective lazy fit mocked function for GPUs.
+
 
    .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
+
+      Respective immediate fit mocked function for local CPU(s).
 
 
    .. py:method:: _fit_gpu(X, y=None, out_dtype='int32')
 
+      Respective immediate fit mocked function for local GPU(s).
+
 
    .. py:method:: _lazy_fit_predict_gpu(X, y=None, out_dtype='int32')
+
+      Respective lazy fit with predict mocked function for GPUs.
 
 
    .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
 
+      Respective immediate fit with predict mocked function for local CPU(s).
+
 
    .. py:method:: _fit_predict_gpu(X, y=None, out_dtype='int32')
+
+      Respective immediate fit with predict mocked function for local GPU(s).
 
 
 

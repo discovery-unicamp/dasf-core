@@ -15,29 +15,43 @@ Classes
    dasf.transforms.operations.Reshape
    dasf.transforms.operations.SliceArray
    dasf.transforms.operations.SliceArrayByPercent
+   dasf.transforms.operations.SliceArrayByPercentile
+   dasf.transforms.operations.ApplyPatchesBase
+   dasf.transforms.operations.ApplyPatchesWeightedAvg
+   dasf.transforms.operations.ApplyPatchesVoting
 
 
 
 
-.. py:class:: Reshape(shape)
+.. py:class:: Reshape(shape = None)
 
 
-   Reshape data with a new shape.
+   Bases: :py:obj:`dasf.transforms.base.Fit`
+
+   Get a slice of a cube. An inline slice is a section over the x-axis.
 
    Parameters
    ----------
-   shape : tuple
-       The new shape of the data.
+   iline_index : int
+       The index of the inline to get.
 
 
-   .. py:method:: run(X)
+   .. py:method:: fit(X, y=None)
+
+      Generic fit funtion according executor.
 
 
 
 .. py:class:: SliceArray(output_size)
 
 
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   Class representing a Transform operation of the pipeline.
+
    .. py:method:: transform(X)
+
+      Generic transform funtion according executor.
 
 
 
@@ -46,7 +60,179 @@ Classes
 
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
+   Class representing a Transform operation of the pipeline.
+
    .. py:method:: transform(X)
+
+      Generic transform funtion according executor.
+
+
+
+.. py:class:: SliceArrayByPercentile(percentile)
+
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   Class representing a Transform operation of the pipeline.
+
+   .. py:method:: _internal_chunk_array_positive(block, axis=None, keepdims=False, xp=np)
+
+
+   .. py:method:: _internal_aggregate_array_positive(block, axis=None, keepdims=False, xp=np)
+
+
+   .. py:method:: _internal_chunk_array_negative(block, axis=None, keepdims=False, xp=np)
+
+
+   .. py:method:: _internal_aggregate_array_negative(block, axis=None, keepdims=False, xp=np)
+
+
+   .. py:method:: _lazy_transform_cpu(X)
+
+      Respective lazy transform mocked function for CPUs.
+
+
+   .. py:method:: _lazy_transform_gpu(X)
+
+      Respective lazy transform mocked function for GPUs.
+
+
+   .. py:method:: _transform_cpu(X)
+
+      Respective immediate transform mocked function for local CPU(s).
+
+
+   .. py:method:: _transform_gpu(X)
+
+      Respective immediate transform mocked function for local GPU(s).
+
+
+
+.. py:class:: ApplyPatchesBase(function, weight_function, input_size, overlap, offsets)
+
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+   Base Class for ApplyPatches Functionalities
+
+   function: function to be applied to each patch, can be eiter a Python Function or a ModelLoader
+   weight_function: weight attribution function, must receive a shape and produce a NDArray with the respective weights for each array position
+   input_size: size of input to the function to be applied,
+   overlap: dictionary containing overlapping/padding configurations to use with np.pad or dask.overlap.overlap. Its important that for the base patch set the whole "chunk core" is covered by the patches.
+   offsets: list of offsets for overlapping patches extraction
+
+   .. py:method:: _apply_patches(patch_set)
+
+      Applies function to each patch in a patch set
+
+
+
+   .. py:method:: _reconstruct_patches(patches, index, weights, inner_dim=None)
+
+      Rearranges patches to reconstruct area of interest from patches and weights
+
+
+   .. py:method:: _adjust_patches(arrays, ref_shape, offset, pad_value=0)
+
+      Pads reconstructed_patches with 0s to have same shape as the reference shape from the base patch set
+
+
+   .. py:method:: _combine_patches(results, offsets, indexes)
+      :abstractmethod:
+
+      How results are combined is dependent on what is being combined.
+      ApplyPatchesWeightedAvg uses Weighted Average
+      ApplyPatchesVoting uses Voting (hard or soft)
+
+
+   .. py:method:: _extract_patches(data, patch_shape)
+
+      Patch extraction method. It will be called once for the base patch set and also for the requested offsets (overlapping patch sets)
+
+
+   .. py:method:: _operation(chunk)
+
+      Operation to be performed on each chunk
+
+
+   .. py:method:: _transform(X)
+
+
+   .. py:method:: _lazy_transform(X)
+
+
+   .. py:method:: _lazy_transform_cpu(X, **kwargs)
+
+      Respective lazy transform mocked function for CPUs.
+
+
+   .. py:method:: _lazy_transform_gpu(X, **kwargs)
+
+      Respective lazy transform mocked function for GPUs.
+
+
+   .. py:method:: _transform_cpu(X, **kwargs)
+
+      Respective immediate transform mocked function for local CPU(s).
+
+
+   .. py:method:: _transform_gpu(X, **kwargs)
+
+      Respective immediate transform mocked function for local GPU(s).
+
+
+
+.. py:class:: ApplyPatchesWeightedAvg(function, weight_function, input_size, overlap, offsets)
+
+
+   Bases: :py:obj:`ApplyPatchesBase`
+
+   ApplyPatches with Weighted Average combination function.
+
+   function: function to be applied to each patch, can be eiter a Python Function or a ModelLoader
+   weight_function: weight attribution function, must receive a shape and produce a NDArray with the respective weights for each array position
+   input_size: size of input to the function to be applied,
+   overlap: dictionary containing overlapping/padding configurations to use with np.pad or dask.overlap.overlap. Its important that for the base patch set the whole "chunk core" is covered by the patches.
+   offsets: list of offsets for overlapping patches extraction
+
+   .. py:method:: _combine_patches(results, offsets, indexes)
+
+      How results are combined is dependent on what is being combined.
+      ApplyPatchesWeightedAvg uses Weighted Average
+      ApplyPatchesVoting uses Voting (hard or soft)
+
+
+
+.. py:class:: ApplyPatchesVoting(function, weight_function, input_size, overlap, offsets, voting, num_classes)
+
+
+   Bases: :py:obj:`ApplyPatchesBase`
+
+   ApplyPatches with Voting combination function.
+
+   function: function to be applied to each patch, can be eiter a Python Function or a ModelLoader
+   weight_function: weight attribution function, must receive a shape and produce a NDArray with the respective weights for each array position
+   input_size: size of input to the function to be applied,
+   overlap: dictionary containing overlapping/padding configurations to use with np.pad or dask.overlap.overlap. Its important that for the base patch set the whole "chunk core" is covered by the patches.
+   offsets: list of offsets for overlapping patches extraction
+   voting: voting method. "hard"  or "soft"
+   num_classes: number of classes possible
+
+   .. py:method:: _combine_patches(results, offsets, indexes)
+
+      How results are combined is dependent on what is being combined.
+      ApplyPatchesWeightedAvg uses Weighted Average
+      ApplyPatchesVoting uses Voting (hard or soft)
+
+
+   .. py:method:: _hard_voting(results, offsets, indexes)
+
+      Hard voting combination function
+
+
+   .. py:method:: _soft_voting(results, offsets, indexes)
+
+      Soft voting combination function
 
 
 

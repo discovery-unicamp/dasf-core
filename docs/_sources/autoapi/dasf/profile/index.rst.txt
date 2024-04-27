@@ -4,22 +4,73 @@
 .. py:module:: dasf.profile
 
 
-Subpackages
------------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 3
-
-   plugins/index.rst
-
-
 Submodules
 ----------
 .. toctree::
    :titlesonly:
    :maxdepth: 1
 
-   database/index.rst
-   event/index.rst
+   analysis/index.rst
+   plugins/index.rst
+   profiler/index.rst
+   utils/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.profile.TraceAnalyser
+   dasf.profile.MultiEventDatabase
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   dasf.profile.register_default_profiler
+
+
+
+.. py:class:: TraceAnalyser(database, process_trace_before = True)
+
+
+   .. py:method:: create_annotated_task_graph()
+
+
+   .. py:method:: per_function_bottleneck()
+
+
+   .. py:method:: per_worker_task_balance()
+
+
+   .. py:method:: per_task_bottleneck()
+
+
+
+.. py:class:: MultiEventDatabase(databases)
+
+
+   .. py:method:: __iter__()
+
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+   .. py:method:: __repr__()
+
+      Return repr(self).
+
+
+
+.. py:function:: register_default_profiler(pipeline, name = None, enable_nvtx = False, add_time_suffix = True)
 
 

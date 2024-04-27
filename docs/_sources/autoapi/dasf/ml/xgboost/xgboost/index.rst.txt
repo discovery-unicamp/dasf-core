@@ -22,28 +22,46 @@ Classes
 
    Bases: :py:obj:`dasf.transforms.Fit`, :py:obj:`dasf.transforms.FitPredict`, :py:obj:`dasf.transforms.Predict`
 
+   Class representing a Fit operation of the pipeline.
+
    .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None, *args, **kwargs)
+
+      Respective lazy fit mocked function for CPUs.
 
 
    .. py:method:: _lazy_fit_gpu(X, y=None, sample_weight=None, *args, **kwargs)
 
+      Respective lazy fit mocked function for GPUs.
+
 
    .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
+
+      Respective immediate fit mocked function for local CPU(s).
 
 
    .. py:method:: _fit_gpu(X, y=None, sample_weight=None, *args, **kwargs)
 
+      Respective immediate fit mocked function for local GPU(s).
+
 
    .. py:method:: _lazy_predict_cpu(X, sample_weight=None, **kwargs)
+
+      Respective lazy predict mocked function for CPUs.
 
 
    .. py:method:: _lazy_predict_gpu(X, sample_weight=None, **kwargs)
 
+      Respective lazy predict mocked function for GPUs.
+
 
    .. py:method:: _predict_cpu(X, sample_weight=None, **kwargs)
 
+      Respective immediate predict mocked function for local CPU(s).
+
 
    .. py:method:: _predict_gpu(X, sample_weight=None, **kwargs)
+
+      Respective immediate predict mocked function for local GPU(s).
 
 
 

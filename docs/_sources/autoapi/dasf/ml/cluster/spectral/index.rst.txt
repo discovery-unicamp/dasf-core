@@ -195,11 +195,17 @@ Classes
 
    .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
 
+      Respective immediate fit mocked function for local CPU(s).
+
 
    .. py:method:: _lazy_fit_predict_cpu(X, y=None, sample_weight=None)
 
+      Respective lazy fit with predict mocked function for CPUs.
+
 
    .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
+
+      Respective immediate fit with predict mocked function for local CPU(s).
 
 
 

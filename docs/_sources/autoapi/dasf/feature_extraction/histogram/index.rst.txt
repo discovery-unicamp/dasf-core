@@ -60,14 +60,22 @@ Classes
 
    .. py:method:: _lazy_transform_cpu(X)
 
+      Respective lazy transform mocked function for CPUs.
+
 
    .. py:method:: _lazy_transform_gpu(X, **kwargs)
+
+      Respective lazy transform mocked function for GPUs.
 
 
    .. py:method:: _transform_cpu(X, **kwargs)
 
+      Respective immediate transform mocked function for local CPU(s).
+
 
    .. py:method:: _transform_gpu(X, **kwargs)
+
+      Respective immediate transform mocked function for local GPU(s).
 
 
 

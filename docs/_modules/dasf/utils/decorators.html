@@ -1,180 +1,102 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>dasf.utils.decorators &mdash; DASF 1.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
+  <title>dasf.utils.decorators &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
 
   
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home"> DASF
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            DASF
           </a>
-
-          
-            
-            
               <div class="version">
-                1.0
+                1.0b5
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../principles.html">Principles</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">DASF API Reference</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">DASF</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>dasf.utils.decorators</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dasf.utils.decorators</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for dasf.utils.decorators</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot; Implementations of important library decorators. &quot;&quot;&quot;</span>
 <span class="c1">#!/usr/bin/env python3</span>
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
-<span class="kn">from</span> <span class="nn">dasf.utils.types</span> <span class="kn">import</span> <span class="n">is_dask_array</span>
-<span class="kn">from</span> <span class="nn">dasf.utils.types</span> <span class="kn">import</span> <span class="n">is_gpu_array</span>
-<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_gpu_supported</span>
-<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_dask_supported</span>
-<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_dask_gpu_supported</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_dask_running_client</span><span class="p">,</span>
+    <span class="n">is_dask_gpu_supported</span><span class="p">,</span>
+    <span class="n">is_dask_supported</span><span class="p">,</span>
+    <span class="n">is_gpu_supported</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.types</span> <span class="kn">import</span> <span class="n">is_dask_array</span><span class="p">,</span> <span class="n">is_gpu_array</span>
 
 
-<div class="viewcode-block" id="is_forced_local"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.is_forced_local">[docs]</a><span class="k">def</span> <span class="nf">is_forced_local</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="is_forced_local">
+<a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.is_forced_local">[docs]</a>
+<span class="k">def</span> <span class="nf">is_forced_local</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if object is forced to run in a CPU.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># pylint: disable=protected-access</span>
@@ -184,8 +106,11 @@
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="is_forced_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.is_forced_gpu">[docs]</a><span class="k">def</span> <span class="nf">is_forced_gpu</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="is_forced_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.is_forced_gpu">[docs]</a>
+<span class="k">def</span> <span class="nf">is_forced_gpu</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns if object is forced to run in a GPU.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># pylint: disable=protected-access</span>
@@ -195,8 +120,11 @@
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="fetch_from_dask"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_dask">[docs]</a><span class="k">def</span> <span class="nf">fetch_from_dask</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="fetch_from_dask">
+<a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_dask">[docs]</a>
+<span class="k">def</span> <span class="nf">fetch_from_dask</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches to CPU all parameters in a Dask data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -217,8 +145,11 @@
     <span class="k">return</span> <span class="n">new_args</span><span class="p">,</span> <span class="n">new_kwargs</span></div>
 
 
-<div class="viewcode-block" id="fetch_from_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_gpu">[docs]</a><span class="k">def</span> <span class="nf">fetch_from_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="fetch_from_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_from_gpu">[docs]</a>
+<span class="k">def</span> <span class="nf">fetch_from_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches to CPU all parameters in a GPU data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -239,11 +170,17 @@
     <span class="k">return</span> <span class="n">new_args</span><span class="p">,</span> <span class="n">new_kwargs</span></div>
 
 
-<div class="viewcode-block" id="fetch_args_from_dask"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_args_from_dask">[docs]</a><span class="k">def</span> <span class="nf">fetch_args_from_dask</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="fetch_args_from_dask">
+<a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_args_from_dask">[docs]</a>
+<span class="k">def</span> <span class="nf">fetch_args_from_dask</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches to CPU all function parameters in a Dask data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrapper to fetch parameters from Dask data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_args</span><span class="p">,</span> <span class="n">new_kwargs</span> <span class="o">=</span> <span class="n">fetch_from_dask</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">new_kwargs</span><span class="p">)</span>
@@ -251,11 +188,17 @@
     <span class="k">return</span> <span class="n">wrapper</span></div>
 
 
-<div class="viewcode-block" id="fetch_args_from_gpu"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_args_from_gpu">[docs]</a><span class="k">def</span> <span class="nf">fetch_args_from_gpu</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="fetch_args_from_gpu">
+<a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.fetch_args_from_gpu">[docs]</a>
+<span class="k">def</span> <span class="nf">fetch_args_from_gpu</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches to CPU all function parameters in a GPU data type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrapper to fetch parameters from GPU.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_args</span><span class="p">,</span> <span class="n">new_kwargs</span> <span class="o">=</span> <span class="n">fetch_from_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">new_kwargs</span><span class="p">)</span>
@@ -263,32 +206,42 @@
     <span class="k">return</span> <span class="n">wrapper</span></div>
 
 
-<div class="viewcode-block" id="task_handler"><a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.task_handler">[docs]</a><span class="k">def</span> <span class="nf">task_handler</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="task_handler">
+<a class="viewcode-back" href="../../../autoapi/dasf/utils/decorators/index.html#dasf.utils.decorators.task_handler">[docs]</a>
+<span class="k">def</span> <span class="nf">task_handler</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns all mapped functions corresponding to the executor in place.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrapper of the function to map the proper object function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">cls</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">new_args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="n">func_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="n">func_type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">arch</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">get_dask_running_client</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># Runs task according to current client configuration, i.e, Pipeline Executor</span>
+            <span class="n">func_type</span> <span class="o">=</span> <span class="s2">&quot;_lazy&quot;</span>
+            <span class="n">arch</span> <span class="o">=</span> <span class="s2">&quot;gpu&quot;</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="s2">&quot;backend&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;cupy&quot;</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_forced_local</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">is_dask_gpu_supported</span><span class="p">()</span> <span class="ow">or</span> <span class="n">is_dask_supported</span><span class="p">()):</span>
+                <span class="n">func_type</span> <span class="o">=</span> <span class="s2">&quot;_lazy&quot;</span>
+            <span class="k">if</span> <span class="n">is_dask_gpu_supported</span><span class="p">()</span> <span class="ow">or</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
+                <span class="n">arch</span> <span class="o">=</span> <span class="s2">&quot;gpu&quot;</span>
 
         <span class="k">if</span> <span class="n">is_forced_local</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+            <span class="n">func_type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="n">new_args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">fetch_from_dask</span><span class="p">(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_forced_local</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">is_dask_gpu_supported</span><span class="p">()</span> <span class="ow">or</span> <span class="n">is_dask_supported</span><span class="p">()):</span>
-            <span class="n">func_type</span> <span class="o">=</span> <span class="s2">&quot;_lazy&quot;</span>
-
-        <span class="k">if</span> <span class="n">is_forced_gpu</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">is_forced_gpu</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">is_forced_gpu</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
                 <span class="n">arch</span> <span class="o">=</span> <span class="s2">&quot;gpu&quot;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">new_args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">fetch_from_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="n">arch</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
-        <span class="k">elif</span> <span class="n">is_dask_gpu_supported</span><span class="p">()</span> <span class="ow">or</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
-            <span class="n">arch</span> <span class="o">=</span> <span class="s2">&quot;gpu&quot;</span>
+
+        <span class="k">if</span> <span class="n">arch</span> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span><span class="p">:</span>
+            <span class="n">new_args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">fetch_from_gpu</span><span class="p">(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="n">wrapper_func_attr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func_type</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">arch</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -299,54 +252,39 @@
               <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;There is no implementation of </span><span class="si">{</span><span class="n">wrapper_func_attr</span><span class="si">}</span><span class="s2"> nor &quot;</span>
-                <span class="s2">&quot;</span><span class="si">{func_name}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">wrapper_func_attr</span><span class="p">)(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">wrapper</span></div>
+
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2022, UNICAMP.
-
-    </p>
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

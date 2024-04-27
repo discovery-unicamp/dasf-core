@@ -22,17 +22,38 @@ Classes
 
    Bases: :py:obj:`dasf.transforms.TargeteredTransform`, :py:obj:`dasf.transforms.Transform`
 
+   Class representing a Targetered Transform operation of the pipeline.
+
+   This specific transform operates according the parameters of the
+   constructor.
+
+   Parameters
+   ----------
+   run_local : bool
+       Define that the operator will run locally and not distributed.
+   run_gpu : bool
+       Define if the operator will use GPU(s) or not.
+
+
    .. py:method:: _lazy_transform_cpu(X)
+
+      Respective lazy transform mocked function for CPUs.
 
 
    .. py:method:: _lazy_transform_gpu(X)
       :abstractmethod:
 
+      Respective lazy transform mocked function for GPUs.
+
 
    .. py:method:: _transform_cpu(X)
 
+      Respective immediate transform mocked function for local CPU(s).
+
 
    .. py:method:: _transform_gpu(X)
+
+      Respective immediate transform mocked function for local GPU(s).
 
 
 

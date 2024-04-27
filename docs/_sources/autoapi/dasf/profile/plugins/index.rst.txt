@@ -4,14 +4,196 @@
 .. py:module:: dasf.profile.plugins
 
 
-Submodules
-----------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 1
+Module Contents
+---------------
 
-   dasf/index.rst
-   dask/index.rst
-   resource_monitor/index.rst
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dasf.profile.plugins.WorkerTaskPlugin
+   dasf.profile.plugins.ResourceMonitor
+   dasf.profile.plugins.GPUAnnotationPlugin
+
+
+
+
+.. py:class:: WorkerTaskPlugin(name = 'TracePlugin')
+
+
+   Bases: :py:obj:`distributed.diagnostics.plugin.WorkerPlugin`
+
+   Interface to extend the Worker
+
+   A worker plugin enables custom code to run at different stages of the Workers'
+   lifecycle.
+
+   A plugin enables custom code to run at each of step of a Workers's life. Whenever such
+   an event happens, the corresponding method on this class will be called. Note that the
+   user code always runs within the Worker's main thread.
+
+   To implement a plugin:
+
+   1. inherit from this class
+   2. override some of its methods
+   3. register the plugin using :meth:`Client.register_plugin<distributed.Client.register_plugin>`.
+
+   The ``idempotent`` attribute is used to control whether or not the plugin should
+   be ignored upon registration if a worker plugin with the same name already exists.
+   If ``True``, the plugin is ignored, otherwise the existing plugin is replaced.
+   Defaults to ``False``.
+
+   Examples
+   --------
+   >>> class ErrorLogger(WorkerPlugin):
+   ...     def __init__(self, logger):
+   ...         self.logger = logger
+   ...
+   ...     def setup(self, worker):
+   ...         self.worker = worker
+   ...
+   ...     def transition(self, key, start, finish, *args, **kwargs):
+   ...         if finish == 'error':
+   ...             ts = self.worker.tasks[key]
+   ...             exc_info = (type(ts.exception), ts.exception, ts.traceback)
+   ...             self.logger.error(
+   ...                 "Error during computation of '%s'.", key,
+   ...                 exc_info=exc_info
+   ...             )
+
+   >>> import logging
+   >>> plugin = ErrorLogger(logging)
+   >>> client.register_plugin(plugin)  # doctest: +SKIP
+
+   .. py:method:: setup(worker)
+
+      Run when the plugin is attached to a worker. This happens when the plugin is registered
+      and attached to existing workers, or when a worker is created after the plugin has been
+      registered.
+
+
+   .. py:method:: transition(key, start, finish, *args, **kwargs)
+
+      Throughout the lifecycle of a task (see :doc:`Worker State
+      <worker-state>`), Workers are instructed by the scheduler to compute
+      certain tasks, resulting in transitions in the state of each task. The
+      Worker owning the task is then notified of this state transition.
+
+      Whenever a task changes its state, this method will be called.
+
+      .. warning::
+
+          This is an advanced feature and the transition mechanism and details
+          of task states are subject to change without deprecation cycle.
+
+      Parameters
+      ----------
+      key :
+      start :
+          Start state of the transition.
+          One of waiting, ready, executing, long-running, memory, error.
+      finish :
+          Final state of the transition.
+      kwargs :
+          More options passed when transitioning
+
+
+
+.. py:class:: ResourceMonitor(time=100, autostart = True, name = 'ResourceMonitor', **monitor_kwargs)
+
+
+   .. py:method:: __del__()
+
+
+   .. py:method:: update()
+
+
+   .. py:method:: start()
+
+
+   .. py:method:: stop()
+
+
+
+.. py:class:: GPUAnnotationPlugin(name = 'GPUAnnotationPlugin')
+
+
+   Bases: :py:obj:`distributed.diagnostics.plugin.WorkerPlugin`
+
+   Interface to extend the Worker
+
+   A worker plugin enables custom code to run at different stages of the Workers'
+   lifecycle.
+
+   A plugin enables custom code to run at each of step of a Workers's life. Whenever such
+   an event happens, the corresponding method on this class will be called. Note that the
+   user code always runs within the Worker's main thread.
+
+   To implement a plugin:
+
+   1. inherit from this class
+   2. override some of its methods
+   3. register the plugin using :meth:`Client.register_plugin<distributed.Client.register_plugin>`.
+
+   The ``idempotent`` attribute is used to control whether or not the plugin should
+   be ignored upon registration if a worker plugin with the same name already exists.
+   If ``True``, the plugin is ignored, otherwise the existing plugin is replaced.
+   Defaults to ``False``.
+
+   Examples
+   --------
+   >>> class ErrorLogger(WorkerPlugin):
+   ...     def __init__(self, logger):
+   ...         self.logger = logger
+   ...
+   ...     def setup(self, worker):
+   ...         self.worker = worker
+   ...
+   ...     def transition(self, key, start, finish, *args, **kwargs):
+   ...         if finish == 'error':
+   ...             ts = self.worker.tasks[key]
+   ...             exc_info = (type(ts.exception), ts.exception, ts.traceback)
+   ...             self.logger.error(
+   ...                 "Error during computation of '%s'.", key,
+   ...                 exc_info=exc_info
+   ...             )
+
+   >>> import logging
+   >>> plugin = ErrorLogger(logging)
+   >>> client.register_plugin(plugin)  # doctest: +SKIP
+
+   .. py:method:: setup(worker)
+
+      Run when the plugin is attached to a worker. This happens when the plugin is registered
+      and attached to existing workers, or when a worker is created after the plugin has been
+      registered.
+
+
+   .. py:method:: transition(key, start, finish, *args, **kwargs)
+
+      Throughout the lifecycle of a task (see :doc:`Worker State
+      <worker-state>`), Workers are instructed by the scheduler to compute
+      certain tasks, resulting in transitions in the state of each task. The
+      Worker owning the task is then notified of this state transition.
+
+      Whenever a task changes its state, this method will be called.
+
+      .. warning::
+
+          This is an advanced feature and the transition mechanism and details
+          of task states are subject to change without deprecation cycle.
+
+      Parameters
+      ----------
+      key :
+      start :
+          Start state of the transition.
+          One of waiting, ready, executing, long-running, memory, error.
+      finish :
+          Final state of the transition.
+      kwargs :
+          More options passed when transitioning
+
 
 

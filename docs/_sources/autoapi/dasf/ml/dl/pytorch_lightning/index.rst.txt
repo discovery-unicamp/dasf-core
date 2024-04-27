@@ -152,9 +152,11 @@ Functions
 
    .. py:method:: train_dataloader()
 
-      An iterable or collection of iterables specifying training samples.
+      Implement one or more PyTorch DataLoaders for training.
 
-      For more information about multiple dataloaders, see this :ref:`section <multiple-dataloaders>`.
+      Return:
+          A collection of :class:`torch.utils.data.DataLoader` specifying training samples.
+          In the case of multiple dataloaders, please see this :ref:`section <multiple-dataloaders>`.
 
       The dataloader you return will not be reloaded unless you set
       :paramref:`~pytorch_lightning.trainer.Trainer.reload_dataloaders_every_n_epochs` to
@@ -174,15 +176,54 @@ Functions
       - :meth:`setup`
 
       Note:
-          Lightning tries to add the correct sampler for distributed and arbitrary hardware.
+          Lightning adds the correct sampler for distributed and arbitrary hardware.
           There is no need to set it yourself.
+
+      Example::
+
+          # single dataloader
+          def train_dataloader(self):
+              transform = transforms.Compose([transforms.ToTensor(),
+                                              transforms.Normalize((0.5,), (1.0,))])
+              dataset = MNIST(root='/path/to/mnist/', train=True, transform=transform,
+                              download=True)
+              loader = torch.utils.data.DataLoader(
+                  dataset=dataset,
+                  batch_size=self.batch_size,
+                  shuffle=True
+              )
+              return loader
+
+          # multiple dataloaders, return as list
+          def train_dataloader(self):
+              mnist = MNIST(...)
+              cifar = CIFAR(...)
+              mnist_loader = torch.utils.data.DataLoader(
+                  dataset=mnist, batch_size=self.batch_size, shuffle=True
+              )
+              cifar_loader = torch.utils.data.DataLoader(
+                  dataset=cifar, batch_size=self.batch_size, shuffle=True
+              )
+              # each batch will be a list of tensors: [batch_mnist, batch_cifar]
+              return [mnist_loader, cifar_loader]
+
+          # multiple dataloader, return as dict
+          def train_dataloader(self):
+              mnist = MNIST(...)
+              cifar = CIFAR(...)
+              mnist_loader = torch.utils.data.DataLoader(
+                  dataset=mnist, batch_size=self.batch_size, shuffle=True
+              )
+              cifar_loader = torch.utils.data.DataLoader(
+                  dataset=cifar, batch_size=self.batch_size, shuffle=True
+              )
+              # each batch will be a dict of tensors: {'mnist': batch_mnist, 'cifar': batch_cifar}
+              return {'mnist': mnist_loader, 'cifar': cifar_loader}
 
 
    .. py:method:: val_dataloader()
 
-      An iterable or collection of iterables specifying validation samples.
-
-      For more information about multiple dataloaders, see this :ref:`section <multiple-dataloaders>`.
+      Implement one or multiple PyTorch DataLoaders for validation.
 
       The dataloader you return will not be reloaded unless you set
       :paramref:`~pytorch_lightning.trainer.Trainer.reload_dataloaders_every_n_epochs` to
@@ -196,19 +237,43 @@ Functions
       - :meth:`setup`
 
       Note:
-          Lightning tries to add the correct sampler for distributed and arbitrary hardware
+          Lightning adds the correct sampler for distributed and arbitrary hardware
           There is no need to set it yourself.
+
+      Return:
+          A :class:`torch.utils.data.DataLoader` or a sequence of them specifying validation samples.
+
+      Examples::
+
+          def val_dataloader(self):
+              transform = transforms.Compose([transforms.ToTensor(),
+                                              transforms.Normalize((0.5,), (1.0,))])
+              dataset = MNIST(root='/path/to/mnist/', train=False,
+                              transform=transform, download=True)
+              loader = torch.utils.data.DataLoader(
+                  dataset=dataset,
+                  batch_size=self.batch_size,
+                  shuffle=False
+              )
+
+              return loader
+
+          # can also return multiple dataloaders
+          def val_dataloader(self):
+              return [loader_a, loader_b, ..., loader_n]
 
       Note:
           If you don't need a validation dataset and a :meth:`validation_step`, you don't need to
           implement this method.
 
+      Note:
+          In the case where you return multiple validation dataloaders, the :meth:`validation_step`
+          will have an argument ``dataloader_idx`` which matches the order here.
+
 
    .. py:method:: test_dataloader()
 
-      An iterable or collection of iterables specifying test samples.
-
-      For more information about multiple dataloaders, see this :ref:`section <multiple-dataloaders>`.
+      Implement one or multiple PyTorch DataLoaders for testing.
 
       For data processing use the following pattern:
 
@@ -225,19 +290,45 @@ Functions
       - :meth:`setup`
 
       Note:
-          Lightning tries to add the correct sampler for distributed and arbitrary hardware.
+          Lightning adds the correct sampler for distributed and arbitrary hardware.
           There is no need to set it yourself.
+
+      Return:
+          A :class:`torch.utils.data.DataLoader` or a sequence of them specifying testing samples.
+
+      Example::
+
+          def test_dataloader(self):
+              transform = transforms.Compose([transforms.ToTensor(),
+                                              transforms.Normalize((0.5,), (1.0,))])
+              dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform,
+                              download=True)
+              loader = torch.utils.data.DataLoader(
+                  dataset=dataset,
+                  batch_size=self.batch_size,
+                  shuffle=False
+              )
+
+              return loader
+
+          # can also return multiple dataloaders
+          def test_dataloader(self):
+              return [loader_a, loader_b, ..., loader_n]
 
       Note:
           If you don't need a test dataset and a :meth:`test_step`, you don't need to implement
           this method.
+
+      Note:
+          In the case where you return multiple test dataloaders, the :meth:`test_step`
+          will have an argument ``dataloader_idx`` which matches the order here.
 
 
 
 .. py:function:: run_dask_clustered(func, client=None, **kwargs)
 
 
-.. py:function:: fit(model, X, y, max_iter, accel, strategy, devices, ngpus, batch_size=32, plugins=None)
+.. py:function:: fit(model, X, y, max_iter, accel, strategy, devices, ngpus, batch_size=32, plugins=None, meta=None)
 
 
 .. py:class:: NeuralNetClassifier(model, max_iter=100, batch_size=32)
@@ -245,13 +336,19 @@ Functions
 
    Bases: :py:obj:`dasf.transforms.base.Fit`
 
+   Class representing a Fit operation of the pipeline.
+
    .. py:method:: _lazy_fit_generic(X, y, accel, ngpus)
 
 
    .. py:method:: _lazy_fit_gpu(X, y=None)
 
+      Respective lazy fit mocked function for GPUs.
+
 
    .. py:method:: _lazy_fit_cpu(X, y=None)
+
+      Respective lazy fit mocked function for CPUs.
 
 
    .. py:method:: __fit_generic(X, y, accel, ngpus)
@@ -259,8 +356,12 @@ Functions
 
    .. py:method:: _fit_gpu(X, y=None)
 
+      Respective immediate fit mocked function for local GPU(s).
+
 
    .. py:method:: _fit_cpu(X, y=None)
+
+      Respective immediate fit mocked function for local CPU(s).
 
 
 

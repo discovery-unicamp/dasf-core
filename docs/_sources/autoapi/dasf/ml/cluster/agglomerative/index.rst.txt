@@ -123,14 +123,22 @@ Classes
 
    .. py:method:: _fit_cpu(X, y=None, convert_dtype=True)
 
+      Respective immediate fit mocked function for local CPU(s).
+
 
    .. py:method:: _fit_gpu(X, y=None, convert_dtype=True)
+
+      Respective immediate fit mocked function for local GPU(s).
 
 
    .. py:method:: _fit_predict_cpu(X, y=None)
 
+      Respective immediate fit with predict mocked function for local CPU(s).
+
 
    .. py:method:: _fit_predict_gpu(X, y=None)
+
+      Respective immediate fit with predict mocked function for local GPU(s).
 
 
 

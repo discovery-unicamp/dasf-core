@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -97,9 +99,9 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf">
-<span id="dasf"></span><h1><a class="reference internal" href="#module-dasf" title="dasf"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><a class="headerlink" href="#module-dasf" title="Permalink to this heading"></a></h1>
+<span id="dasf"></span><h1><a class="reference internal" href="#module-dasf" title="dasf"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><a class="headerlink" href="#module-dasf" title="Link to this heading"></a></h1>
 <section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a><ul>
@@ -138,6 +140,10 @@
 <li class="toctree-l3"><a class="reference internal" href="ml/dl/pytorch_lightning/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.dl.pytorch_lightning</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ml/inference/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.inference</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml/inference/loader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.inference.loader</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="ml/model_selection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.model_selection</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ml/model_selection/split/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.model_selection.split</span></code></a></li>
 </ul>
@@ -174,14 +180,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="profile/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile</span></code></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="profile/plugins/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="profile/plugins/dasf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins.dasf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="profile/plugins/dask/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins.dask</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="profile/plugins/resource_monitor/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins.resource_monitor</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="profile/database/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.database</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="profile/event/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.event</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile/analysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.analysis</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile/plugins/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.plugins</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile/profiler/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.profiler</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile.utils</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a><ul>
