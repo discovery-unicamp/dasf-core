@@ -6,13 +6,16 @@ from pytorch_lightning.plugins.environments import ClusterEnvironment
 
 
 class DaskClusterEnvironment(ClusterEnvironment):
-    """
-    Create a Dask Cluster environment for workers
+    """Create a Dask Cluster environment for workers
 
-    metadata -- dictionary containing all data related to workers.
+    Parameters
+    ----------
+    metadata : dict
+        Dictionary containing all data related to workers.
     """
 
     def __init__(self, metadata=None) -> None:
+        """ Constructor of the object DaskClusterEnvironment using dict metadata. """
         super().__init__()
 
         if isinstance(metadata, dict):
@@ -23,6 +26,12 @@ class DaskClusterEnvironment(ClusterEnvironment):
         self._master_port = 23456
 
     def detect(self) -> bool:
+        """Detect if important data are present into metadata dictionary.
+        
+        Returns
+        -------
+        bool : if they are present or not.
+        """
         if "master" not in self.metadata:
             return False
         if "world_size" not in self.metadata:
@@ -73,7 +82,21 @@ class DaskClusterEnvironment(ClusterEnvironment):
         return int(self.metadata["global_rank"])
 
     def set_world_size(self, size: int) -> None:
+        """Set the index of the world size.
+
+        Parameters
+        ----------
+        size : int
+            Integer with the world size value.
+        """
         self.metadata["world_size"] = size
 
     def set_global_rank(self, rank: int) -> None:
+        """Set the index of the global rank.
+
+        Parameters
+        ----------
+        size : int
+            Integer with the global rank value.
+        """
         self.metadata["global_rank"] = rank

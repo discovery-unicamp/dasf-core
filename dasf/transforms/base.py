@@ -254,6 +254,10 @@ class GetParams(Operator):
 
 
 class SetParams(Operator):
+    """
+    Class representing a Set Parameters operation of the pipeline.
+    """
+
     def _lazy_set_params_cpu(self, **params):
         """
         Respective lazy set_params mocked function for CPUs.

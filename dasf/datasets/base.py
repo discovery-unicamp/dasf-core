@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Base module for most of the DASF Datasets. """
+
 import json
 import os
 from numbers import Number
@@ -69,6 +71,7 @@ class Dataset(TargeteredTransform):
                  root: str = None,
                  *args,
                  **kwargs):
+        """ Constructor of the object Dataset. """
         super().__init__(*args, **kwargs)
 
         # Dataset internals
@@ -145,7 +148,7 @@ class DatasetArray(Dataset):
                  download: bool = False,
                  root: str = None,
                  chunks="auto"):
-
+        """ Constructor of the object DatasetArray. """
         Dataset.__init__(self, name, download, root)
 
         self._chunks = chunks
@@ -159,6 +162,22 @@ class DatasetArray(Dataset):
             self._root = os.path.dirname(root)
 
     def __operator_check__(self, other):
+        """Check what type of the data we are handling
+        
+        Examples:
+            DatasetArray with array-like; or
+            DatasetArray with DatasetArray
+
+        Parameters
+        ----------
+        other : Any
+            array-like of DatasetArray for the operation.
+
+        Returns
+        -------
+        data : Any
+            A data representing the internal array or the class itself.
+        """
         assert self._data is not None, "Data is not loaded yet."
         if isinstance(other, DatasetArray):
             return other._data
@@ -171,10 +190,23 @@ class DatasetArray(Dataset):
         return repr(self._data)
 
     def __array__(self, dtype=None):
+        """Array interface is required to support most of the array functions.
+
+        Parameters
+        ----------
+        dtype : Any
+            Type of the internal array, default=None (not used)
+
+        Returns
+        -------
+        data : Any
+            A data representing the internal array or the class itself.
+        """
         assert self._data is not None, "Data is not loaded yet."
         return self._data
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+    
         assert self._data is not None, "Data is not loaded yet."
         if method == '__call__':
             scalars = []
@@ -398,6 +430,13 @@ class DatasetArray(Dataset):
         return self
 
     def from_array(self, array):
+        """Load data from an existing array.
+
+        Parameters
+        ----------
+        array : array-like
+            Input data to be initialized.
+        """
         self._data = array
         self.__copy_attrs_from_data()
 
@@ -469,7 +508,7 @@ class DatasetZarr(Dataset):
                  root: str = None,
                  backend: str = None,
                  chunks=None):
-
+        """ Constructor of the object DatasetZarr. """
         Dataset.__init__(self, name, download, root)
 
         self._backend = backend
@@ -802,7 +841,7 @@ class DatasetHDF5(Dataset):
                  root: str = None,
                  chunks="auto",
                  dataset_path: str = None):
-
+        """ Constructor of the object DatasetHDF5. """
         Dataset.__init__(self, name, download, root)
 
         self._chunks = chunks
@@ -955,6 +994,7 @@ class DatasetXarray(Dataset):
                  root: str = None,
                  chunks=None,
                  data_var=None):
+        """ Constructor of the object DatasetXarray. """
         Dataset.__init__(self, name, download, root)
 
         self._chunks = chunks
@@ -1121,7 +1161,7 @@ class DatasetLabeled(Dataset):
                  download: bool = False,
                  root: str = None,
                  chunks="auto"):
-
+        """ Constructor of the object DatasetLabeled. """
         Dataset.__init__(self, name, download, root)
 
         self._chunks = chunks
@@ -1295,7 +1335,7 @@ class DatasetDataFrame(Dataset):
                  download: bool = True,
                  root: str = None,
                  chunks="auto"):
-
+        """ Constructor of the object DatasetDataFrame. """
         Dataset.__init__(self, name, download, root)
 
         self._chunks = chunks
@@ -1442,7 +1482,7 @@ class DatasetParquet(DatasetDataFrame):
                  download: bool = True,
                  root: str = None,
                  chunks="auto"):
-
+        """ Constructor of the object DatasetParquet. """
         DatasetDataFrame.__init__(self, name, download, root, chunks)
 
     def _lazy_load_gpu(self):
