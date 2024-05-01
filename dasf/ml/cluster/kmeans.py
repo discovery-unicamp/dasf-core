@@ -682,7 +682,7 @@ class KMeans(ClusterClassifier):
 
         raise NotImplementedError("Method available only for Dask.")
 
-    def _predict2_gpu(self, X, sample_weight=None):
+    def _predict2_gpu(self, X, sample_weight=None, compat=True):
         """
         A block predict using CuML variant as a placeholder.
 
