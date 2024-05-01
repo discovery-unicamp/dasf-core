@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Init module for Clustering ML algorithms. """
+
 from dasf.ml.cluster.agglomerative import AgglomerativeClustering  # noqa
 from dasf.ml.cluster.dbscan import DBSCAN  # noqa
 from dasf.ml.cluster.kmeans import KMeans  # noqa

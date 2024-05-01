@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Agglomerative Clustering algorithm module. """
+
 from sklearn.cluster import (  # noqa
     AgglomerativeClustering as AgglomerativeClustering_CPU,
 )
@@ -171,15 +173,93 @@ class AgglomerativeClustering(ClusterClassifier):
                 n_neighbors=n_neighbors,
                 output_type=output_type,
             )
+        else:
+            self.__agg_cluster_gpu = None
 
     def _fit_cpu(self, X, y=None, convert_dtype=True):
+        """
+        Fit without validation using CPU only.
+
+        Parameters
+        ----------
+        X : ndarray of shape (n_samples, n_features) or (n_samples, n_samples)
+            Training instances to cluster, or distances between instances if
+            ``affinity='precomputed'``.
+
+        Returns
+        -------
+        self : object
+            Returns the fitted instance.
+        """
         return self.__agg_cluster_cpu.fit(X, y)
 
     def _fit_gpu(self, X, y=None, convert_dtype=True):
+        """
+        Fit without validation using GPU only.
+
+        Parameters
+        ----------
+        X : ndarray of shape (n_samples, n_features) or (n_samples, n_samples)
+            Training instances to cluster, or distances between instances if
+            ``affinity='precomputed'``.
+
+        Returns
+        -------
+        self : object
+            Returns the fitted instance.
+        """
+        if self.__agg_cluster_gpu is None:
+            raise NotImplementedError("GPU is not supported")
         return self.__agg_cluster_gpu.fit(X, y, convert_dtype=convert_dtype)
 
     def _fit_predict_cpu(self, X, y=None):
+        """
+        Fit and return the result of each sample's clustering assignment using
+        CPU only.
+
+        In addition to fitting, this method also return the result of the
+        clustering assignment for each sample in the training set.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features) or \
+                (n_samples, n_samples)
+            Training instances to cluster, or distances between instances if
+            ``affinity='precomputed'``.
+
+        y : Ignored
+            Not used, present here for API consistency by convention.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels.
+        """
         return self.__agg_cluster_cpu.fit_predict(X, y)
 
     def _fit_predict_gpu(self, X, y=None):
+        """
+        Fit and return the result of each sample's clustering assignment using
+        GPU only.
+
+        In addition to fitting, this method also return the result of the
+        clustering assignment for each sample in the training set.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features) or \
+                (n_samples, n_samples)
+            Training instances to cluster, or distances between instances if
+            ``affinity='precomputed'``.
+
+        y : Ignored
+            Not used, present here for API consistency by convention.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels.
+        """
+        if self.__agg_cluster_gpu is None:
+            raise NotImplementedError("GPU is not supported")
         return self.__agg_cluster_gpu.fit_predict(X, y)
