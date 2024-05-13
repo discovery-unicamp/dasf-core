@@ -15,6 +15,7 @@ from dasf.transforms.base import (  # noqa
 from dasf.transforms.memory import ComputeDaskData, PersistDaskData  # noqa
 from dasf.transforms.operations import Reshape  # noqa
 from dasf.transforms.operations import SliceArray, SliceArrayByPercent  # noqa
+from dasf.transforms.transforms import ExtractData  # noqa
 from dasf.transforms.transforms import ArraysToDataFrame  # noqa
 from dasf.transforms.transforms import ArrayToHDF5  # noqa
 from dasf.transforms.transforms import ArrayToZarr  # noqa
@@ -33,6 +34,7 @@ __all__ = [
     "MappedTransform",
     "ReductionTransform",
     "Normalize",
+    "ExtractData",
     "ArrayToZarr",
     "ArrayToHDF5",
     "ZarrToArray",
