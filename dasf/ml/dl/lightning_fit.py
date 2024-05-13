@@ -130,7 +130,17 @@ class LightningTrainer:
         self.unsqueeze_dim = unsqueeze_dim
 
     @task_handler
-    def fit(self, train_data, val_data=None): ...
+    def fit(self, train_data: Any, val_data: Any = None): 
+        """Perform the training of the model using torch Lightning.
+
+        Parameters
+        ----------
+        train_data : Any
+            A dasf map-style like dataset containing the training data.
+        val_data : Any, optional
+            A dasf map-style like dataset containing the validation data.
+        """
+        ...
 
     def _fit(self, train_data, val_data=None):
         train_data = LazyDatasetComputer(
