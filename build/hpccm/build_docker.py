@@ -84,7 +84,7 @@ Stage0 += shell(commands=["pip3 install pip --upgrade"])
 Stage0 += shell(commands=[pip_package_install])
 
 # TODO: fix numpy issue with version 1.24 and other fixed reqs
-Stage0 += shell(commands=["pip install \"numpy<1.24\" bokeh==2.4.3 \"protobuf<=3.20.1\" \"charset-normalizer<3.0\" \"tornado<6.2\""])
+Stage0 += shell(commands=["pip install \"numpy<1.24\" \"pandas==1.5.2\" bokeh==2.4.3 \"protobuf<=3.20.1\" \"charset-normalizer<3.0\" \"tornado<6.2\""])
 
 if is_devel:
     Stage0 += shell(commands=["wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && bash Miniconda3-latest-Linux-x86_64.sh -b && cp /root/miniconda3/bin/conda /usr/bin/conda"])
