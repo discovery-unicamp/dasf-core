@@ -1,3 +1,4 @@
+""" Dask Cluster Environment executor for PyTorch module. """
 #!/usr/bin/env python
 
 import os

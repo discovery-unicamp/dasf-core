@@ -1,3 +1,4 @@
+""" Histogram module. """
 #!/usr/bin/env python3
 
 import dask.array as da
@@ -50,6 +51,7 @@ class Histogram(TargeteredTransform, Transform):
                  density=None,
                  *args,
                  **kwargs):
+        """ Generic constructor of the class Histogram. """
         TargeteredTransform.__init__(self, *args, **kwargs)
 
         self._bins = bins
@@ -59,6 +61,23 @@ class Histogram(TargeteredTransform, Transform):
         self._density = density
 
     def __lazy_transform_generic(self, X):
+        """
+        Compute the histogram of a dataset using Dask.
+
+        Parameters
+        ----------
+        X : array_like
+            Input data. The histogram is computed over the flattened array.
+
+        Returns
+        -------
+        hist : array
+            The values of the histogram. See `density` and `weights` for a
+            description of the possible semantics.  If `weights` are given,
+            ``hist.dtype`` will be taken from `weights`.
+        bin_edges : array of dtype float
+            Return the bin edges ``(length(hist)+1)``.
+        """
         return da.histogram(
             X,
             bins=self._bins,
@@ -69,6 +88,23 @@ class Histogram(TargeteredTransform, Transform):
         )
 
     def __transform_generic(self, X, xp):
+        """
+        Compute the histogram of a dataset using local libraries.
+
+        Parameters
+        ----------
+        X : array_like
+            Input data. The histogram is computed over the flattened array.
+
+        Returns
+        -------
+        hist : array
+            The values of the histogram. See `density` and `weights` for a
+            description of the possible semantics.  If `weights` are given,
+            ``hist.dtype`` will be taken from `weights`.
+        bin_edges : array of dtype float
+            Return the bin edges ``(length(hist)+1)``.
+        """
         return xp.histogram(
             X,
             bins=self._bins,
@@ -79,13 +115,81 @@ class Histogram(TargeteredTransform, Transform):
         )
 
     def _lazy_transform_cpu(self, X):
+        """
+        Compute the histogram of a dataset using Dask with CPUs only.
+
+        Parameters
+        ----------
+        X : array_like
+            Input data. The histogram is computed over the flattened array.
+
+        Returns
+        -------
+        hist : array
+            The values of the histogram. See `density` and `weights` for a
+            description of the possible semantics.  If `weights` are given,
+            ``hist.dtype`` will be taken from `weights`.
+        bin_edges : array of dtype float
+            Return the bin edges ``(length(hist)+1)``.
+        """
         return self.__lazy_transform_generic(X)
 
     def _lazy_transform_gpu(self, X, **kwargs):
+        """
+        Compute the histogram of a dataset using Dask with GPUs only.
+
+        Parameters
+        ----------
+        X : array_like
+            Input data. The histogram is computed over the flattened array.
+
+        Returns
+        -------
+        hist : array
+            The values of the histogram. See `density` and `weights` for a
+            description of the possible semantics.  If `weights` are given,
+            ``hist.dtype`` will be taken from `weights`.
+        bin_edges : array of dtype float
+            Return the bin edges ``(length(hist)+1)``.
+        """
         return self.__lazy_transform_generic(X)
 
     def _transform_cpu(self, X, **kwargs):
+        """
+        Compute the histogram of a dataset using CPU only.
+
+        Parameters
+        ----------
+        X : array_like
+            Input data. The histogram is computed over the flattened array.
+
+        Returns
+        -------
+        hist : array
+            The values of the histogram. See `density` and `weights` for a
+            description of the possible semantics.  If `weights` are given,
+            ``hist.dtype`` will be taken from `weights`.
+        bin_edges : array of dtype float
+            Return the bin edges ``(length(hist)+1)``.
+        """
         return self.__transform_generic(X, np)
 
     def _transform_gpu(self, X, **kwargs):
+        """
+        Compute the histogram of a dataset using GPU only.
+
+        Parameters
+        ----------
+        X : array_like
+            Input data. The histogram is computed over the flattened array.
+
+        Returns
+        -------
+        hist : array
+            The values of the histogram. See `density` and `weights` for a
+            description of the possible semantics.  If `weights` are given,
+            ``hist.dtype`` will be taken from `weights`.
+        bin_edges : array of dtype float
+            Return the bin edges ``(length(hist)+1)``.
+        """
         return self.__transform_generic(X, cp)
