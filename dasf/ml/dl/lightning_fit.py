@@ -1,14 +1,12 @@
 import os
-
-from dasf.utils.decorators import task_handler
+from typing import Any, Tuple, Union
 
 import lightning as L
 import numpy as np
-from dasf.utils.decorators import task_handler
-import lightning as L
 from torch.utils.data import DataLoader
-from dasf.utils.types import is_gpu_array, is_dask_array
-from typing import Any, Tuple, Union
+
+from dasf.utils.decorators import task_handler
+from dasf.utils.types import is_dask_array, is_gpu_array
 
 
 class LazyDatasetComputer:
