@@ -339,10 +339,16 @@ class ApplyPatchesBase(Transform):
             depth=self._overlap_config["padding"],
             boundary=self._overlap_config["boundary"],
         )
+        new_chunks = []
+        for chunk_set, padding in zip(X_overlap.chunks, self._overlap_config["padding"]):
+            new_chunks.append(tuple(np.array(chunk_set) - 2*padding))
+        new_chunks = tuple(new_chunks)
 
-        return X_overlap.map_blocks(
-            self._operation, dtype=X_overlap.dtype, chunks=X.chunks
+        X =  X_overlap.map_blocks(
+            self._operation, dtype=X_overlap.dtype, chunks=new_chunks
         )
+        X = X.rechunk()
+        return X
 
     def _lazy_transform_cpu(self, X, **kwargs):
         return self._lazy_transform(X)
