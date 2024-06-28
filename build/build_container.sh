@@ -10,6 +10,7 @@ RAPIDS_VERSION="23.08"
 CUDA_VERSION="12.0"
 UBUNTU_VERSION="20.04"
 PYTHON_VERSION="3.10"
+REPO_BRANCH="main"
 DOCKERFILE_DIR=docker/
 RECIPE_ONLY=0
 
@@ -29,6 +30,7 @@ function print_help() {
     echo "    --cuda-version CUDA_VERSION      Defines which version of CUDA will be used (default='$CUDA_VERSION')."
     echo "    --os-version OS_VERSION          Defines which version of the container will be used (default='$UBUNTU_VERSION')."
     echo "    --python-version PYTHON_VERSION  Defines which version of the python interpreter will be used (default='$PYTHON_VERSION')."
+    echo "    --repo-branch REPO_BRANCH        Defines which branch from the DASF repositary to install (default='$REPO_BRANCH')."
     echo "    --format FORMAT                  Select the container backend for this build."
     echo "                                     Use 'docker' for Docker images."
     echo "                                     Use 'singularity' for SIF images (default='$FORMAT')."
@@ -67,6 +69,11 @@ while [[ $# -gt 0 ]]; do
       ;;
     --python-version)
       PYTHON_VERSION="$2"
+      shift
+      shift
+      ;;
+    --repo-branch)
+      REPO_BRANCH="$2"
       shift
       shift
       ;;
@@ -151,6 +158,7 @@ hpccm --recipe hpccm/build_docker.py \
                 cuda-version=$CUDA_VERSION \
                 ubuntu-version=$UBUNTU_VERSION \
                 python-version=$PYTHON_VERSION \
+                repo-branch=$REPO_BRANCH \
       --format $FORMAT > $DOCKERFILE_DIR/$OUTPUT_FILE
 
 if [ $RECIPE_ONLY -eq 1 ]; then
