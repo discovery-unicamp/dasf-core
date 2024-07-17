@@ -2,7 +2,7 @@
 
 """ HDBSCAN algorithm module. """
 
-from hdbscan import HDBSCAN as HDBSCAN_CPU
+from sklearn.cluster import HDBSCAN as HDBSCAN_CPU
 
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.funcs import is_gpu_supported
@@ -190,7 +190,7 @@ class HDBSCAN(ClusterClassifier):
         min_cluster_size=5,
         min_samples=None,
         p=None,
-        algorithm='best',
+        algorithm='auto',
         approx_min_span_tree=True,
         core_dist_n_jobs=4,
         cluster_selection_method='eom',
@@ -224,19 +224,13 @@ class HDBSCAN(ClusterClassifier):
 
         self.__hdbscan_cpu = HDBSCAN_CPU(
             alpha=alpha,
-            gen_min_span_tree=gen_min_span_tree,
             leaf_size=leaf_size,
             metric=metric,
             min_cluster_size=min_cluster_size,
             min_samples=min_samples,
-            p=p,
             algorithm=algorithm,
-            approx_min_span_tree=approx_min_span_tree,
-            core_dist_n_jobs=core_dist_n_jobs,
             cluster_selection_method=cluster_selection_method,
             allow_single_cluster=allow_single_cluster,
-            prediction_data=prediction_data,
-            match_reference_implementation=match_reference_implementation
         )
 
         if is_gpu_supported():
