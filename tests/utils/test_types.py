@@ -1,38 +1,40 @@
 #!/usr/bin/env python3
 
 import unittest
-import numpy as np
-import pandas as pd
+
 import dask.array as da
 import dask.dataframe as ddf
+import numpy as np
+import pandas as pd
 import xarray as xr
-
-from mock import patch, Mock
+from mock import Mock, patch
 
 try:
-    import cupy as cp
     import cudf
+    import cupy as cp
     import dask_cudf as dcudf
 except ImportError:
     pass
 
-from dasf.utils.types import is_array
-from dasf.utils.types import is_dataframe
-from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_cpu_dataframe
-from dasf.utils.types import is_cpu_datatype
-from dasf.utils.types import is_gpu_array
-from dasf.utils.types import is_gpu_dataframe
-from dasf.utils.types import is_gpu_datatype
-from dasf.utils.types import is_dask_cpu_array
-from dasf.utils.types import is_dask_cpu_dataframe
-from dasf.utils.types import is_dask_gpu_array
-from dasf.utils.types import is_dask_gpu_dataframe
-from dasf.utils.types import is_dask_array
-from dasf.utils.types import is_dask_dataframe
-from dasf.utils.types import is_dask
-from dasf.utils.types import is_xarray_array
 from dasf.utils.funcs import is_gpu_supported
+from dasf.utils.types import (
+    is_array,
+    is_cpu_array,
+    is_cpu_dataframe,
+    is_cpu_datatype,
+    is_dask,
+    is_dask_array,
+    is_dask_cpu_array,
+    is_dask_cpu_dataframe,
+    is_dask_dataframe,
+    is_dask_gpu_array,
+    is_dask_gpu_dataframe,
+    is_dataframe,
+    is_gpu_array,
+    is_gpu_dataframe,
+    is_gpu_datatype,
+    is_xarray_array,
+)
 
 
 class TestTypes(unittest.TestCase):

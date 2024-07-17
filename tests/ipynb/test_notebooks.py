@@ -2,21 +2,20 @@
 
 import os
 import re
-import nbformat
 import unittest
-
 from queue import Empty
+
+import nbformat
 
 try:
     from jupyter_client import KernelManager
 except ImportError:
     from IPython.zmq.blockingkernelmanager import BlockingKernelManager as KernelManager
 
-from pytest import fixture
 from parameterized import parameterized_class
+from pytest import fixture
 
 from dasf.utils.funcs import is_gpu_supported
-
 
 IN_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
 

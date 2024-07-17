@@ -2,43 +2,42 @@
 
 import unittest
 
-import numpy as np
 import dask.array as da
-
+import numpy as np
 from dask.delayed import Delayed
-from mock import patch, Mock
+from distributed.utils import TimeoutError as DistributedTimeoutError
+from mock import Mock, patch
 from parameterized import parameterized
 
-from distributed.utils import TimeoutError as DistributedTimeoutError
-
-from dasf.utils.funcs import human_readable_size
-from dasf.utils.funcs import is_gpu_supported
-from dasf.utils.funcs import is_jax_supported
-from dasf.utils.funcs import is_dask_local_supported
-from dasf.utils.funcs import is_dask_supported
-from dasf.utils.funcs import is_dask_gpu_supported
-from dasf.utils.funcs import get_gpu_count
-from dasf.utils.funcs import get_dask_gpu_count
-from dasf.utils.funcs import get_dask_gpu_names
-from dasf.utils.funcs import block_chunk_reduce
-from dasf.utils.funcs import trim_chunk_location
-from dasf.utils.funcs import get_backend_supported
-from dasf.utils.funcs import get_worker_info
-from dasf.utils.funcs import sync_future_loop
-from dasf.utils.funcs import is_notebook
-from dasf.utils.funcs import set_executor_default
-from dasf.utils.funcs import set_executor_cpu
-from dasf.utils.funcs import set_executor_gpu
-from dasf.utils.funcs import set_executor_multi_cpu
-from dasf.utils.funcs import set_executor_multi_gpu
-from dasf.utils.funcs import is_executor_single
-from dasf.utils.funcs import is_executor_cluster
-from dasf.utils.funcs import is_executor_cpu
-from dasf.utils.funcs import is_executor_gpu
-from dasf.utils.funcs import executor_to_string
-from dasf.utils.funcs import get_machine_memory_avail
-
 from dasf.pipeline.types import TaskExecutorType
+from dasf.utils.funcs import (
+    block_chunk_reduce,
+    executor_to_string,
+    get_backend_supported,
+    get_dask_gpu_count,
+    get_dask_gpu_names,
+    get_gpu_count,
+    get_machine_memory_avail,
+    get_worker_info,
+    human_readable_size,
+    is_dask_gpu_supported,
+    is_dask_local_supported,
+    is_dask_supported,
+    is_executor_cluster,
+    is_executor_cpu,
+    is_executor_gpu,
+    is_executor_single,
+    is_gpu_supported,
+    is_jax_supported,
+    is_notebook,
+    set_executor_cpu,
+    set_executor_default,
+    set_executor_gpu,
+    set_executor_multi_cpu,
+    set_executor_multi_gpu,
+    sync_future_loop,
+    trim_chunk_location,
+)
 
 
 class TestArchitetures(unittest.TestCase):

@@ -2,10 +2,10 @@
 
 import unittest
 
-import numpy as np
 import dask.array as da
-import pandas as pd
 import dask.dataframe as ddf
+import numpy as np
+import pandas as pd
 
 try:
     import cudf
@@ -16,15 +16,19 @@ except ImportError:
 
 from mock import MagicMock
 
-from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_gpu_array
-from dasf.utils.types import is_dask_cpu_array
-from dasf.utils.types import is_dask_gpu_array
+from dasf.transforms.operations import (
+    Reshape,
+    SliceArray,
+    SliceArrayByPercent,
+    SliceArrayByPercentile,
+)
 from dasf.utils.funcs import is_gpu_supported
-from dasf.transforms.operations import Reshape
-from dasf.transforms.operations import SliceArray
-from dasf.transforms.operations import SliceArrayByPercent
-from dasf.transforms.operations import SliceArrayByPercentile
+from dasf.utils.types import (
+    is_cpu_array,
+    is_dask_cpu_array,
+    is_dask_gpu_array,
+    is_gpu_array,
+)
 
 
 class TestReshape(unittest.TestCase):

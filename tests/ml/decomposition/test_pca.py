@@ -1,25 +1,23 @@
 #!/usr/bin/env python3
 
 import unittest
-import numpy as np
-import dask.array as da
 
+import dask.array as da
+import numpy as np
 from dask.distributed import Client
 
 try:
     import cupy as cp
-
     from dask_cuda import LocalCUDACluster
 except ImportError:
     pass
 
-from mock import patch, Mock
-from sklearn import datasets
+from mock import Mock, patch
 from parameterized import parameterized
+from sklearn import datasets
 
 from dasf.ml.decomposition import PCA
 from dasf.utils.funcs import is_gpu_supported
-
 
 PCA_SOLVERS_CPU = [("full"), ("arpack"), ("randomized"), ("auto")]
 PCA_SOLVERS_MCPU = [("full"), ("tsqr"), ("auto")]  # "ramdomized" has a Dask bug 

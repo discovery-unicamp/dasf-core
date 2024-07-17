@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import unittest
-import numpy as np
 
+import numpy as np
 from parameterized import parameterized_class
 
 try:
@@ -13,9 +13,8 @@ except ImportError:
 from sklearn.datasets import make_blobs, make_moons
 
 from dasf.ml.cluster import HDBSCAN
-from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_gpu_array
 from dasf.utils.funcs import is_gpu_supported
+from dasf.utils.types import is_cpu_array, is_gpu_array
 
 
 def generate_blobs():

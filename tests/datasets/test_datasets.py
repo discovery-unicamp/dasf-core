@@ -2,7 +2,7 @@
 
 import unittest
 
-from mock import patch, Mock
+from mock import Mock, patch
 
 try:
     from dask.distributed import Client
@@ -10,15 +10,14 @@ try:
 except ImportError:
     pass
 
+from dasf.datasets import make_blobs, make_classification, make_regression
 from dasf.utils.funcs import is_gpu_supported
-from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_gpu_array
-from dasf.utils.types import is_dask_array
-from dasf.utils.types import is_dask_gpu_array
-
-from dasf.datasets import make_blobs
-from dasf.datasets import make_classification
-from dasf.datasets import make_regression
+from dasf.utils.types import (
+    is_cpu_array,
+    is_dask_array,
+    is_dask_gpu_array,
+    is_gpu_array,
+)
 
 
 class TestDatasets(unittest.TestCase):

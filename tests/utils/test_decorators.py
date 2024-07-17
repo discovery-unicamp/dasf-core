@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 
 import unittest
-import numpy as np
+
 import dask.array as da
+import numpy as np
 
 try:
     import cupy as cp
 except ImportError:
     pass
 
-from mock import patch, Mock
+from mock import Mock, patch
 
-from dasf.utils.decorators import fetch_args_from_dask
-from dasf.utils.decorators import fetch_args_from_gpu
-from dasf.utils.decorators import task_handler
-from dasf.utils.funcs import is_gpu_supported
 from dasf.transforms.base import Transform
+from dasf.utils.decorators import (
+    fetch_args_from_dask,
+    fetch_args_from_gpu,
+    task_handler,
+)
+from dasf.utils.funcs import is_gpu_supported
 
 
 class TestFetchData(unittest.TestCase):

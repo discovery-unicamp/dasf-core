@@ -4,16 +4,14 @@ import os
 import tempfile
 import unittest
 import urllib.parse
+
 import networkx as nx
-
-from mock import patch, Mock
-
 from dask.distributed import Client, LocalCluster
+from mock import Mock, patch
 
-from dasf.utils.funcs import is_gpu_supported
-from dasf.pipeline.executors import DaskPipelineExecutor
-from dasf.pipeline.executors import DaskTasksPipelineExecutor
+from dasf.pipeline.executors import DaskPipelineExecutor, DaskTasksPipelineExecutor
 from dasf.pipeline.executors.dask import setup_dask_protocol
+from dasf.utils.funcs import is_gpu_supported
 
 
 class TestDaskProtocol(unittest.TestCase):

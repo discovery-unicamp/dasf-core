@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
 
 import unittest
-import numpy as np
+
 import dask.array as da
+import numpy as np
 
 try:
     import cupy as cp
 except ImportError:
     pass
 
-from mock import patch, Mock
-
+from mock import Mock, patch
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import SOM
-from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_gpu_array
-from dasf.utils.types import is_dask_cpu_array
-from dasf.utils.types import is_dask_gpu_array
 from dasf.utils.funcs import is_gpu_supported
+from dasf.utils.types import (
+    is_cpu_array,
+    is_dask_cpu_array,
+    is_dask_gpu_array,
+    is_gpu_array,
+)
 
 
 class TestSOM(unittest.TestCase):
