@@ -1,47 +1,107 @@
-:py:mod:`dasf.ml.dl`
-====================
+dasf.ml.dl
+==========
 
 .. py:module:: dasf.ml.dl
 
 
 Subpackages
 -----------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 3
 
-   clusters/index.rst
-   models/index.rst
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dasf/ml/dl/clusters/index
+   /autoapi/dasf/ml/dl/models/index
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   pytorch_lightning/index.rst
+   /autoapi/dasf/ml/dl/lightning_fit/index
+   /autoapi/dasf/ml/dl/pytorch_lightning/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.ml.dl.LightningTrainer
+   dasf.ml.dl.NeuralNetClassifier
 
 
 Package Contents
 ----------------
 
-Classes
-~~~~~~~
+.. py:class:: LightningTrainer(model, use_gpu = False, batch_size = 1, max_epochs = 1, limit_train_batches = None, limit_val_batches = None, devices = 'auto', num_nodes = 1, shuffle = True, strategy = 'ddp', unsqueeze_dim = None)
 
-.. autoapisummary::
+   
+   Initialize the LightningFit class.
 
-   dasf.ml.dl.NeuralNetClassifier
+   Parameters
+   ----------
+   model : LightningModule
+       The LightningModule instance representing the model to be trained.
+   use_gpu : bool, optional
+       Flag indicating whether to use GPU for training, by default False.
+   batch_size : int, optional
+       The batch size for training, by default 1.
+   max_epochs : int, optional
+       The maximum number of epochs for training, by default 1.
+   limit_train_batches : int, optional
+       The number of batches to consider for training, by default None.
+   limit_val_batches : int, optional
+       The number of batches to consider for validation, by default None.
+   devices : int, optional
+       The number of devices to use for training, by default "auto".
+   num_nodes : int, optional
+       The number of nodes to use for distributed training, by default 1.
+   shuffle : bool, optional
+       Flag indicating whether to shuffle the data during training, by default True.
+   strategy : str, optional
+       The strategy to use for distributed training, by default "ddp".
+   unsqueeze_dim : int, optional
+       The dimension to unsqueeze the input data, by default None.
 
 
+   .. py:method:: fit(train_data, val_data = None)
+
+      Perform the training of the model using torch Lightning.
+
+      Parameters
+      ----------
+      train_data : Any
+          A dasf map-style like dataset containing the training data.
+      val_data : Any, optional
+          A dasf map-style like dataset containing the validation data.
+
+
+
+   .. py:method:: _fit(train_data, val_data=None)
+
+
+   .. py:method:: _lazy_fit_cpu(train_data, val_data=None)
+
+
+   .. py:method:: _lazy_fit_gpu(train_data, val_data=None)
+
+
+   .. py:method:: _fit_cpu(train_data, val_data=None)
+
+
+   .. py:method:: _fit_gpu(train_data, val_data=None)
 
 
 .. py:class:: NeuralNetClassifier(model, max_iter=100, batch_size=32)
 
-
    Bases: :py:obj:`dasf.transforms.base.Fit`
 
+
    Class representing a Fit operation of the pipeline.
+
 
    .. py:method:: _lazy_fit_generic(X, y, accel, ngpus)
 
@@ -51,9 +111,11 @@ Classes
       Respective lazy fit mocked function for GPUs.
 
 
+
    .. py:method:: _lazy_fit_cpu(X, y=None)
 
       Respective lazy fit mocked function for CPUs.
+
 
 
    .. py:method:: __fit_generic(X, y, accel, ngpus)
@@ -62,6 +124,7 @@ Classes
    .. py:method:: _fit_gpu(X, y=None)
 
       Respective immediate fit mocked function for local GPU(s).
+
 
 
    .. py:method:: _fit_cpu(X, y=None)

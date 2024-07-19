@@ -1,0 +1,125 @@
+dasf.ml.dl.clusters
+===================
+
+.. py:module:: dasf.ml.dl.clusters
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dasf/ml/dl/clusters/dask/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.ml.dl.clusters.DaskClusterEnvironment
+
+
+Package Contents
+----------------
+
+.. py:class:: DaskClusterEnvironment(metadata=None)
+
+   Bases: :py:obj:`pytorch_lightning.plugins.environments.ClusterEnvironment`
+
+
+   Create a Dask Cluster environment for workers
+
+   Parameters
+   ----------
+   metadata : dict
+       Dictionary containing all data related to workers.
+
+   Constructor of the object DaskClusterEnvironment using dict metadata. 
+
+
+   .. py:method:: detect()
+
+      Detect if important data are present into metadata dictionary.
+
+      Returns
+      -------
+      bool : if they are present or not.
+
+
+
+   .. py:property:: creates_processes_externally
+      :type: bool
+
+      Return True if the cluster is managed (you don't launch processes
+      yourself).
+
+
+
+   .. py:property:: main_address
+      :type: str
+
+      Return master worker address.
+
+
+
+   .. py:property:: main_port
+      :type: int
+
+      Return master worker port.
+
+
+
+   .. py:method:: creates_children()
+
+      Fork children when generate a cluster.
+
+
+
+   .. py:method:: world_size()
+
+      Return worker world size.
+
+
+
+   .. py:method:: global_rank()
+
+      Return worker global rank.
+
+
+
+   .. py:method:: local_rank()
+
+      Return worker local rank.
+
+
+
+   .. py:method:: node_rank()
+
+      Return worker node rank (which is similar to global rank).
+
+
+
+   .. py:method:: set_world_size(size)
+
+      Set the index of the world size.
+
+      Parameters
+      ----------
+      size : int
+          Integer with the world size value.
+
+
+
+   .. py:method:: set_global_rank(rank)
+
+      Set the index of the global rank.
+
+      Parameters
+      ----------
+      size : int
+          Integer with the global rank value.
+
+
+

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.cluster.som &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -80,6 +80,8 @@
              
   <h1>Source code for dasf.ml.cluster.som</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="sd">&quot;&quot;&quot; Kohonen&#39;s Self-Organized Map (SOM) algorithm module. &quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">xpysom_dask</span> <span class="kn">import</span> <span class="n">XPySom</span>
@@ -299,6 +301,22 @@
 <div class="viewcode-block" id="SOM._lazy_fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_fit_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit SOM method using Dask with CPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns a fitted instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span></div>
 
@@ -306,6 +324,22 @@
 <div class="viewcode-block" id="SOM._lazy_fit_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_fit_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit SOM method using Dask with GPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns a fitted instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span></div>
 
@@ -313,6 +347,22 @@
 <div class="viewcode-block" id="SOM._fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._fit_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit SOM method using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns a fitted instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span></div>
 
@@ -320,6 +370,22 @@
 <div class="viewcode-block" id="SOM._fit_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._fit_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit SOM method using GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns a fitted instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span></div>
 
@@ -327,6 +393,27 @@
 <div class="viewcode-block" id="SOM._lazy_fit_predict_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_fit_predict_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit SOM and select the winner neurons for the input using Dask with</span>
+<span class="sd">        CPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        y : {array-like, sparse matrix} of shape (n_samples).</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit_predict methods. SOM does not use labels to verify the input.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit_predict methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns a fitted instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
@@ -334,6 +421,27 @@
 <div class="viewcode-block" id="SOM._lazy_fit_predict_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_fit_predict_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit SOM and select the winner neurons for the input using Dask with</span>
+<span class="sd">        GPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        y : {array-like, sparse matrix} of shape (n_samples).</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit_predict methods. SOM does not use labels to verify the input.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit_predict methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns a fitted instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
@@ -341,6 +449,26 @@
 <div class="viewcode-block" id="SOM._fit_predict_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._fit_predict_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit SOM and select the winner neurons for the input using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        y : {array-like, sparse matrix} of shape (n_samples).</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit_predict methods. SOM does not use labels to verify the input.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit_predict methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns a fitted instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
@@ -348,6 +476,26 @@
 <div class="viewcode-block" id="SOM._fit_predict_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._fit_predict_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit SOM and select the winner neurons for the input using GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        y : {array-like, sparse matrix} of shape (n_samples).</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit_predict methods. SOM does not use labels to verify the input.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit_predict methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns a fitted instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__som</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
@@ -355,48 +503,166 @@
 <div class="viewcode-block" id="SOM._lazy_predict_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_predict_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict the input using a fitted SOM using Dask with CPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        labels : ndarray of shape (n_samples,)</span>
+<span class="sd">            Cluster labels. Noisy samples are given the label -1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SOM._lazy_predict_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_predict_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict the input using a fitted SOM using Dask with GPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        labels : ndarray of shape (n_samples,)</span>
+<span class="sd">            Cluster labels. Noisy samples are given the label -1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SOM._predict_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._predict_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict the input using a fitted SOM using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        labels : ndarray of shape (n_samples,)</span>
+<span class="sd">            Cluster labels. Noisy samples are given the label -1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SOM._predict_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._predict_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict the input using a fitted SOM using GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This is just a placeholder to keep the compatibility with other</span>
+<span class="sd">            fit methods. This is not used by SOM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        labels : ndarray of shape (n_samples,)</span>
+<span class="sd">            Cluster labels. Noisy samples are given the label -1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SOM._lazy_quantization_error_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_quantization_error_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_quantization_error_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the quantization error computed as the average distance</span>
+<span class="sd">        between each input sample and its best matching unit using Dask with</span>
+<span class="sd">        CPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        error : float</span>
+<span class="sd">            The quantization error of the trained SOM.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mcpu</span><span class="o">.</span><span class="n">quantization_error</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SOM._lazy_quantization_error_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._lazy_quantization_error_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_quantization_error_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the quantization error computed as the average distance</span>
+<span class="sd">        between each input sample and its best matching unit using Dask with</span>
+<span class="sd">        GPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        error : float</span>
+<span class="sd">            The quantization error of the trained SOM.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_mgpu</span><span class="o">.</span><span class="n">quantization_error</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SOM._quantization_error_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._quantization_error_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_quantization_error_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the quantization error computed as the average distance</span>
+<span class="sd">        between each input sample and its best matching unit using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        error : float</span>
+<span class="sd">            The quantization error of the trained SOM.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_cpu</span><span class="o">.</span><span class="n">quantization_error</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SOM._quantization_error_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM._quantization_error_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_quantization_error_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the quantization error computed as the average distance</span>
+<span class="sd">        between each input sample and its best matching unit using GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        error : float</span>
+<span class="sd">            The quantization error of the trained SOM.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__som_gpu</span><span class="o">.</span><span class="n">quantization_error</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
@@ -404,6 +670,10 @@
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/som/index.html#dasf.ml.cluster.SOM.quantization_error">[docs]</a>
     <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">quantization_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic quantization_error funtion according executor (for SOM method</span>
+<span class="sd">        only).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 </div>
 

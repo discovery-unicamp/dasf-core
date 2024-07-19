@@ -1,14 +1,11 @@
-:py:mod:`dasf.pipeline.executors.dask`
-======================================
+dasf.pipeline.executors.dask
+============================
 
 .. py:module:: dasf.pipeline.executors.dask
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -17,23 +14,23 @@ Classes
    dasf.pipeline.executors.dask.DaskPBSPipelineExecutor
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    dasf.pipeline.executors.dask.setup_dask_protocol
 
 
+Module Contents
+---------------
 
 .. py:function:: setup_dask_protocol(protocol=None)
 
-
 .. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, protocol=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
 
-
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
+
 
    A pipeline engine based on dask data flow.
 
@@ -49,16 +46,20 @@ Functions
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
 
+
    .. py:property:: ngpus
       :type: int
+
 
 
    .. py:property:: is_connected
       :type: bool
 
 
+
    .. py:property:: info
       :type: str
+
 
 
    .. py:method:: execute(fn, *args, **kwargs)
@@ -82,11 +83,10 @@ Functions
    .. py:method:: close()
 
 
-
 .. py:class:: DaskTasksPipelineExecutor(address=None, port=8786, local=False, use_gpu=True, profiler=None, protocol=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
 
-
    Bases: :py:obj:`DaskPipelineExecutor`
+
 
    A not centric execution engine based on dask.
 
@@ -100,6 +100,7 @@ Functions
    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
+
 
    .. py:method:: pre_run(pipeline)
 
@@ -125,9 +126,7 @@ Functions
    .. py:method:: close()
 
 
-
 .. py:class:: DaskPBSPipelineExecutor(**kwargs)
-
 
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
 

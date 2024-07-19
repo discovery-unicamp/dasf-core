@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.pipeline &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="dasf.pipeline.executors" href="executors/index.html" />
-    <link rel="prev" title="dasf.ml.core" href="../ml/core/index.html" /> 
+    <link rel="prev" title="dasf.ml.xgboost.xgboost" href="../ml/xgboost/xgboost/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,16 +55,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../api.html">DASF API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">dasf</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../ml/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../profile/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../datasets/index.html">dasf.datasets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../debug/index.html">dasf.debug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../feature_extraction/index.html">dasf.feature_extraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ml/index.html">dasf.ml</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">dasf.pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../profile/index.html">dasf.profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../transforms/index.html">dasf.transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utils/index.html">dasf.utils</a></li>
 </ul>
 </li>
 </ul>
@@ -88,8 +88,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../api.html">DASF API Reference</a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></li>
+          <li class="breadcrumb-item"><a href="../index.html">dasf</a></li>
+      <li class="breadcrumb-item active">dasf.pipeline</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/autoapi/dasf/pipeline/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,18 +100,12 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.pipeline">
-<span id="dasf-pipeline"></span><h1><a class="reference internal" href="#module-dasf.pipeline" title="dasf.pipeline"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a><a class="headerlink" href="#module-dasf.pipeline" title="Link to this heading"></a></h1>
+<span id="dasf-pipeline"></span><h1>dasf.pipeline<a class="headerlink" href="#module-dasf.pipeline" title="Link to this heading"></a></h1>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="executors/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors</span></code></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="executors/base/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.base</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="executors/dask/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.dask</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="executors/ray/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.ray</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="executors/wrapper/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.executors.wrapper</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="executors/index.html">dasf.pipeline.executors</a></li>
 </ul>
 </div>
 </section>
@@ -119,15 +113,13 @@
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.pipeline</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="types/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline.types</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline/index.html">dasf.pipeline.pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types/index.html">dasf.pipeline.types</a></li>
 </ul>
 </div>
 </section>
-<section id="package-contents">
-<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.pipeline.Pipeline" title="dasf.pipeline.Pipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Pipeline</span></code></a></p></td>
@@ -138,6 +130,9 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.pipeline.Pipeline">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.</span></span><span class="sig-name descname"><span class="pre">Pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/pipeline/pipeline.html#Pipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.Pipeline" title="Link to this definition"></a></dt>
@@ -240,13 +235,12 @@
 
 </section>
 </section>
-</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../ml/core/index.html" class="btn btn-neutral float-left" title="dasf.ml.core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../ml/xgboost/xgboost/index.html" class="btn btn-neutral float-left" title="dasf.ml.xgboost.xgboost" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="executors/index.html" class="btn btn-neutral float-right" title="dasf.pipeline.executors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.cluster.hdbscan &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -81,7 +81,9 @@
   <h1>Source code for dasf.ml.cluster.hdbscan</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
-<span class="kn">from</span> <span class="nn">hdbscan</span> <span class="kn">import</span> <span class="n">HDBSCAN</span> <span class="k">as</span> <span class="n">HDBSCAN_CPU</span>
+<span class="sd">&quot;&quot;&quot; HDBSCAN algorithm module. &quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">HDBSCAN</span> <span class="k">as</span> <span class="n">HDBSCAN_CPU</span>
 
 <span class="kn">from</span> <span class="nn">dasf.ml.cluster.classifier</span> <span class="kn">import</span> <span class="n">ClusterClassifier</span>
 <span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_gpu_supported</span>
@@ -93,7 +95,7 @@
 
 
 <div class="viewcode-block" id="HDBSCAN">
-<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN">[docs]</a>
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.hdbscan.HDBSCAN">[docs]</a>
 <span class="k">class</span> <span class="nc">HDBSCAN</span><span class="p">(</span><span class="n">ClusterClassifier</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform HDBSCAN clustering from vector array or distance matrix.</span>
@@ -271,7 +273,7 @@
         <span class="n">min_cluster_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
         <span class="n">min_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span>
+        <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
         <span class="n">approx_min_span_tree</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">core_dist_n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
         <span class="n">cluster_selection_method</span><span class="o">=</span><span class="s1">&#39;eom&#39;</span><span class="p">,</span>
@@ -305,19 +307,13 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_cpu</span> <span class="o">=</span> <span class="n">HDBSCAN_CPU</span><span class="p">(</span>
             <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
-            <span class="n">gen_min_span_tree</span><span class="o">=</span><span class="n">gen_min_span_tree</span><span class="p">,</span>
             <span class="n">leaf_size</span><span class="o">=</span><span class="n">leaf_size</span><span class="p">,</span>
             <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
             <span class="n">min_cluster_size</span><span class="o">=</span><span class="n">min_cluster_size</span><span class="p">,</span>
             <span class="n">min_samples</span><span class="o">=</span><span class="n">min_samples</span><span class="p">,</span>
-            <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span>
             <span class="n">algorithm</span><span class="o">=</span><span class="n">algorithm</span><span class="p">,</span>
-            <span class="n">approx_min_span_tree</span><span class="o">=</span><span class="n">approx_min_span_tree</span><span class="p">,</span>
-            <span class="n">core_dist_n_jobs</span><span class="o">=</span><span class="n">core_dist_n_jobs</span><span class="p">,</span>
             <span class="n">cluster_selection_method</span><span class="o">=</span><span class="n">cluster_selection_method</span><span class="p">,</span>
             <span class="n">allow_single_cluster</span><span class="o">=</span><span class="n">allow_single_cluster</span><span class="p">,</span>
-            <span class="n">prediction_data</span><span class="o">=</span><span class="n">prediction_data</span><span class="p">,</span>
-            <span class="n">match_reference_implementation</span><span class="o">=</span><span class="n">match_reference_implementation</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
@@ -337,26 +333,88 @@
             <span class="p">)</span>
 
 <div class="viewcode-block" id="HDBSCAN._fit_cpu">
-<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_cpu">[docs]</a>
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform HDBSCAN clustering from features or distance matrix using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features), or \</span>
+<span class="sd">                array-like of shape (n_samples, n_samples)</span>
+<span class="sd">            A feature array, or array of distances between samples if</span>
+<span class="sd">            ``metric=&#39;precomputed&#39;``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted estimator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="HDBSCAN._fit_gpu">
-<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_gpu">[docs]</a>
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">convert_dtype</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform HDBSCAN clustering from features or distance matrix using GPU only</span>
+<span class="sd">        (from CuML).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features), or \</span>
+<span class="sd">                array-like of shape (n_samples, n_samples)</span>
+<span class="sd">            A feature array, or array of distances between samples if</span>
+<span class="sd">            ``metric=&#39;precomputed&#39;``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted estimator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">convert_dtype</span><span class="o">=</span><span class="n">convert_dtype</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="HDBSCAN._fit_predict_cpu">
-<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_cpu">[docs]</a>
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_predict_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs clustering on X and returns cluster labels using only CPU.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features), or \</span>
+<span class="sd">                array-like of shape (n_samples, n_samples)</span>
+<span class="sd">            A feature array, or array of distances between samples if</span>
+<span class="sd">            ``metric=&#39;precomputed&#39;``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y : ndarray, shape (n_samples, )</span>
+<span class="sd">            cluster labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_cpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="HDBSCAN._fit_predict_gpu">
-<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/hdbscan/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_gpu">[docs]</a>
+<a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/index.html#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_predict_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs clustering on X and returns cluster labels using only GPU</span>
+<span class="sd">        (from CuML).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features), or \</span>
+<span class="sd">                array-like of shape (n_samples, n_samples)</span>
+<span class="sd">            A feature array, or array of distances between samples if</span>
+<span class="sd">            ``metric=&#39;precomputed&#39;``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y : ndarray, shape (n_samples, )</span>
+<span class="sd">            cluster labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hdbscan_gpu</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
 </div>
 

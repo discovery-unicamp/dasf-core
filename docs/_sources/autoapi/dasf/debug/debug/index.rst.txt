@@ -1,0 +1,84 @@
+dasf.debug.debug
+================
+
+.. py:module:: dasf.debug.debug
+
+.. autoapi-nested-parse::
+
+   Debug DASF module. 
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.debug.debug.Debug
+   dasf.debug.debug.VisualizeDaskData
+
+
+Module Contents
+---------------
+
+.. py:class:: Debug
+
+   Print information about an operator (shape, datatype, etc.), and return
+   the self object reference.
+
+   Parameters
+   ----------
+   name : str
+       Name of the operator.
+   **kwargs : type
+       Additional keyworkded arguments to `Operator`.
+
+
+
+   .. py:method:: display(X)
+
+      Display useful information of the input data.
+
+      Parameters
+      ----------
+      X : Any
+          Any data that can be represented as a dataset.
+
+      Returns
+      -------
+      data : Any
+          Same input data without any transformation.
+
+
+
+.. py:class:: VisualizeDaskData(filename = None)
+
+   Visualize DASK data from an operator.
+
+   Parameters
+   ----------
+   filename : str
+       A path to save the DASK visualization (the default is None).
+   **kwargs : type
+       Additional keyworkded arguments to `Operator`.
+
+
+   Generic constructor of the VisualizeDaskData object. 
+
+
+   .. py:method:: display(X)
+
+      Display Dask task graph using visualize method.
+
+      Parameters
+      ----------
+      X : Any
+          Any data that can be represented as a dataset.
+
+      Returns
+      -------
+      data : Any
+          Same input data without any transformation.
+
+
+

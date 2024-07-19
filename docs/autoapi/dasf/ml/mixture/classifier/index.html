@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.mixture.classifier &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -69,7 +69,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.mixture.classifier</span></code></li>
+      <li class="breadcrumb-item active">dasf.ml.mixture.classifier</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../../_sources/autoapi/dasf/ml/mixture/classifier/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -80,56 +80,30 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.ml.mixture.classifier">
-<span id="dasf-ml-mixture-classifier"></span><h1><a class="reference internal" href="#module-dasf.ml.mixture.classifier" title="dasf.ml.mixture.classifier"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.mixture.classifier</span></code></a><a class="headerlink" href="#module-dasf.ml.mixture.classifier" title="Link to this heading"></a></h1>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<span id="dasf-ml-mixture-classifier"></span><h1>dasf.ml.mixture.classifier<a class="headerlink" href="#module-dasf.ml.mixture.classifier" title="Link to this heading"></a></h1>
+<p>Generic Mixture Classifier algorithm method.</p>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.ml.mixture.classifier.MixtureClassifier" title="dasf.ml.mixture.classifier.MixtureClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MixtureClassifier</span></code></a></p></td>
-<td><p>Class representing a Fit operation of the pipeline.</p></td>
+<td><p>Generic Mixture Classifier based on regular method for this type of</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.mixture.classifier.MixtureClassifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.mixture.classifier.</span></span><span class="sig-name descname"><span class="pre">MixtureClassifier</span></span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/classifier.html#MixtureClassifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.classifier.MixtureClassifier" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.Fit" title="dasf.transforms.base.Fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Fit</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.FitPredict" title="dasf.transforms.base.FitPredict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.FitPredict</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.FitTransform" title="dasf.transforms.base.FitTransform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.FitTransform</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.GetParams" title="dasf.transforms.base.GetParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.GetParams</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.SetParams" title="dasf.transforms.base.SetParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.SetParams</span></code></a></p>
-<p>Class representing a Fit operation of the pipeline.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.mixture.classifier.MixtureClassifier.fit">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/classifier.html#MixtureClassifier.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.classifier.MixtureClassifier.fit" title="Link to this definition"></a></dt>
-<dd><p>Generic fit funtion according executor.</p>
+<p>Generic Mixture Classifier based on regular method for this type of
+classifier</p>
+<p>Most of the Mixture methods has a fit, a fit_predict, a fit_transform,
+a get_params, and a set_params methods.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.mixture.classifier.MixtureClassifier.fit_predict">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/classifier.html#MixtureClassifier.fit_predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.classifier.MixtureClassifier.fit_predict" title="Link to this definition"></a></dt>
-<dd><p>Generic fit with predict funtion according executor.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.mixture.classifier.MixtureClassifier.fit_transform">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/classifier.html#MixtureClassifier.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.classifier.MixtureClassifier.fit_transform" title="Link to this definition"></a></dt>
-<dd><p>Generic fit with transform funtion according executor.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.mixture.classifier.MixtureClassifier.get_params">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/classifier.html#MixtureClassifier.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.classifier.MixtureClassifier.get_params" title="Link to this definition"></a></dt>
-<dd><p>Generic get_params funtion according executor.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.ml.mixture.classifier.MixtureClassifier.set_params">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/classifier.html#MixtureClassifier.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.classifier.MixtureClassifier.set_params" title="Link to this definition"></a></dt>
-<dd><p>Generic set_params funtion according executor.</p>
-</dd></dl>
-
-</dd></dl>
-
-</section>
 </section>
 </section>
 

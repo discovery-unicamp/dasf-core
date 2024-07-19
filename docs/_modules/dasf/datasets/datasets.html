@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.datasets.datasets &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -81,6 +81,8 @@
   <h1>Source code for dasf.datasets.datasets</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
+<span class="sd">&quot;&quot;&quot; Module representing all types of dataset generators. &quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">dask_ml.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span> <span class="k">as</span> <span class="n">make_blobs_MCPU</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span> <span class="k">as</span> <span class="n">make_blobs_CPU</span>
 
@@ -116,6 +118,85 @@
 <div class="viewcode-block" id="make_blobs">
 <a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.datasets.make_blobs">[docs]</a>
 <span class="k">class</span> <span class="nc">make_blobs</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate isotropic Gaussian blobs for clustering.</span>
+
+<span class="sd">    For an example of usage, see</span>
+<span class="sd">    :ref:`sphx_glr_auto_examples_datasets_plot_random_dataset.py`.</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;sample_generators&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_samples : int or array-like, default=100</span>
+<span class="sd">        If int, it is the total number of points equally divided among</span>
+<span class="sd">        clusters.</span>
+<span class="sd">        If array-like, each element of the sequence indicates</span>
+<span class="sd">        the number of samples per cluster.</span>
+
+<span class="sd">        .. versionchanged:: v0.20</span>
+<span class="sd">            one can now pass an array-like to the ``n_samples`` parameter</span>
+
+<span class="sd">    n_features : int, default=2</span>
+<span class="sd">        The number of features for each sample.</span>
+
+<span class="sd">    centers : int or array-like of shape (n_centers, n_features), default=None</span>
+<span class="sd">        The number of centers to generate, or the fixed center locations.</span>
+<span class="sd">        If n_samples is an int and centers is None, 3 centers are generated.</span>
+<span class="sd">        If n_samples is array-like, centers must be</span>
+<span class="sd">        either None or an array of length equal to the length of n_samples.</span>
+
+<span class="sd">    cluster_std : float or array-like of float, default=1.0</span>
+<span class="sd">        The standard deviation of the clusters.</span>
+
+<span class="sd">    center_box : tuple of float (min, max), default=(-10.0, 10.0)</span>
+<span class="sd">        The bounding box for each cluster center when centers are</span>
+<span class="sd">        generated at random.</span>
+
+<span class="sd">    shuffle : bool, default=True</span>
+<span class="sd">        Shuffle the samples.</span>
+
+<span class="sd">    random_state : int, RandomState instance or None, default=None</span>
+<span class="sd">        Determines random number generation for dataset creation. Pass an int</span>
+<span class="sd">        for reproducible output across multiple function calls.</span>
+<span class="sd">        See :term:`Glossary &lt;random_state&gt;`.</span>
+
+<span class="sd">    return_centers : bool, default=False</span>
+<span class="sd">        If True, then return the centers of each cluster.</span>
+
+<span class="sd">        .. versionadded:: 0.23</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">        The generated samples.</span>
+
+<span class="sd">    y : ndarray of shape (n_samples,)</span>
+<span class="sd">        The integer labels for cluster membership of each sample.</span>
+
+<span class="sd">    centers : ndarray of shape (n_centers, n_features)</span>
+<span class="sd">        The centers of each cluster. Only returned if</span>
+<span class="sd">        ``return_centers=True``.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    make_classification : A more intricate variant.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.datasets import make_blobs</span>
+<span class="sd">    &gt;&gt;&gt; X, y = make_blobs(n_samples=10, centers=3, n_features=2,</span>
+<span class="sd">    ...                   random_state=0)</span>
+<span class="sd">    &gt;&gt;&gt; print(X.shape)</span>
+<span class="sd">    (10, 2)</span>
+<span class="sd">    &gt;&gt;&gt; y</span>
+<span class="sd">    array([0, 0, 1, 0, 2, 2, 2, 1, 1, 0])</span>
+<span class="sd">    &gt;&gt;&gt; X, y = make_blobs(n_samples=[3, 3, 4], centers=None, n_features=2,</span>
+<span class="sd">    ...                   random_state=0)</span>
+<span class="sd">    &gt;&gt;&gt; print(X.shape)</span>
+<span class="sd">    (10, 2)</span>
+<span class="sd">    &gt;&gt;&gt; y</span>
+<span class="sd">    array([0, 1, 2, 0, 2, 2, 2, 1, 1, 0])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -169,6 +250,136 @@
 <div class="viewcode-block" id="make_classification">
 <a class="viewcode-back" href="../../../autoapi/dasf/datasets/index.html#dasf.datasets.datasets.make_classification">[docs]</a>
 <span class="k">class</span> <span class="nc">make_classification</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a random n-class classification problem.</span>
+
+<span class="sd">    This initially creates clusters of points normally distributed (std=1)</span>
+<span class="sd">    about vertices of an ``n_informative``-dimensional hypercube with sides of</span>
+<span class="sd">    length ``2*class_sep`` and assigns an equal number of clusters to each</span>
+<span class="sd">    class. It introduces interdependence between these features and adds</span>
+<span class="sd">    various types of further noise to the data.</span>
+
+<span class="sd">    Without shuffling, ``X`` horizontally stacks features in the following</span>
+<span class="sd">    order: the primary ``n_informative`` features, followed by ``n_redundant``</span>
+<span class="sd">    linear combinations of the informative features, followed by ``n_repeated``</span>
+<span class="sd">    duplicates, drawn randomly with replacement from the informative and</span>
+<span class="sd">    redundant features. The remaining features are filled with random noise.</span>
+<span class="sd">    Thus, without shuffling, all useful features are contained in the columns</span>
+<span class="sd">    ``X[:, :n_informative + n_redundant + n_repeated]``.</span>
+
+<span class="sd">    For an example of usage, see</span>
+<span class="sd">    :ref:`sphx_glr_auto_examples_datasets_plot_random_dataset.py`.</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;sample_generators&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_samples : int, default=100</span>
+<span class="sd">        The number of samples.</span>
+
+<span class="sd">    n_features : int, default=20</span>
+<span class="sd">        The total number of features. These comprise ``n_informative``</span>
+<span class="sd">        informative features, ``n_redundant`` redundant features,</span>
+<span class="sd">        ``n_repeated`` duplicated features and</span>
+<span class="sd">        ``n_features-n_informative-n_redundant-n_repeated`` useless features</span>
+<span class="sd">        drawn at random.</span>
+
+<span class="sd">    n_informative : int, default=2</span>
+<span class="sd">        The number of informative features. Each class is composed of a number</span>
+<span class="sd">        of gaussian clusters each located around the vertices of a hypercube</span>
+<span class="sd">        in a subspace of dimension ``n_informative``. For each cluster,</span>
+<span class="sd">        informative features are drawn independently from  N(0, 1) and then</span>
+<span class="sd">        randomly linearly combined within each cluster in order to add</span>
+<span class="sd">        covariance. The clusters are then placed on the vertices of the</span>
+<span class="sd">        hypercube.</span>
+
+<span class="sd">    n_redundant : int, default=2</span>
+<span class="sd">        The number of redundant features. These features are generated as</span>
+<span class="sd">        random linear combinations of the informative features.</span>
+
+<span class="sd">    n_repeated : int, default=0</span>
+<span class="sd">        The number of duplicated features, drawn randomly from the informative</span>
+<span class="sd">        and the redundant features.</span>
+
+<span class="sd">    n_classes : int, default=2</span>
+<span class="sd">        The number of classes (or labels) of the classification problem.</span>
+
+<span class="sd">    n_clusters_per_class : int, default=2</span>
+<span class="sd">        The number of clusters per class.</span>
+
+<span class="sd">    weights : array-like of shape (n_classes,) or (n_classes - 1,),\</span>
+<span class="sd">              default=None</span>
+<span class="sd">        The proportions of samples assigned to each class. If None, then</span>
+<span class="sd">        classes are balanced. Note that if ``len(weights) == n_classes - 1``,</span>
+<span class="sd">        then the last class weight is automatically inferred.</span>
+<span class="sd">        More than ``n_samples`` samples may be returned if the sum of</span>
+<span class="sd">        ``weights`` exceeds 1. Note that the actual class proportions will</span>
+<span class="sd">        not exactly match ``weights`` when ``flip_y`` isn&#39;t 0.</span>
+
+<span class="sd">    flip_y : float, default=0.01</span>
+<span class="sd">        The fraction of samples whose class is assigned randomly. Larger</span>
+<span class="sd">        values introduce noise in the labels and make the classification</span>
+<span class="sd">        task harder. Note that the default setting flip_y &gt; 0 might lead</span>
+<span class="sd">        to less than ``n_classes`` in y in some cases.</span>
+
+<span class="sd">    class_sep : float, default=1.0</span>
+<span class="sd">        The factor multiplying the hypercube size.  Larger values spread</span>
+<span class="sd">        out the clusters/classes and make the classification task easier.</span>
+
+<span class="sd">    hypercube : bool, default=True</span>
+<span class="sd">        If True, the clusters are put on the vertices of a hypercube. If</span>
+<span class="sd">        False, the clusters are put on the vertices of a random polytope.</span>
+
+<span class="sd">    shift : float, ndarray of shape (n_features,) or None, default=0.0</span>
+<span class="sd">        Shift features by the specified value. If None, then features</span>
+<span class="sd">        are shifted by a random value drawn in [-class_sep, class_sep].</span>
+
+<span class="sd">    scale : float, ndarray of shape (n_features,) or None, default=1.0</span>
+<span class="sd">        Multiply features by the specified value. If None, then features</span>
+<span class="sd">        are scaled by a random value drawn in [1, 100]. Note that scaling</span>
+<span class="sd">        happens after shifting.</span>
+
+<span class="sd">    shuffle : bool, default=True</span>
+<span class="sd">        Shuffle the samples and the features.</span>
+
+<span class="sd">    random_state : int, RandomState instance or None, default=None</span>
+<span class="sd">        Determines random number generation for dataset creation. Pass an int</span>
+<span class="sd">        for reproducible output across multiple function calls.</span>
+<span class="sd">        See :term:`Glossary &lt;random_state&gt;`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">        The generated samples.</span>
+
+<span class="sd">    y : ndarray of shape (n_samples,)</span>
+<span class="sd">        The integer labels for class membership of each sample.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    make_blobs : Simplified variant.</span>
+<span class="sd">    make_multilabel_classification : Unrelated generator for multilabel tasks.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The algorithm is adapted from Guyon [1] and was designed to generate</span>
+<span class="sd">    the &quot;Madelon&quot; dataset.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] I. Guyon, &quot;Design of experiments for the NIPS 2003 variable</span>
+<span class="sd">           selection benchmark&quot;, 2003.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.datasets import make_classification</span>
+<span class="sd">    &gt;&gt;&gt; X, y = make_classification(random_state=42)</span>
+<span class="sd">    &gt;&gt;&gt; X.shape</span>
+<span class="sd">    (100, 20)</span>
+<span class="sd">    &gt;&gt;&gt; y.shape</span>
+<span class="sd">    (100,)</span>
+<span class="sd">    &gt;&gt;&gt; list(y[:5])</span>
+<span class="sd">    [0, 0, 1, 1, 0]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -218,6 +429,92 @@
 <div class="viewcode-block" id="make_regression">
 <a class="viewcode-back" href="../../../autoapi/dasf/datasets/datasets/index.html#dasf.datasets.datasets.make_regression">[docs]</a>
 <span class="k">class</span> <span class="nc">make_regression</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a random regression problem.</span>
+
+<span class="sd">    The input set can either be well conditioned (by default) or have a low</span>
+<span class="sd">    rank-fat tail singular profile. See :func:`make_low_rank_matrix` for</span>
+<span class="sd">    more details.</span>
+
+<span class="sd">    The output is generated by applying a (potentially biased) random linear</span>
+<span class="sd">    regression model with `n_informative` nonzero regressors to the previously</span>
+<span class="sd">    generated input and some gaussian centered noise with some adjustable</span>
+<span class="sd">    scale.</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;sample_generators&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_samples : int, default=100</span>
+<span class="sd">        The number of samples.</span>
+
+<span class="sd">    n_features : int, default=100</span>
+<span class="sd">        The number of features.</span>
+
+<span class="sd">    n_informative : int, default=10</span>
+<span class="sd">        The number of informative features, i.e., the number of features used</span>
+<span class="sd">        to build the linear model used to generate the output.</span>
+
+<span class="sd">    n_targets : int, default=1</span>
+<span class="sd">        The number of regression targets, i.e., the dimension of the y output</span>
+<span class="sd">        vector associated with a sample. By default, the output is a scalar.</span>
+
+<span class="sd">    bias : float, default=0.0</span>
+<span class="sd">        The bias term in the underlying linear model.</span>
+
+<span class="sd">    effective_rank : int, default=None</span>
+<span class="sd">        If not None:</span>
+<span class="sd">            The approximate number of singular vectors required to explain most</span>
+<span class="sd">            of the input data by linear combinations. Using this kind of</span>
+<span class="sd">            singular spectrum in the input allows the generator to reproduce</span>
+<span class="sd">            the correlations often observed in practice.</span>
+<span class="sd">        If None:</span>
+<span class="sd">            The input set is well conditioned, centered and gaussian with</span>
+<span class="sd">            unit variance.</span>
+
+<span class="sd">    tail_strength : float, default=0.5</span>
+<span class="sd">        The relative importance of the fat noisy tail of the singular values</span>
+<span class="sd">        profile if `effective_rank` is not None. When a float, it should be</span>
+<span class="sd">        between 0 and 1.</span>
+
+<span class="sd">    noise : float, default=0.0</span>
+<span class="sd">        The standard deviation of the gaussian noise applied to the output.</span>
+
+<span class="sd">    shuffle : bool, default=True</span>
+<span class="sd">        Shuffle the samples and the features.</span>
+
+<span class="sd">    coef : bool, default=False</span>
+<span class="sd">        If True, the coefficients of the underlying linear model are returned.</span>
+
+<span class="sd">    random_state : int, RandomState instance or None, default=None</span>
+<span class="sd">        Determines random number generation for dataset creation. Pass an int</span>
+<span class="sd">        for reproducible output across multiple function calls.</span>
+<span class="sd">        See :term:`Glossary &lt;random_state&gt;`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    X : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">        The input samples.</span>
+
+<span class="sd">    y : ndarray of shape (n_samples,) or (n_samples, n_targets)</span>
+<span class="sd">        The output values.</span>
+
+<span class="sd">    coef : ndarray of shape (n_features,) or (n_features, n_targets)</span>
+<span class="sd">        The coefficient of the underlying linear model. It is returned only if</span>
+<span class="sd">        coef is True.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.datasets import make_regression</span>
+<span class="sd">    &gt;&gt;&gt; X, y = make_regression(n_samples=5, n_features=2, noise=1, random_state=42)</span>
+<span class="sd">    &gt;&gt;&gt; X</span>
+<span class="sd">    array([[ 0.4967..., -0.1382... ],</span>
+<span class="sd">        [ 0.6476...,  1.523...],</span>
+<span class="sd">        [-0.2341..., -0.2341...],</span>
+<span class="sd">        [-0.4694...,  0.5425...],</span>
+<span class="sd">        [ 1.579...,  0.7674...]])</span>
+<span class="sd">    &gt;&gt;&gt; y</span>
+<span class="sd">    array([  6.737...,  37.79..., -10.27...,   0.4017...,   42.22...])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

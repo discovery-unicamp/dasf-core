@@ -1,31 +1,30 @@
-:py:mod:`dasf.pipeline.executors.wrapper`
-=========================================
+dasf.pipeline.executors.wrapper
+===============================
 
 .. py:module:: dasf.pipeline.executors.wrapper
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.pipeline.executors.wrapper.LocalExecutor
 
 
-
+Module Contents
+---------------
 
 .. py:class:: LocalExecutor(use_gpu=None, backend='numpy', gpu_allocator='cupy')
-
 
    .. py:property:: ngpus
       :type: int
 
 
+
    .. py:property:: is_connected
       :type: bool
+
 
 
    .. py:method:: pre_run(pipeline)
@@ -38,6 +37,5 @@ Classes
 
 
    .. py:method:: execute(fn, *args, **kwargs)
-
 
 

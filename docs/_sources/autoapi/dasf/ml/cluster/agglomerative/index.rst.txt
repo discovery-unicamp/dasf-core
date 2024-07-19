@@ -1,26 +1,29 @@
-:py:mod:`dasf.ml.cluster.agglomerative`
-=======================================
+dasf.ml.cluster.agglomerative
+=============================
 
 .. py:module:: dasf.ml.cluster.agglomerative
 
+.. autoapi-nested-parse::
 
-Module Contents
----------------
+   Agglomerative Clustering algorithm module. 
+
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.ml.cluster.agglomerative.AgglomerativeClustering
 
 
-
+Module Contents
+---------------
 
 .. py:class:: AgglomerativeClustering(n_clusters=2, affinity='euclidean', connectivity=None, linkage='single', memory=None, compute_full_tree='auto', distance_threshold=None, compute_distances=False, handle=None, verbose=False, n_neighbors=10, output_type=None, **kwargs)
 
-
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
 
    Agglomerative Clustering
 
@@ -121,24 +124,88 @@ Classes
    - https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering
 
 
+   A generic constructor method. 
+
+
    .. py:method:: _fit_cpu(X, y=None, convert_dtype=True)
 
-      Respective immediate fit mocked function for local CPU(s).
+      Fit without validation using CPU only.
+
+      Parameters
+      ----------
+      X : ndarray of shape (n_samples, n_features) or (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``affinity='precomputed'``.
+
+      Returns
+      -------
+      self : object
+          Returns the fitted instance.
+
 
 
    .. py:method:: _fit_gpu(X, y=None, convert_dtype=True)
 
-      Respective immediate fit mocked function for local GPU(s).
+      Fit without validation using GPU only.
+
+      Parameters
+      ----------
+      X : ndarray of shape (n_samples, n_features) or (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``affinity='precomputed'``.
+
+      Returns
+      -------
+      self : object
+          Returns the fitted instance.
+
 
 
    .. py:method:: _fit_predict_cpu(X, y=None)
 
-      Respective immediate fit with predict mocked function for local CPU(s).
+      Fit and return the result of each sample's clustering assignment using
+      CPU only.
+
+      In addition to fitting, this method also return the result of the
+      clustering assignment for each sample in the training set.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features) or                 (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``affinity='precomputed'``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Cluster labels.
+
 
 
    .. py:method:: _fit_predict_gpu(X, y=None)
 
-      Respective immediate fit with predict mocked function for local GPU(s).
+      Fit and return the result of each sample's clustering assignment using
+      GPU only.
+
+      In addition to fitting, this method also return the result of the
+      clustering assignment for each sample in the training set.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features) or                 (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``affinity='precomputed'``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Cluster labels.
 
 
 

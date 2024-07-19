@@ -1,14 +1,11 @@
-:py:mod:`dasf.profile.plugins`
-==============================
+dasf.profile.plugins
+====================
 
 .. py:module:: dasf.profile.plugins
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -17,12 +14,13 @@ Classes
    dasf.profile.plugins.GPUAnnotationPlugin
 
 
-
+Module Contents
+---------------
 
 .. py:class:: WorkerTaskPlugin(name = 'TracePlugin')
 
-
    Bases: :py:obj:`distributed.diagnostics.plugin.WorkerPlugin`
+
 
    Interface to extend the Worker
 
@@ -33,16 +31,9 @@ Classes
    an event happens, the corresponding method on this class will be called. Note that the
    user code always runs within the Worker's main thread.
 
-   To implement a plugin:
-
-   1. inherit from this class
-   2. override some of its methods
-   3. register the plugin using :meth:`Client.register_plugin<distributed.Client.register_plugin>`.
-
-   The ``idempotent`` attribute is used to control whether or not the plugin should
-   be ignored upon registration if a worker plugin with the same name already exists.
-   If ``True``, the plugin is ignored, otherwise the existing plugin is replaced.
-   Defaults to ``False``.
+   To implement a plugin implement some of the methods of this class and register
+   the plugin to your client in order to have it attached to every existing and
+   future workers with ``Client.register_worker_plugin``.
 
    Examples
    --------
@@ -64,13 +55,15 @@ Classes
 
    >>> import logging
    >>> plugin = ErrorLogger(logging)
-   >>> client.register_plugin(plugin)  # doctest: +SKIP
+   >>> client.register_worker_plugin(plugin)  # doctest: +SKIP
+
 
    .. py:method:: setup(worker)
 
       Run when the plugin is attached to a worker. This happens when the plugin is registered
       and attached to existing workers, or when a worker is created after the plugin has been
       registered.
+
 
 
    .. py:method:: transition(key, start, finish, *args, **kwargs)
@@ -89,19 +82,17 @@ Classes
 
       Parameters
       ----------
-      key :
-      start :
+      key : string
+      start : string
           Start state of the transition.
           One of waiting, ready, executing, long-running, memory, error.
-      finish :
+      finish : string
           Final state of the transition.
-      kwargs :
-          More options passed when transitioning
+      kwargs : More options passed when transitioning
 
 
 
 .. py:class:: ResourceMonitor(time=100, autostart = True, name = 'ResourceMonitor', **monitor_kwargs)
-
 
    .. py:method:: __del__()
 
@@ -115,11 +106,10 @@ Classes
    .. py:method:: stop()
 
 
-
 .. py:class:: GPUAnnotationPlugin(name = 'GPUAnnotationPlugin')
 
-
    Bases: :py:obj:`distributed.diagnostics.plugin.WorkerPlugin`
+
 
    Interface to extend the Worker
 
@@ -130,16 +120,9 @@ Classes
    an event happens, the corresponding method on this class will be called. Note that the
    user code always runs within the Worker's main thread.
 
-   To implement a plugin:
-
-   1. inherit from this class
-   2. override some of its methods
-   3. register the plugin using :meth:`Client.register_plugin<distributed.Client.register_plugin>`.
-
-   The ``idempotent`` attribute is used to control whether or not the plugin should
-   be ignored upon registration if a worker plugin with the same name already exists.
-   If ``True``, the plugin is ignored, otherwise the existing plugin is replaced.
-   Defaults to ``False``.
+   To implement a plugin implement some of the methods of this class and register
+   the plugin to your client in order to have it attached to every existing and
+   future workers with ``Client.register_worker_plugin``.
 
    Examples
    --------
@@ -161,13 +144,15 @@ Classes
 
    >>> import logging
    >>> plugin = ErrorLogger(logging)
-   >>> client.register_plugin(plugin)  # doctest: +SKIP
+   >>> client.register_worker_plugin(plugin)  # doctest: +SKIP
+
 
    .. py:method:: setup(worker)
 
       Run when the plugin is attached to a worker. This happens when the plugin is registered
       and attached to existing workers, or when a worker is created after the plugin has been
       registered.
+
 
 
    .. py:method:: transition(key, start, finish, *args, **kwargs)
@@ -186,14 +171,13 @@ Classes
 
       Parameters
       ----------
-      key :
-      start :
+      key : string
+      start : string
           Start state of the transition.
           One of waiting, ready, executing, long-running, memory, error.
-      finish :
+      finish : string
           Final state of the transition.
-      kwargs :
-          More options passed when transitioning
+      kwargs : More options passed when transitioning
 
 
 

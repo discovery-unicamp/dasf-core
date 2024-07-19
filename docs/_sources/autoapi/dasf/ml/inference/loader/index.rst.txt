@@ -1,0 +1,16 @@
+dasf.ml.inference.loader
+========================
+
+.. py:module:: dasf.ml.inference.loader
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dasf/ml/inference/loader/base/index
+   /autoapi/dasf/ml/inference/loader/torch/index
+
+

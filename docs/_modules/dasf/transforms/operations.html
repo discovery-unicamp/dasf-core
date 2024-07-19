@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.transforms.operations &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -490,10 +490,16 @@
             <span class="n">depth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_overlap_config</span><span class="p">[</span><span class="s2">&quot;padding&quot;</span><span class="p">],</span>
             <span class="n">boundary</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_overlap_config</span><span class="p">[</span><span class="s2">&quot;boundary&quot;</span><span class="p">],</span>
         <span class="p">)</span>
+        <span class="n">new_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">chunk_set</span><span class="p">,</span> <span class="n">padding</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X_overlap</span><span class="o">.</span><span class="n">chunks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overlap_config</span><span class="p">[</span><span class="s2">&quot;padding&quot;</span><span class="p">]):</span>
+            <span class="n">new_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chunk_set</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">padding</span><span class="p">))</span>
+        <span class="n">new_chunks</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_chunks</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">X_overlap</span><span class="o">.</span><span class="n">map_blocks</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">X_overlap</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">chunks</span>
-        <span class="p">)</span></div>
+        <span class="n">X</span> <span class="o">=</span>  <span class="n">X_overlap</span><span class="o">.</span><span class="n">map_blocks</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">X_overlap</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">new_chunks</span>
+        <span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">rechunk</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">X</span></div>
 
 
 <div class="viewcode-block" id="ApplyPatchesBase._lazy_transform_cpu">

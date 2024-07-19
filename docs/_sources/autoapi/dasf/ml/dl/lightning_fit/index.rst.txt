@@ -1,0 +1,114 @@
+dasf.ml.dl.lightning_fit
+========================
+
+.. py:module:: dasf.ml.dl.lightning_fit
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.ml.dl.lightning_fit.LazyDatasetComputer
+   dasf.ml.dl.lightning_fit.LightningTrainer
+
+
+Module Contents
+---------------
+
+.. py:class:: LazyDatasetComputer(dataset, unsqueeze_dim = None)
+
+   This class encapsulates a map-style dataset that returns a Dask or GPU
+   array. The __getitem__ method will compute the dask array before returning
+   it. Thus, we can wrap this class into a DataLoader to make it compatible
+   with PyTorch Lightning training loop.
+
+   Maps a dataset to a LazyDatasetComputer object.
+
+   Parameters
+   ----------
+   dataset : Any
+       A Dasf map-style like dataset. The __getitem__ method should return
+       either a tuple or a single object, in CPU/GPU or Dask array format.
+   unsqueeze_dim : int, optional
+       The dimension to be unsqueezed in the output, by default None
+
+
+   .. py:method:: __len__()
+
+
+   .. py:method:: __getitem__(index)
+
+      Compute the dask array and return it.
+
+      Parameters
+      ----------
+      index : int
+          The index of the dataset to be returned.
+
+      Returns
+      -------
+      _type_
+          np.ndarray or tuple of np.ndarray
+
+
+
+.. py:class:: LightningTrainer(model, use_gpu = False, batch_size = 1, max_epochs = 1, limit_train_batches = None, limit_val_batches = None, devices = 'auto', num_nodes = 1, shuffle = True, strategy = 'ddp', unsqueeze_dim = None)
+
+   
+   Initialize the LightningFit class.
+
+   Parameters
+   ----------
+   model : LightningModule
+       The LightningModule instance representing the model to be trained.
+   use_gpu : bool, optional
+       Flag indicating whether to use GPU for training, by default False.
+   batch_size : int, optional
+       The batch size for training, by default 1.
+   max_epochs : int, optional
+       The maximum number of epochs for training, by default 1.
+   limit_train_batches : int, optional
+       The number of batches to consider for training, by default None.
+   limit_val_batches : int, optional
+       The number of batches to consider for validation, by default None.
+   devices : int, optional
+       The number of devices to use for training, by default "auto".
+   num_nodes : int, optional
+       The number of nodes to use for distributed training, by default 1.
+   shuffle : bool, optional
+       Flag indicating whether to shuffle the data during training, by default True.
+   strategy : str, optional
+       The strategy to use for distributed training, by default "ddp".
+   unsqueeze_dim : int, optional
+       The dimension to unsqueeze the input data, by default None.
+
+
+   .. py:method:: fit(train_data, val_data = None)
+
+      Perform the training of the model using torch Lightning.
+
+      Parameters
+      ----------
+      train_data : Any
+          A dasf map-style like dataset containing the training data.
+      val_data : Any, optional
+          A dasf map-style like dataset containing the validation data.
+
+
+
+   .. py:method:: _fit(train_data, val_data=None)
+
+
+   .. py:method:: _lazy_fit_cpu(train_data, val_data=None)
+
+
+   .. py:method:: _lazy_fit_gpu(train_data, val_data=None)
+
+
+   .. py:method:: _fit_cpu(train_data, val_data=None)
+
+
+   .. py:method:: _fit_gpu(train_data, val_data=None)
+
+

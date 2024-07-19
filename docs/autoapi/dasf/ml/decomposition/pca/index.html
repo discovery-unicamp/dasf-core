@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.decomposition.pca &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -55,16 +55,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../../../api.html">DASF API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">dasf</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../profile/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../datasets/index.html">dasf.datasets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../debug/index.html">dasf.debug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../feature_extraction/index.html">dasf.feature_extraction</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html">dasf.ml</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../pipeline/index.html">dasf.pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../profile/index.html">dasf.profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../transforms/index.html">dasf.transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../utils/index.html">dasf.utils</a></li>
 </ul>
 </li>
 </ul>
@@ -88,10 +88,10 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../../../api.html">DASF API Reference</a></li>
-          <li class="breadcrumb-item"><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.decomposition</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.decomposition.pca</span></code></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">dasf</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">dasf.ml</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">dasf.ml.decomposition</a></li>
+      <li class="breadcrumb-item active">dasf.ml.decomposition.pca</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../../_sources/autoapi/dasf/ml/decomposition/pca/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -102,118 +102,633 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.ml.decomposition.pca">
-<span id="dasf-ml-decomposition-pca"></span><h1><a class="reference internal" href="#module-dasf.ml.decomposition.pca" title="dasf.ml.decomposition.pca"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.decomposition.pca</span></code></a><a class="headerlink" href="#module-dasf.ml.decomposition.pca" title="Link to this heading"></a></h1>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<span id="dasf-ml-decomposition-pca"></span><h1>dasf.ml.decomposition.pca<a class="headerlink" href="#module-dasf.ml.decomposition.pca" title="Link to this heading"></a></h1>
+<p>Principal Component Analysis algorithm module.</p>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.ml.decomposition.pca.PCA" title="dasf.ml.decomposition.pca.PCA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PCA</span></code></a></p></td>
-<td><p>Class representing a Fit operation of the pipeline.</p></td>
+<td><p>Principal component analysis (PCA).</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.decomposition.pca.</span></span><span class="sig-name descname"><span class="pre">PCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whiten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd_solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterated_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.Fit" title="dasf.transforms.base.Fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Fit</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.FitTransform" title="dasf.transforms.base.FitTransform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.FitTransform</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.TargeteredTransform" title="dasf.transforms.base.TargeteredTransform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.TargeteredTransform</span></code></a></p>
-<p>Class representing a Fit operation of the pipeline.</p>
+<p>Principal component analysis (PCA).</p>
+<p>Linear dimensionality reduction using Singular Value Decomposition of the
+data to project it to a lower dimensional space. The input data is centered
+but not scaled for each feature before applying the SVD.</p>
+<p>It uses the LAPACK implementation of the full SVD or a randomized truncated
+SVD by the method of Halko et al. 2009, depending on the shape of the input
+data and the number of components to extract.</p>
+<p>With sparse inputs, the ARPACK implementation of the truncated SVD can be
+used (i.e. through <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.svds()</span></code>). Alternatively, one
+may consider <code class="xref py py-class docutils literal notranslate"><span class="pre">TruncatedSVD</span></code> where the data are not centered.</p>
+<p>Notice that this class only supports sparse inputs for some solvers such as
+“arpack” and “covariance_eigh”. See <code class="xref py py-class docutils literal notranslate"><span class="pre">TruncatedSVD</span></code> for an
+alternative with sparse data.</p>
+<p>For a usage example, see
+<span class="xref std std-ref">sphx_glr_auto_examples_decomposition_plot_pca_iris.py</span></p>
+<p>Read more in the <span class="xref std std-ref">User Guide</span>.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl>
+<dt>n_components<span class="classifier">int, float or ‘mle’, default=None</span></dt><dd><p>Number of components to keep.
+if n_components is not set all components are kept:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_components</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">n_components</span> <span class="pre">==</span> <span class="pre">'mle'</span></code> and <code class="docutils literal notranslate"><span class="pre">svd_solver</span> <span class="pre">==</span> <span class="pre">'full'</span></code>, Minka’s
+MLE is used to guess the dimension. Use of <code class="docutils literal notranslate"><span class="pre">n_components</span> <span class="pre">==</span> <span class="pre">'mle'</span></code>
+will interpret <code class="docutils literal notranslate"><span class="pre">svd_solver</span> <span class="pre">==</span> <span class="pre">'auto'</span></code> as <code class="docutils literal notranslate"><span class="pre">svd_solver</span> <span class="pre">==</span> <span class="pre">'full'</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">n_components</span> <span class="pre">&lt;</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">svd_solver</span> <span class="pre">==</span> <span class="pre">'full'</span></code>, select the
+number of components such that the amount of variance that needs to be
+explained is greater than the percentage specified by n_components.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">svd_solver</span> <span class="pre">==</span> <span class="pre">'arpack'</span></code>, the number of components must be
+strictly less than the minimum of n_features and n_samples.</p>
+<p>Hence, the None case results in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_components</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd>
+<dt>copy<span class="classifier">bool, default=True</span></dt><dd><p>If False, data passed to fit are overwritten and running
+fit(X).transform(X) will not yield the expected results,
+use fit_transform(X) instead.</p>
+</dd>
+<dt>whiten<span class="classifier">bool, default=False</span></dt><dd><p>When True (False by default) the <cite>components_</cite> vectors are multiplied
+by the square root of n_samples and then divided by the singular values
+to ensure uncorrelated outputs with unit component-wise variances.</p>
+<p>Whitening will remove some information from the transformed signal
+(the relative variance scales of the components) but can sometime
+improve the predictive accuracy of the downstream estimators by
+making their data respect some hard-wired assumptions.</p>
+</dd>
+<dt>svd_solver<span class="classifier">{‘auto’, ‘full’, ‘covariance_eigh’, ‘arpack’, ‘randomized’},            default=’auto’</span></dt><dd><dl class="simple">
+<dt>“auto” :</dt><dd><p>The solver is selected by a default ‘auto’ policy is based on <cite>X.shape</cite> and
+<cite>n_components</cite>: if the input data has fewer than 1000 features and
+more than 10 times as many samples, then the “covariance_eigh”
+solver is used. Otherwise, if the input data is larger than 500x500
+and the number of components to extract is lower than 80% of the
+smallest dimension of the data, then the more efficient
+“randomized” method is selected. Otherwise the exact “full” SVD is
+computed and optionally truncated afterwards.</p>
+</dd>
+<dt>“full” :</dt><dd><p>Run exact full SVD calling the standard LAPACK solver via
+<cite>scipy.linalg.svd</cite> and select the components by postprocessing</p>
+</dd>
+<dt>“covariance_eigh” :</dt><dd><p>Precompute the covariance matrix (on centered data), run a
+classical eigenvalue decomposition on the covariance matrix
+typically using LAPACK and select the components by postprocessing.
+This solver is very efficient for n_samples &gt;&gt; n_features and small
+n_features. It is, however, not tractable otherwise for large
+n_features (large memory footprint required to materialize the
+covariance matrix). Also note that compared to the “full” solver,
+this solver effectively doubles the condition number and is
+therefore less numerical stable (e.g. on input data with a large
+range of singular values).</p>
+</dd>
+<dt>“arpack” :</dt><dd><p>Run SVD truncated to <cite>n_components</cite> calling ARPACK solver via
+<cite>scipy.sparse.linalg.svds</cite>. It requires strictly
+<cite>0 &lt; n_components &lt; min(X.shape)</cite></p>
+</dd>
+<dt>“randomized” :</dt><dd><p>Run randomized SVD by the method of Halko et al.</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.18.0.</span></p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.5: </span>Added the ‘covariance_eigh’ solver.</p>
+</div>
+</dd>
+<dt>tol<span class="classifier">float, default=0.0</span></dt><dd><p>Tolerance for singular values computed by svd_solver == ‘arpack’.
+Must be of range [0.0, infinity).</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.18.0.</span></p>
+</div>
+</dd>
+<dt>iterated_power<span class="classifier">int or ‘auto’, default=’auto’</span></dt><dd><p>Number of iterations for the power method computed by
+svd_solver == ‘randomized’.
+Must be of range [0, infinity).</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.18.0.</span></p>
+</div>
+</dd>
+<dt>n_oversamples<span class="classifier">int, default=10</span></dt><dd><p>This parameter is only relevant when <cite>svd_solver=”randomized”</cite>.
+It corresponds to the additional number of random vectors to sample the
+range of <cite>X</cite> so as to ensure proper conditioning. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">randomized_svd()</span></code> for more details.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.1.</span></p>
+</div>
+</dd>
+<dt>power_iteration_normalizer<span class="classifier">{‘auto’, ‘QR’, ‘LU’, ‘none’}, default=’auto’</span></dt><dd><p>Power iteration normalizer for randomized SVD solver.
+Not used by ARPACK. See <code class="xref py py-func docutils literal notranslate"><span class="pre">randomized_svd()</span></code>
+for more details.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.1.</span></p>
+</div>
+</dd>
+<dt>random_state<span class="classifier">int, RandomState instance or None, default=None</span></dt><dd><p>Used when the ‘arpack’ or ‘randomized’ solvers are used. Pass an int
+for reproducible results across multiple function calls.
+See <span class="xref std std-term">Glossary</span>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.18.0.</span></p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<dl>
+<dt><a href="#id35"><span class="problematic" id="id36">components_</span></a><span class="classifier">ndarray of shape (n_components, n_features)</span></dt><dd><p>Principal axes in feature space, representing the directions of
+maximum variance in the data. Equivalently, the right singular
+vectors of the centered input data, parallel to its eigenvectors.
+The components are sorted by decreasing <code class="docutils literal notranslate"><span class="pre">explained_variance_</span></code>.</p>
+</dd>
+<dt><a href="#id37"><span class="problematic" id="id38">explained_variance_</span></a><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>The amount of variance explained by each of the selected components.
+The variance estimation uses <cite>n_samples - 1</cite> degrees of freedom.</p>
+<p>Equal to n_components largest eigenvalues
+of the covariance matrix of X.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.18.</span></p>
+</div>
+</dd>
+<dt><a href="#id39"><span class="problematic" id="id40">explained_variance_ratio_</span></a><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>Percentage of variance explained by each of the selected components.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">n_components</span></code> is not set then all components are stored and the
+sum of the ratios is equal to 1.0.</p>
+</dd>
+<dt><a href="#id41"><span class="problematic" id="id42">singular_values_</span></a><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>The singular values corresponding to each of the selected components.
+The singular values are equal to the 2-norms of the <code class="docutils literal notranslate"><span class="pre">n_components</span></code>
+variables in the lower-dimensional space.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.19.</span></p>
+</div>
+</dd>
+<dt><a href="#id43"><span class="problematic" id="id44">mean_</span></a><span class="classifier">ndarray of shape (n_features,)</span></dt><dd><p>Per-feature empirical mean, estimated from the training set.</p>
+<p>Equal to <cite>X.mean(axis=0)</cite>.</p>
+</dd>
+<dt><a href="#id45"><span class="problematic" id="id46">n_components_</span></a><span class="classifier">int</span></dt><dd><p>The estimated number of components. When n_components is set
+to ‘mle’ or a number between 0 and 1 (with svd_solver == ‘full’) this
+number is estimated from input data. Otherwise it equals the parameter
+n_components, or the lesser value of n_features and n_samples
+if n_components is None.</p>
+</dd>
+<dt><a href="#id47"><span class="problematic" id="id48">n_samples_</span></a><span class="classifier">int</span></dt><dd><p>Number of samples in the training data.</p>
+</dd>
+<dt><a href="#id49"><span class="problematic" id="id50">noise_variance_</span></a><span class="classifier">float</span></dt><dd><p>The estimated noise covariance following the Probabilistic PCA model
+from Tipping and Bishop 1999. See “Pattern Recognition and
+Machine Learning” by C. Bishop, 12.2.1 p. 574 or
+<a class="reference external" href="http://www.miketipping.com/papers/met-mppca.pdf">http://www.miketipping.com/papers/met-mppca.pdf</a>. It is required to
+compute the estimated data covariance and score samples.</p>
+<p>Equal to the average of (min(n_features, n_samples) - n_components)
+smallest eigenvalues of the covariance matrix of X.</p>
+</dd>
+<dt><a href="#id51"><span class="problematic" id="id52">n_features_in_</span></a><span class="classifier">int</span></dt><dd><p>Number of features seen during <span class="xref std std-term">fit</span>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.24.</span></p>
+</div>
+</dd>
+<dt><a href="#id53"><span class="problematic" id="id54">feature_names_in_</span></a><span class="classifier">ndarray of shape (<cite>n_features_in_</cite>,)</span></dt><dd><p>Names of features seen during <span class="xref std std-term">fit</span>. Defined only when <cite>X</cite>
+has feature names that are all strings.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.0.</span></p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="see-also">
+<h3>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h3>
+<p>KernelPCA : Kernel Principal Component Analysis.
+SparsePCA : Sparse Principal Component Analysis.
+TruncatedSVD : Dimensionality reduction using truncated SVD.
+IncrementalPCA : Incremental Principal Component Analysis.</p>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading"></a></h3>
+<p>For n_components == ‘mle’, this class uses the method from:
+<a class="reference external" href="https://tminka.github.io/papers/pca/minka-pca.pdf">Minka, T. P.. “Automatic choice of dimensionality for PCA”.
+In NIPS, pp. 598-604</a></p>
+<p>Implements the probabilistic PCA model from:
+<a class="reference external" href="http://www.miketipping.com/papers/met-mppca.pdf">Tipping, M. E., and Bishop, C. M. (1999). “Probabilistic principal
+component analysis”. Journal of the Royal Statistical Society:
+Series B (Statistical Methodology), 61(3), 611-622.</a>
+via the score and score_samples methods.</p>
+<p>For svd_solver == ‘arpack’, refer to <cite>scipy.sparse.linalg.svds</cite>.</p>
+<p>For svd_solver == ‘randomized’, see:
+<a href="#id1"><span class="problematic" id="id2">:doi:`Halko, N., Martinsson, P. G., and Tropp, J. A. (2011).
+&quot;Finding structure with randomness: Probabilistic algorithms for
+constructing approximate matrix decompositions&quot;.
+SIAM review, 53(2), 217-288.
+&lt;10.1137/090771806&gt;`</span></a>
+and also
+<a href="#id3"><span class="problematic" id="id4">:doi:`Martinsson, P. G., Rokhlin, V., and Tygert, M. (2011).
+&quot;A randomized algorithm for the decomposition of matrices&quot;.
+Applied and Computational Harmonic Analysis, 30(1), 47-68.
+&lt;10.1016/j.acha.2010.02.003&gt;`</span></a></p>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">PCA(n_components=2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+<span class="go">[0.9924... 0.0075...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">singular_values_</span><span class="p">)</span>
+<span class="go">[6.30061... 0.54980...]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">svd_solver</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">PCA(n_components=2, svd_solver=&#39;full&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+<span class="go">[0.9924... 0.00755...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">singular_values_</span><span class="p">)</span>
+<span class="go">[6.30061... 0.54980...]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">svd_solver</span><span class="o">=</span><span class="s1">&#39;arpack&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">PCA(n_components=1, svd_solver=&#39;arpack&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+<span class="go">[0.99244...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">singular_values_</span><span class="p">)</span>
+<span class="go">[6.30061...]</span>
+</pre></div>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._lazy_fit_cpu">
 <span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._lazy_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._lazy_fit_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy fit mocked function for CPUs.</p>
+<dd><p>Fit the model with X using Dask with CPUs only.</p>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Ignored.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Returns the instance itself.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._lazy_fit_gpu">
 <span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._lazy_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._lazy_fit_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy fit mocked function for GPUs.</p>
+<dd><p>Fit the model with X using Dask with GPUs only.</p>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Ignored.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Returns the instance itself.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._fit_cpu">
 <span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._fit_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit mocked function for local CPU(s).</p>
+<dd><p>Fit the model with X using CPU only</p>
+<section id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Ignored.</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Returns the instance itself.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._fit_gpu">
 <span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._fit_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit mocked function for local GPU(s).</p>
+<dd><p>Fit the model with X with GPU only.</p>
+<section id="id10">
+<h4>Parameters<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Ignored.</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Returns the instance itself.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._lazy_fit_transform_cpu">
 <span class="sig-name descname"><span class="pre">_lazy_fit_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._lazy_fit_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._lazy_fit_transform_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy fit with transform mocked function for CPUs.</p>
+<dd><p>Fit the model with X and apply the dimensionality reduction on X using
+Dask with CPUs only.</p>
+<section id="id12">
+<h4>Parameters<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Ignored.</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h4>Returns<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>Transformed values.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h4>
+<p>This method returns a Fortran-ordered array. To convert it to a
+C-ordered array, use ‘np.ascontiguousarray’.</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._lazy_fit_transform_gpu">
 <span class="sig-name descname"><span class="pre">_lazy_fit_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._lazy_fit_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._lazy_fit_transform_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy fit with transform mocked function for GPUs.</p>
+<dd><p>Fit the model with X and apply the dimensionality reduction on X using
+Dask with GPUs only.</p>
+<section id="id14">
+<h4>Parameters<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Ignored.</p>
+</dd>
+</dl>
+</section>
+<section id="id15">
+<h4>Returns<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>Transformed values.</p>
+</dd>
+</dl>
+</section>
+<section id="id16">
+<h4>Notes<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<p>This method returns a Fortran-ordered array. To convert it to a
+C-ordered array, use ‘cp.ascontiguousarray’.</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._fit_transform_cpu">
 <span class="sig-name descname"><span class="pre">_fit_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._fit_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._fit_transform_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit with transform mocked function for local CPU(s).</p>
+<dd><p>Fit the model with X and apply the dimensionality reduction on X using
+CPU only.</p>
+<section id="id17">
+<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Ignored.</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h4>Returns<a class="headerlink" href="#id18" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>Transformed values.</p>
+</dd>
+</dl>
+</section>
+<section id="id19">
+<h4>Notes<a class="headerlink" href="#id19" title="Link to this heading"></a></h4>
+<p>This method returns a Fortran-ordered array. To convert it to a
+C-ordered array, use ‘np.ascontiguousarray’.</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._fit_transform_gpu">
 <span class="sig-name descname"><span class="pre">_fit_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._fit_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._fit_transform_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit with transform mocked function for local GPU(s).</p>
+<dd><p>Fit the model with X and apply the dimensionality reduction on X using
+GPU only.</p>
+<section id="id20">
+<h4>Parameters<a class="headerlink" href="#id20" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Ignored.</p>
+</dd>
+</dl>
+</section>
+<section id="id21">
+<h4>Returns<a class="headerlink" href="#id21" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>Transformed values.</p>
+</dd>
+</dl>
+</section>
+<section id="id22">
+<h4>Notes<a class="headerlink" href="#id22" title="Link to this heading"></a></h4>
+<p>This method returns a Fortran-ordered array. To convert it to a
+C-ordered array, use ‘cp.ascontiguousarray’.</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._lazy_transform_cpu">
 <span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._lazy_transform_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy transform mocked function for CPUs.</p>
+<dd><p>Apply dimensionality reduction to X using Dask with CPUs only.</p>
+<p>X is projected on the first principal components previously extracted
+from a training set.</p>
+<section id="id23">
+<h4>Parameters<a class="headerlink" href="#id23" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+</dl>
+</section>
+<section id="id24">
+<h4>Returns<a class="headerlink" href="#id24" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">array-like of shape (n_samples, n_components)</span></dt><dd><p>Projection of X in the first principal components, where <cite>n_samples</cite>
+is the number of samples and <cite>n_components</cite> is the number of the components.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._lazy_transform_gpu">
 <span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._lazy_transform_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy transform mocked function for GPUs.</p>
+<dd><p>Apply dimensionality reduction to X using Dask with GPUs only.</p>
+<p>X is projected on the first principal components previously extracted
+from a training set.</p>
+<section id="id25">
+<h4>Parameters<a class="headerlink" href="#id25" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+</dl>
+</section>
+<section id="id26">
+<h4>Returns<a class="headerlink" href="#id26" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">array-like of shape (n_samples, n_components)</span></dt><dd><p>Projection of X in the first principal components, where <cite>n_samples</cite>
+is the number of samples and <cite>n_components</cite> is the number of the components.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._transform_cpu">
 <span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._transform_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate transform mocked function for local CPU(s).</p>
+<dd><p>Apply dimensionality reduction to X using CPU only.</p>
+<p>X is projected on the first principal components previously extracted
+from a training set.</p>
+<section id="id27">
+<h4>Parameters<a class="headerlink" href="#id27" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+</dl>
+</section>
+<section id="id28">
+<h4>Returns<a class="headerlink" href="#id28" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">array-like of shape (n_samples, n_components)</span></dt><dd><p>Projection of X in the first principal components, where <cite>n_samples</cite>
+is the number of samples and <cite>n_components</cite> is the number of the components.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._transform_gpu">
 <span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._transform_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate transform mocked function for local GPU(s).</p>
+<dd><p>Apply dimensionality reduction to X using GPU only.</p>
+<p>X is projected on the first principal components previously extracted
+from a training set.</p>
+<section id="id29">
+<h4>Parameters<a class="headerlink" href="#id29" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data, where <cite>n_samples</cite> is the number of samples
+and <cite>n_features</cite> is the number of features.</p>
+</dd>
+</dl>
+</section>
+<section id="id30">
+<h4>Returns<a class="headerlink" href="#id30" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">array-like of shape (n_samples, n_components)</span></dt><dd><p>Projection of X in the first principal components, where <cite>n_samples</cite>
+is the number of samples and <cite>n_components</cite> is the number of the components.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._get_covariance_cpu">
 <span class="sig-name descname"><span class="pre">_get_covariance_cpu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._get_covariance_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._get_covariance_cpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Compute data covariance with the generative model for CPU only.</p>
+<p><code class="docutils literal notranslate"><span class="pre">cov</span> <span class="pre">=</span> <span class="pre">components_.T</span> <span class="pre">*</span> <span class="pre">S**2</span> <span class="pre">*</span> <span class="pre">components_</span> <span class="pre">+</span> <span class="pre">sigma2</span> <span class="pre">*</span> <span class="pre">eye(n_features)</span></code>
+where S**2 contains the explained variances, and sigma2 contains the
+noise variances.</p>
+<section id="id31">
+<h4>Returns<a class="headerlink" href="#id31" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>cov<span class="classifier">array of shape=(n_features, n_features)</span></dt><dd><p>Estimated covariance of data.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA.get_covariance">
 <span class="sig-name descname"><span class="pre">get_covariance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA.get_covariance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA.get_covariance" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generic function to get the covariance.</p>
+<section id="id32">
+<h4>Returns<a class="headerlink" href="#id32" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>cov<span class="classifier">array of shape=(n_features, n_features)</span></dt><dd><p>Estimated covariance of data.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA._get_precision_cpu">
 <span class="sig-name descname"><span class="pre">_get_precision_cpu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA._get_precision_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA._get_precision_cpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Compute data precision matrix with the generative model for CPU only.</p>
+<p>Equals the inverse of the covariance but computed with
+the matrix inversion lemma for efficiency.</p>
+<section id="id33">
+<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>precision<span class="classifier">array, shape=(n_features, n_features)</span></dt><dd><p>Estimated precision of data.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.decomposition.pca.PCA.get_precision">
 <span class="sig-name descname"><span class="pre">get_precision</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/decomposition/pca.html#PCA.get_precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.decomposition.pca.PCA.get_precision" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
+<dd><p>Generic function to get the precision.</p>
+<section id="id34">
+<h4>Returns<a class="headerlink" href="#id34" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>precision<span class="classifier">array, shape=(n_features, n_features)</span></dt><dd><p>Estimated precision of data.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </section>
+</dd></dl>
+
 </section>
 </section>
 

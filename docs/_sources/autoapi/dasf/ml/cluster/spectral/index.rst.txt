@@ -1,26 +1,29 @@
-:py:mod:`dasf.ml.cluster.spectral`
-==================================
+dasf.ml.cluster.spectral
+========================
 
 .. py:module:: dasf.ml.cluster.spectral
 
+.. autoapi-nested-parse::
 
-Module Contents
----------------
+   Spectral Clustering algorithm module. 
+
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.ml.cluster.spectral.SpectralClustering
 
 
-
+Module Contents
+---------------
 
 .. py:class:: SpectralClustering(n_clusters=8, eigen_solver=None, random_state=None, n_init=10, gamma=1.0, affinity='rbf', n_neighbors=10, eigen_tol=0.0, assign_labels='kmeans', degree=3, coef0=1, kernel_params=None, n_jobs=None, n_components=None, persist_embedding=False, kmeans_params=None, verbose=False, **kwargs)
 
-
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
 
    Apply clustering to a projection of the normalized Laplacian.
 
@@ -193,19 +196,81 @@ Classes
      https://www1.icsi.berkeley.edu/~stellayu/publication/doc/2003kwayICCV.pdf
 
 
+   A generic constructor method. 
+
+
    .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
 
-      Respective immediate fit mocked function for local CPU(s).
+      Perform spectral clustering from features, or affinity matrix using CPU
+      only.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features) or                 (n_samples, n_samples)
+          Training instances to cluster, similarities / affinities between
+          instances if ``affinity='precomputed'``, or distances between
+          instances if ``affinity='precomputed_nearest_neighbors``. If a
+          sparse matrix is provided in a format other than ``csr_matrix``,
+          ``csc_matrix``, or ``coo_matrix``, it will be converted into a
+          sparse ``csr_matrix``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      Returns
+      -------
+      self : object
+          A fitted instance of the estimator.
+
 
 
    .. py:method:: _lazy_fit_predict_cpu(X, y=None, sample_weight=None)
 
-      Respective lazy fit with predict mocked function for CPUs.
+      Perform spectral clustering on `X` and return cluster labels using Dask
+      with CPU only.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features) or                 (n_samples, n_samples)
+          Training instances to cluster, similarities / affinities between
+          instances if ``affinity='precomputed'``, or distances between
+          instances if ``affinity='precomputed_nearest_neighbors``. If a
+          sparse matrix is provided in a format other than ``csr_matrix``,
+          ``csc_matrix``, or ``coo_matrix``, it will be converted into a
+          sparse ``csr_matrix``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Cluster labels.
+
 
 
    .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
 
-      Respective immediate fit with predict mocked function for local CPU(s).
+      Perform spectral clustering on `X` and return cluster labels using CPU
+      only.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features) or                 (n_samples, n_samples)
+          Training instances to cluster, similarities / affinities between
+          instances if ``affinity='precomputed'``, or distances between
+          instances if ``affinity='precomputed_nearest_neighbors``. If a
+          sparse matrix is provided in a format other than ``csr_matrix``,
+          ``csc_matrix``, or ``coo_matrix``, it will be converted into a
+          sparse ``csr_matrix``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Cluster labels.
 
 
 

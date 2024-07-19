@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.pipeline.executors.ray &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -81,6 +81,8 @@
   <h1>Source code for dasf.pipeline.executors.ray</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
+<span class="sd">&quot;&quot;&quot; Ray executor module. &quot;&quot;&quot;</span>
+
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">ray</span>
     <span class="kn">from</span> <span class="nn">ray.util.dask</span> <span class="kn">import</span> <span class="n">disable_dask_on_ray</span><span class="p">,</span> <span class="n">enable_dask_on_ray</span>
@@ -96,15 +98,19 @@
 <div class="viewcode-block" id="RayPipelineExecutor">
 <a class="viewcode-back" href="../../../../autoapi/dasf/pipeline/executors/ray/index.html#dasf.pipeline.executors.ray.RayPipelineExecutor">[docs]</a>
 <span class="k">class</span> <span class="nc">RayPipelineExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A pipeline engine based on ray data flow.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A pipeline executor based on ray data flow.</span>
 
-<span class="sd">    Keyword arguments:</span>
-<span class="sd">    address -- address of the Dask scheduler (default None).</span>
-<span class="sd">    port -- port of the Ray head (default 8786).</span>
-<span class="sd">    local -- kicks off a new local Ray cluster (default False).</span>
-<span class="sd">    use_gpu -- in conjunction with `local`, it kicks off a local CUDA Ray</span>
-<span class="sd">                cluster (default False).</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    address : str</span>
+<span class="sd">        Address of the Dask scheduler, default=None.</span>
+<span class="sd">    port : int</span>
+<span class="sd">        Port of the Ray head, default=8786.</span>
+<span class="sd">    local : bool</span>
+<span class="sd">        Kicks off a new local Ray cluster, default=False.</span>
+<span class="sd">    use_gpu : bool</span>
+<span class="sd">        In conjunction with `local`, it kicks off a local CUDA Ray</span>
+<span class="sd">        cluster, default=False.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -115,6 +121,7 @@
         <span class="n">use_gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">ray_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Constructor of the object RayPipelineExecutor. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">USE_RAY</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Ray executor is not support. &quot;</span>
                             <span class="s2">&quot;Check if you have it installed first.&quot;</span><span class="p">)</span>
@@ -136,21 +143,48 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ngpus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of GPUs in total.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ngpus : Number of GPUs in total</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">get_dask_gpu_count</span><span class="p">())</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return wether the executor is connected or not.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool : if the executor is connected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ray</span><span class="o">.</span><span class="n">is_initialized</span><span class="p">()</span>
 
 <div class="viewcode-block" id="RayPipelineExecutor.execute">
 <a class="viewcode-back" href="../../../../autoapi/dasf/pipeline/executors/ray/index.html#dasf.pipeline.executors.ray.RayPipelineExecutor.execute">[docs]</a>
     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return wether the executor is connected or not.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fn : Callable</span>
+<span class="sd">           Function to call when executor is performing a task.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ret : the same return of function `fn`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RayPipelineExecutor.__del__">
 <a class="viewcode-back" href="../../../../autoapi/dasf/pipeline/executors/ray/index.html#dasf.pipeline.executors.ray.RayPipelineExecutor.__del__">[docs]</a>
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Destructor of object.</span>
+
+<span class="sd">        It also shutdowns Dask on Ray properly with `disable_dask_on_ray`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">disable_dask_on_ray</span><span class="p">()</span>
 
         <span class="n">ray</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span></div>

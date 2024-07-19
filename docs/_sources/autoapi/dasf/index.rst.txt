@@ -1,0 +1,22 @@
+dasf
+====
+
+.. py:module:: dasf
+
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dasf/datasets/index
+   /autoapi/dasf/debug/index
+   /autoapi/dasf/feature_extraction/index
+   /autoapi/dasf/ml/index
+   /autoapi/dasf/pipeline/index
+   /autoapi/dasf/profile/index
+   /autoapi/dasf/transforms/index
+   /autoapi/dasf/utils/index
+
+

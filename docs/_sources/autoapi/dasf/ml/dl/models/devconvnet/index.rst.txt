@@ -1,14 +1,11 @@
-:py:mod:`dasf.ml.dl.models.devconvnet`
-======================================
+dasf.ml.dl.models.devconvnet
+============================
 
 .. py:module:: dasf.ml.dl.models.devconvnet
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -20,12 +17,13 @@ Classes
    dasf.ml.dl.models.devconvnet.TorchSectionDeConvNetSkip
 
 
-
+Module Contents
+---------------
 
 .. py:class:: MyAccuracy(dist_sync_on_step=False)
 
-
    Bases: :py:obj:`torchmetrics.Metric`
+
 
    Base class for all metrics present in the Metrics API.
 
@@ -59,6 +57,7 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: set_idx(idx)
 
 
@@ -67,9 +66,11 @@ Classes
       Override this method to update the state variables of your metric class.
 
 
+
    .. py:method:: __str__()
 
       Return str(self).
+
 
 
    .. py:method:: compute()
@@ -83,8 +84,8 @@ Classes
 
 .. py:class:: NNModule(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
-
    Bases: :py:obj:`pytorch_lightning.LightningModule`
+
 
    Base class for all neural network modules.
 
@@ -119,10 +120,12 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: cross_entropy_loss(input, target, weight=None, ignore_index=255)
 
       Use 255 to fill empty values when padding or doing any augmentation operations
       like rotation.
+
 
 
    .. py:method:: configure_optimizers()
@@ -295,6 +298,7 @@ Classes
             override the :meth:`optimizer_step` hook.
 
 
+
    .. py:method:: training_step(batch, batch_idx)
 
       Here you compute and return the training loss and some additional metrics for e.g.
@@ -357,6 +361,7 @@ Classes
       Note:
           The loss value shown in the progress bar is smoothed (averaged) over the last values,
           so it differs from the actual loss returned in train/validation step.
+
 
 
    .. py:method:: test_step(test_batch, batch_idx)
@@ -442,8 +447,8 @@ Classes
 
 .. py:class:: TorchPatchDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
-
    Bases: :py:obj:`NNModule`
+
 
    Base class for all neural network modules.
 
@@ -478,6 +483,7 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -488,6 +494,7 @@ Classes
 
       Return:
           Your model's output
+
 
 
    .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
@@ -501,8 +508,8 @@ Classes
 
 .. py:class:: TorchPatchDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
-
    Bases: :py:obj:`NNModule`
+
 
    Base class for all neural network modules.
 
@@ -537,6 +544,7 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -547,6 +555,7 @@ Classes
 
       Return:
           Your model's output
+
 
 
    .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
@@ -560,8 +569,8 @@ Classes
 
 .. py:class:: TorchSectionDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=False)
 
-
    Bases: :py:obj:`NNModule`
+
 
    Base class for all neural network modules.
 
@@ -596,6 +605,7 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -606,6 +616,7 @@ Classes
 
       Return:
           Your model's output
+
 
 
    .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
@@ -619,8 +630,8 @@ Classes
 
 .. py:class:: TorchSectionDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
-
    Bases: :py:obj:`NNModule`
+
 
    Base class for all neural network modules.
 
@@ -655,6 +666,7 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -665,6 +677,7 @@ Classes
 
       Return:
           Your model's output
+
 
 
    .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)

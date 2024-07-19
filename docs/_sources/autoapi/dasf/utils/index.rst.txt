@@ -1,0 +1,20 @@
+dasf.utils
+==========
+
+.. py:module:: dasf.utils
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dasf/utils/benchmark/index
+   /autoapi/dasf/utils/decorators/index
+   /autoapi/dasf/utils/funcs/index
+   /autoapi/dasf/utils/labels/index
+   /autoapi/dasf/utils/logging/index
+   /autoapi/dasf/utils/types/index
+
+

@@ -1,5 +1,5 @@
-:py:mod:`dasf.transforms.base`
-==============================
+dasf.transforms.base
+====================
 
 .. py:module:: dasf.transforms.base
 
@@ -9,11 +9,8 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -30,12 +27,13 @@ Classes
    dasf.transforms.base.ReductionTransform
 
 
-
+Module Contents
+---------------
 
 .. py:class:: Operator
 
-
    Class representing a generic Operator of the pipeline.
+
 
    .. py:method:: get_uuid()
 
@@ -45,33 +43,42 @@ Classes
 
 .. py:class:: Fit
 
-
    Bases: :py:obj:`Operator`
 
+
    Class representing a Fit operation of the pipeline.
+
 
    .. py:method:: _lazy_fit_cpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective lazy fit mocked function for CPUs.
+
 
 
    .. py:method:: _lazy_fit_gpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective lazy fit mocked function for GPUs.
+
 
 
    .. py:method:: _fit_cpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective immediate fit mocked function for local CPU(s).
+
 
 
    .. py:method:: _fit_gpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective immediate fit mocked function for local GPU(s).
+
 
 
    .. py:method:: fit(X, y, sample_weight=None, **kwargs)
@@ -79,8 +86,10 @@ Classes
       Generic fit funtion according executor.
 
 
+
    .. py:method:: fit_from_model(model, X, y, sample_weight=None, **kwargs)
       :staticmethod:
+
 
       Return the model of a previous created object.
 
@@ -88,33 +97,42 @@ Classes
 
 .. py:class:: FitPredict
 
-
    Bases: :py:obj:`Operator`
 
+
    Class representing a Fit with Predict operation of the pipeline.
+
 
    .. py:method:: _lazy_fit_predict_cpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective lazy fit with predict mocked function for CPUs.
+
 
 
    .. py:method:: _lazy_fit_predict_gpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective lazy fit with predict mocked function for GPUs.
+
 
 
    .. py:method:: _fit_predict_cpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective immediate fit with predict mocked function for local CPU(s).
+
 
 
    .. py:method:: _fit_predict_gpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective immediate fit with predict mocked function for local GPU(s).
+
 
 
    .. py:method:: fit_predict(X, y=None, **kwargs)
@@ -122,8 +140,10 @@ Classes
       Generic fit with predict funtion according executor.
 
 
+
    .. py:method:: fit_predict_from_model(model, X, y, sample_weight=None, **kwargs)
       :staticmethod:
+
 
       Return the model of a previous created object.
 
@@ -131,33 +151,42 @@ Classes
 
 .. py:class:: FitTransform
 
-
    Bases: :py:obj:`Operator`
 
+
    Class representing a Fit with Transform operation of the pipeline.
+
 
    .. py:method:: _lazy_fit_transform_cpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective lazy fit with transform mocked function for CPUs.
+
 
 
    .. py:method:: _lazy_fit_transform_gpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective lazy fit with transform mocked function for GPUs.
+
 
 
    .. py:method:: _fit_transform_cpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective immediate fit with transform mocked function for local CPU(s).
+
 
 
    .. py:method:: _fit_transform_gpu(X, y=None, **kwargs)
       :abstractmethod:
 
+
       Respective immediate fit with transform mocked function for local GPU(s).
+
 
 
    .. py:method:: fit_transform(X, y=None, **kwargs)
@@ -165,8 +194,10 @@ Classes
       Generic fit with transform funtion according executor.
 
 
+
    .. py:method:: fit_transform_from_model(model, X, y, sample_weight=None, **kwargs)
       :staticmethod:
+
 
       Return the model of a previous created object.
 
@@ -174,33 +205,42 @@ Classes
 
 .. py:class:: Predict
 
-
    Bases: :py:obj:`Operator`
 
+
    Class representing a Predict operation of the pipeline.
+
 
    .. py:method:: _lazy_predict_cpu(X, sample_weight=None, **kwargs)
       :abstractmethod:
 
+
       Respective lazy predict mocked function for CPUs.
+
 
 
    .. py:method:: _lazy_predict_gpu(X, sample_weight=None, **kwargs)
       :abstractmethod:
 
+
       Respective lazy predict mocked function for GPUs.
+
 
 
    .. py:method:: _predict_cpu(X, sample_weight=None, **kwargs)
       :abstractmethod:
 
+
       Respective immediate predict mocked function for local CPU(s).
+
 
 
    .. py:method:: _predict_gpu(X, sample_weight=None, **kwargs)
       :abstractmethod:
 
+
       Respective immediate predict mocked function for local GPU(s).
+
 
 
    .. py:method:: predict(X, sample_weight=None, **kwargs)
@@ -208,8 +248,10 @@ Classes
       Generic predict funtion according executor.
 
 
+
    .. py:method:: predict_from_model(model, X, sample_weight=None, **kwargs)
       :staticmethod:
+
 
       Return the model of a previous created object.
 
@@ -217,33 +259,42 @@ Classes
 
 .. py:class:: GetParams
 
-
    Bases: :py:obj:`Operator`
 
+
    Class representing a Get Parameters operation of the pipeline.
+
 
    .. py:method:: _lazy_get_params_cpu(deep=True, **kwargs)
       :abstractmethod:
 
+
       Respective lazy get_params mocked function for CPUs.
+
 
 
    .. py:method:: _lazy_get_params_gpu(deep=True, **kwargs)
       :abstractmethod:
 
+
       Respective lazy get_params mocked function for GPUs.
+
 
 
    .. py:method:: _get_params_cpu(deep=True, **kwargs)
       :abstractmethod:
 
+
       Respective immediate get_params mocked function for local CPU(s).
+
 
 
    .. py:method:: _get_params_gpu(deep=True, **kwargs)
       :abstractmethod:
 
+
       Respective immediate get_params mocked function for local GPU(s).
+
 
 
    .. py:method:: get_params(deep=True, **kwargs)
@@ -254,33 +305,42 @@ Classes
 
 .. py:class:: SetParams
 
-
    Bases: :py:obj:`Operator`
 
-   Class representing a generic Operator of the pipeline.
+
+   Class representing a Set Parameters operation of the pipeline.
+
 
    .. py:method:: _lazy_set_params_cpu(**params)
       :abstractmethod:
 
+
       Respective lazy set_params mocked function for CPUs.
+
 
 
    .. py:method:: _lazy_set_params_gpu(**params)
       :abstractmethod:
 
+
       Respective lazy set_params mocked function for GPUs.
+
 
 
    .. py:method:: _set_params_cpu(**params)
       :abstractmethod:
 
+
       Respective immediate set_params mocked function for local CPU(s).
+
 
 
    .. py:method:: _set_params_gpu(**params)
       :abstractmethod:
 
+
       Respective immediate set_params mocked function for local GPU(s).
+
 
 
    .. py:method:: set_params(**params)
@@ -291,33 +351,42 @@ Classes
 
 .. py:class:: Transform
 
-
    Bases: :py:obj:`Operator`
 
+
    Class representing a Transform operation of the pipeline.
+
 
    .. py:method:: _lazy_transform_cpu(X, **kwargs)
       :abstractmethod:
 
+
       Respective lazy transform mocked function for CPUs.
+
 
 
    .. py:method:: _lazy_transform_gpu(X, **kwargs)
       :abstractmethod:
 
+
       Respective lazy transform mocked function for GPUs.
+
 
 
    .. py:method:: _transform_cpu(X, **kwargs)
       :abstractmethod:
 
+
       Respective immediate transform mocked function for local CPU(s).
+
 
 
    .. py:method:: _transform_gpu(X, **kwargs)
       :abstractmethod:
 
+
       Respective immediate transform mocked function for local GPU(s).
+
 
 
    .. py:method:: transform(X, **kwargs)
@@ -325,8 +394,10 @@ Classes
       Generic transform funtion according executor.
 
 
+
    .. py:method:: transform_from_model(model, X, **kwargs)
       :staticmethod:
+
 
       Return the model of a previous created object.
 
@@ -334,8 +405,8 @@ Classes
 
 .. py:class:: TargeteredTransform(run_local=None, run_gpu=None)
 
-
    Bases: :py:obj:`Transform`
+
 
    Class representing a Targetered Transform operation of the pipeline.
 
@@ -353,8 +424,8 @@ Classes
 
 .. py:class:: MappedTransform(function, depth=None, boundary=None, trim=True, output_chunk=None, drop_axis=None, new_axis=None)
 
-
    Bases: :py:obj:`Transform`
+
 
    Class representing a MappedTransform based on Transform
    object.
@@ -388,6 +459,7 @@ Classes
        (the default is None).
 
 
+
    .. py:method:: __lazy_transform_generic(X, xp, **kwargs)
 
 
@@ -396,9 +468,11 @@ Classes
       Respective lazy transform mocked function for CPUs.
 
 
+
    .. py:method:: _lazy_transform_gpu(X, **kwargs)
 
       Respective lazy transform mocked function for GPUs.
+
 
 
    .. py:method:: _transform_cpu(X, **kwargs)
@@ -406,9 +480,11 @@ Classes
       Respective immediate transform mocked function for local CPU(s).
 
 
+
    .. py:method:: _transform_gpu(X, **kwargs)
 
       Respective immediate transform mocked function for local GPU(s).
+
 
 
    .. py:method:: transform(X, **kwargs)
@@ -419,8 +495,8 @@ Classes
 
 .. py:class:: ReductionTransform(output_size, func_aggregate, func_chunk, func_combine=None)
 
-
    Bases: :py:obj:`Transform`
+
 
    Class representing a Reduction based on Transform
    object.
@@ -438,6 +514,7 @@ Classes
    func_combine : Callable
        The function to combine each reduction of aggregate (the
        default is None).
+
 
 
    .. py:method:: _operation_aggregate_cpu(block, axis=None, keepdims=False)
@@ -463,9 +540,11 @@ Classes
       Respective lazy transform mocked function for CPUs.
 
 
+
    .. py:method:: _lazy_transform_gpu(X, *args, **kwargs)
 
       Respective lazy transform mocked function for GPUs.
+
 
 
    .. py:method:: _transform_cpu(X, *args, **kwargs)
@@ -473,9 +552,11 @@ Classes
       Respective immediate transform mocked function for local CPU(s).
 
 
+
    .. py:method:: _transform_gpu(X, *args, **kwargs)
 
       Respective immediate transform mocked function for local GPU(s).
+
 
 
    .. py:method:: transform(X, *args, **kwargs)

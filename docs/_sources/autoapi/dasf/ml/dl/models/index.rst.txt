@@ -1,23 +1,20 @@
-:py:mod:`dasf.ml.dl.models`
-===========================
+dasf.ml.dl.models
+=================
 
 .. py:module:: dasf.ml.dl.models
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   devconvnet/index.rst
+   /autoapi/dasf/ml/dl/models/devconvnet/index
 
-
-Package Contents
-----------------
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -27,12 +24,13 @@ Classes
    dasf.ml.dl.models.TorchSectionDeConvNetSkip
 
 
-
+Package Contents
+----------------
 
 .. py:class:: TorchPatchDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
-
    Bases: :py:obj:`NNModule`
+
 
    Base class for all neural network modules.
 
@@ -67,6 +65,7 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -77,6 +76,7 @@ Classes
 
       Return:
           Your model's output
+
 
 
    .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
@@ -90,8 +90,8 @@ Classes
 
 .. py:class:: TorchPatchDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
-
    Bases: :py:obj:`NNModule`
+
 
    Base class for all neural network modules.
 
@@ -126,6 +126,7 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -136,6 +137,7 @@ Classes
 
       Return:
           Your model's output
+
 
 
    .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
@@ -149,8 +151,8 @@ Classes
 
 .. py:class:: TorchSectionDeConvNet(n_classes=4, learned_billinear=False, clip=0.1, class_weights=False)
 
-
    Bases: :py:obj:`NNModule`
+
 
    Base class for all neural network modules.
 
@@ -185,6 +187,7 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -195,6 +198,7 @@ Classes
 
       Return:
           Your model's output
+
 
 
    .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)
@@ -208,8 +212,8 @@ Classes
 
 .. py:class:: TorchSectionDeConvNetSkip(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
 
-
    Bases: :py:obj:`NNModule`
+
 
    Base class for all neural network modules.
 
@@ -244,6 +248,7 @@ Classes
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -254,6 +259,7 @@ Classes
 
       Return:
           Your model's output
+
 
 
    .. py:method:: init_vgg16_params(vgg16, copy_fc8=True)

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.preprocessing.standardscaler &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -81,6 +81,8 @@
   <h1>Source code for dasf.ml.preprocessing.standardscaler</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
+<span class="sd">&quot;&quot;&quot; StandardScaler algorithm module. &quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">dask_ml.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span> <span class="k">as</span> <span class="n">StandardScaler_MCPU</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span> <span class="k">as</span> <span class="n">StandardScaler_CPU</span>
 
@@ -97,7 +99,107 @@
 <div class="viewcode-block" id="StandardScaler">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler">[docs]</a>
 <span class="k">class</span> <span class="nc">StandardScaler</span><span class="p">(</span><span class="n">Fit</span><span class="p">,</span> <span class="n">FitTransform</span><span class="p">,</span> <span class="n">TargeteredTransform</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Standardize features by removing the mean and scaling to unit variance.</span>
+
+<span class="sd">    The standard score of a sample `x` is calculated as:</span>
+
+<span class="sd">        z = (x - u) / s</span>
+
+<span class="sd">    where `u` is the mean of the training samples or zero if `with_mean=False`,</span>
+<span class="sd">    and `s` is the standard deviation of the training samples or one if</span>
+<span class="sd">    `with_std=False`.</span>
+
+<span class="sd">    Centering and scaling happen independently on each feature by computing</span>
+<span class="sd">    the relevant statistics on the samples in the training set. Mean and</span>
+<span class="sd">    standard deviation are then stored to be used on later data using</span>
+<span class="sd">    :meth:`transform`.</span>
+
+<span class="sd">    Standardization of a dataset is a common requirement for many</span>
+<span class="sd">    machine learning estimators: they might behave badly if the</span>
+<span class="sd">    individual features do not more or less look like standard normally</span>
+<span class="sd">    distributed data (e.g. Gaussian with 0 mean and unit variance).</span>
+
+<span class="sd">    For instance many elements used in the objective function of</span>
+<span class="sd">    a learning algorithm (such as the RBF kernel of Support Vector</span>
+<span class="sd">    Machines or the L1 and L2 regularizers of linear models) assume that</span>
+<span class="sd">    all features are centered around 0 and have variance in the same</span>
+<span class="sd">    order. If a feature has a variance that is orders of magnitude larger</span>
+<span class="sd">    than others, it might dominate the objective function and make the</span>
+<span class="sd">    estimator unable to learn from other features correctly as expected.</span>
+
+<span class="sd">    `StandardScaler` is sensitive to outliers, and the features may scale</span>
+<span class="sd">    differently from each other in the presence of outliers. For an example</span>
+<span class="sd">    visualization, refer to :ref:`Compare StandardScaler with other scalers</span>
+<span class="sd">    &lt;plot_all_scaling_standard_scaler_section&gt;`.</span>
+
+<span class="sd">    This scaler can also be applied to sparse CSR or CSC matrices by passing</span>
+<span class="sd">    `with_mean=False` to avoid breaking the sparsity structure of the data.</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;preprocessing_scaler&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    copy : bool, default=True</span>
+<span class="sd">        If False, try to avoid a copy and do inplace scaling instead.</span>
+<span class="sd">        This is not guaranteed to always work inplace; e.g. if the data is</span>
+<span class="sd">        not a NumPy array or scipy.sparse CSR matrix, a copy may still be</span>
+<span class="sd">        returned.</span>
+
+<span class="sd">    with_mean : bool, default=True</span>
+<span class="sd">        If True, center the data before scaling.</span>
+<span class="sd">        This does not work (and will raise an exception) when attempted on</span>
+<span class="sd">        sparse matrices, because centering them entails building a dense</span>
+<span class="sd">        matrix which in common use cases is likely to be too large to fit in</span>
+<span class="sd">        memory.</span>
+
+<span class="sd">    with_std : bool, default=True</span>
+<span class="sd">        If True, scale the data to unit variance (or equivalently,</span>
+<span class="sd">        unit standard deviation).</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scale_ : ndarray of shape (n_features,) or None</span>
+<span class="sd">        Per feature relative scaling of the data to achieve zero mean and unit</span>
+<span class="sd">        variance. Generally this is calculated using `np.sqrt(var_)`. If a</span>
+<span class="sd">        variance is zero, we can&#39;t achieve unit variance, and the data is left</span>
+<span class="sd">        as-is, giving a scaling factor of 1. `scale_` is equal to `None`</span>
+<span class="sd">        when `with_std=False`.</span>
+
+<span class="sd">        .. versionadded:: 0.17</span>
+<span class="sd">           *scale_*</span>
+
+<span class="sd">    mean_ : ndarray of shape (n_features,) or None</span>
+<span class="sd">        The mean value for each feature in the training set.</span>
+<span class="sd">        Equal to ``None`` when ``with_mean=False`` and ``with_std=False``.</span>
+
+<span class="sd">    var_ : ndarray of shape (n_features,) or None</span>
+<span class="sd">        The variance for each feature in the training set. Used to compute</span>
+<span class="sd">        `scale_`. Equal to ``None`` when ``with_mean=False`` and</span>
+<span class="sd">        ``with_std=False``.</span>
+
+<span class="sd">    n_features_in_ : int</span>
+<span class="sd">        Number of features seen during :term:`fit`.</span>
+
+<span class="sd">        .. versionadded:: 0.24</span>
+
+<span class="sd">    feature_names_in_ : ndarray of shape (`n_features_in_`,)</span>
+<span class="sd">        Names of features seen during :term:`fit`. Defined only when `X`</span>
+<span class="sd">        has feature names that are all strings.</span>
+
+<span class="sd">        .. versionadded:: 1.0</span>
+
+<span class="sd">    n_samples_seen_ : int or ndarray of shape (n_features,)</span>
+<span class="sd">        The number of samples processed by the estimator for each feature.</span>
+<span class="sd">        If there are no missing samples, the ``n_samples_seen`` will be an</span>
+<span class="sd">        integer, otherwise it will be an array of dtype int. If</span>
+<span class="sd">        `sample_weights` are used it will be a float (if no missing data)</span>
+<span class="sd">        or an array of dtype float that sums the weights seen so far.</span>
+<span class="sd">        Will be reset on new calls to fit, but increments across</span>
+<span class="sd">        ``partial_fit`` calls.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_std</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Constructor of the class StandardScaler. &quot;&quot;&quot;</span>
         <span class="n">TargeteredTransform</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_cpu</span> <span class="o">=</span> <span class="n">StandardScaler_CPU</span><span class="p">(</span>
@@ -112,31 +214,120 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span> <span class="o">=</span> <span class="n">StandardScaler_GPU</span><span class="p">(</span>
                 <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">with_mean</span><span class="o">=</span><span class="n">with_mean</span><span class="p">,</span> <span class="n">with_std</span><span class="o">=</span><span class="n">with_std</span>
             <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="StandardScaler._lazy_fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_fit_cpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the mean and std to be used for later scaling using Dask with</span>
+<span class="sd">        CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to compute the mean and standard deviation</span>
+<span class="sd">            used for later scaling along the features axis.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Individual weights for each sample.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted scaler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._lazy_fit_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_fit_gpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the mean and std to be used for later scaling using Dask with</span>
+<span class="sd">        GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to compute the mean and standard deviation</span>
+<span class="sd">            used for later scaling along the features axis.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Individual weights for each sample.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted scaler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._fit_cpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the mean and std to be used for later scaling using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to compute the mean and standard deviation</span>
+<span class="sd">            used for later scaling along the features axis.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Individual weights for each sample.</span>
+
+<span class="sd">            .. versionadded:: 0.24</span>
+<span class="sd">               parameter *sample_weight* support to StandardScaler.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted scaler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_cpu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._fit_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._fit_gpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the mean and std to be used for later scaling using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to compute the mean and standard deviation</span>
+<span class="sd">            used for later scaling along the features axis.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Individual weights for each sample.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted scaler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -144,52 +335,262 @@
 <div class="viewcode-block" id="StandardScaler._lazy_fit_transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_fit_transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit to data, then transform it using Dask with CPUs only.</span>
+
+<span class="sd">        Fits transformer to `X` and `y` with optional parameters `fit_params`</span>
+<span class="sd">        and returns a transformed version of `X`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input samples.</span>
+
+<span class="sd">        y : array-like of shape (n_samples,) or (n_samples, n_outputs), default=None</span>
+<span class="sd">            Target values (None for unsupervised transformations).</span>
+
+<span class="sd">        **fit_params : dict</span>
+<span class="sd">            Additional fit parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : ndarray array of shape (n_samples, n_features_new)</span>
+<span class="sd">            Transformed array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._lazy_fit_transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_fit_transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit to data, then transform it using Dask with GPUs only.</span>
+
+<span class="sd">        Fits transformer to `X` and `y` with optional parameters `fit_params`</span>
+<span class="sd">        and returns a transformed version of `X`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input samples.</span>
+
+<span class="sd">        y : array-like of shape (n_samples,) or (n_samples, n_outputs), default=None</span>
+<span class="sd">            Target values (None for unsupervised transformations).</span>
+
+<span class="sd">        **fit_params : dict</span>
+<span class="sd">            Additional fit parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : ndarray array of shape (n_samples, n_features_new)</span>
+<span class="sd">            Transformed array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._fit_transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._fit_transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit to data, then transform it using CPU only.</span>
+
+<span class="sd">        Fits transformer to `X` and `y` with optional parameters `fit_params`</span>
+<span class="sd">        and returns a transformed version of `X`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input samples.</span>
+
+<span class="sd">        y : array-like of shape (n_samples,) or (n_samples, n_outputs), default=None</span>
+<span class="sd">            Target values (None for unsupervised transformations).</span>
+
+<span class="sd">        **fit_params : dict</span>
+<span class="sd">            Additional fit parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : ndarray array of shape (n_samples, n_features_new)</span>
+<span class="sd">            Transformed array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_cpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._fit_transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._fit_transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit to data, then transform it using GPU only.</span>
+
+<span class="sd">        Fits transformer to `X` and `y` with optional parameters `fit_params`</span>
+<span class="sd">        and returns a transformed version of `X`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input samples.</span>
+
+<span class="sd">        y : array-like of shape (n_samples,) or (n_samples, n_outputs), default=None</span>
+<span class="sd">            Target values (None for unsupervised transformations).</span>
+
+<span class="sd">        **fit_params : dict</span>
+<span class="sd">            Additional fit parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : ndarray array of shape (n_samples, n_features_new)</span>
+<span class="sd">            Transformed array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._lazy_partial_fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_partial_fit_cpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_lazy_partial_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_lazy_partial_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Online computation of mean and std on X for later scaling using Dask</span>
+<span class="sd">        with CPUs only.</span>
+
+<span class="sd">        All of X is processed as a single batch. This is intended for cases</span>
+<span class="sd">        when :meth:`fit` is not feasible due to very large number of</span>
+<span class="sd">        `n_samples` or because X is read from a continuous stream.</span>
+
+<span class="sd">        The algorithm for incremental mean and std is given in Equation 1.5a,b</span>
+<span class="sd">        in Chan, Tony F., Gene H. Golub, and Randall J. LeVeque. &quot;Algorithms</span>
+<span class="sd">        for computing the sample variance: Analysis and recommendations.&quot;</span>
+<span class="sd">        The American Statistician 37.3 (1983): 242-247:</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to compute the mean and standard deviation</span>
+<span class="sd">            used for later scaling along the features axis.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Individual weights for each sample.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted scaler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._lazy_partial_fit_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_partial_fit_gpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_lazy_partial_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_lazy_partial_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Online computation of mean and std on X for later scaling using Dask</span>
+<span class="sd">        with GPUs only.</span>
+
+<span class="sd">        All of X is processed as a single batch. This is intended for cases</span>
+<span class="sd">        when :meth:`fit` is not feasible due to very large number of</span>
+<span class="sd">        `n_samples` or because X is read from a continuous stream.</span>
+
+<span class="sd">        The algorithm for incremental mean and std is given in Equation 1.5a,b</span>
+<span class="sd">        in Chan, Tony F., Gene H. Golub, and Randall J. LeVeque. &quot;Algorithms</span>
+<span class="sd">        for computing the sample variance: Analysis and recommendations.&quot;</span>
+<span class="sd">        The American Statistician 37.3 (1983): 242-247:</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to compute the mean and standard deviation</span>
+<span class="sd">            used for later scaling along the features axis.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Individual weights for each sample.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted scaler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._partial_fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._partial_fit_cpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_partial_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_partial_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Online computation of mean and std on X for later scaling CPU only.</span>
+
+<span class="sd">        All of X is processed as a single batch. This is intended for cases</span>
+<span class="sd">        when :meth:`fit` is not feasible due to very large number of</span>
+<span class="sd">        `n_samples` or because X is read from a continuous stream.</span>
+
+<span class="sd">        The algorithm for incremental mean and std is given in Equation 1.5a,b</span>
+<span class="sd">        in Chan, Tony F., Gene H. Golub, and Randall J. LeVeque. &quot;Algorithms</span>
+<span class="sd">        for computing the sample variance: Analysis and recommendations.&quot;</span>
+<span class="sd">        The American Statistician 37.3 (1983): 242-247:</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to compute the mean and standard deviation</span>
+<span class="sd">            used for later scaling along the features axis.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Individual weights for each sample.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted scaler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_cpu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_cpu</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._partial_fit_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._partial_fit_gpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_partial_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_partial_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Online computation of mean and std on X for later scaling using GPU only.</span>
+
+<span class="sd">        All of X is processed as a single batch. This is intended for cases</span>
+<span class="sd">        when :meth:`fit` is not feasible due to very large number of</span>
+<span class="sd">        `n_samples` or because X is read from a continuous stream.</span>
+
+<span class="sd">        The algorithm for incremental mean and std is given in Equation 1.5a,b</span>
+<span class="sd">        in Chan, Tony F., Gene H. Golub, and Randall J. LeVeque. &quot;Algorithms</span>
+<span class="sd">        for computing the sample variance: Analysis and recommendations.&quot;</span>
+<span class="sd">        The American Statistician 37.3 (1983): 242-247:</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to compute the mean and standard deviation</span>
+<span class="sd">            used for later scaling along the features axis.</span>
+
+<span class="sd">        y : None</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Individual weights for each sample.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Fitted scaler.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -197,48 +598,168 @@
 <div class="viewcode-block" id="StandardScaler._lazy_transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform standardization by centering and scaling using Dask with CPUs</span>
+<span class="sd">        only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to scale along the features axis.</span>
+<span class="sd">        copy : bool, default=None</span>
+<span class="sd">            Copy the input X or not.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_tr : {ndarray, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._lazy_transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform standardization by centering and scaling using Dask with GPUs</span>
+<span class="sd">        only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to scale along the features axis.</span>
+<span class="sd">        copy : bool, default=None</span>
+<span class="sd">            Copy the input X or not.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_tr : {ndarray, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform standardization by centering and scaling using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to scale along the features axis.</span>
+<span class="sd">        copy : bool, default=None</span>
+<span class="sd">            Copy the input X or not.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_tr : {ndarray, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_cpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform standardization by centering and scaling using GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix of shape (n_samples, n_features)</span>
+<span class="sd">            The data used to scale along the features axis.</span>
+<span class="sd">        copy : bool, default=None</span>
+<span class="sd">            Copy the input X or not.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_tr : {ndarray, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._lazy_inverse_transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_inverse_transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_inverse_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Undo the scaling of X according to feature_range using Dask with CPUs</span>
+<span class="sd">        only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input data that will be transformed. It cannot be sparse.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Xt : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._lazy_inverse_transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._lazy_inverse_transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_inverse_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Undo the scaling of X according to feature_range using Dask with GPUs</span>
+<span class="sd">        only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input data that will be transformed. It cannot be sparse.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Xt : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_dask</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._inverse_transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._inverse_transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_inverse_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Undo the scaling of X according to feature_range using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input data that will be transformed. It cannot be sparse.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Xt : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_cpu</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StandardScaler._inverse_transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/preprocessing/standardscaler/index.html#dasf.ml.preprocessing.StandardScaler._inverse_transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_inverse_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Undo the scaling of X according to feature_range using GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input data that will be transformed. It cannot be sparse.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Xt : ndarray of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__std_scaler_gpu</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span></div>
 </div>
 

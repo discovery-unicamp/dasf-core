@@ -1,0 +1,42 @@
+dasf.ml.inference.loader.torch
+==============================
+
+.. py:module:: dasf.ml.inference.loader.torch
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.ml.inference.loader.torch.TorchLoader
+
+
+Module Contents
+---------------
+
+.. py:class:: TorchLoader(model_class_or_file, dtype=torch.float32, checkpoint=None, device=None)
+
+   Bases: :py:obj:`dasf.ml.inference.loader.base.BaseLoader`
+
+
+   Model Loader for Torch models
+
+   model_class_or_file: class or file with model definition
+   dtype: data type of model input
+   checkpoint: model chekpoint file
+   device: device to place model ("cpu" or "gpu")
+
+
+   .. py:method:: load_model(**kwargs)
+
+      Load Model method is specific for each framework/model.
+
+
+
+   .. py:method:: inference(model, data)
+
+      Inference method, receives model and input data
+
+
+

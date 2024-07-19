@@ -1,0 +1,15 @@
+dasf.ml.model_selection
+=======================
+
+.. py:module:: dasf.ml.model_selection
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dasf/ml/model_selection/split/index
+
+

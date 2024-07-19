@@ -1,33 +1,30 @@
-:py:mod:`dasf.pipeline`
-=======================
+dasf.pipeline
+=============
 
 .. py:module:: dasf.pipeline
 
 
 Subpackages
 -----------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 3
 
-   executors/index.rst
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/dasf/pipeline/executors/index
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   pipeline/index.rst
-   types/index.rst
+   /autoapi/dasf/pipeline/pipeline/index
+   /autoapi/dasf/pipeline/types/index
 
-
-Package Contents
-----------------
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -35,10 +32,10 @@ Classes
    dasf.pipeline.PipelinePlugin
 
 
-
+Package Contents
+----------------
 
 .. py:class:: Pipeline(name, executor=None, verbose=False, callbacks = None)
-
 
    .. py:method:: register_plugin(plugin)
 
@@ -73,9 +70,7 @@ Classes
    .. py:method:: run()
 
 
-
 .. py:class:: PipelinePlugin
-
 
    .. py:method:: on_pipeline_start(fn_keys)
 
@@ -90,6 +85,5 @@ Classes
 
 
    .. py:method:: on_task_error(func, params, name, exception)
-
 
 

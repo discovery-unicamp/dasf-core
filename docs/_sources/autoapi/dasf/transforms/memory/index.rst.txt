@@ -1,14 +1,11 @@
-:py:mod:`dasf.transforms.memory`
-================================
+dasf.transforms.memory
+======================
 
 .. py:module:: dasf.transforms.memory
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -16,15 +13,17 @@ Classes
    dasf.transforms.memory.ComputeDaskData
 
 
-
+Module Contents
+---------------
 
 .. py:class:: PersistDaskData
 
-
    Bases: :py:obj:`dasf.transforms.base.Transform`
+
 
    Allow persisting a dask array to memory and return a copy of the object.
    It will gather the data blocks from all workers and resembles locally.
+
 
    .. py:method:: __lazy_transform_generic(X)
 
@@ -34,14 +33,17 @@ Classes
       Respective lazy transform mocked function for CPUs.
 
 
+
    .. py:method:: _lazy_transform_gpu(X)
 
       Respective lazy transform mocked function for GPUs.
 
 
+
    .. py:method:: _transform_cpu(X)
 
       Respective immediate transform mocked function for local CPU(s).
+
 
 
    .. py:method:: _transform_gpu(X)
@@ -52,11 +54,12 @@ Classes
 
 .. py:class:: ComputeDaskData
 
-
    Bases: :py:obj:`dasf.transforms.base.Transform`
+
 
    Allow persisting a dask array to memory. It will gather the data blocks
    from all workers and resembles locally.
+
 
    .. py:method:: __lazy_transform_generic(X)
 
@@ -66,14 +69,17 @@ Classes
       Respective lazy transform mocked function for CPUs.
 
 
+
    .. py:method:: _lazy_transform_gpu(X)
 
       Respective lazy transform mocked function for GPUs.
 
 
+
    .. py:method:: _transform_cpu(X)
 
       Respective immediate transform mocked function for local CPU(s).
+
 
 
    .. py:method:: _transform_gpu(X)

@@ -1,27 +1,37 @@
-:py:mod:`dasf.ml.cluster.classifier`
-====================================
+dasf.ml.cluster.classifier
+==========================
 
 .. py:module:: dasf.ml.cluster.classifier
 
+.. autoapi-nested-parse::
 
-Module Contents
----------------
+   Generic Clustering Classifier algorithm method. 
+
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.ml.cluster.classifier.ClusterClassifier
 
 
-
+Module Contents
+---------------
 
 .. py:class:: ClusterClassifier(**kwargs)
 
-
    Bases: :py:obj:`dasf.transforms.base.Fit`, :py:obj:`dasf.transforms.base.FitPredict`, :py:obj:`dasf.transforms.base.FitTransform`, :py:obj:`dasf.transforms.base.Predict`, :py:obj:`dasf.transforms.base.GetParams`, :py:obj:`dasf.transforms.base.SetParams`, :py:obj:`dasf.transforms.base.TargeteredTransform`
 
-   Class representing a Fit operation of the pipeline.
+
+   Generic Clustering Classifier based on regular method for this type of
+   classifier
+
+   Most of the Clustering method has a fit, a fit_predict, a fit_transform,
+   a predict, a get_params, and a set_params methods.
+
+
+   A generic constructor method. 
 
 

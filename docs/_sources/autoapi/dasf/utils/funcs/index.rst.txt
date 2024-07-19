@@ -1,5 +1,5 @@
-:py:mod:`dasf.utils.funcs`
-==========================
+dasf.utils.funcs
+================
 
 .. py:module:: dasf.utils.funcs
 
@@ -9,20 +9,27 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   dasf.utils.funcs.GPU_SUPPORTED
+   dasf.utils.funcs.JAX_SUPPORTED
+   dasf.utils.funcs.KVIKIO_SUPPORTED
+   dasf.utils.funcs.NV_COMP_BATCH_CODEC_SUPPORTED
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.utils.funcs.NotebookProgressBar
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -65,35 +72,20 @@ Functions
    dasf.utils.funcs.weight_radial
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   dasf.utils.funcs.GPU_SUPPORTED
-   dasf.utils.funcs.JAX_SUPPORTED
-   dasf.utils.funcs.KVIKIO_SUPPORTED
-   dasf.utils.funcs.NV_COMP_BATCH_CODEC_SUPPORTED
-
+Module Contents
+---------------
 
 .. py:data:: GPU_SUPPORTED
 
-   
-
 .. py:data:: JAX_SUPPORTED
-
-   
 
 .. py:data:: KVIKIO_SUPPORTED
    :value: True
 
-   
 
 .. py:data:: NV_COMP_BATCH_CODEC_SUPPORTED
    :value: True
 
-   
 
 .. py:function:: human_readable_size(size, decimal=3)
 
@@ -113,24 +105,24 @@ Attributes
 
 .. py:class:: NotebookProgressBar
 
-
    Bases: :py:obj:`threading.Thread`
+
 
    ProgressBar representation for ipython notebooks only.
 
    Constructor of the Progress Bar
 
+
    .. py:attribute:: MIN_CUR
 
-      
 
    .. py:attribute:: MIN_TOTAL
 
-      
 
    .. py:method:: show()
 
       Return the HTML representation of the ProgressBar.
+
 
 
    .. py:method:: set_current(current, total)
@@ -138,9 +130,11 @@ Attributes
       Set current value of the bar progress
 
 
+
    .. py:method:: set_error(error)
 
       Set an error if it exists.
+
 
 
    .. py:method:: run()

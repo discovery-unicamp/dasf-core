@@ -1,0 +1,380 @@
+dasf.profile.profiler
+=====================
+
+.. py:module:: dasf.profile.profiler
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   dasf.profile.profiler.EventTypes
+   dasf.profile.profiler.event_classes
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.profile.profiler.EventPhases
+   dasf.profile.profiler.InstantEventScope
+   dasf.profile.profiler.InstantEvent
+   dasf.profile.profiler.CompleteEvent
+   dasf.profile.profiler.DurationBeginEvent
+   dasf.profile.profiler.DurationEndEvent
+   dasf.profile.profiler.EventDatabase
+   dasf.profile.profiler.FileDatabase
+   dasf.profile.profiler.EventProfiler
+
+
+Module Contents
+---------------
+
+.. py:class:: EventPhases
+
+   .. py:attribute:: COMPLETE
+      :value: 'X'
+
+
+
+   .. py:attribute:: DURATION_BEGIN
+      :value: 'B'
+
+
+
+   .. py:attribute:: DURATION_END
+      :value: 'E'
+
+
+
+   .. py:attribute:: INSTANT
+      :value: 'I'
+
+
+
+   .. py:attribute:: ASYNC_BEGIN
+      :value: 'b'
+
+
+
+   .. py:attribute:: ASYNC_INSTANT
+      :value: 'n'
+
+
+
+   .. py:attribute:: ASYNC_END
+      :value: 'e'
+
+
+
+   .. py:attribute:: FLOW_BEGIN
+      :value: 's'
+
+
+
+   .. py:attribute:: FLOW_STEP
+      :value: 't'
+
+
+
+   .. py:attribute:: FLOW_END
+      :value: 'f'
+
+
+
+   .. py:attribute:: COUNTER
+      :value: 'C'
+
+
+
+   .. py:attribute:: OBJECT_CREATED
+      :value: 'N'
+
+
+
+   .. py:attribute:: OBJECT_SNAPSHOT
+      :value: 'O'
+
+
+
+   .. py:attribute:: OBJECT_DESTROYED
+      :value: 'D'
+
+
+
+   .. py:attribute:: METADATA
+      :value: 'M'
+
+
+
+   .. py:attribute:: MARK
+      :value: 'R'
+
+
+
+.. py:class:: InstantEventScope
+
+   .. py:attribute:: GLOBAL
+      :value: 'g'
+
+
+
+   .. py:attribute:: PROCESS
+      :value: 'p'
+
+
+
+   .. py:attribute:: THREAD
+      :value: 't'
+
+
+
+.. py:class:: InstantEvent
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: timestamp
+      :type:  float
+
+
+   .. py:attribute:: phase
+      :type:  str
+
+
+   .. py:attribute:: scope
+      :type:  str
+
+
+   .. py:attribute:: process_id
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: thread_id
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: args
+      :type:  dict
+
+
+.. py:class:: CompleteEvent
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: timestamp
+      :type:  float
+
+
+   .. py:attribute:: duration
+      :type:  float
+
+
+   .. py:attribute:: phase
+      :type:  str
+
+
+   .. py:attribute:: process_id
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: thread_id
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: args
+      :type:  dict
+
+
+.. py:class:: DurationBeginEvent
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: timestamp
+      :type:  float
+
+
+   .. py:attribute:: phase
+      :type:  str
+
+
+   .. py:attribute:: process_id
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: thread_id
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: args
+      :type:  dict
+
+
+.. py:class:: DurationEndEvent
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: timestamp
+      :type:  float
+
+
+   .. py:attribute:: phase
+      :type:  str
+
+
+   .. py:attribute:: process_id
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: thread_id
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: args
+      :type:  dict
+
+
+.. py:data:: EventTypes
+
+.. py:data:: event_classes
+
+.. py:class:: EventDatabase
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+   .. py:method:: open()
+
+
+   .. py:method:: record(event)
+      :abstractmethod:
+
+
+
+   .. py:method:: commit()
+      :abstractmethod:
+
+
+
+   .. py:method:: get_traces()
+      :abstractmethod:
+
+
+
+   .. py:method:: close()
+
+
+   .. py:method:: __enter__()
+
+
+   .. py:method:: __exit__(*args, **kwargs)
+
+
+.. py:class:: FileDatabase(database_file = 'traces.msgpack', commit_threshold = 5000, remove_old_output_file = False, commit_on_close = True, lock_timeout = 30, default_byte_size = 8, flush = True)
+
+   Bases: :py:obj:`EventDatabase`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+   .. py:method:: record(event)
+
+
+   .. py:method:: commit()
+
+
+   .. py:method:: get_traces()
+
+
+   .. py:method:: close()
+
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+
+   .. py:method:: __repr__()
+
+      Return repr(self).
+
+
+
+.. py:class:: EventProfiler(database_file = None, database_creation_kwargs = None, database = None)
+
+   .. py:attribute:: traces_file_prefix
+      :value: 'traces-'
+
+
+
+   .. py:attribute:: default_database
+
+
+   .. py:attribute:: default_database_kwargs
+
+
+   .. py:method:: _record(event)
+
+
+   .. py:method:: record_complete_event(name, timestamp, duration, **kwargs)
+
+
+   .. py:method:: record_instant_event(name, timestamp, **kwargs)
+
+
+   .. py:method:: record_duration_begin_event(name, timestamp, **kwargs)
+
+
+   .. py:method:: record_duration_end_event(name, timestamp, **kwargs)
+
+
+   .. py:method:: get_traces()
+
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+
+   .. py:method:: __repr__()
+
+      Return repr(self).
+
+
+
+   .. py:method:: commit()
+
+

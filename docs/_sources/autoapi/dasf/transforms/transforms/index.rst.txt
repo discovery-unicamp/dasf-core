@@ -1,17 +1,15 @@
-:py:mod:`dasf.transforms.transforms`
-====================================
+dasf.transforms.transforms
+==========================
 
 .. py:module:: dasf.transforms.transforms
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
+   dasf.transforms.transforms.ExtractData
    dasf.transforms.transforms.Normalize
    dasf.transforms.transforms.ArrayToZarr
    dasf.transforms.transforms.ArrayToHDF5
@@ -19,14 +17,31 @@ Classes
    dasf.transforms.transforms.ArraysToDataFrame
 
 
+Module Contents
+---------------
+
+.. py:class:: ExtractData
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
+
+   Extract Data from Dataset Object
+       
+
+
+   .. py:method:: transform(X)
+
+      Generic transform funtion according executor.
+
 
 
 .. py:class:: Normalize
 
-
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
+
    Class representing a Transform operation of the pipeline.
+
 
    .. py:method:: transform(X)
 
@@ -36,13 +51,15 @@ Classes
 
 .. py:class:: ArrayToZarr(chunks=None, save=True, filename=None)
 
-
    Bases: :py:obj:`dasf.transforms.base.Transform`
+
 
    Class representing a Transform operation of the pipeline.
 
+
    .. py:method:: _convert_filename(url)
       :staticmethod:
+
 
 
    .. py:method:: _lazy_transform_generic_all(data)
@@ -62,14 +79,17 @@ Classes
       Respective lazy transform mocked function for GPUs.
 
 
+
    .. py:method:: _lazy_transform_cpu(X, **kwargs)
 
       Respective lazy transform mocked function for CPUs.
 
 
+
    .. py:method:: _transform_gpu(X, **kwargs)
 
       Respective immediate transform mocked function for local GPU(s).
+
 
 
    .. py:method:: _transform_cpu(X, **kwargs)
@@ -80,13 +100,15 @@ Classes
 
 .. py:class:: ArrayToHDF5(dataset_path, chunks=None, save=True, filename=None)
 
-
    Bases: :py:obj:`dasf.transforms.base.Transform`
+
 
    Class representing a Transform operation of the pipeline.
 
+
    .. py:method:: _convert_filename(url)
       :staticmethod:
+
 
 
    .. py:method:: _lazy_transform_generic_all(data)
@@ -106,14 +128,17 @@ Classes
       Respective lazy transform mocked function for GPUs.
 
 
+
    .. py:method:: _lazy_transform_cpu(X, **kwargs)
 
       Respective lazy transform mocked function for CPUs.
 
 
+
    .. py:method:: _transform_gpu(X, **kwargs)
 
       Respective immediate transform mocked function for local GPU(s).
+
 
 
    .. py:method:: _transform_cpu(X, **kwargs)
@@ -124,13 +149,15 @@ Classes
 
 .. py:class:: ZarrToArray(chunks=None, save=True, filename=None)
 
-
    Bases: :py:obj:`dasf.transforms.base.Transform`
+
 
    Class representing a Transform operation of the pipeline.
 
+
    .. py:method:: _convert_filename(url)
       :staticmethod:
+
 
 
    .. py:method:: transform(X)
@@ -141,10 +168,11 @@ Classes
 
 .. py:class:: ArraysToDataFrame
 
-
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
+
    Class representing a Transform operation of the pipeline.
+
 
    .. py:method:: _build_dataframe(data, columns, xp, df)
 
@@ -157,9 +185,11 @@ Classes
       Respective lazy transform mocked function for CPUs.
 
 
+
    .. py:method:: _lazy_transform_gpu(X=None, **kwargs)
 
       Respective lazy transform mocked function for GPUs.
+
 
 
    .. py:method:: _transform(xp, df, **kwargs)
@@ -168,6 +198,7 @@ Classes
    .. py:method:: _transform_cpu(X=None, **kwargs)
 
       Respective immediate transform mocked function for local CPU(s).
+
 
 
    .. py:method:: _transform_gpu(X=None, **kwargs)

@@ -1,0 +1,97 @@
+dasf.pipeline.executors.ray
+===========================
+
+.. py:module:: dasf.pipeline.executors.ray
+
+.. autoapi-nested-parse::
+
+   Ray executor module. 
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   dasf.pipeline.executors.ray.USE_RAY
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.pipeline.executors.ray.RayPipelineExecutor
+
+
+Module Contents
+---------------
+
+.. py:data:: USE_RAY
+   :value: True
+
+
+.. py:class:: RayPipelineExecutor(address=None, port=6379, local=False, use_gpu=False, ray_kwargs=None)
+
+   Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
+
+
+   A pipeline executor based on ray data flow.
+
+   Parameters
+   ----------
+   address : str
+       Address of the Dask scheduler, default=None.
+   port : int
+       Port of the Ray head, default=8786.
+   local : bool
+       Kicks off a new local Ray cluster, default=False.
+   use_gpu : bool
+       In conjunction with `local`, it kicks off a local CUDA Ray
+       cluster, default=False.
+
+   Constructor of the object RayPipelineExecutor. 
+
+
+   .. py:property:: ngpus
+      Return the number of GPUs in total.
+
+      Returns
+      -------
+      ngpus : Number of GPUs in total
+
+
+
+   .. py:property:: is_connected
+      Return wether the executor is connected or not.
+
+      Returns
+      -------
+      bool : if the executor is connected.
+
+
+
+   .. py:method:: execute(fn, *args, **kwargs)
+
+      Return wether the executor is connected or not.
+
+      Parameters
+      ----------
+      fn : Callable
+         Function to call when executor is performing a task.
+
+      Returns
+      -------
+      ret : the same return of function `fn`.
+
+
+
+   .. py:method:: __del__()
+
+      Destructor of object.
+
+      It also shutdowns Dask on Ray properly with `disable_dask_on_ray`.
+
+
+

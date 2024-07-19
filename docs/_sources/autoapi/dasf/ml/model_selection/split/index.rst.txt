@@ -1,26 +1,24 @@
-:py:mod:`dasf.ml.model_selection.split`
-=======================================
+dasf.ml.model_selection.split
+=============================
 
 .. py:module:: dasf.ml.model_selection.split
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.ml.model_selection.split.train_test_split
 
 
-
+Module Contents
+---------------
 
 .. py:class:: train_test_split(output='train', test_size=None, train_size=None, random_state=None, shuffle=None, blockwise=True, convert_mixed_types=False, **kwargs)
 
-
    Bases: :py:obj:`dasf.transforms.TargeteredTransform`, :py:obj:`dasf.transforms.Transform`
+
 
    Class representing a Targetered Transform operation of the pipeline.
 
@@ -35,20 +33,25 @@ Classes
        Define if the operator will use GPU(s) or not.
 
 
+
    .. py:method:: _lazy_transform_cpu(X)
 
       Respective lazy transform mocked function for CPUs.
 
 
+
    .. py:method:: _lazy_transform_gpu(X)
       :abstractmethod:
 
+
       Respective lazy transform mocked function for GPUs.
+
 
 
    .. py:method:: _transform_cpu(X)
 
       Respective immediate transform mocked function for local CPU(s).
+
 
 
    .. py:method:: _transform_gpu(X)

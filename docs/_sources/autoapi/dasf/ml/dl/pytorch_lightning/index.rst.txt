@@ -1,14 +1,11 @@
-:py:mod:`dasf.ml.dl.pytorch_lightning`
-======================================
+dasf.ml.dl.pytorch_lightning
+============================
 
 .. py:module:: dasf.ml.dl.pytorch_lightning
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -16,9 +13,8 @@ Classes
    dasf.ml.dl.pytorch_lightning.NeuralNetClassifier
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -26,11 +22,13 @@ Functions
    dasf.ml.dl.pytorch_lightning.fit
 
 
+Module Contents
+---------------
 
 .. py:class:: TorchDataLoader(train, val=None, test=None, batch_size=64)
 
-
    Bases: :py:obj:`pytorch_lightning.LightningDataModule`
+
 
    A DataModule standardizes the training, val, test splits, data preparation and transforms. The main
    advantage is consistent data splits, data preparation and transforms across models.
@@ -66,6 +64,7 @@ Functions
        allow_zero_length_dataloader_with_multiple_devices:
            If True, dataloader with zero length within local rank is allowed.
            Default value is False.
+
 
    .. py:method:: prepare_data()
 
@@ -123,6 +122,7 @@ Functions
           model.predict_dataloader()
 
 
+
    .. py:method:: setup(stage=None)
 
       Called at the beginning of fit (train + validate), validate, test, or predict. This is a good hook when
@@ -148,6 +148,7 @@ Functions
               def setup(self, stage):
                   data = load_data(...)
                   self.l1 = nn.Linear(28, data.num_classes)
+
 
 
    .. py:method:: train_dataloader()
@@ -221,6 +222,7 @@ Functions
               return {'mnist': mnist_loader, 'cifar': cifar_loader}
 
 
+
    .. py:method:: val_dataloader()
 
       Implement one or multiple PyTorch DataLoaders for validation.
@@ -269,6 +271,7 @@ Functions
       Note:
           In the case where you return multiple validation dataloaders, the :meth:`validation_step`
           will have an argument ``dataloader_idx`` which matches the order here.
+
 
 
    .. py:method:: test_dataloader()
@@ -327,16 +330,15 @@ Functions
 
 .. py:function:: run_dask_clustered(func, client=None, **kwargs)
 
-
 .. py:function:: fit(model, X, y, max_iter, accel, strategy, devices, ngpus, batch_size=32, plugins=None, meta=None)
-
 
 .. py:class:: NeuralNetClassifier(model, max_iter=100, batch_size=32)
 
-
    Bases: :py:obj:`dasf.transforms.base.Fit`
 
+
    Class representing a Fit operation of the pipeline.
+
 
    .. py:method:: _lazy_fit_generic(X, y, accel, ngpus)
 
@@ -346,9 +348,11 @@ Functions
       Respective lazy fit mocked function for GPUs.
 
 
+
    .. py:method:: _lazy_fit_cpu(X, y=None)
 
       Respective lazy fit mocked function for CPUs.
+
 
 
    .. py:method:: __fit_generic(X, y, accel, ngpus)
@@ -357,6 +361,7 @@ Functions
    .. py:method:: _fit_gpu(X, y=None)
 
       Respective immediate fit mocked function for local GPU(s).
+
 
 
    .. py:method:: _fit_cpu(X, y=None)

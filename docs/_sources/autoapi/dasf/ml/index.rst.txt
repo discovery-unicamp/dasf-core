@@ -1,32 +1,28 @@
-:py:mod:`dasf.ml`
-=================
+dasf.ml
+=======
 
 .. py:module:: dasf.ml
+
+.. autoapi-nested-parse::
+
+   Init module for Machine Learning algorithms. 
+
 
 
 Subpackages
 -----------
+
 .. toctree::
-   :titlesonly:
-   :maxdepth: 3
-
-   cluster/index.rst
-   decomposition/index.rst
-   dl/index.rst
-   inference/index.rst
-   model_selection/index.rst
-   neighbors/index.rst
-   preprocessing/index.rst
-   svm/index.rst
-   xgboost/index.rst
-
-
-Submodules
-----------
-.. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   core/index.rst
+   /autoapi/dasf/ml/cluster/index
+   /autoapi/dasf/ml/decomposition/index
+   /autoapi/dasf/ml/dl/index
+   /autoapi/dasf/ml/inference/index
+   /autoapi/dasf/ml/model_selection/index
+   /autoapi/dasf/ml/neighbors/index
+   /autoapi/dasf/ml/preprocessing/index
+   /autoapi/dasf/ml/svm/index
+   /autoapi/dasf/ml/xgboost/index
 
 

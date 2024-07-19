@@ -1,0 +1,88 @@
+dasf.ml.inference.loader.base
+=============================
+
+.. py:module:: dasf.ml.inference.loader.base
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.ml.inference.loader.base.BaseLoader
+
+
+Module Contents
+---------------
+
+.. py:class:: BaseLoader
+
+   BaseLoader for DL models. When running in a Dask Cluster instantiates a model per worker that will be reused on every subsequent prediction task.
+
+
+   .. py:method:: inference(model, data)
+      :abstractmethod:
+
+
+
+   .. py:method:: load_model()
+      :abstractmethod:
+
+
+      Load Model method is specific for each framework/model.
+
+
+
+   .. py:method:: load_model_distributed(**kwargs)
+
+      Distributed model instantiation
+
+
+
+   .. py:method:: _lazy_load(**kwargs)
+
+
+   .. py:method:: _load(**kwargs)
+
+
+   .. py:method:: _lazy_load_cpu(**kwargs)
+
+
+   .. py:method:: _lazy_load_gpu(**kwargs)
+
+
+   .. py:method:: _load_cpu(**kwargs)
+
+
+   .. py:method:: _load_gpu(**kwargs)
+
+
+   .. py:method:: load(**kwargs)
+
+
+   .. py:method:: predict(data)
+
+      Predict method called on prediction tasks.
+
+
+
+   .. py:method:: preprocessing(data)
+
+      Preprocessing stage which is called before inference
+
+
+
+   .. py:method:: inference(model, data)
+      :abstractmethod:
+
+
+      Inference method, receives model and input data
+
+
+
+   .. py:method:: postprocessing(data)
+
+      Postprocessing stage which is called after inference
+
+
+

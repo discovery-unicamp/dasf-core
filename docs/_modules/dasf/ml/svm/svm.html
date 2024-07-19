@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.svm.svm &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -81,6 +81,8 @@
   <h1>Source code for dasf.ml.svm.svm</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
+<span class="sd">&quot;&quot;&quot; Support Vector Machine algorithms module. &quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span> <span class="k">as</span> <span class="n">SVC_CPU</span>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVR</span> <span class="k">as</span> <span class="n">SVR_CPU</span>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">LinearSVC</span> <span class="k">as</span> <span class="n">LinearSVC_CPU</span>
@@ -101,6 +103,181 @@
 <div class="viewcode-block" id="SVC">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/svm/svm/index.html#dasf.ml.svm.SVC">[docs]</a>
 <span class="k">class</span> <span class="nc">SVC</span><span class="p">(</span><span class="n">Fit</span><span class="p">,</span> <span class="n">Predict</span><span class="p">,</span> <span class="n">GetParams</span><span class="p">,</span> <span class="n">SetParams</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    C-Support Vector Classification.</span>
+
+<span class="sd">    The implementation is based on libsvm. The fit time scales at least</span>
+<span class="sd">    quadratically with the number of samples and may be impractical</span>
+<span class="sd">    beyond tens of thousands of samples. For large datasets</span>
+<span class="sd">    consider using :class:`~sklearn.svm.LinearSVC` or</span>
+<span class="sd">    :class:`~sklearn.linear_model.SGDClassifier` instead, possibly after a</span>
+<span class="sd">    :class:`~sklearn.kernel_approximation.Nystroem` transformer or</span>
+<span class="sd">    other :ref:`kernel_approximation`.</span>
+
+<span class="sd">    The multiclass support is handled according to a one-vs-one scheme.</span>
+
+<span class="sd">    For details on the precise mathematical formulation of the provided</span>
+<span class="sd">    kernel functions and how `gamma`, `coef0` and `degree` affect each</span>
+<span class="sd">    other, see the corresponding section in the narrative documentation:</span>
+<span class="sd">    :ref:`svm_kernels`.</span>
+
+<span class="sd">    To learn how to tune SVC&#39;s hyperparameters, see the following example:</span>
+<span class="sd">    :ref:`sphx_glr_auto_examples_model_selection_plot_nested_cross_validation_iris.py`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    C : float, default=1.0</span>
+<span class="sd">        Regularization parameter. The strength of the regularization is</span>
+<span class="sd">        inversely proportional to C. Must be strictly positive. The penalty</span>
+<span class="sd">        is a squared l2 penalty. For an intuitive visualization of the effects</span>
+<span class="sd">        of scaling the regularization parameter C, see</span>
+<span class="sd">        :ref:`sphx_glr_auto_examples_svm_plot_svm_scale_c.py`.</span>
+
+<span class="sd">    kernel : {&#39;linear&#39;, &#39;poly&#39;, &#39;rbf&#39;, &#39;sigmoid&#39;, &#39;precomputed&#39;} or callable,  \</span>
+<span class="sd">        default=&#39;rbf&#39;</span>
+<span class="sd">        Specifies the kernel type to be used in the algorithm. If</span>
+<span class="sd">        none is given, &#39;rbf&#39; will be used. If a callable is given it is used to</span>
+<span class="sd">        pre-compute the kernel matrix from data matrices; that matrix should be</span>
+<span class="sd">        an array of shape ``(n_samples, n_samples)``. For an intuitive</span>
+<span class="sd">        visualization of different kernel types see</span>
+<span class="sd">        :ref:`sphx_glr_auto_examples_svm_plot_svm_kernels.py`.</span>
+
+<span class="sd">    degree : int, default=3</span>
+<span class="sd">        Degree of the polynomial kernel function (&#39;poly&#39;).</span>
+<span class="sd">        Must be non-negative. Ignored by all other kernels.</span>
+
+<span class="sd">    gamma : {&#39;scale&#39;, &#39;auto&#39;} or float, default=&#39;scale&#39;</span>
+<span class="sd">        Kernel coefficient for &#39;rbf&#39;, &#39;poly&#39; and &#39;sigmoid&#39;.</span>
+
+<span class="sd">        - if ``gamma=&#39;scale&#39;`` (default) is passed then it uses</span>
+<span class="sd">          1 / (n_features * X.var()) as value of gamma,</span>
+<span class="sd">        - if &#39;auto&#39;, uses 1 / n_features</span>
+<span class="sd">        - if float, must be non-negative.</span>
+
+<span class="sd">    coef0 : float, default=0.0</span>
+<span class="sd">        Independent term in kernel function.</span>
+<span class="sd">        It is only significant in &#39;poly&#39; and &#39;sigmoid&#39;.</span>
+
+<span class="sd">    shrinking : bool, default=True</span>
+<span class="sd">        Whether to use the shrinking heuristic.</span>
+<span class="sd">        See the :ref:`User Guide &lt;shrinking_svm&gt;`.</span>
+
+<span class="sd">    probability : bool, default=False</span>
+<span class="sd">        Whether to enable probability estimates. This must be enabled prior</span>
+<span class="sd">        to calling `fit`, will slow down that method as it internally uses</span>
+<span class="sd">        5-fold cross-validation, and `predict_proba` may be inconsistent with</span>
+<span class="sd">        `predict`. Read more in the :ref:`User Guide &lt;scores_probabilities&gt;`.</span>
+
+<span class="sd">    tol : float, default=1e-3</span>
+<span class="sd">        Tolerance for stopping criterion.</span>
+
+<span class="sd">    cache_size : float, default=200</span>
+<span class="sd">        Specify the size of the kernel cache (in MB).</span>
+
+<span class="sd">    class_weight : dict or &#39;balanced&#39;, default=None</span>
+<span class="sd">        Set the parameter C of class i to class_weight[i]*C for</span>
+<span class="sd">        SVC. If not given, all classes are supposed to have</span>
+<span class="sd">        weight one.</span>
+<span class="sd">        The &quot;balanced&quot; mode uses the values of y to automatically adjust</span>
+<span class="sd">        weights inversely proportional to class frequencies in the input data</span>
+<span class="sd">        as ``n_samples / (n_classes * np.bincount(y))``.</span>
+
+<span class="sd">    verbose : bool, default=False</span>
+<span class="sd">        Enable verbose output. Note that this setting takes advantage of a</span>
+<span class="sd">        per-process runtime setting in libsvm that, if enabled, may not work</span>
+<span class="sd">        properly in a multithreaded context.</span>
+
+<span class="sd">    max_iter : int, default=-1</span>
+<span class="sd">        Hard limit on iterations within solver, or -1 for no limit.</span>
+
+<span class="sd">    decision_function_shape : {&#39;ovo&#39;, &#39;ovr&#39;}, default=&#39;ovr&#39;</span>
+<span class="sd">        Whether to return a one-vs-rest (&#39;ovr&#39;) decision function of shape</span>
+<span class="sd">        (n_samples, n_classes) as all other classifiers, or the original</span>
+<span class="sd">        one-vs-one (&#39;ovo&#39;) decision function of libsvm which has shape</span>
+<span class="sd">        (n_samples, n_classes * (n_classes - 1) / 2). However, note that</span>
+<span class="sd">        internally, one-vs-one (&#39;ovo&#39;) is always used as a multi-class strategy</span>
+<span class="sd">        to train models; an ovr matrix is only constructed from the ovo matrix.</span>
+<span class="sd">        The parameter is ignored for binary classification.</span>
+
+<span class="sd">    break_ties : bool, default=False</span>
+<span class="sd">        If true, ``decision_function_shape=&#39;ovr&#39;``, and number of classes &gt; 2,</span>
+<span class="sd">        :term:`predict` will break ties according to the confidence values of</span>
+<span class="sd">        :term:`decision_function`; otherwise the first class among the tied</span>
+<span class="sd">        classes is returned. Please note that breaking ties comes at a</span>
+<span class="sd">        relatively high computational cost compared to a simple predict.</span>
+
+<span class="sd">    random_state : int, RandomState instance or None, default=None</span>
+<span class="sd">        Controls the pseudo random number generation for shuffling the data for</span>
+<span class="sd">        probability estimates. Ignored when `probability` is False.</span>
+<span class="sd">        Pass an int for reproducible output across multiple function calls.</span>
+<span class="sd">        See :term:`Glossary &lt;random_state&gt;`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    class_weight_ : ndarray of shape (n_classes,)</span>
+<span class="sd">        Multipliers of parameter C for each class.</span>
+<span class="sd">        Computed based on the ``class_weight`` parameter.</span>
+
+<span class="sd">    classes_ : ndarray of shape (n_classes,)</span>
+<span class="sd">        The classes labels.</span>
+
+<span class="sd">    coef_ : ndarray of shape (n_classes * (n_classes - 1) / 2, n_features)</span>
+<span class="sd">        Weights assigned to the features (coefficients in the primal</span>
+<span class="sd">        problem). This is only available in the case of a linear kernel.</span>
+
+<span class="sd">        `coef_` is a readonly property derived from `dual_coef_` and</span>
+<span class="sd">        `support_vectors_`.</span>
+
+<span class="sd">    dual_coef_ : ndarray of shape (n_classes -1, n_SV)</span>
+<span class="sd">        Dual coefficients of the support vector in the decision</span>
+<span class="sd">        function (see :ref:`sgd_mathematical_formulation`), multiplied by</span>
+<span class="sd">        their targets.</span>
+<span class="sd">        For multiclass, coefficient for all 1-vs-1 classifiers.</span>
+<span class="sd">        The layout of the coefficients in the multiclass case is somewhat</span>
+<span class="sd">        non-trivial. See the :ref:`multi-class section of the User Guide</span>
+<span class="sd">        &lt;svm_multi_class&gt;` for details.</span>
+
+<span class="sd">    fit_status_ : int</span>
+<span class="sd">        0 if correctly fitted, 1 otherwise (will raise warning)</span>
+
+<span class="sd">    intercept_ : ndarray of shape (n_classes * (n_classes - 1) / 2,)</span>
+<span class="sd">        Constants in decision function.</span>
+
+<span class="sd">    n_features_in_ : int</span>
+<span class="sd">        Number of features seen during :term:`fit`.</span>
+
+<span class="sd">    feature_names_in_ : ndarray of shape (`n_features_in_`,)</span>
+<span class="sd">        Names of features seen during :term:`fit`. Defined only when `X`</span>
+<span class="sd">        has feature names that are all strings.</span>
+
+<span class="sd">    n_iter_ : ndarray of shape (n_classes * (n_classes - 1) // 2,)</span>
+<span class="sd">        Number of iterations run by the optimization routine to fit the model.</span>
+<span class="sd">        The shape of this attribute depends on the number of models optimized</span>
+<span class="sd">        which in turn depends on the number of classes.</span>
+
+<span class="sd">    support_ : ndarray of shape (n_SV)</span>
+<span class="sd">        Indices of support vectors.</span>
+
+<span class="sd">    support_vectors_ : ndarray of shape (n_SV, n_features)</span>
+<span class="sd">        Support vectors. An empty array if kernel is precomputed.</span>
+
+<span class="sd">    n_support_ : ndarray of shape (n_classes,), dtype=int32</span>
+<span class="sd">        Number of support vectors for each class.</span>
+
+<span class="sd">    probA_ : ndarray of shape (n_classes * (n_classes - 1) / 2)</span>
+<span class="sd">    probB_ : ndarray of shape (n_classes * (n_classes - 1) / 2)</span>
+<span class="sd">        If `probability=True`, it corresponds to the parameters learned in</span>
+<span class="sd">        Platt scaling to produce probability estimates from decision values.</span>
+<span class="sd">        If `probability=False`, it&#39;s an empty array. Platt scaling uses the</span>
+<span class="sd">        logistic function</span>
+<span class="sd">        ``1 / (1 + exp(decision_value * probA_ + probB_))``</span>
+<span class="sd">        where ``probA_`` and ``probB_`` are learned from the dataset [2]_. For</span>
+<span class="sd">        more information on the multiclass case and training procedure see</span>
+<span class="sd">        section 8 of [1]_.</span>
+
+<span class="sd">    shape_fit_ : tuple of int of shape (n_dimensions_of_X,)</span>
+<span class="sd">        Array dimensions of training vector ``X``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
@@ -198,6 +375,125 @@
 <div class="viewcode-block" id="SVR">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/svm/svm/index.html#dasf.ml.svm.SVR">[docs]</a>
 <span class="k">class</span> <span class="nc">SVR</span><span class="p">(</span><span class="n">Fit</span><span class="p">,</span> <span class="n">Predict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Epsilon-Support Vector Regression.</span>
+
+<span class="sd">    The free parameters in the model are C and epsilon.</span>
+
+<span class="sd">    The implementation is based on libsvm. The fit time complexity</span>
+<span class="sd">    is more than quadratic with the number of samples which makes it hard</span>
+<span class="sd">    to scale to datasets with more than a couple of 10000 samples. For large</span>
+<span class="sd">    datasets consider using :class:`~sklearn.svm.LinearSVR` or</span>
+<span class="sd">    :class:`~sklearn.linear_model.SGDRegressor` instead, possibly after a</span>
+<span class="sd">    :class:`~sklearn.kernel_approximation.Nystroem` transformer or</span>
+<span class="sd">    other :ref:`kernel_approximation`.</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;svm_regression&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    kernel : {&#39;linear&#39;, &#39;poly&#39;, &#39;rbf&#39;, &#39;sigmoid&#39;, &#39;precomputed&#39;} or callable,  \</span>
+<span class="sd">        default=&#39;rbf&#39;</span>
+<span class="sd">         Specifies the kernel type to be used in the algorithm.</span>
+<span class="sd">         If none is given, &#39;rbf&#39; will be used. If a callable is given it is</span>
+<span class="sd">         used to precompute the kernel matrix.</span>
+
+<span class="sd">    degree : int, default=3</span>
+<span class="sd">        Degree of the polynomial kernel function (&#39;poly&#39;).</span>
+<span class="sd">        Must be non-negative. Ignored by all other kernels.</span>
+
+<span class="sd">    gamma : {&#39;scale&#39;, &#39;auto&#39;} or float, default=&#39;scale&#39;</span>
+<span class="sd">        Kernel coefficient for &#39;rbf&#39;, &#39;poly&#39; and &#39;sigmoid&#39;.</span>
+
+<span class="sd">        - if ``gamma=&#39;scale&#39;`` (default) is passed then it uses</span>
+<span class="sd">          1 / (n_features * X.var()) as value of gamma,</span>
+<span class="sd">        - if &#39;auto&#39;, uses 1 / n_features</span>
+<span class="sd">        - if float, must be non-negative.</span>
+
+<span class="sd">        .. versionchanged:: 0.22</span>
+<span class="sd">           The default value of ``gamma`` changed from &#39;auto&#39; to &#39;scale&#39;.</span>
+
+<span class="sd">    coef0 : float, default=0.0</span>
+<span class="sd">        Independent term in kernel function.</span>
+<span class="sd">        It is only significant in &#39;poly&#39; and &#39;sigmoid&#39;.</span>
+
+<span class="sd">    tol : float, default=1e-3</span>
+<span class="sd">        Tolerance for stopping criterion.</span>
+
+<span class="sd">    C : float, default=1.0</span>
+<span class="sd">        Regularization parameter. The strength of the regularization is</span>
+<span class="sd">        inversely proportional to C. Must be strictly positive.</span>
+<span class="sd">        The penalty is a squared l2. For an intuitive visualization of the</span>
+<span class="sd">        effects of scaling the regularization parameter C, see</span>
+<span class="sd">        :ref:`sphx_glr_auto_examples_svm_plot_svm_scale_c.py`.</span>
+
+<span class="sd">    epsilon : float, default=0.1</span>
+<span class="sd">         Epsilon in the epsilon-SVR model. It specifies the epsilon-tube</span>
+<span class="sd">         within which no penalty is associated in the training loss function</span>
+<span class="sd">         with points predicted within a distance epsilon from the actual</span>
+<span class="sd">         value. Must be non-negative.</span>
+
+<span class="sd">    shrinking : bool, default=True</span>
+<span class="sd">        Whether to use the shrinking heuristic.</span>
+<span class="sd">        See the :ref:`User Guide &lt;shrinking_svm&gt;`.</span>
+
+<span class="sd">    cache_size : float, default=200</span>
+<span class="sd">        Specify the size of the kernel cache (in MB).</span>
+
+<span class="sd">    verbose : bool, default=False</span>
+<span class="sd">        Enable verbose output. Note that this setting takes advantage of a</span>
+<span class="sd">        per-process runtime setting in libsvm that, if enabled, may not work</span>
+<span class="sd">        properly in a multithreaded context.</span>
+
+<span class="sd">    max_iter : int, default=-1</span>
+<span class="sd">        Hard limit on iterations within solver, or -1 for no limit.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coef_ : ndarray of shape (1, n_features)</span>
+<span class="sd">        Weights assigned to the features (coefficients in the primal</span>
+<span class="sd">        problem). This is only available in the case of a linear kernel.</span>
+
+<span class="sd">        `coef_` is readonly property derived from `dual_coef_` and</span>
+<span class="sd">        `support_vectors_`.</span>
+
+<span class="sd">    dual_coef_ : ndarray of shape (1, n_SV)</span>
+<span class="sd">        Coefficients of the support vector in the decision function.</span>
+
+<span class="sd">    fit_status_ : int</span>
+<span class="sd">        0 if correctly fitted, 1 otherwise (will raise warning)</span>
+
+<span class="sd">    intercept_ : ndarray of shape (1,)</span>
+<span class="sd">        Constants in decision function.</span>
+
+<span class="sd">    n_features_in_ : int</span>
+<span class="sd">        Number of features seen during :term:`fit`.</span>
+
+<span class="sd">        .. versionadded:: 0.24</span>
+
+<span class="sd">    feature_names_in_ : ndarray of shape (`n_features_in_`,)</span>
+<span class="sd">        Names of features seen during :term:`fit`. Defined only when `X`</span>
+<span class="sd">        has feature names that are all strings.</span>
+
+<span class="sd">        .. versionadded:: 1.0</span>
+
+<span class="sd">    n_iter_ : int</span>
+<span class="sd">        Number of iterations run by the optimization routine to fit the model.</span>
+
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">    n_support_ : ndarray of shape (1,), dtype=int32</span>
+<span class="sd">        Number of support vectors.</span>
+
+<span class="sd">    shape_fit_ : tuple of int of shape (n_dimensions_of_X,)</span>
+<span class="sd">        Array dimensions of training vector ``X``.</span>
+
+<span class="sd">    support_ : ndarray of shape (n_SV,)</span>
+<span class="sd">        Indices of support vectors.</span>
+
+<span class="sd">    support_vectors_ : ndarray of shape (n_SV, n_features)</span>
+<span class="sd">        Support vectors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">,</span>
@@ -213,7 +509,7 @@
         <span class="n">max_iter</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">nochange_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
     <span class="p">):</span>
-
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Constructor of the class SVR. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__svr_cpu</span> <span class="o">=</span> <span class="n">SVR_CPU</span><span class="p">(</span>
             <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span>
             <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">,</span>
@@ -244,6 +540,8 @@
                 <span class="n">nochange_steps</span><span class="o">=</span><span class="n">nochange_steps</span><span class="p">,</span>
                 <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">,</span>
             <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__svr_gpu</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="SVR._fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/svm/svm/index.html#dasf.ml.svm.SVR._fit_cpu">[docs]</a>
@@ -274,6 +572,142 @@
 <div class="viewcode-block" id="LinearSVC">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/svm/svm/index.html#dasf.ml.svm.LinearSVC">[docs]</a>
 <span class="k">class</span> <span class="nc">LinearSVC</span><span class="p">(</span><span class="n">Fit</span><span class="p">,</span> <span class="n">Predict</span><span class="p">,</span> <span class="n">GetParams</span><span class="p">,</span> <span class="n">SetParams</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linear Support Vector Classification.</span>
+
+<span class="sd">    Similar to SVC with parameter kernel=&#39;linear&#39;, but implemented in terms of</span>
+<span class="sd">    liblinear rather than libsvm, so it has more flexibility in the choice of</span>
+<span class="sd">    penalties and loss functions and should scale better to large numbers of</span>
+<span class="sd">    samples.</span>
+
+<span class="sd">    The main differences between :class:`~sklearn.svm.LinearSVC` and</span>
+<span class="sd">    :class:`~sklearn.svm.SVC` lie in the loss function used by default, and in</span>
+<span class="sd">    the handling of intercept regularization between those two implementations.</span>
+
+<span class="sd">    This class supports both dense and sparse input and the multiclass support</span>
+<span class="sd">    is handled according to a one-vs-the-rest scheme.</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;svm_classification&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    penalty : {&#39;l1&#39;, &#39;l2&#39;}, default=&#39;l2&#39;</span>
+<span class="sd">        Specifies the norm used in the penalization. The &#39;l2&#39;</span>
+<span class="sd">        penalty is the standard used in SVC. The &#39;l1&#39; leads to ``coef_``</span>
+<span class="sd">        vectors that are sparse.</span>
+
+<span class="sd">    loss : {&#39;hinge&#39;, &#39;squared_hinge&#39;}, default=&#39;squared_hinge&#39;</span>
+<span class="sd">        Specifies the loss function. &#39;hinge&#39; is the standard SVM loss</span>
+<span class="sd">        (used e.g. by the SVC class) while &#39;squared_hinge&#39; is the</span>
+<span class="sd">        square of the hinge loss. The combination of ``penalty=&#39;l1&#39;``</span>
+<span class="sd">        and ``loss=&#39;hinge&#39;`` is not supported.</span>
+
+<span class="sd">    dual : &quot;auto&quot; or bool, default=&quot;auto&quot;</span>
+<span class="sd">        Select the algorithm to either solve the dual or primal</span>
+<span class="sd">        optimization problem. Prefer dual=False when n_samples &gt; n_features.</span>
+<span class="sd">        `dual=&quot;auto&quot;` will choose the value of the parameter automatically,</span>
+<span class="sd">        based on the values of `n_samples`, `n_features`, `loss`, `multi_class`</span>
+<span class="sd">        and `penalty`. If `n_samples` &lt; `n_features` and optimizer supports</span>
+<span class="sd">        chosen `loss`, `multi_class` and `penalty`, then dual will be set to True,</span>
+<span class="sd">        otherwise it will be set to False.</span>
+
+<span class="sd">        .. versionchanged:: 1.3</span>
+<span class="sd">           The `&quot;auto&quot;` option is added in version 1.3 and will be the default</span>
+<span class="sd">           in version 1.5.</span>
+
+<span class="sd">    tol : float, default=1e-4</span>
+<span class="sd">        Tolerance for stopping criteria.</span>
+
+<span class="sd">    C : float, default=1.0</span>
+<span class="sd">        Regularization parameter. The strength of the regularization is</span>
+<span class="sd">        inversely proportional to C. Must be strictly positive.</span>
+<span class="sd">        For an intuitive visualization of the effects of scaling</span>
+<span class="sd">        the regularization parameter C, see</span>
+<span class="sd">        :ref:`sphx_glr_auto_examples_svm_plot_svm_scale_c.py`.</span>
+
+<span class="sd">    multi_class : {&#39;ovr&#39;, &#39;crammer_singer&#39;}, default=&#39;ovr&#39;</span>
+<span class="sd">        Determines the multi-class strategy if `y` contains more than</span>
+<span class="sd">        two classes.</span>
+<span class="sd">        ``&quot;ovr&quot;`` trains n_classes one-vs-rest classifiers, while</span>
+<span class="sd">        ``&quot;crammer_singer&quot;`` optimizes a joint objective over all classes.</span>
+<span class="sd">        While `crammer_singer` is interesting from a theoretical perspective</span>
+<span class="sd">        as it is consistent, it is seldom used in practice as it rarely leads</span>
+<span class="sd">        to better accuracy and is more expensive to compute.</span>
+<span class="sd">        If ``&quot;crammer_singer&quot;`` is chosen, the options loss, penalty and dual</span>
+<span class="sd">        will be ignored.</span>
+
+<span class="sd">    fit_intercept : bool, default=True</span>
+<span class="sd">        Whether or not to fit an intercept. If set to True, the feature vector</span>
+<span class="sd">        is extended to include an intercept term: `[x_1, ..., x_n, 1]`, where</span>
+<span class="sd">        1 corresponds to the intercept. If set to False, no intercept will be</span>
+<span class="sd">        used in calculations (i.e. data is expected to be already centered).</span>
+
+<span class="sd">    intercept_scaling : float, default=1.0</span>
+<span class="sd">        When `fit_intercept` is True, the instance vector x becomes ``[x_1,</span>
+<span class="sd">        ..., x_n, intercept_scaling]``, i.e. a &quot;synthetic&quot; feature with a</span>
+<span class="sd">        constant value equal to `intercept_scaling` is appended to the instance</span>
+<span class="sd">        vector. The intercept becomes intercept_scaling * synthetic feature</span>
+<span class="sd">        weight. Note that liblinear internally penalizes the intercept,</span>
+<span class="sd">        treating it like any other term in the feature vector. To reduce the</span>
+<span class="sd">        impact of the regularization on the intercept, the `intercept_scaling`</span>
+<span class="sd">        parameter can be set to a value greater than 1; the higher the value of</span>
+<span class="sd">        `intercept_scaling`, the lower the impact of regularization on it.</span>
+<span class="sd">        Then, the weights become `[w_x_1, ..., w_x_n,</span>
+<span class="sd">        w_intercept*intercept_scaling]`, where `w_x_1, ..., w_x_n` represent</span>
+<span class="sd">        the feature weights and the intercept weight is scaled by</span>
+<span class="sd">        `intercept_scaling`. This scaling allows the intercept term to have a</span>
+<span class="sd">        different regularization behavior compared to the other features.</span>
+
+<span class="sd">    class_weight : dict or &#39;balanced&#39;, default=None</span>
+<span class="sd">        Set the parameter C of class i to ``class_weight[i]*C`` for</span>
+<span class="sd">        SVC. If not given, all classes are supposed to have</span>
+<span class="sd">        weight one.</span>
+<span class="sd">        The &quot;balanced&quot; mode uses the values of y to automatically adjust</span>
+<span class="sd">        weights inversely proportional to class frequencies in the input data</span>
+<span class="sd">        as ``n_samples / (n_classes * np.bincount(y))``.</span>
+
+<span class="sd">    verbose : int, default=0</span>
+<span class="sd">        Enable verbose output. Note that this setting takes advantage of a</span>
+<span class="sd">        per-process runtime setting in liblinear that, if enabled, may not work</span>
+<span class="sd">        properly in a multithreaded context.</span>
+
+<span class="sd">    random_state : int, RandomState instance or None, default=None</span>
+<span class="sd">        Controls the pseudo random number generation for shuffling the data for</span>
+<span class="sd">        the dual coordinate descent (if ``dual=True``). When ``dual=False`` the</span>
+<span class="sd">        underlying implementation of :class:`LinearSVC` is not random and</span>
+<span class="sd">        ``random_state`` has no effect on the results.</span>
+<span class="sd">        Pass an int for reproducible output across multiple function calls.</span>
+<span class="sd">        See :term:`Glossary &lt;random_state&gt;`.</span>
+
+<span class="sd">    max_iter : int, default=1000</span>
+<span class="sd">        The maximum number of iterations to be run.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coef_ : ndarray of shape (1, n_features) if n_classes == 2 \</span>
+<span class="sd">            else (n_classes, n_features)</span>
+<span class="sd">        Weights assigned to the features (coefficients in the primal</span>
+<span class="sd">        problem).</span>
+
+<span class="sd">        ``coef_`` is a readonly property derived from ``raw_coef_`` that</span>
+<span class="sd">        follows the internal memory layout of liblinear.</span>
+
+<span class="sd">    intercept_ : ndarray of shape (1,) if n_classes == 2 else (n_classes,)</span>
+<span class="sd">        Constants in decision function.</span>
+
+<span class="sd">    classes_ : ndarray of shape (n_classes,)</span>
+<span class="sd">        The unique classes labels.</span>
+
+<span class="sd">    n_features_in_ : int</span>
+<span class="sd">        Number of features seen during :term:`fit`.</span>
+
+<span class="sd">    feature_names_in_ : ndarray of shape (`n_features_in_`,)</span>
+<span class="sd">        Names of features seen during :term:`fit`. Defined only when `X`</span>
+<span class="sd">        has feature names that are all strings.</span>
+
+<span class="sd">    n_iter_ : int</span>
+<span class="sd">        Maximum number of iterations run across all classes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
@@ -295,7 +729,7 @@
         <span class="n">change_tol</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span>
         <span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Constructor of the class LinearSVC. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__linear_svc_cpu</span> <span class="o">=</span> <span class="n">LinearSVC_CPU</span><span class="p">(</span>
             <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
             <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>
@@ -333,12 +767,56 @@
 <div class="viewcode-block" id="LinearSVC._fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/svm/svm/index.html#dasf.ml.svm.LinearSVC._fit_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model according to the given training data using CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training vector, where `n_samples` is the number of samples and</span>
+<span class="sd">            `n_features` is the number of features.</span>
+
+<span class="sd">        y : array-like of shape (n_samples,)</span>
+<span class="sd">            Target vector relative to X.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Array of weights that are assigned to individual</span>
+<span class="sd">            samples. If not provided,</span>
+<span class="sd">            then each sample is given unit weight.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            An instance of the estimator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__linear_svc_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="LinearSVC._fit_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/svm/svm/index.html#dasf.ml.svm.LinearSVC._fit_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model according to the given training data using GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training vector, where `n_samples` is the number of samples and</span>
+<span class="sd">            `n_features` is the number of features.</span>
+
+<span class="sd">        y : array-like of shape (n_samples,)</span>
+<span class="sd">            Target vector relative to X.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Array of weights that are assigned to individual</span>
+<span class="sd">            samples. If not provided,</span>
+<span class="sd">            then each sample is given unit weight.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            An instance of the estimator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__linear_svc_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">)</span></div>
 
 
@@ -359,6 +837,108 @@
 <div class="viewcode-block" id="LinearSVR">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/svm/svm/index.html#dasf.ml.svm.LinearSVR">[docs]</a>
 <span class="k">class</span> <span class="nc">LinearSVR</span><span class="p">(</span><span class="n">Fit</span><span class="p">,</span> <span class="n">Predict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linear Support Vector Regression.</span>
+
+<span class="sd">    Similar to SVR with parameter kernel=&#39;linear&#39;, but implemented in terms of</span>
+<span class="sd">    liblinear rather than libsvm, so it has more flexibility in the choice of</span>
+<span class="sd">    penalties and loss functions and should scale better to large numbers of</span>
+<span class="sd">    samples.</span>
+
+<span class="sd">    The main differences between :class:`~sklearn.svm.LinearSVR` and</span>
+<span class="sd">    :class:`~sklearn.svm.SVR` lie in the loss function used by default, and in</span>
+<span class="sd">    the handling of intercept regularization between those two implementations.</span>
+
+<span class="sd">    This class supports both dense and sparse input.</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;svm_regression&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    epsilon : float, default=0.0</span>
+<span class="sd">        Epsilon parameter in the epsilon-insensitive loss function. Note</span>
+<span class="sd">        that the value of this parameter depends on the scale of the target</span>
+<span class="sd">        variable y. If unsure, set ``epsilon=0``.</span>
+
+<span class="sd">    tol : float, default=1e-4</span>
+<span class="sd">        Tolerance for stopping criteria.</span>
+
+<span class="sd">    C : float, default=1.0</span>
+<span class="sd">        Regularization parameter. The strength of the regularization is</span>
+<span class="sd">        inversely proportional to C. Must be strictly positive.</span>
+
+<span class="sd">    loss : {&#39;epsilon_insensitive&#39;, &#39;squared_epsilon_insensitive&#39;}, \</span>
+<span class="sd">            default=&#39;epsilon_insensitive&#39;</span>
+<span class="sd">        Specifies the loss function. The epsilon-insensitive loss</span>
+<span class="sd">        (standard SVR) is the L1 loss, while the squared epsilon-insensitive</span>
+<span class="sd">        loss (&#39;squared_epsilon_insensitive&#39;) is the L2 loss.</span>
+
+<span class="sd">    fit_intercept : bool, default=True</span>
+<span class="sd">        Whether or not to fit an intercept. If set to True, the feature vector</span>
+<span class="sd">        is extended to include an intercept term: `[x_1, ..., x_n, 1]`, where</span>
+<span class="sd">        1 corresponds to the intercept. If set to False, no intercept will be</span>
+<span class="sd">        used in calculations (i.e. data is expected to be already centered).</span>
+
+<span class="sd">    intercept_scaling : float, default=1.0</span>
+<span class="sd">        When `fit_intercept` is True, the instance vector x becomes `[x_1, ...,</span>
+<span class="sd">        x_n, intercept_scaling]`, i.e. a &quot;synthetic&quot; feature with a constant</span>
+<span class="sd">        value equal to `intercept_scaling` is appended to the instance vector.</span>
+<span class="sd">        The intercept becomes intercept_scaling * synthetic feature weight.</span>
+<span class="sd">        Note that liblinear internally penalizes the intercept, treating it</span>
+<span class="sd">        like any other term in the feature vector. To reduce the impact of the</span>
+<span class="sd">        regularization on the intercept, the `intercept_scaling` parameter can</span>
+<span class="sd">        be set to a value greater than 1; the higher the value of</span>
+<span class="sd">        `intercept_scaling`, the lower the impact of regularization on it.</span>
+<span class="sd">        Then, the weights become `[w_x_1, ..., w_x_n,</span>
+<span class="sd">        w_intercept*intercept_scaling]`, where `w_x_1, ..., w_x_n` represent</span>
+<span class="sd">        the feature weights and the intercept weight is scaled by</span>
+<span class="sd">        `intercept_scaling`. This scaling allows the intercept term to have a</span>
+<span class="sd">        different regularization behavior compared to the other features.</span>
+
+<span class="sd">    dual : &quot;auto&quot; or bool, default=&quot;auto&quot;</span>
+<span class="sd">        Select the algorithm to either solve the dual or primal</span>
+<span class="sd">        optimization problem. Prefer dual=False when n_samples &gt; n_features.</span>
+<span class="sd">        `dual=&quot;auto&quot;` will choose the value of the parameter automatically,</span>
+<span class="sd">        based on the values of `n_samples`, `n_features` and `loss`. If</span>
+<span class="sd">        `n_samples` &lt; `n_features` and optimizer supports chosen `loss`,</span>
+<span class="sd">        then dual will be set to True, otherwise it will be set to False.</span>
+
+<span class="sd">    verbose : int, default=0</span>
+<span class="sd">        Enable verbose output. Note that this setting takes advantage of a</span>
+<span class="sd">        per-process runtime setting in liblinear that, if enabled, may not work</span>
+<span class="sd">        properly in a multithreaded context.</span>
+
+<span class="sd">    random_state : int, RandomState instance or None, default=None</span>
+<span class="sd">        Controls the pseudo random number generation for shuffling the data.</span>
+<span class="sd">        Pass an int for reproducible output across multiple function calls.</span>
+<span class="sd">        See :term:`Glossary &lt;random_state&gt;`.</span>
+
+<span class="sd">    max_iter : int, default=1000</span>
+<span class="sd">        The maximum number of iterations to be run.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coef_ : ndarray of shape (n_features) if n_classes == 2 \</span>
+<span class="sd">            else (n_classes, n_features)</span>
+<span class="sd">        Weights assigned to the features (coefficients in the primal</span>
+<span class="sd">        problem).</span>
+
+<span class="sd">        `coef_` is a readonly property derived from `raw_coef_` that</span>
+<span class="sd">        follows the internal memory layout of liblinear.</span>
+
+<span class="sd">    intercept_ : ndarray of shape (1) if n_classes == 2 else (n_classes)</span>
+<span class="sd">        Constants in decision function.</span>
+
+<span class="sd">    n_features_in_ : int</span>
+<span class="sd">        Number of features seen during :term:`fit`.</span>
+
+<span class="sd">    feature_names_in_ : ndarray of shape (`n_features_in_`,)</span>
+<span class="sd">        Names of features seen during :term:`fit`. Defined only when `X`</span>
+<span class="sd">        has feature names that are all strings.</span>
+
+<span class="sd">    n_iter_ : int</span>
+<span class="sd">        Maximum number of iterations run across all classes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
@@ -380,7 +960,7 @@
         <span class="n">change_tol</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span>
         <span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Constructor of the class LinearSVR. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__linear_svr_cpu</span> <span class="o">=</span> <span class="n">LinearSVR_CPU</span><span class="p">(</span>
             <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
             <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>

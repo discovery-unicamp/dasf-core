@@ -1,26 +1,29 @@
-:py:mod:`dasf.ml.cluster.hdbscan`
-=================================
+dasf.ml.cluster.hdbscan
+=======================
 
 .. py:module:: dasf.ml.cluster.hdbscan
 
+.. autoapi-nested-parse::
 
-Module Contents
----------------
+   HDBSCAN algorithm module. 
+
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.ml.cluster.hdbscan.HDBSCAN
 
 
+Module Contents
+---------------
 
-
-.. py:class:: HDBSCAN(alpha=1.0, gen_min_span_tree=False, leaf_size=40, metric='euclidean', min_cluster_size=5, min_samples=None, p=None, algorithm='best', approx_min_span_tree=True, core_dist_n_jobs=4, cluster_selection_method='eom', allow_single_cluster=False, prediction_data=False, match_reference_implementation=False, connectivity='knn', output_type=None, verbose=0, **kwargs)
-
+.. py:class:: HDBSCAN(alpha=1.0, gen_min_span_tree=False, leaf_size=40, metric='euclidean', min_cluster_size=5, min_samples=None, p=None, algorithm='auto', approx_min_span_tree=True, core_dist_n_jobs=4, cluster_selection_method='eom', allow_single_cluster=False, prediction_data=False, match_reference_implementation=False, connectivity='knn', output_type=None, verbose=0, **kwargs)
 
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
 
    Perform HDBSCAN clustering from vector array or distance matrix.
 
@@ -188,24 +191,76 @@ Classes
           Density-based Cluster Selection. arxiv preprint 1911.02282.
 
 
+   A generic constructor method. 
+
+
    .. py:method:: _fit_cpu(X, y=None)
 
-      Respective immediate fit mocked function for local CPU(s).
+      Perform HDBSCAN clustering from features or distance matrix using CPU only.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or                 array-like of shape (n_samples, n_samples)
+          A feature array, or array of distances between samples if
+          ``metric='precomputed'``.
+
+      Returns
+      -------
+      self : object
+          Fitted estimator.
+
 
 
    .. py:method:: _fit_gpu(X, y=None, convert_dtype=True)
 
-      Respective immediate fit mocked function for local GPU(s).
+      Perform HDBSCAN clustering from features or distance matrix using GPU only
+      (from CuML).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or                 array-like of shape (n_samples, n_samples)
+          A feature array, or array of distances between samples if
+          ``metric='precomputed'``.
+
+      Returns
+      -------
+      self : object
+          Fitted estimator.
+
 
 
    .. py:method:: _fit_predict_cpu(X, y=None)
 
-      Respective immediate fit with predict mocked function for local CPU(s).
+      Performs clustering on X and returns cluster labels using only CPU.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or                 array-like of shape (n_samples, n_samples)
+          A feature array, or array of distances between samples if
+          ``metric='precomputed'``.
+
+      Returns
+      -------
+      y : ndarray, shape (n_samples, )
+          cluster labels
+
 
 
    .. py:method:: _fit_predict_gpu(X, y=None)
 
-      Respective immediate fit with predict mocked function for local GPU(s).
+      Performs clustering on X and returns cluster labels using only GPU
+      (from CuML).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or                 array-like of shape (n_samples, n_samples)
+          A feature array, or array of distances between samples if
+          ``metric='precomputed'``.
+
+      Returns
+      -------
+      y : ndarray, shape (n_samples, )
+          cluster labels
 
 
 

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial 8 - HDBSCAN Differences between CPU and GPU versions &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DASF
+          </a>
+              <div class="version">
+                1.0b5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../principles.html">Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">DASF API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial 8 - HDBSCAN Differences between CPU and GPU versions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/Tutorial_8.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Tutorial-8---HDBSCAN-Differences-between-CPU-and-GPU-versions">
+<h1>Tutorial 8 - HDBSCAN Differences between CPU and GPU versions<a class="headerlink" href="#Tutorial-8---HDBSCAN-Differences-between-CPU-and-GPU-versions" title="Link to this heading"></a></h1>
+<p>This tutorial is a basic example of some differences that we should expect when we run two models that were implemented for different device targets.</p>
+<p>We will use DASF to demonstrate how to compare two models using different samples of data.</p>
+<p>First, let’s create a collection of 2-D samples (because it is easy to visualize using simple techniques). Feel free to test it using other dimensions as an excercise.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+
+<span class="c1"># There is no make_moons for GPU, so we need to use from sklearn</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span><span class="p">,</span> <span class="n">make_moons</span>
+
+
+<span class="k">class</span> <span class="nc">Params</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Convert a dict into an object. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">generate_blobs_collection</span><span class="p">():</span>
+    <span class="n">blobs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                         <span class="n">centers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                         <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                         <span class="n">return_centers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+    <span class="n">blobs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;centroids&#39;</span><span class="p">:</span> <span class="n">c</span><span class="p">})</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                         <span class="n">return_centers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">random_state</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+    <span class="n">blobs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;centroids&#39;</span><span class="p">:</span> <span class="n">c</span><span class="p">})</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span>
+                         <span class="n">centers</span><span class="o">=</span><span class="p">[(</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">2.25</span><span class="p">),</span>
+                                  <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
+                                  <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+                                  <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">),</span>
+                                  <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">),</span>
+                                  <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)],</span>
+                         <span class="n">cluster_std</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                         <span class="n">return_centers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">random_state</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="n">blobs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;centroids&#39;</span><span class="p">:</span> <span class="n">c</span><span class="p">})</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+                         <span class="n">noise</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                         <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+    <span class="n">blobs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;centroids&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+                         <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                         <span class="n">center_box</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span>
+                         <span class="n">return_centers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">cluster_std</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="n">blobs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;centroids&#39;</span><span class="p">:</span> <span class="n">c</span><span class="p">})</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">]:</span>
+            <span class="n">blobs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;min_cluster_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">size</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Params</span><span class="p">(</span><span class="o">**</span><span class="n">blobs</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+            <span class="n">blobs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;min_samples&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Params</span><span class="p">(</span><span class="o">**</span><span class="n">blobs</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="k">del</span> <span class="n">blobs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;min_samples&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">params</span>
+</pre></div>
+</div>
+</div>
+<p>Even if we fix the seed, we can have different classes bewteen CPU and GPU. The function below is defined just to guarantee that the classes matches. It is a kind of brute force function to have a minimal map between classes.</p>
+<p>The heuristc just change one of the samples to negative and try to compare with the positive sample. If some negative number still remains in the converted sample, it means that there is no match between samples. So, the action is to revert to original value.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">match_classes_heuristic</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
+    <span class="c1"># Convert y2 to negative to avoid extra checks</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="p">(</span><span class="n">y2</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
+
+    <span class="c1"># Register conveersions</span>
+    <span class="n">conversion_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y1</span><span class="p">)):</span>
+        <span class="c1"># Try to match positive numbers from y1</span>
+        <span class="c1"># to negative numbers from y2.</span>
+        <span class="k">if</span> <span class="n">y1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">y2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">conversion_dict</span><span class="p">[</span><span class="n">y2</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">y1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">y2</span><span class="p">[</span><span class="n">y2</span> <span class="o">==</span> <span class="n">y2</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">y1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1"># Convert non converted values</span>
+    <span class="k">for</span> <span class="n">t2</span><span class="p">,</span> <span class="n">t1</span> <span class="ow">in</span> <span class="n">conversion_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">y2</span><span class="p">[</span><span class="n">y2</span> <span class="o">==</span> <span class="n">t2</span><span class="p">]</span> <span class="o">=</span> <span class="n">t1</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y2</span><span class="p">)):</span>
+        <span class="c1"># Return to original value what does not match.</span>
+        <span class="k">if</span> <span class="n">y2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">y2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">y2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span>
+</pre></div>
+</div>
+</div>
+<p>Now, we can create a loop that iterates thru the samples and the parameters we introduced in function <code class="docutils literal notranslate"><span class="pre">generate_blobs_collection()</span></code> to test two versions of HDBSCAN.</p>
+<p>For this experiment, we don’t need to create a pipeline because this is a simple one and HDBSCAN does not work with Dask. It should be a relatively simple experiment.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.ml.cluster</span> <span class="kn">import</span> <span class="n">HDBSCAN</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="n">generate_blobs_collection</span><span class="p">()</span>
+
+<span class="c1"># If you would like to, here you can setup your figure or plot library.</span>
+<span class="c1"># Below, we will use a plotly code sample. Feel free to use and include</span>
+<span class="c1"># the required libraries with `pip3 install plotly kaleido`</span>
+
+<span class="c1"># (INSER CODE 1 HERE)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;min_samples&#39;</span><span class="p">):</span>
+        <span class="n">cpu_model</span> <span class="o">=</span> <span class="n">HDBSCAN</span><span class="p">(</span><span class="n">min_cluster_size</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min_cluster_size</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min_samples</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cpu_model</span> <span class="o">=</span> <span class="n">HDBSCAN</span><span class="p">(</span><span class="n">min_cluster_size</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min_cluster_size</span><span class="p">)</span>
+
+    <span class="n">cpu_pred</span> <span class="o">=</span> <span class="n">cpu_model</span><span class="o">.</span><span class="n">_fit_predict_cpu</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;min_samples&#39;</span><span class="p">):</span>
+        <span class="n">gpu_model</span> <span class="o">=</span> <span class="n">HDBSCAN</span><span class="p">(</span><span class="n">min_cluster_size</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min_cluster_size</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min_samples</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gpu_model</span> <span class="o">=</span> <span class="n">HDBSCAN</span><span class="p">(</span><span class="n">min_cluster_size</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min_cluster_size</span><span class="p">)</span>
+
+    <span class="n">gpu_pred</span> <span class="o">=</span> <span class="n">gpu_model</span><span class="o">.</span><span class="n">_fit_predict_gpu</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="n">cpu_pred</span><span class="p">,</span> <span class="n">gpu_pred</span> <span class="o">=</span> <span class="n">match_classes_heuristic</span><span class="p">(</span><span class="n">cpu_pred</span><span class="p">,</span> <span class="n">gpu_pred</span><span class="p">)</span>
+
+    <span class="c1"># Here you can add some subplot content to show the samples and predictions.</span>
+
+    <span class="c1"># (INSER CODE 2 HERE)</span>
+</pre></div>
+</div>
+</div>
+<p>The results of the previous task can be seen in the image below. At least, for dense distributions it is clear to see some differences even when <code class="docutils literal notranslate"><span class="pre">min_samples</span></code> are default. It is even worst when <code class="docutils literal notranslate"><span class="pre">min_samples=1</span></code>.</p>
+<p><img alt="alt text" src="../_images/tutorial_8_results.jpg" /></p>
+<section id="Plot-Data-(Optional)">
+<h2>Plot Data (Optional)<a class="headerlink" href="#Plot-Data-(Optional)" title="Link to this heading"></a></h2>
+<p>If you want to use Plotly to plot the same results. You can include the following code into part 1 and 2. The part 1 can be like the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">make_subplots</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">),</span> <span class="n">cols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">subplot_titles</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Original&quot;</span><span class="p">,</span> <span class="s2">&quot;CPU&quot;</span><span class="p">,</span> <span class="s2">&quot;GPU&quot;</span><span class="p">,</span> <span class="s2">&quot;Diff&quot;</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;HDBSCAN Differences&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And the second part that plots the subplots can be like the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;min_samples&#39;</span><span class="p">):</span>
+    <span class="n">yaxis_min_samples</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min_samples</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">yaxis_min_samples</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;markers&quot;</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">),</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min_cluster_size</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">yaxis_min_samples</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">n_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">cpu_pred</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">gpu_pred</span><span class="p">)])</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">color_scale</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">sample_colorscale</span><span class="p">(</span><span class="s2">&quot;turbo&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">n</span><span class="o">/</span><span class="p">(</span><span class="n">n_colors</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_colors</span><span class="p">)])</span>
+
+<span class="n">cpu_pred_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rgb(192,192,192)&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">color_scale</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cpu_pred</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;markers&quot;</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">cpu_pred_colors</span><span class="p">),</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+
+<span class="n">gpu_pred_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rgb(192,192,192)&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">color_scale</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gpu_pred</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;markers&quot;</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">gpu_pred_colors</span><span class="p">),</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
+
+<span class="n">diff_pred_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rgba(192,192,192,220)&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;rgb(210,5,5)&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cpu_pred</span> <span class="o">-</span> <span class="n">gpu_pred</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;markers&quot;</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">diff_pred_colors</span><span class="p">),</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">),</span>
+        <span class="n">row</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">4</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

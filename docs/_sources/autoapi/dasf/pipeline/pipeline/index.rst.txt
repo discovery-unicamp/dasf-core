@@ -1,14 +1,11 @@
-:py:mod:`dasf.pipeline.pipeline`
-================================
+dasf.pipeline.pipeline
+======================
 
 .. py:module:: dasf.pipeline.pipeline
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -16,10 +13,10 @@ Classes
    dasf.pipeline.pipeline.Pipeline
 
 
-
+Module Contents
+---------------
 
 .. py:class:: PipelinePlugin
-
 
    .. py:method:: on_pipeline_start(fn_keys)
 
@@ -36,9 +33,7 @@ Classes
    .. py:method:: on_task_error(func, params, name, exception)
 
 
-
 .. py:class:: Pipeline(name, executor=None, verbose=False, callbacks = None)
-
 
    .. py:method:: register_plugin(plugin)
 
@@ -71,6 +66,5 @@ Classes
 
 
    .. py:method:: run()
-
 
 

@@ -1,31 +1,30 @@
-:py:mod:`dasf.pipeline.executors.base`
-======================================
+dasf.pipeline.executors.base
+============================
 
 .. py:module:: dasf.pipeline.executors.base
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.pipeline.executors.base.Executor
 
 
-
+Module Contents
+---------------
 
 .. py:class:: Executor
-
 
    .. py:property:: is_connected
       :type: bool
 
 
+
    .. py:property:: info
       :type: str
+
 
 
    .. py:method:: has_dataset(key)
@@ -36,6 +35,7 @@ Classes
 
    .. py:method:: get_dataset(key)
       :abstractmethod:
+
 
 
    .. py:method:: register_plugin(plugin)
@@ -51,6 +51,5 @@ Classes
 
 
    .. py:method:: shutdown()
-
 
 

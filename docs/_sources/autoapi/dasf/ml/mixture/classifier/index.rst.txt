@@ -1,57 +1,35 @@
-:py:mod:`dasf.ml.mixture.classifier`
-====================================
+dasf.ml.mixture.classifier
+==========================
 
 .. py:module:: dasf.ml.mixture.classifier
 
+.. autoapi-nested-parse::
 
-Module Contents
----------------
+   Generic Mixture Classifier algorithm method. 
+
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.ml.mixture.classifier.MixtureClassifier
 
 
-
+Module Contents
+---------------
 
 .. py:class:: MixtureClassifier
 
-
    Bases: :py:obj:`dasf.transforms.base.Fit`, :py:obj:`dasf.transforms.base.FitPredict`, :py:obj:`dasf.transforms.base.FitTransform`, :py:obj:`dasf.transforms.base.GetParams`, :py:obj:`dasf.transforms.base.SetParams`
 
-   Class representing a Fit operation of the pipeline.
 
-   .. py:method:: fit(X, y=None, sample_weight=None)
-      :abstractmethod:
+   Generic Mixture Classifier based on regular method for this type of
+   classifier
 
-      Generic fit funtion according executor.
-
-
-   .. py:method:: fit_predict(X, y=None, sample_weight=None)
-      :abstractmethod:
-
-      Generic fit with predict funtion according executor.
-
-
-   .. py:method:: fit_transform(X, y=None)
-      :abstractmethod:
-
-      Generic fit with transform funtion according executor.
-
-
-   .. py:method:: get_params()
-      :abstractmethod:
-
-      Generic get_params funtion according executor.
-
-
-   .. py:method:: set_params()
-      :abstractmethod:
-
-      Generic set_params funtion according executor.
+   Most of the Mixture methods has a fit, a fit_predict, a fit_transform,
+   a get_params, and a set_params methods.
 
 
 

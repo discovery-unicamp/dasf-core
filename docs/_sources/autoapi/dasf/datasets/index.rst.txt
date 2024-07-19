@@ -1,25 +1,27 @@
-:py:mod:`dasf.datasets`
-=======================
+dasf.datasets
+=============
 
 .. py:module:: dasf.datasets
+
+.. autoapi-nested-parse::
+
+   Init module for Datasets objects. 
+
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   base/index.rst
-   datasets/index.rst
-   download/index.rst
+   /autoapi/dasf/datasets/base/index
+   /autoapi/dasf/datasets/datasets/index
+   /autoapi/dasf/datasets/download/index
 
-
-Package Contents
-----------------
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -35,12 +37,13 @@ Classes
    dasf.datasets.make_classification
 
 
-
+Package Contents
+----------------
 
 .. py:class:: Dataset(name, download = False, root = None, *args, **kwargs)
 
-
    Bases: :py:obj:`dasf.transforms.base.TargeteredTransform`
+
 
    Class representing a generic dataset based on a TargeteredTransform
    object.
@@ -59,11 +62,15 @@ Classes
        Additional keyworkded arguments.
 
 
+   Constructor of the object Dataset. 
+
+
    .. py:method:: __set_dataset_cache_dir()
 
       Generate cached directory in $HOME to store dataset(s).
 
               
+
 
 
    .. py:method:: download()
@@ -73,11 +80,13 @@ Classes
               
 
 
+
    .. py:method:: __len__()
 
       Return internal data length.
 
               
+
 
 
    .. py:method:: __getitem__(idx)
@@ -94,8 +103,8 @@ Classes
 
 .. py:class:: DatasetArray(name, download = False, root = None, chunks='auto')
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as an array of a defined
    shape.
@@ -112,19 +121,27 @@ Classes
        Number of blocks of the array (the default is "auto").
 
 
-   .. py:property:: shape
-      :type: tuple
-
-      Returns the shape of an array.
-
-      Returns
-      -------
-      tuple
-          A tuple with the shape.
-
+   Constructor of the object DatasetArray. 
 
 
    .. py:method:: __operator_check__(other)
+
+      Check what type of the data we are handling
+
+      Examples:
+          DatasetArray with array-like; or
+          DatasetArray with DatasetArray
+
+      Parameters
+      ----------
+      other : Any
+          array-like of DatasetArray for the operation.
+
+      Returns
+      -------
+      data : Any
+          A data representing the internal array or the class itself.
+
 
 
    .. py:method:: __repr__()
@@ -134,7 +151,21 @@ Classes
               
 
 
+
    .. py:method:: __array__(dtype=None)
+
+      Array interface is required to support most of the array functions.
+
+      Parameters
+      ----------
+      dtype : Any
+          Type of the internal array, default=None (not used)
+
+      Returns
+      -------
+      data : Any
+          A data representing the internal array or the class itself.
+
 
 
    .. py:method:: __array_ufunc__(ufunc, method, *inputs, **kwargs)
@@ -159,6 +190,7 @@ Classes
 
 
 
+
    .. py:method:: __add__(other)
 
       Internal function of adding two array datasets.
@@ -172,6 +204,7 @@ Classes
       -------
       DatasetArry
           A sum with two arrays.
+
 
 
 
@@ -191,6 +224,7 @@ Classes
 
 
 
+
    .. py:method:: __mul__(other)
 
       Internal function of multiplication two array datasets.
@@ -204,6 +238,7 @@ Classes
       -------
       DatasetArry
           A multiplication of two arrays.
+
 
 
 
@@ -223,6 +258,7 @@ Classes
 
 
 
+
    .. py:method:: __copy_attrs_from_data()
 
       Extends metadata to new transformed object (after operations).
@@ -230,11 +266,13 @@ Classes
               
 
 
+
    .. py:method:: __npy_header()
 
       Read an array header from a filelike object.
 
               
+
 
 
    .. py:method:: _lazy_load(xp, **kwargs)
@@ -255,6 +293,7 @@ Classes
 
 
 
+
    .. py:method:: _load(xp, **kwargs)
 
       Load data using CPU container.
@@ -265,6 +304,7 @@ Classes
           A module that load data (implement `load` function)
       **kwargs : type
           Additional `kwargs` to `xp.load` function.
+
 
 
 
@@ -279,11 +319,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_gpu()
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_cpu()
@@ -293,11 +335,13 @@ Classes
               
 
 
+
    .. py:method:: _load_gpu()
 
       Load data with GPU container (e.g. cupy).
 
               
+
 
 
    .. py:method:: _load_cpu()
@@ -307,7 +351,16 @@ Classes
               
 
 
+
    .. py:method:: from_array(array)
+
+      Load data from an existing array.
+
+      Parameters
+      ----------
+      array : array-like
+          Input data to be initialized.
+
 
 
    .. py:method:: load()
@@ -315,6 +368,20 @@ Classes
       Placeholder for load function.
 
               
+
+
+
+   .. py:property:: shape
+      :type: tuple
+
+      Returns the shape of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the shape.
+
+
 
 
    .. py:method:: inspect_metadata()
@@ -331,8 +398,8 @@ Classes
 
 .. py:class:: DatasetZarr(name, download = False, root = None, backend = None, chunks=None)
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as a Zarr array of a
    defined shape.
@@ -349,27 +416,7 @@ Classes
        Number of blocks of the array (the default is "auto").
 
 
-   .. py:property:: shape
-      :type: tuple
-
-      Returns the shape of an array.
-
-      Returns
-      -------
-      tuple
-          A tuple with the shape.
-
-
-
-   .. py:property:: chunksize
-
-      Returns the chunksize of an array.
-
-      Returns
-      -------
-      tuple
-          A tuple with the chunksize.
-
+   Constructor of the object DatasetZarr. 
 
 
    .. py:method:: _lazy_load(xp, **kwargs)
@@ -390,6 +437,7 @@ Classes
 
 
 
+
    .. py:method:: _load(xp, **kwargs)
 
       Load data using CPU container.
@@ -403,11 +451,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_cpu()
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_gpu()
@@ -417,11 +467,13 @@ Classes
               
 
 
+
    .. py:method:: _load_cpu()
 
       Load data with CPU container (e.g. numpy).
 
               
+
 
 
    .. py:method:: _load_gpu()
@@ -431,11 +483,13 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
 
               
+
 
 
    .. py:method:: _load_meta()
@@ -449,11 +503,37 @@ Classes
 
 
 
+
    .. py:method:: __read_zarray(key)
 
       Returns the value of ZArray JSON metadata.
 
               
+
+
+
+   .. py:property:: shape
+      :type: tuple
+
+      Returns the shape of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the shape.
+
+
+
+
+   .. py:property:: chunksize
+      Returns the chunksize of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the chunksize.
+
+
 
 
    .. py:method:: inspect_metadata()
@@ -467,11 +547,13 @@ Classes
 
 
 
+
    .. py:method:: __repr__()
 
       Return a class representation based on internal array.
 
               
+
 
 
    .. py:method:: __check_op_input(in_data)
@@ -493,6 +575,7 @@ Classes
 
 
 
+
    .. py:method:: __add__(other)
 
       Internal function of adding two array datasets.
@@ -506,6 +589,7 @@ Classes
       -------
       DatasetArry
           A sum with two arrays.
+
 
 
 
@@ -525,6 +609,7 @@ Classes
 
 
 
+
    .. py:method:: __mul__(other)
 
       Internal function of multiplication two array datasets.
@@ -538,6 +623,7 @@ Classes
       -------
       DatasetArry
           A multiplication of two arrays.
+
 
 
 
@@ -557,6 +643,7 @@ Classes
 
 
 
+
    .. py:method:: __copy_attrs_from_data()
 
       Extends metadata to new transformed object (after operations).
@@ -567,8 +654,8 @@ Classes
 
 .. py:class:: DatasetHDF5(name, download = False, root = None, chunks='auto', dataset_path = None)
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as a HDF5 dataset of a
    defined shape.
@@ -585,6 +672,9 @@ Classes
        Number of blocks of the array (the default is "auto").
    dataset_path : str
        Relative path of the internal HDF5 dataset (the default is None).
+
+
+   Constructor of the object DatasetHDF5. 
 
 
    .. py:method:: _lazy_load(xp, **kwargs)
@@ -605,6 +695,7 @@ Classes
 
 
 
+
    .. py:method:: _load(xp=None, **kwargs)
 
       Load data using CPU container.
@@ -618,11 +709,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_cpu()
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_gpu()
@@ -632,11 +725,13 @@ Classes
               
 
 
+
    .. py:method:: _load_cpu()
 
       Load data with CPU container (e.g. numpy).
 
               
+
 
 
    .. py:method:: _load_gpu()
@@ -646,11 +741,13 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
 
               
+
 
 
    .. py:method:: _load_meta()
@@ -661,6 +758,7 @@ Classes
       -------
       dict
           A dictionary with metadata information.
+
 
 
 
@@ -678,8 +776,8 @@ Classes
 
 .. py:class:: DatasetXarray(name, download = False, root = None, chunks=None, data_var=None)
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as a Xarray dataset of a
    defined shape.
@@ -698,11 +796,15 @@ Classes
        Key (or index) of the internal Xarray dataset (the default is None).
 
 
+   Constructor of the object DatasetXarray. 
+
+
    .. py:method:: _lazy_load_cpu()
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_gpu()
@@ -712,11 +814,13 @@ Classes
               
 
 
+
    .. py:method:: _load_cpu()
 
       Load data with CPU container (e.g. numpy).
 
               
+
 
 
    .. py:method:: _load_gpu()
@@ -726,11 +830,13 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
 
               
+
 
 
    .. py:method:: _load_meta()
@@ -741,6 +847,7 @@ Classes
       -------
       dict
           A dictionary with metadata information.
+
 
 
 
@@ -755,11 +862,13 @@ Classes
 
 
 
+
    .. py:method:: __len__()
 
       Return internal data length.
 
               
+
 
 
    .. py:method:: __getitem__(idx)
@@ -776,8 +885,8 @@ Classes
 
 .. py:class:: DatasetLabeled(name, download = False, root = None, chunks='auto')
 
-
    Bases: :py:obj:`Dataset`
+
 
    A class representing a labeled dataset. Each item is a 2-element tuple,
    where the first element is a array of data and the second element is the
@@ -800,11 +909,15 @@ Classes
        Description of attribute `__chunks`.
 
 
+   Constructor of the object DatasetLabeled. 
+
+
    .. py:method:: download()
 
       Download the dataset.
 
               
+
 
 
    .. py:method:: inspect_metadata()
@@ -816,6 +929,7 @@ Classes
       -------
       dict
           A dictionary with metadata information.
+
 
 
 
@@ -837,6 +951,7 @@ Classes
 
 
 
+
    .. py:method:: _load(xp, **kwargs)
 
       Load data using CPU container.
@@ -855,6 +970,7 @@ Classes
 
 
 
+
    .. py:method:: _load_meta()
 
       Load metadata to inspect.
@@ -866,11 +982,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_gpu()
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_cpu()
@@ -880,11 +998,13 @@ Classes
               
 
 
+
    .. py:method:: _load_gpu()
 
       Load data with GPU container (e.g. cupy).
 
               
+
 
 
    .. py:method:: _load_cpu()
@@ -894,11 +1014,13 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
 
               
+
 
 
    .. py:method:: __getitem__(idx)
@@ -915,8 +1037,8 @@ Classes
 
 .. py:class:: DatasetDataFrame(name, download = True, root = None, chunks='auto')
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as a dataframe.
 
@@ -932,16 +1054,7 @@ Classes
        Number of blocks of the array (the default is "auto").
 
 
-   .. py:property:: shape
-      :type: tuple
-
-      Returns the shape of an array.
-
-      Returns
-      -------
-      tuple
-          A tuple with the shape.
-
+   Constructor of the object DatasetDataFrame. 
 
 
    .. py:method:: _load_meta()
@@ -952,6 +1065,7 @@ Classes
       -------
       dict
           A dictionary with metadata information.
+
 
 
 
@@ -966,11 +1080,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_gpu()
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_cpu()
@@ -980,11 +1096,13 @@ Classes
               
 
 
+
    .. py:method:: _load_gpu()
 
       Load data with GPU container (e.g. CuDF).
 
               
+
 
 
    .. py:method:: _load_cpu()
@@ -994,6 +1112,7 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
@@ -1001,10 +1120,25 @@ Classes
               
 
 
+
+   .. py:property:: shape
+      :type: tuple
+
+      Returns the shape of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the shape.
+
+
+
+
    .. py:method:: __len__()
 
       Return internal data length.
               
+
 
 
    .. py:method:: __getitem__(idx)
@@ -1021,8 +1155,8 @@ Classes
 
 .. py:class:: DatasetParquet(name, download = True, root = None, chunks='auto')
 
-
    Bases: :py:obj:`DatasetDataFrame`
+
 
    Class representing an dataset wich is defined as a Parquet.
 
@@ -1038,11 +1172,15 @@ Classes
        Number of blocks of the array (the default is "auto").
 
 
+   Constructor of the object DatasetParquet. 
+
+
    .. py:method:: _lazy_load_gpu()
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_cpu()
@@ -1052,11 +1190,13 @@ Classes
               
 
 
+
    .. py:method:: _load_gpu()
 
       Load data with GPU container (e.g. CuDF).
 
               
+
 
 
    .. py:method:: _load_cpu()
@@ -1068,6 +1208,85 @@ Classes
 
 
 .. py:class:: make_blobs
+
+   Generate isotropic Gaussian blobs for clustering.
+
+   For an example of usage, see
+   :ref:`sphx_glr_auto_examples_datasets_plot_random_dataset.py`.
+
+   Read more in the :ref:`User Guide <sample_generators>`.
+
+   Parameters
+   ----------
+   n_samples : int or array-like, default=100
+       If int, it is the total number of points equally divided among
+       clusters.
+       If array-like, each element of the sequence indicates
+       the number of samples per cluster.
+
+       .. versionchanged:: v0.20
+           one can now pass an array-like to the ``n_samples`` parameter
+
+   n_features : int, default=2
+       The number of features for each sample.
+
+   centers : int or array-like of shape (n_centers, n_features), default=None
+       The number of centers to generate, or the fixed center locations.
+       If n_samples is an int and centers is None, 3 centers are generated.
+       If n_samples is array-like, centers must be
+       either None or an array of length equal to the length of n_samples.
+
+   cluster_std : float or array-like of float, default=1.0
+       The standard deviation of the clusters.
+
+   center_box : tuple of float (min, max), default=(-10.0, 10.0)
+       The bounding box for each cluster center when centers are
+       generated at random.
+
+   shuffle : bool, default=True
+       Shuffle the samples.
+
+   random_state : int, RandomState instance or None, default=None
+       Determines random number generation for dataset creation. Pass an int
+       for reproducible output across multiple function calls.
+       See :term:`Glossary <random_state>`.
+
+   return_centers : bool, default=False
+       If True, then return the centers of each cluster.
+
+       .. versionadded:: 0.23
+
+   Returns
+   -------
+   X : ndarray of shape (n_samples, n_features)
+       The generated samples.
+
+   y : ndarray of shape (n_samples,)
+       The integer labels for cluster membership of each sample.
+
+   centers : ndarray of shape (n_centers, n_features)
+       The centers of each cluster. Only returned if
+       ``return_centers=True``.
+
+   See Also
+   --------
+   make_classification : A more intricate variant.
+
+   Examples
+   --------
+   >>> from sklearn.datasets import make_blobs
+   >>> X, y = make_blobs(n_samples=10, centers=3, n_features=2,
+   ...                   random_state=0)
+   >>> print(X.shape)
+   (10, 2)
+   >>> y
+   array([0, 0, 1, 0, 2, 2, 2, 1, 1, 0])
+   >>> X, y = make_blobs(n_samples=[3, 3, 4], centers=None, n_features=2,
+   ...                   random_state=0)
+   >>> print(X.shape)
+   (10, 2)
+   >>> y
+   array([0, 1, 2, 0, 2, 2, 2, 1, 1, 0])
 
 
    .. py:method:: _lazy_make_blobs_cpu(**kwargs)
@@ -1085,8 +1304,136 @@ Classes
    .. py:method:: __call__(**kwargs)
 
 
-
 .. py:class:: make_classification
+
+   Generate a random n-class classification problem.
+
+   This initially creates clusters of points normally distributed (std=1)
+   about vertices of an ``n_informative``-dimensional hypercube with sides of
+   length ``2*class_sep`` and assigns an equal number of clusters to each
+   class. It introduces interdependence between these features and adds
+   various types of further noise to the data.
+
+   Without shuffling, ``X`` horizontally stacks features in the following
+   order: the primary ``n_informative`` features, followed by ``n_redundant``
+   linear combinations of the informative features, followed by ``n_repeated``
+   duplicates, drawn randomly with replacement from the informative and
+   redundant features. The remaining features are filled with random noise.
+   Thus, without shuffling, all useful features are contained in the columns
+   ``X[:, :n_informative + n_redundant + n_repeated]``.
+
+   For an example of usage, see
+   :ref:`sphx_glr_auto_examples_datasets_plot_random_dataset.py`.
+
+   Read more in the :ref:`User Guide <sample_generators>`.
+
+   Parameters
+   ----------
+   n_samples : int, default=100
+       The number of samples.
+
+   n_features : int, default=20
+       The total number of features. These comprise ``n_informative``
+       informative features, ``n_redundant`` redundant features,
+       ``n_repeated`` duplicated features and
+       ``n_features-n_informative-n_redundant-n_repeated`` useless features
+       drawn at random.
+
+   n_informative : int, default=2
+       The number of informative features. Each class is composed of a number
+       of gaussian clusters each located around the vertices of a hypercube
+       in a subspace of dimension ``n_informative``. For each cluster,
+       informative features are drawn independently from  N(0, 1) and then
+       randomly linearly combined within each cluster in order to add
+       covariance. The clusters are then placed on the vertices of the
+       hypercube.
+
+   n_redundant : int, default=2
+       The number of redundant features. These features are generated as
+       random linear combinations of the informative features.
+
+   n_repeated : int, default=0
+       The number of duplicated features, drawn randomly from the informative
+       and the redundant features.
+
+   n_classes : int, default=2
+       The number of classes (or labels) of the classification problem.
+
+   n_clusters_per_class : int, default=2
+       The number of clusters per class.
+
+   weights : array-like of shape (n_classes,) or (n_classes - 1,),              default=None
+       The proportions of samples assigned to each class. If None, then
+       classes are balanced. Note that if ``len(weights) == n_classes - 1``,
+       then the last class weight is automatically inferred.
+       More than ``n_samples`` samples may be returned if the sum of
+       ``weights`` exceeds 1. Note that the actual class proportions will
+       not exactly match ``weights`` when ``flip_y`` isn't 0.
+
+   flip_y : float, default=0.01
+       The fraction of samples whose class is assigned randomly. Larger
+       values introduce noise in the labels and make the classification
+       task harder. Note that the default setting flip_y > 0 might lead
+       to less than ``n_classes`` in y in some cases.
+
+   class_sep : float, default=1.0
+       The factor multiplying the hypercube size.  Larger values spread
+       out the clusters/classes and make the classification task easier.
+
+   hypercube : bool, default=True
+       If True, the clusters are put on the vertices of a hypercube. If
+       False, the clusters are put on the vertices of a random polytope.
+
+   shift : float, ndarray of shape (n_features,) or None, default=0.0
+       Shift features by the specified value. If None, then features
+       are shifted by a random value drawn in [-class_sep, class_sep].
+
+   scale : float, ndarray of shape (n_features,) or None, default=1.0
+       Multiply features by the specified value. If None, then features
+       are scaled by a random value drawn in [1, 100]. Note that scaling
+       happens after shifting.
+
+   shuffle : bool, default=True
+       Shuffle the samples and the features.
+
+   random_state : int, RandomState instance or None, default=None
+       Determines random number generation for dataset creation. Pass an int
+       for reproducible output across multiple function calls.
+       See :term:`Glossary <random_state>`.
+
+   Returns
+   -------
+   X : ndarray of shape (n_samples, n_features)
+       The generated samples.
+
+   y : ndarray of shape (n_samples,)
+       The integer labels for class membership of each sample.
+
+   See Also
+   --------
+   make_blobs : Simplified variant.
+   make_multilabel_classification : Unrelated generator for multilabel tasks.
+
+   Notes
+   -----
+   The algorithm is adapted from Guyon [1] and was designed to generate
+   the "Madelon" dataset.
+
+   References
+   ----------
+   .. [1] I. Guyon, "Design of experiments for the NIPS 2003 variable
+          selection benchmark", 2003.
+
+   Examples
+   --------
+   >>> from sklearn.datasets import make_classification
+   >>> X, y = make_classification(random_state=42)
+   >>> X.shape
+   (100, 20)
+   >>> y.shape
+   (100,)
+   >>> list(y[:5])
+   [0, 0, 1, 1, 0]
 
 
    .. py:method:: _lazy_make_classification_cpu(**kwargs)
@@ -1102,6 +1449,5 @@ Classes
 
 
    .. py:method:: __call__(**kwargs)
-
 
 

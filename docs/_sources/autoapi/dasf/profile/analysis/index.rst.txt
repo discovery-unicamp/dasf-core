@@ -1,0 +1,56 @@
+dasf.profile.analysis
+=====================
+
+.. py:module:: dasf.profile.analysis
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   dasf.profile.analysis.valid_analyses
+   dasf.profile.analysis.parser
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.profile.analysis.TraceAnalyser
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   dasf.profile.analysis.main
+
+
+Module Contents
+---------------
+
+.. py:class:: TraceAnalyser(database, process_trace_before = True)
+
+   .. py:method:: create_annotated_task_graph()
+
+
+   .. py:method:: per_function_bottleneck()
+
+
+   .. py:method:: per_worker_task_balance()
+
+
+   .. py:method:: per_task_bottleneck()
+
+
+.. py:data:: valid_analyses
+   :value: ['function_bottleneck', 'task_bottleneck', 'task_balance']
+
+
+.. py:function:: main(database, output = None, analyses = None, head = 30)
+
+.. py:data:: parser
+

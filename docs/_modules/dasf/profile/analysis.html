@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dasf.profile.analysis &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            DASF
+          </a>
+              <div class="version">
+                1.0b5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../principles.html">Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">DASF API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DASF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dasf.profile.analysis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dasf.profile.analysis</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">dasf.profile.profiler</span> <span class="kn">import</span> <span class="n">EventProfiler</span>
+<span class="kn">from</span> <span class="nn">dasf.profile.utils</span> <span class="kn">import</span> <span class="n">MultiEventDatabase</span>
+
+
+<div class="viewcode-block" id="TraceAnalyser">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/index.html#dasf.profile.analysis.TraceAnalyser">[docs]</a>
+<span class="k">class</span> <span class="nc">TraceAnalyser</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="n">MultiEventDatabase</span><span class="p">,</span> <span class="n">process_trace_before</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">database</span>
+        <span class="k">if</span> <span class="n">process_trace_before</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">)</span>
+            
+<div class="viewcode-block" id="TraceAnalyser.create_annotated_task_graph">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/index.html#dasf.profile.analysis.TraceAnalyser.create_annotated_task_graph">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_annotated_task_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Creating annotated task graph&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Compute&quot;</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="n">task_key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span>
+                <span class="n">dependencies</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;dependencies&#39;</span><span class="p">]</span>
+                <span class="n">dependents</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;dependents&#39;</span><span class="p">]</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">]</span>
+                <span class="n">task_type</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+
+                <span class="c1"># Add the task as a node to the graph and store task information as metadata</span>
+                <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+                    <span class="n">task_key</span><span class="p">,</span> 
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> 
+                    <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> 
+                    <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> 
+                    <span class="nb">type</span><span class="o">=</span><span class="n">task_type</span><span class="p">,</span> 
+                    <span class="n">duration</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">duration</span>
+                <span class="p">)</span>
+
+                <span class="c1"># Add the dependencies as edges to the graph</span>
+                <span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="n">dependencies</span><span class="p">:</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">dependency</span><span class="p">,</span> <span class="n">task_key</span><span class="p">)</span>
+
+                <span class="c1"># Add the dependents as edges to the graph</span>
+                <span class="k">for</span> <span class="n">dependent</span> <span class="ow">in</span> <span class="n">dependents</span><span class="p">:</span>
+                    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">task_key</span><span class="p">,</span> <span class="n">dependent</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">input_data_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">dependency</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">node</span><span class="p">)])</span>
+
+            <span class="c1"># Set the input_data_size attribute for the current node</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;input_data_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data_size</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;throughput&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data_size</span> <span class="o">/</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">graph</span></div>
+
+    
+<div class="viewcode-block" id="TraceAnalyser.per_function_bottleneck">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/index.html#dasf.profile.analysis.TraceAnalyser.per_function_bottleneck">[docs]</a>
+    <span class="k">def</span> <span class="nf">per_function_bottleneck</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create the annotated DAG</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_annotated_task_graph</span><span class="p">()</span>
+        
+        <span class="c1"># Dictionary to store task durations per thread_id</span>
+        <span class="n">task_durations</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
+        <span class="c1"># Dictionary to store mean gpu_utilization and gpu_memory_used per task_key</span>
+        <span class="n">task_resources</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;gpu_utilization&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;gpu_memory_used&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+        <span class="c1"># Dictionaty mapping name to keys</span>
+        <span class="n">task_name_keys</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
+
+        <span class="c1"># Iterate over the traces to calculate task durations per thread_id</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;[function_bottleneck] Analysing traces&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Compute&quot;</span><span class="p">:</span>
+                <span class="n">task_key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+                <span class="n">task_duration</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">duration</span>
+                <span class="n">thread_id</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">thread_id</span>
+                <span class="n">process_id</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">process_id</span>
+                <span class="n">task_name_keys</span><span class="p">[(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">)][</span><span class="n">task_key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">])</span>
+                <span class="n">task_durations</span><span class="p">[(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">)][</span><span class="n">task_key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">task_duration</span>
+            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Resource Usage&quot;</span><span class="p">:</span>
+                <span class="n">event_timestamp</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">timestamp</span>
+                <span class="n">gpu_utilization</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;gpu_utilization&#39;</span><span class="p">]</span>
+                <span class="n">gpu_memory_used</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;gpu_memory_used&#39;</span><span class="p">]</span>
+
+                <span class="c1"># Find the corresponding task for the resource event based on timestamp</span>
+                <span class="n">task_key</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">for</span> <span class="n">task_event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">task_event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Compute&quot;</span> <span class="ow">and</span> <span class="n">task_event</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">&lt;=</span> <span class="n">event_timestamp</span> <span class="o">&lt;=</span> <span class="p">(</span>
+                            <span class="n">task_event</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">+</span> <span class="n">task_event</span><span class="o">.</span><span class="n">duration</span><span class="p">):</span>
+                        <span class="n">task_key</span> <span class="o">=</span> <span class="n">task_event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+                        <span class="k">break</span>
+
+                <span class="k">if</span> <span class="n">task_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">task_resources</span><span class="p">[</span><span class="n">task_key</span><span class="p">][</span><span class="s1">&#39;gpu_utilization&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gpu_utilization</span><span class="p">)</span>
+                    <span class="n">task_resources</span><span class="p">[</span><span class="n">task_key</span><span class="p">][</span><span class="s1">&#39;gpu_memory_used&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gpu_memory_used</span><span class="p">)</span>
+
+        <span class="c1"># Create a list of dictionaries to store data for the DataFrame</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">),</span> <span class="n">durations</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">task_durations</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;[function_bottleneck] Creating dataframe&quot;</span><span class="p">):</span>
+            <span class="n">total_duration</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">durations</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">task_key</span><span class="p">,</span> <span class="n">duration</span> <span class="ow">in</span> <span class="n">durations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">percentage</span> <span class="o">=</span> <span class="p">(</span><span class="n">duration</span> <span class="o">/</span> <span class="n">total_duration</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+                <span class="n">gpu_utilization_values</span> <span class="o">=</span> <span class="n">task_resources</span><span class="p">[</span><span class="n">task_key</span><span class="p">][</span><span class="s1">&#39;gpu_utilization&#39;</span><span class="p">]</span>
+                <span class="n">gpu_memory_used_values</span> <span class="o">=</span> <span class="n">task_resources</span><span class="p">[</span><span class="n">task_key</span><span class="p">][</span><span class="s1">&#39;gpu_memory_used&#39;</span><span class="p">]</span>
+                <span class="n">num_tasks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">task_name_keys</span><span class="p">[(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">)][</span><span class="n">task_key</span><span class="p">])</span>
+                <span class="n">mean_data_size</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">mean_throughput</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">count</span>  <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">name_key</span> <span class="ow">in</span> <span class="n">task_name_keys</span><span class="p">[(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">)][</span><span class="n">task_key</span><span class="p">]:</span>
+                    <span class="n">mean_data_size</span> <span class="o">+=</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name_key</span><span class="p">][</span><span class="s2">&quot;input_data_size&quot;</span><span class="p">]</span>
+                    <span class="n">mean_throughput</span> <span class="o">+=</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name_key</span><span class="p">][</span><span class="s2">&quot;throughput&quot;</span><span class="p">]</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">mean_data_size</span> <span class="o">/=</span> <span class="n">count</span>
+                <span class="n">mean_throughput</span> <span class="o">/=</span> <span class="n">count</span>
+                
+                <span class="n">mean_gpu_utilization</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">gpu_utilization_values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">gpu_utilization_values</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">gpu_utilization_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="n">mean_gpu_memory_used</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">gpu_memory_used_values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">gpu_memory_used_values</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">gpu_memory_used_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">&#39;Host&#39;</span><span class="p">:</span> <span class="n">process_id</span><span class="p">,</span> 
+                    <span class="s2">&quot;GPU&quot;</span><span class="p">:</span> <span class="n">thread_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> 
+                    <span class="s1">&#39;Function&#39;</span><span class="p">:</span> <span class="n">task_key</span><span class="p">,</span> 
+                    <span class="s1">&#39;Duration (s)&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span> 
+                    <span class="s1">&#39;Percentage of total time (%)&#39;</span><span class="p">:</span> <span class="n">percentage</span><span class="p">,</span>
+                    <span class="s1">&#39;Mean GPU Utilization (%)&#39;</span><span class="p">:</span> <span class="n">mean_gpu_utilization</span><span class="p">,</span> 
+                    <span class="s1">&#39;Mean GPU Memory Used (GB)&#39;</span><span class="p">:</span> <span class="n">mean_gpu_memory_used</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
+                    <span class="s2">&quot;Mean Data Size (MB)&quot;</span><span class="p">:</span> <span class="n">mean_data_size</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span> 
+                    <span class="s2">&quot;Mean Throughput (MB/s)&quot;</span><span class="p">:</span> <span class="n">mean_throughput</span><span class="o">/</span><span class="mf">1e6</span><span class="p">,</span>
+                    <span class="s2">&quot;Num Tasks (chunks)&quot;</span><span class="p">:</span> <span class="n">num_tasks</span><span class="p">,</span>
+                    <span class="s2">&quot;Mean Task time (s)&quot;</span><span class="p">:</span> <span class="n">duration</span> <span class="o">/</span> <span class="n">num_tasks</span>
+                <span class="p">})</span>
+
+        <span class="c1"># Create a Pandas DataFrame from the data list</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Host&#39;</span><span class="p">,</span> <span class="s1">&#39;GPU&#39;</span><span class="p">],</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Duration (s)&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+    
+<div class="viewcode-block" id="TraceAnalyser.per_worker_task_balance">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/index.html#dasf.profile.analysis.TraceAnalyser.per_worker_task_balance">[docs]</a>
+    <span class="k">def</span> <span class="nf">per_worker_task_balance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Dictionary to store the number of tasks per worker at each timestamp</span>
+        <span class="n">tasks_per_worker</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+
+        <span class="c1"># Find the start and end time</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Iterate over the traces to calculate the number of tasks per worker at each timestamp</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;[task_balance] Analysing traces&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Managed Memory&quot;</span><span class="p">:</span>
+                <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span>
+                <span class="n">thread_id</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">thread_id</span>
+                <span class="n">tasks</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;tasks&#39;</span><span class="p">]</span>
+                <span class="n">tasks_per_worker</span><span class="p">[</span><span class="n">timestamp</span><span class="p">][</span><span class="n">thread_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">tasks</span>
+                
+                <span class="c1"># Update start and end time</span>
+                <span class="n">start_time</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
+                <span class="n">end_time</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">end_time</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
+
+        <span class="c1"># Shift the linear spacing of 1 second in relation to the start time</span>
+        <span class="n">timestamps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># Calculate the mean number of tasks per thread in each time interval</span>
+        <span class="n">mean_tasks_per_interval</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">timestamp</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">timestamps</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;[task_balance] Creating dataframe&quot;</span><span class="p">):</span>
+            <span class="n">shifted_timestamp</span> <span class="o">=</span> <span class="n">start_time</span> <span class="o">+</span> <span class="n">timestamp</span>
+            <span class="n">tasks_per_thread</span> <span class="o">=</span> <span class="n">tasks_per_worker</span><span class="p">[</span><span class="n">shifted_timestamp</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">thread_id</span><span class="p">,</span> <span class="n">tasks</span> <span class="ow">in</span> <span class="n">tasks_per_thread</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">mean_tasks_per_interval</span><span class="p">[</span><span class="n">timestamp</span><span class="p">][</span><span class="n">thread_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">tasks</span>
+
+        <span class="c1"># Create a Pandas DataFrame from the mean_tasks_per_interval dictionary</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">mean_tasks_per_interval</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Fill missing values with 0 (if a thread didn&#39;t have any tasks in a specific interval)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the mean number of tasks per thread across all intervals</span>
+        <span class="c1"># df[&#39;Mean Tasks&#39;] = df.mean(axis=0)</span>
+
+        <span class="c1"># Reset the index and rename the column</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="s1">&#39;Time Interval (seconds from begin)&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># df[&quot;Time Interval&quot;] = df[&quot;Time Interval&quot;].apply(lambda x: x + start_time)</span>
+
+        <span class="c1"># Print the DataFrame showing the mean number of tasks per thread in each time interval</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Time Interval (seconds from begin)&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+   
+<div class="viewcode-block" id="TraceAnalyser.per_task_bottleneck">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/index.html#dasf.profile.analysis.TraceAnalyser.per_task_bottleneck">[docs]</a>
+    <span class="k">def</span> <span class="nf">per_task_bottleneck</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create the annotated DAG</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_annotated_task_graph</span><span class="p">()</span>
+        <span class="c1"># Dictionary to store task durations per thread_id</span>
+        <span class="n">task_durations</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
+        <span class="c1"># Dictionary to store mean gpu_utilization and gpu_memory_used per task_key</span>
+        <span class="n">task_resources</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;gpu_utilization&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;gpu_memory_used&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+        <span class="n">memory_usage_per_task</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="c1"># Dictionaty mapping name to keys</span>
+        <span class="n">task_name_keys</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
+
+        <span class="c1"># Iterate over the traces to calculate task durations per thread_id</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;[task_bottleneck] Analysing traces&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Compute&quot;</span><span class="p">:</span>
+                <span class="n">task_key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span>
+                <span class="n">task_duration</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">duration</span>
+                <span class="n">thread_id</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">thread_id</span>
+                <span class="n">process_id</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">process_id</span>
+                <span class="n">task_name_keys</span><span class="p">[(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">)][</span><span class="n">task_key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">])</span>
+                <span class="n">task_durations</span><span class="p">[(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">)][</span><span class="n">task_key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">task_duration</span>
+                <span class="n">memory_usage_per_task</span><span class="p">[</span><span class="n">task_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span>
+
+            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Resource Usage&quot;</span><span class="p">:</span>
+                <span class="n">event_timestamp</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">timestamp</span>
+                <span class="n">gpu_utilization</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;gpu_utilization&#39;</span><span class="p">]</span>
+                <span class="n">gpu_memory_used</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;gpu_memory_used&#39;</span><span class="p">]</span>
+
+                <span class="c1"># Find the corresponding task for the resource event based on timestamp</span>
+                <span class="n">task_key</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">for</span> <span class="n">task_event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">task_event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Compute&quot;</span> <span class="ow">and</span> <span class="n">task_event</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">&lt;=</span> <span class="n">event_timestamp</span> <span class="o">&lt;=</span> <span class="p">(</span>
+                            <span class="n">task_event</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">+</span> <span class="n">task_event</span><span class="o">.</span><span class="n">duration</span><span class="p">):</span>
+                        <span class="n">task_key</span> <span class="o">=</span> <span class="n">task_event</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+                        <span class="k">break</span>
+
+                <span class="k">if</span> <span class="n">task_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">task_resources</span><span class="p">[</span><span class="n">task_key</span><span class="p">][</span><span class="s1">&#39;gpu_utilization&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gpu_utilization</span><span class="p">)</span>
+                    <span class="n">task_resources</span><span class="p">[</span><span class="n">task_key</span><span class="p">][</span><span class="s1">&#39;gpu_memory_used&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gpu_memory_used</span><span class="p">)</span>
+
+        <span class="c1"># Create a list of dictionaries to store data for the DataFrame</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">),</span> <span class="n">durations</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">task_durations</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;[task_bottleneck] Creating dataframe&quot;</span><span class="p">):</span>
+            <span class="n">total_duration</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">durations</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">task_key</span><span class="p">,</span> <span class="n">duration</span> <span class="ow">in</span> <span class="n">durations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">percentage</span> <span class="o">=</span> <span class="p">(</span><span class="n">duration</span> <span class="o">/</span> <span class="n">total_duration</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+                <span class="n">gpu_utilization_values</span> <span class="o">=</span> <span class="n">task_resources</span><span class="p">[</span><span class="n">task_key</span><span class="p">][</span><span class="s1">&#39;gpu_utilization&#39;</span><span class="p">]</span>
+                <span class="n">gpu_memory_used_values</span> <span class="o">=</span> <span class="n">task_resources</span><span class="p">[</span><span class="n">task_key</span><span class="p">][</span><span class="s1">&#39;gpu_memory_used&#39;</span><span class="p">]</span>
+                <span class="n">num_tasks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">task_name_keys</span><span class="p">[(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">)][</span><span class="n">task_key</span><span class="p">])</span>
+                <span class="n">mean_data_size</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">mean_throughput</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">count</span>  <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">name_key</span> <span class="ow">in</span> <span class="n">task_name_keys</span><span class="p">[(</span><span class="n">process_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">)][</span><span class="n">task_key</span><span class="p">]:</span>
+                    <span class="n">mean_data_size</span> <span class="o">+=</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name_key</span><span class="p">][</span><span class="s2">&quot;input_data_size&quot;</span><span class="p">]</span>
+                    <span class="n">mean_throughput</span> <span class="o">+=</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">name_key</span><span class="p">][</span><span class="s2">&quot;throughput&quot;</span><span class="p">]</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">mean_data_size</span> <span class="o">/=</span> <span class="n">count</span>
+                <span class="n">mean_throughput</span> <span class="o">/=</span> <span class="n">count</span>
+                
+                <span class="n">mean_gpu_utilization</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">gpu_utilization_values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">gpu_utilization_values</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">gpu_utilization_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="n">mean_gpu_memory_used</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">gpu_memory_used_values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">gpu_memory_used_values</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">gpu_memory_used_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">&#39;Host&#39;</span><span class="p">:</span> <span class="n">process_id</span><span class="p">,</span> 
+                    <span class="s2">&quot;GPU&quot;</span><span class="p">:</span> <span class="n">thread_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> 
+                    <span class="s1">&#39;Task Key&#39;</span><span class="p">:</span> <span class="n">task_key</span><span class="p">,</span> 
+                    <span class="s1">&#39;Duration (s)&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span> 
+                    <span class="s1">&#39;Percentage of total time (%)&#39;</span><span class="p">:</span> <span class="n">percentage</span><span class="p">,</span>
+                    <span class="s1">&#39;Memory usage (Mb)&#39;</span><span class="p">:</span> <span class="n">memory_usage_per_task</span><span class="p">[</span><span class="n">task_key</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span>
+                    <span class="c1"># &#39;Mean GPU Utilization (%)&#39;: mean_gpu_utilization, </span>
+                    <span class="c1"># &#39;Mean GPU Memory Used (GB)&#39;: mean_gpu_memory_used / 1e9,</span>
+                    <span class="c1"># &quot;Mean Data Size (MB)&quot;: mean_data_size / 1e6, </span>
+                    <span class="c1"># &quot;Mean throughput (B/s)&quot;: mean_throughput,</span>
+                    <span class="c1"># &quot;Num Tasks (chunks)&quot;: num_tasks,</span>
+                <span class="p">})</span>
+
+        <span class="c1"># Create a Pandas DataFrame from the data list</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Host&#39;</span><span class="p">,</span> <span class="s1">&#39;GPU&#39;</span><span class="p">],</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Duration (s)&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+</div>
+
+
+<span class="n">valid_analyses</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;function_bottleneck&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;task_bottleneck&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;task_balance&quot;</span>
+<span class="p">]</span>
+    
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/analysis/index.html#dasf.profile.analysis.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">database</span><span class="p">:</span> <span class="n">MultiEventDatabase</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">analyses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">):</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.float_format&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%.5f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.width&#39;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">analyses</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">analyses</span> <span class="o">=</span> <span class="n">valid_analyses</span>
+        
+    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">analyser</span> <span class="o">=</span> <span class="n">TraceAnalyser</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;function_bottleneck&quot;</span> <span class="ow">in</span> <span class="n">analyses</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">analyser</span><span class="o">.</span><span class="n">per_function_bottleneck</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">/function_bottleneck.csv&quot;</span><span class="p">)</span>
+            
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span> <span class="o">+</span> <span class="s2">&quot;Function bottleneck&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">head</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">80</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="s2">&quot;task_bottleneck&quot;</span> <span class="ow">in</span> <span class="n">analyses</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">analyser</span><span class="o">.</span><span class="n">per_task_bottleneck</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">/task_bottleneck.csv&quot;</span><span class="p">)</span>
+            
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span> <span class="o">+</span> <span class="s2">&quot;Task bottleneck&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">head</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">80</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="s2">&quot;task_balance&quot;</span> <span class="ow">in</span> <span class="n">analyses</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">analyser</span><span class="o">.</span><span class="n">per_worker_task_balance</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">/task_balance.csv&quot;</span><span class="p">)</span>
+            
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span> <span class="o">+</span> <span class="s2">&quot;Task balance&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">head</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">80</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Analyses finished!&quot;</span><span class="p">)</span></div>
+
+    
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Argument parser with default help format</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentDefaultsHelpFormatter</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;--databases&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The databases to analyse&quot;</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--output&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The output directory, to save output analysis. If None, print only in screen&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-a&quot;</span><span class="p">,</span> <span class="s2">&quot;--analyses&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The analyses to perform (if None, perform all)&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">MultiEventDatabase</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">EventProfiler</span><span class="p">(</span><span class="n">database_file</span><span class="o">=</span><span class="n">database</span><span class="p">)</span> <span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">databases</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">analyses</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.preprocessing.standardscaler &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -55,16 +55,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../../../api.html">DASF API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">dasf</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../profile/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../datasets/index.html">dasf.datasets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../debug/index.html">dasf.debug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../feature_extraction/index.html">dasf.feature_extraction</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html">dasf.ml</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../pipeline/index.html">dasf.pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../profile/index.html">dasf.profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../transforms/index.html">dasf.transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../utils/index.html">dasf.utils</a></li>
 </ul>
 </li>
 </ul>
@@ -88,10 +88,10 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../../../api.html">DASF API Reference</a></li>
-          <li class="breadcrumb-item"><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.preprocessing</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.preprocessing.standardscaler</span></code></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">dasf</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">dasf.ml</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">dasf.ml.preprocessing</a></li>
+      <li class="breadcrumb-item active">dasf.ml.preprocessing.standardscaler</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../../_sources/autoapi/dasf/ml/preprocessing/standardscaler/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -102,138 +102,626 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.ml.preprocessing.standardscaler">
-<span id="dasf-ml-preprocessing-standardscaler"></span><h1><a class="reference internal" href="#module-dasf.ml.preprocessing.standardscaler" title="dasf.ml.preprocessing.standardscaler"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.preprocessing.standardscaler</span></code></a><a class="headerlink" href="#module-dasf.ml.preprocessing.standardscaler" title="Link to this heading"></a></h1>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<span id="dasf-ml-preprocessing-standardscaler"></span><h1>dasf.ml.preprocessing.standardscaler<a class="headerlink" href="#module-dasf.ml.preprocessing.standardscaler" title="Link to this heading"></a></h1>
+<p>StandardScaler algorithm module.</p>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.ml.preprocessing.standardscaler.StandardScaler" title="dasf.ml.preprocessing.standardscaler.StandardScaler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StandardScaler</span></code></a></p></td>
-<td><p>Class representing a Fit operation of the pipeline.</p></td>
+<td><p>Standardize features by removing the mean and scaling to unit variance.</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.preprocessing.standardscaler.</span></span><span class="sig-name descname"><span class="pre">StandardScaler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.Fit" title="dasf.transforms.base.Fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Fit</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.FitTransform" title="dasf.transforms.base.FitTransform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.FitTransform</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.TargeteredTransform" title="dasf.transforms.base.TargeteredTransform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.TargeteredTransform</span></code></a></p>
-<p>Class representing a Fit operation of the pipeline.</p>
+<p>Standardize features by removing the mean and scaling to unit variance.</p>
+<p>The standard score of a sample <cite>x</cite> is calculated as:</p>
+<blockquote>
+<div><p>z = (x - u) / s</p>
+</div></blockquote>
+<p>where <cite>u</cite> is the mean of the training samples or zero if <cite>with_mean=False</cite>,
+and <cite>s</cite> is the standard deviation of the training samples or one if
+<cite>with_std=False</cite>.</p>
+<p>Centering and scaling happen independently on each feature by computing
+the relevant statistics on the samples in the training set. Mean and
+standard deviation are then stored to be used on later data using
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">transform()</span></code>.</p>
+<p>Standardization of a dataset is a common requirement for many
+machine learning estimators: they might behave badly if the
+individual features do not more or less look like standard normally
+distributed data (e.g. Gaussian with 0 mean and unit variance).</p>
+<p>For instance many elements used in the objective function of
+a learning algorithm (such as the RBF kernel of Support Vector
+Machines or the L1 and L2 regularizers of linear models) assume that
+all features are centered around 0 and have variance in the same
+order. If a feature has a variance that is orders of magnitude larger
+than others, it might dominate the objective function and make the
+estimator unable to learn from other features correctly as expected.</p>
+<p><cite>StandardScaler</cite> is sensitive to outliers, and the features may scale
+differently from each other in the presence of outliers. For an example
+visualization, refer to <span class="xref std std-ref">Compare StandardScaler with other scalers</span>.</p>
+<p>This scaler can also be applied to sparse CSR or CSC matrices by passing
+<cite>with_mean=False</cite> to avoid breaking the sparsity structure of the data.</p>
+<p>Read more in the <span class="xref std std-ref">User Guide</span>.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>copy<span class="classifier">bool, default=True</span></dt><dd><p>If False, try to avoid a copy and do inplace scaling instead.
+This is not guaranteed to always work inplace; e.g. if the data is
+not a NumPy array or scipy.sparse CSR matrix, a copy may still be
+returned.</p>
+</dd>
+<dt>with_mean<span class="classifier">bool, default=True</span></dt><dd><p>If True, center the data before scaling.
+This does not work (and will raise an exception) when attempted on
+sparse matrices, because centering them entails building a dense
+matrix which in common use cases is likely to be too large to fit in
+memory.</p>
+</dd>
+<dt>with_std<span class="classifier">bool, default=True</span></dt><dd><p>If True, scale the data to unit variance (or equivalently,
+unit standard deviation).</p>
+</dd>
+</dl>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<dl>
+<dt><a href="#id48"><span class="problematic" id="id49">scale_</span></a><span class="classifier">ndarray of shape (n_features,) or None</span></dt><dd><p>Per feature relative scaling of the data to achieve zero mean and unit
+variance. Generally this is calculated using <cite>np.sqrt(var_)</cite>. If a
+variance is zero, we can’t achieve unit variance, and the data is left
+as-is, giving a scaling factor of 1. <cite>scale_</cite> is equal to <cite>None</cite>
+when <cite>with_std=False</cite>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.17: </span><em>scale_</em></p>
+</div>
+</dd>
+<dt><a href="#id50"><span class="problematic" id="id51">mean_</span></a><span class="classifier">ndarray of shape (n_features,) or None</span></dt><dd><p>The mean value for each feature in the training set.
+Equal to <code class="docutils literal notranslate"><span class="pre">None</span></code> when <code class="docutils literal notranslate"><span class="pre">with_mean=False</span></code> and <code class="docutils literal notranslate"><span class="pre">with_std=False</span></code>.</p>
+</dd>
+<dt><a href="#id52"><span class="problematic" id="id53">var_</span></a><span class="classifier">ndarray of shape (n_features,) or None</span></dt><dd><p>The variance for each feature in the training set. Used to compute
+<cite>scale_</cite>. Equal to <code class="docutils literal notranslate"><span class="pre">None</span></code> when <code class="docutils literal notranslate"><span class="pre">with_mean=False</span></code> and
+<code class="docutils literal notranslate"><span class="pre">with_std=False</span></code>.</p>
+</dd>
+<dt><a href="#id54"><span class="problematic" id="id55">n_features_in_</span></a><span class="classifier">int</span></dt><dd><p>Number of features seen during <span class="xref std std-term">fit</span>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.24.</span></p>
+</div>
+</dd>
+<dt><a href="#id56"><span class="problematic" id="id57">feature_names_in_</span></a><span class="classifier">ndarray of shape (<cite>n_features_in_</cite>,)</span></dt><dd><p>Names of features seen during <span class="xref std std-term">fit</span>. Defined only when <cite>X</cite>
+has feature names that are all strings.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.0.</span></p>
+</div>
+</dd>
+<dt><a href="#id58"><span class="problematic" id="id59">n_samples_seen_</span></a><span class="classifier">int or ndarray of shape (n_features,)</span></dt><dd><p>The number of samples processed by the estimator for each feature.
+If there are no missing samples, the <code class="docutils literal notranslate"><span class="pre">n_samples_seen</span></code> will be an
+integer, otherwise it will be an array of dtype int. If
+<cite>sample_weights</cite> are used it will be a float (if no missing data)
+or an array of dtype float that sums the weights seen so far.
+Will be reset on new calls to fit, but increments across
+<code class="docutils literal notranslate"><span class="pre">partial_fit</span></code> calls.</p>
+</dd>
+</dl>
+<p>Constructor of the class StandardScaler.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy fit mocked function for CPUs.</p>
+<span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_cpu" title="Link to this definition"></a></dt>
+<dd><p>Compute the mean and std to be used for later scaling using Dask with
+CPU only.</p>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the mean and standard deviation
+used for later scaling along the features axis.</p>
+</dd>
+<dt>y<span class="classifier">None</span></dt><dd><p>Ignored.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy fit mocked function for GPUs.</p>
+<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_gpu" title="Link to this definition"></a></dt>
+<dd><p>Compute the mean and std to be used for later scaling using Dask with
+GPU only.</p>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the mean and standard deviation
+used for later scaling along the features axis.</p>
+</dd>
+<dt>y<span class="classifier">None</span></dt><dd><p>Ignored.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample.</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h4>Returns<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._fit_cpu">
-<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit mocked function for local CPU(s).</p>
+<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_cpu" title="Link to this definition"></a></dt>
+<dd><p>Compute the mean and std to be used for later scaling using CPU only.</p>
+<section id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<dl>
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the mean and standard deviation
+used for later scaling along the features axis.</p>
+</dd>
+<dt>y<span class="classifier">None</span></dt><dd><p>Ignored.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.24: </span>parameter <em>sample_weight</em> support to StandardScaler.</p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h4>Returns<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._fit_gpu">
-<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit mocked function for local GPU(s).</p>
+<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_gpu" title="Link to this definition"></a></dt>
+<dd><p>Compute the mean and std to be used for later scaling using CPU only.</p>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the mean and standard deviation
+used for later scaling along the features axis.</p>
+</dd>
+<dt>y<span class="classifier">None</span></dt><dd><p>Ignored.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_transform_cpu">
 <span class="sig-name descname"><span class="pre">_lazy_fit_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_transform_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy fit with transform mocked function for CPUs.</p>
+<dd><p>Fit to data, then transform it using Dask with CPUs only.</p>
+<p>Fits transformer to <cite>X</cite> and <cite>y</cite> with optional parameters <cite>fit_params</cite>
+and returns a transformed version of <cite>X</cite>.</p>
+<section id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input samples.</p>
+</dd>
+<dt>y<span class="classifier">array-like of shape (n_samples,) or (n_samples, n_outputs), default=None</span></dt><dd><p>Target values (None for unsupervised transformations).</p>
+</dd>
+<dt><a href="#id9"><span class="problematic" id="id10">**</span></a>fit_params<span class="classifier">dict</span></dt><dd><p>Additional fit parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">ndarray array of shape (n_samples, n_features_new)</span></dt><dd><p>Transformed array.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_transform_gpu">
 <span class="sig-name descname"><span class="pre">_lazy_fit_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_fit_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_fit_transform_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy fit with transform mocked function for GPUs.</p>
+<dd><p>Fit to data, then transform it using Dask with GPUs only.</p>
+<p>Fits transformer to <cite>X</cite> and <cite>y</cite> with optional parameters <cite>fit_params</cite>
+and returns a transformed version of <cite>X</cite>.</p>
+<section id="id12">
+<h4>Parameters<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input samples.</p>
+</dd>
+<dt>y<span class="classifier">array-like of shape (n_samples,) or (n_samples, n_outputs), default=None</span></dt><dd><p>Target values (None for unsupervised transformations).</p>
+</dd>
+<dt><a href="#id13"><span class="problematic" id="id14">**</span></a>fit_params<span class="classifier">dict</span></dt><dd><p>Additional fit parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id15">
+<h4>Returns<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">ndarray array of shape (n_samples, n_features_new)</span></dt><dd><p>Transformed array.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._fit_transform_cpu">
 <span class="sig-name descname"><span class="pre">_fit_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_transform_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit with transform mocked function for local CPU(s).</p>
+<dd><p>Fit to data, then transform it using CPU only.</p>
+<p>Fits transformer to <cite>X</cite> and <cite>y</cite> with optional parameters <cite>fit_params</cite>
+and returns a transformed version of <cite>X</cite>.</p>
+<section id="id16">
+<h4>Parameters<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input samples.</p>
+</dd>
+<dt>y<span class="classifier">array-like of shape (n_samples,) or (n_samples, n_outputs), default=None</span></dt><dd><p>Target values (None for unsupervised transformations).</p>
+</dd>
+<dt><a href="#id17"><span class="problematic" id="id18">**</span></a>fit_params<span class="classifier">dict</span></dt><dd><p>Additional fit parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id19">
+<h4>Returns<a class="headerlink" href="#id19" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">ndarray array of shape (n_samples, n_features_new)</span></dt><dd><p>Transformed array.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._fit_transform_gpu">
 <span class="sig-name descname"><span class="pre">_fit_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._fit_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._fit_transform_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit with transform mocked function for local GPU(s).</p>
+<dd><p>Fit to data, then transform it using GPU only.</p>
+<p>Fits transformer to <cite>X</cite> and <cite>y</cite> with optional parameters <cite>fit_params</cite>
+and returns a transformed version of <cite>X</cite>.</p>
+<section id="id20">
+<h4>Parameters<a class="headerlink" href="#id20" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input samples.</p>
+</dd>
+<dt>y<span class="classifier">array-like of shape (n_samples,) or (n_samples, n_outputs), default=None</span></dt><dd><p>Target values (None for unsupervised transformations).</p>
+</dd>
+<dt><a href="#id21"><span class="problematic" id="id22">**</span></a>fit_params<span class="classifier">dict</span></dt><dd><p>Additional fit parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id23">
+<h4>Returns<a class="headerlink" href="#id23" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_new<span class="classifier">ndarray array of shape (n_samples, n_features_new)</span></dt><dd><p>Transformed array.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_partial_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_partial_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_cpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_lazy_partial_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_partial_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_cpu" title="Link to this definition"></a></dt>
+<dd><p>Online computation of mean and std on X for later scaling using Dask
+with CPUs only.</p>
+<p>All of X is processed as a single batch. This is intended for cases
+when <code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> is not feasible due to very large number of
+<cite>n_samples</cite> or because X is read from a continuous stream.</p>
+<p>The algorithm for incremental mean and std is given in Equation 1.5a,b
+in Chan, Tony F., Gene H. Golub, and Randall J. LeVeque. “Algorithms
+for computing the sample variance: Analysis and recommendations.”
+The American Statistician 37.3 (1983): 242-247:</p>
+<section id="id24">
+<h4>Parameters<a class="headerlink" href="#id24" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the mean and standard deviation
+used for later scaling along the features axis.</p>
+</dd>
+<dt>y<span class="classifier">None</span></dt><dd><p>Ignored.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample.</p>
+</dd>
+</dl>
+</section>
+<section id="id25">
+<h4>Returns<a class="headerlink" href="#id25" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_partial_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_partial_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_gpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_lazy_partial_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_partial_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_partial_fit_gpu" title="Link to this definition"></a></dt>
+<dd><p>Online computation of mean and std on X for later scaling using Dask
+with GPUs only.</p>
+<p>All of X is processed as a single batch. This is intended for cases
+when <code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> is not feasible due to very large number of
+<cite>n_samples</cite> or because X is read from a continuous stream.</p>
+<p>The algorithm for incremental mean and std is given in Equation 1.5a,b
+in Chan, Tony F., Gene H. Golub, and Randall J. LeVeque. “Algorithms
+for computing the sample variance: Analysis and recommendations.”
+The American Statistician 37.3 (1983): 242-247:</p>
+<section id="id26">
+<h4>Parameters<a class="headerlink" href="#id26" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the mean and standard deviation
+used for later scaling along the features axis.</p>
+</dd>
+<dt>y<span class="classifier">None</span></dt><dd><p>Ignored.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample.</p>
+</dd>
+</dl>
+</section>
+<section id="id27">
+<h4>Returns<a class="headerlink" href="#id27" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_cpu">
-<span class="sig-name descname"><span class="pre">_partial_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._partial_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_cpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_partial_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._partial_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_cpu" title="Link to this definition"></a></dt>
+<dd><p>Online computation of mean and std on X for later scaling CPU only.</p>
+<p>All of X is processed as a single batch. This is intended for cases
+when <code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> is not feasible due to very large number of
+<cite>n_samples</cite> or because X is read from a continuous stream.</p>
+<p>The algorithm for incremental mean and std is given in Equation 1.5a,b
+in Chan, Tony F., Gene H. Golub, and Randall J. LeVeque. “Algorithms
+for computing the sample variance: Analysis and recommendations.”
+The American Statistician 37.3 (1983): 242-247:</p>
+<section id="id28">
+<h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the mean and standard deviation
+used for later scaling along the features axis.</p>
+</dd>
+<dt>y<span class="classifier">None</span></dt><dd><p>Ignored.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample.</p>
+</dd>
+</dl>
+</section>
+<section id="id29">
+<h4>Returns<a class="headerlink" href="#id29" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_gpu">
-<span class="sig-name descname"><span class="pre">_partial_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._partial_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_gpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_partial_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._partial_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._partial_fit_gpu" title="Link to this definition"></a></dt>
+<dd><p>Online computation of mean and std on X for later scaling using GPU only.</p>
+<p>All of X is processed as a single batch. This is intended for cases
+when <code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> is not feasible due to very large number of
+<cite>n_samples</cite> or because X is read from a continuous stream.</p>
+<p>The algorithm for incremental mean and std is given in Equation 1.5a,b
+in Chan, Tony F., Gene H. Golub, and Randall J. LeVeque. “Algorithms
+for computing the sample variance: Analysis and recommendations.”
+The American Statistician 37.3 (1983): 242-247:</p>
+<section id="id30">
+<h4>Parameters<a class="headerlink" href="#id30" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the mean and standard deviation
+used for later scaling along the features axis.</p>
+</dd>
+<dt>y<span class="classifier">None</span></dt><dd><p>Ignored.</p>
+</dd>
+<dt>sample_weight<span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample.</p>
+</dd>
+</dl>
+</section>
+<section id="id31">
+<h4>Returns<a class="headerlink" href="#id31" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_transform_cpu">
 <span class="sig-name descname"><span class="pre">_lazy_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_transform_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy transform mocked function for CPUs.</p>
+<dd><p>Perform standardization by centering and scaling using Dask with CPUs
+only.</p>
+<section id="id32">
+<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix of shape (n_samples, n_features)</span></dt><dd><p>The data used to scale along the features axis.</p>
+</dd>
+<dt>copy<span class="classifier">bool, default=None</span></dt><dd><p>Copy the input X or not.</p>
+</dd>
+</dl>
+</section>
+<section id="id33">
+<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_tr<span class="classifier">{ndarray, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Transformed array.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_transform_gpu">
 <span class="sig-name descname"><span class="pre">_lazy_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_transform_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective lazy transform mocked function for GPUs.</p>
+<dd><p>Perform standardization by centering and scaling using Dask with GPUs
+only.</p>
+<section id="id34">
+<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix of shape (n_samples, n_features)</span></dt><dd><p>The data used to scale along the features axis.</p>
+</dd>
+<dt>copy<span class="classifier">bool, default=None</span></dt><dd><p>Copy the input X or not.</p>
+</dd>
+</dl>
+</section>
+<section id="id35">
+<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_tr<span class="classifier">{ndarray, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Transformed array.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._transform_cpu">
 <span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._transform_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate transform mocked function for local CPU(s).</p>
+<dd><p>Perform standardization by centering and scaling using CPU only.</p>
+<section id="id36">
+<h4>Parameters<a class="headerlink" href="#id36" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix of shape (n_samples, n_features)</span></dt><dd><p>The data used to scale along the features axis.</p>
+</dd>
+<dt>copy<span class="classifier">bool, default=None</span></dt><dd><p>Copy the input X or not.</p>
+</dd>
+</dl>
+</section>
+<section id="id37">
+<h4>Returns<a class="headerlink" href="#id37" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_tr<span class="classifier">{ndarray, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Transformed array.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._transform_gpu">
 <span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._transform_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate transform mocked function for local GPU(s).</p>
+<dd><p>Perform standardization by centering and scaling using GPU only.</p>
+<section id="id38">
+<h4>Parameters<a class="headerlink" href="#id38" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix of shape (n_samples, n_features)</span></dt><dd><p>The data used to scale along the features axis.</p>
+</dd>
+<dt>copy<span class="classifier">bool, default=None</span></dt><dd><p>Copy the input X or not.</p>
+</dd>
+</dl>
+</section>
+<section id="id39">
+<h4>Returns<a class="headerlink" href="#id39" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X_tr<span class="classifier">{ndarray, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Transformed array.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_inverse_transform_cpu">
 <span class="sig-name descname"><span class="pre">_lazy_inverse_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_inverse_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_inverse_transform_cpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Undo the scaling of X according to feature_range using Dask with CPUs
+only.</p>
+<section id="id40">
+<h4>Parameters<a class="headerlink" href="#id40" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input data that will be transformed. It cannot be sparse.</p>
+</dd>
+</dl>
+</section>
+<section id="id41">
+<h4>Returns<a class="headerlink" href="#id41" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xt<span class="classifier">ndarray of shape (n_samples, n_features)</span></dt><dd><p>Transformed data.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_inverse_transform_gpu">
 <span class="sig-name descname"><span class="pre">_lazy_inverse_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._lazy_inverse_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._lazy_inverse_transform_gpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Undo the scaling of X according to feature_range using Dask with GPUs
+only.</p>
+<section id="id42">
+<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input data that will be transformed. It cannot be sparse.</p>
+</dd>
+</dl>
+</section>
+<section id="id43">
+<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xt<span class="classifier">ndarray of shape (n_samples, n_features)</span></dt><dd><p>Transformed data.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._inverse_transform_cpu">
 <span class="sig-name descname"><span class="pre">_inverse_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._inverse_transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._inverse_transform_cpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Undo the scaling of X according to feature_range using CPU only.</p>
+<section id="id44">
+<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input data that will be transformed. It cannot be sparse.</p>
+</dd>
+</dl>
+</section>
+<section id="id45">
+<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xt<span class="classifier">ndarray of shape (n_samples, n_features)</span></dt><dd><p>Transformed data.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.preprocessing.standardscaler.StandardScaler._inverse_transform_gpu">
 <span class="sig-name descname"><span class="pre">_inverse_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/preprocessing/standardscaler.html#StandardScaler._inverse_transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.preprocessing.standardscaler.StandardScaler._inverse_transform_gpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
+<dd><p>Undo the scaling of X according to feature_range using GPU only.</p>
+<section id="id46">
+<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input data that will be transformed. It cannot be sparse.</p>
+</dd>
+</dl>
+</section>
+<section id="id47">
+<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Xt<span class="classifier">ndarray of shape (n_samples, n_features)</span></dt><dd><p>Transformed data.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </section>
+</dd></dl>
+
 </section>
 </section>
 

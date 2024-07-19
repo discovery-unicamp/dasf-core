@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.neighbors.neighbors &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -55,16 +55,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../../../api.html">DASF API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">dasf</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../../datasets/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.datasets</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../debug/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.debug</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../feature_extraction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.feature_extraction</span></code></a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.pipeline</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../profile/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.profile</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../transforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.transforms</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../datasets/index.html">dasf.datasets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../debug/index.html">dasf.debug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../feature_extraction/index.html">dasf.feature_extraction</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html">dasf.ml</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../pipeline/index.html">dasf.pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../profile/index.html">dasf.profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../transforms/index.html">dasf.transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../utils/index.html">dasf.utils</a></li>
 </ul>
 </li>
 </ul>
@@ -88,10 +88,10 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../../../api.html">DASF API Reference</a></li>
-          <li class="breadcrumb-item"><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf</span></code></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml</span></code></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.neighbors</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.neighbors.neighbors</span></code></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">dasf</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">dasf.ml</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">dasf.ml.neighbors</a></li>
+      <li class="breadcrumb-item active">dasf.ml.neighbors.neighbors</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../../_sources/autoapi/dasf/ml/neighbors/neighbors/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -102,50 +102,217 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.ml.neighbors.neighbors">
-<span id="dasf-ml-neighbors-neighbors"></span><h1><a class="reference internal" href="#module-dasf.ml.neighbors.neighbors" title="dasf.ml.neighbors.neighbors"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.neighbors.neighbors</span></code></a><a class="headerlink" href="#module-dasf.ml.neighbors.neighbors" title="Link to this heading"></a></h1>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<span id="dasf-ml-neighbors-neighbors"></span><h1>dasf.ml.neighbors.neighbors<a class="headerlink" href="#module-dasf.ml.neighbors.neighbors" title="Link to this heading"></a></h1>
+<p>NearestNeighbors algorithm module.</p>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.ml.neighbors.neighbors.NearestNeighbors" title="dasf.ml.neighbors.neighbors.NearestNeighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NearestNeighbors</span></code></a></p></td>
-<td><p>Class representing a Fit operation of the pipeline.</p></td>
+<td><p>Unsupervised learner for implementing neighbor searches.</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.neighbors.neighbors.NearestNeighbors">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.neighbors.neighbors.</span></span><span class="sig-name descname"><span class="pre">NearestNeighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaf_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'minkowski'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/neighbors/neighbors.html#NearestNeighbors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.neighbors.neighbors.NearestNeighbors" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.Fit" title="dasf.transforms.base.Fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Fit</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.GetParams" title="dasf.transforms.base.GetParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.GetParams</span></code></a>, <a class="reference internal" href="../../../transforms/base/index.html#dasf.transforms.base.SetParams" title="dasf.transforms.base.SetParams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.SetParams</span></code></a></p>
-<p>Class representing a Fit operation of the pipeline.</p>
+<p>Unsupervised learner for implementing neighbor searches.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl>
+<dt>n_neighbors<span class="classifier">int, default=5</span></dt><dd><p>Number of neighbors to use by default for <code class="xref py py-meth docutils literal notranslate"><span class="pre">kneighbors()</span></code> queries.</p>
+</dd>
+<dt>radius<span class="classifier">float, default=1.0</span></dt><dd><p>Range of parameter space to use by default for <code class="xref py py-meth docutils literal notranslate"><span class="pre">radius_neighbors()</span></code>
+queries.</p>
+</dd>
+<dt>algorithm<span class="classifier">{‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, default=’auto’</span></dt><dd><p>Algorithm used to compute the nearest neighbors:</p>
+<ul class="simple">
+<li><p>‘ball_tree’ will use <code class="xref py py-class docutils literal notranslate"><span class="pre">BallTree</span></code></p></li>
+<li><p>‘kd_tree’ will use <code class="xref py py-class docutils literal notranslate"><span class="pre">KDTree</span></code></p></li>
+<li><p>‘brute’ will use a brute-force search.</p></li>
+<li><p>‘auto’ will attempt to decide the most appropriate algorithm
+based on the values passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code> method.</p></li>
+</ul>
+<p>Note: fitting on sparse input will override the setting of
+this parameter, using brute force.</p>
+</dd>
+<dt>leaf_size<span class="classifier">int, default=30</span></dt><dd><p>Leaf size passed to BallTree or KDTree.  This can affect the
+speed of the construction and query, as well as the memory
+required to store the tree.  The optimal value depends on the
+nature of the problem.</p>
+</dd>
+<dt>metric<span class="classifier">str or callable, default=’minkowski’</span></dt><dd><p>Metric to use for distance computation. Default is “minkowski”, which
+results in the standard Euclidean distance when p = 2. See the
+documentation of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/spatial.distance.html">scipy.spatial.distance</a> and
+the metrics listed in
+<code class="xref py py-class docutils literal notranslate"><span class="pre">distance_metrics</span></code> for valid metric
+values.</p>
+<p>If metric is “precomputed”, X is assumed to be a distance matrix and
+must be square during fit. X may be a <span class="xref std std-term">sparse graph</span>, in which
+case only “nonzero” elements may be considered neighbors.</p>
+<p>If metric is a callable function, it takes two arrays representing 1D
+vectors as inputs and must return one value indicating the distance
+between those vectors. This works for Scipy’s metrics, but is less
+efficient than passing the metric name as a string.</p>
+</dd>
+<dt>p<span class="classifier">float (positive), default=2</span></dt><dd><p>Parameter for the Minkowski metric from
+sklearn.metrics.pairwise.pairwise_distances. When p = 1, this is
+equivalent to using manhattan_distance (l1), and euclidean_distance
+(l2) for p = 2. For arbitrary p, minkowski_distance (l_p) is used.</p>
+</dd>
+<dt>metric_params<span class="classifier">dict, default=None</span></dt><dd><p>Additional keyword arguments for the metric function.</p>
+</dd>
+<dt>n_jobs<span class="classifier">int, default=None</span></dt><dd><p>The number of parallel jobs to run for neighbors search.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code> context.
+<code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors. See <span class="xref std std-term">Glossary</span>
+for more details.</p>
+</dd>
+</dl>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<dl>
+<dt><a href="#id10"><span class="problematic" id="id11">effective_metric_</span></a><span class="classifier">str</span></dt><dd><p>Metric used to compute distances to neighbors.</p>
+</dd>
+<dt><a href="#id12"><span class="problematic" id="id13">effective_metric_params_</span></a><span class="classifier">dict</span></dt><dd><p>Parameters for the metric used to compute distances to neighbors.</p>
+</dd>
+<dt><a href="#id14"><span class="problematic" id="id15">n_features_in_</span></a><span class="classifier">int</span></dt><dd><p>Number of features seen during <span class="xref std std-term">fit</span>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.24.</span></p>
+</div>
+</dd>
+<dt><a href="#id16"><span class="problematic" id="id17">feature_names_in_</span></a><span class="classifier">ndarray of shape (<cite>n_features_in_</cite>,)</span></dt><dd><p>Names of features seen during <span class="xref std std-term">fit</span>. Defined only when <cite>X</cite>
+has feature names that are all strings.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.0.</span></p>
+</div>
+</dd>
+<dt><a href="#id18"><span class="problematic" id="id19">n_samples_fit_</span></a><span class="classifier">int</span></dt><dd><p>Number of samples in the fitted data.</p>
+</dd>
+</dl>
+</section>
+<section id="see-also">
+<h3>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>KNeighborsClassifier<span class="classifier">Classifier implementing the k-nearest neighbors</span></dt><dd><p>vote.</p>
+</dd>
+<dt>RadiusNeighborsClassifier<span class="classifier">Classifier implementing a vote among neighbors</span></dt><dd><p>within a given radius.</p>
+</dd>
+</dl>
+<p>KNeighborsRegressor : Regression based on k-nearest neighbors.
+RadiusNeighborsRegressor : Regression based on neighbors within a fixed</p>
+<blockquote>
+<div><p>radius.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>BallTree<span class="classifier">Space partitioning data structure for organizing points in a</span></dt><dd><p>multi-dimensional space, used for nearest neighbor search.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h3>
+<p>See <span class="xref std std-ref">Nearest Neighbors</span> in the online documentation
+for a discussion of the choice of <code class="docutils literal notranslate"><span class="pre">algorithm</span></code> and <code class="docutils literal notranslate"><span class="pre">leaf_size</span></code>.</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm</a></p>
+<p>Constructor of the class NearestNeighbors.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.neighbors.neighbors.NearestNeighbors._fit_cpu">
 <span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/neighbors/neighbors.html#NearestNeighbors._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.neighbors.neighbors.NearestNeighbors._fit_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit mocked function for local CPU(s).</p>
+<dd><p>Fit the nearest neighbors estimator from the training dataset using
+CPU only.</p>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features) or                 (n_samples, n_samples) if metric=’precomputed’</span></dt><dd><p>Training data.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present for API consistency by convention.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">NearestNeighbors</span></dt><dd><p>The fitted nearest neighbors estimator.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.neighbors.neighbors.NearestNeighbors._fit_gpu">
 <span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/neighbors/neighbors.html#NearestNeighbors._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.neighbors.neighbors.NearestNeighbors._fit_gpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit mocked function for local GPU(s).</p>
+<dd><p>Fit the nearest neighbors estimator from the training dataset using
+GPU only.</p>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features) or                 (n_samples, n_samples) if metric=’precomputed’</span></dt><dd><p>Training data.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present for API consistency by convention.</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h4>Returns<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">NearestNeighbors</span></dt><dd><p>The fitted nearest neighbors estimator.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.neighbors.neighbors.NearestNeighbors._get_params_cpu">
 <span class="sig-name descname"><span class="pre">_get_params_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/neighbors/neighbors.html#NearestNeighbors._get_params_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.neighbors.neighbors.NearestNeighbors._get_params_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate get_params mocked function for local CPU(s).</p>
+<dd><p>Get parameters for this estimator using CPU only.</p>
+<section id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>deep<span class="classifier">bool, default=True</span></dt><dd><p>If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h4>Returns<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>params<span class="classifier">dict</span></dt><dd><p>Parameter names mapped to their values.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.neighbors.neighbors.NearestNeighbors._set_params_cpu">
 <span class="sig-name descname"><span class="pre">_set_params_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/neighbors/neighbors.html#NearestNeighbors._set_params_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.neighbors.neighbors.NearestNeighbors._set_params_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate set_params mocked function for local CPU(s).</p>
-</dd></dl>
-
+<dd><p>Set the parameters of this estimator using CPU only.</p>
+<p>The method works on simple estimators as well as on nested objects
+(such as <code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code>). The latter have
+parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
+possible to update each component of a nested object.</p>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>params<span class="classifier">dict</span></dt><dd><p>Estimator parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">estimator instance</span></dt><dd><p>Estimator instance.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </section>
+</dd></dl>
+
 </section>
 </section>
 

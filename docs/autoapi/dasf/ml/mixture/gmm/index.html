@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.mixture.gmm &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -69,7 +69,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.mixture.gmm</span></code></li>
+      <li class="breadcrumb-item active">dasf.ml.mixture.gmm</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../../_sources/autoapi/dasf/ml/mixture/gmm/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -80,55 +80,330 @@
            <div itemprop="articleBody">
              
   <section id="module-dasf.ml.mixture.gmm">
-<span id="dasf-ml-mixture-gmm"></span><h1><a class="reference internal" href="#module-dasf.ml.mixture.gmm" title="dasf.ml.mixture.gmm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dasf.ml.mixture.gmm</span></code></a><a class="headerlink" href="#module-dasf.ml.mixture.gmm" title="Link to this heading"></a></h1>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<span id="dasf-ml-mixture-gmm"></span><h1>dasf.ml.mixture.gmm<a class="headerlink" href="#module-dasf.ml.mixture.gmm" title="Link to this heading"></a></h1>
+<p>Gaussian Mixture Model algorithm module.</p>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.ml.mixture.gmm.GaussianMixture" title="dasf.ml.mixture.gmm.GaussianMixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GaussianMixture</span></code></a></p></td>
-<td><p>Class representing a Fit operation of the pipeline.</p></td>
+<td><p>Gaussian Mixture.</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.mixture.gmm.GaussianMixture">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.mixture.gmm.</span></span><span class="sig-name descname"><span class="pre">GaussianMixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariance_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_covar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'kmeans'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">means_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precisions_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warm_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/gmm.html#GaussianMixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.gmm.GaussianMixture" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../classifier/index.html#dasf.ml.mixture.classifier.MixtureClassifier" title="dasf.ml.mixture.classifier.MixtureClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.ml.mixture.classifier.MixtureClassifier</span></code></a></p>
-<p>Class representing a Fit operation of the pipeline.</p>
+<p>Gaussian Mixture.</p>
+<p>Representation of a Gaussian mixture model probability distribution.
+This class allows to estimate the parameters of a Gaussian mixture
+distribution.</p>
+<p>Read more in the <span class="xref std std-ref">User Guide</span>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.18.</span></p>
+</div>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl>
+<dt>n_components<span class="classifier">int, default=1</span></dt><dd><p>The number of mixture components.</p>
+</dd>
+<dt>covariance_type<span class="classifier">{‘full’, ‘tied’, ‘diag’, ‘spherical’}, default=’full’</span></dt><dd><p>String describing the type of covariance parameters to use.
+Must be one of:</p>
+<ul class="simple">
+<li><p>‘full’: each component has its own general covariance matrix.</p></li>
+<li><p>‘tied’: all components share the same general covariance matrix.</p></li>
+<li><p>‘diag’: each component has its own diagonal covariance matrix.</p></li>
+<li><p>‘spherical’: each component has its own single variance.</p></li>
+</ul>
+</dd>
+<dt>tol<span class="classifier">float, default=1e-3</span></dt><dd><p>The convergence threshold. EM iterations will stop when the
+lower bound average gain is below this threshold.</p>
+</dd>
+<dt>reg_covar<span class="classifier">float, default=1e-6</span></dt><dd><p>Non-negative regularization added to the diagonal of covariance.
+Allows to assure that the covariance matrices are all positive.</p>
+</dd>
+<dt>max_iter<span class="classifier">int, default=100</span></dt><dd><p>The number of EM iterations to perform.</p>
+</dd>
+<dt>n_init<span class="classifier">int, default=1</span></dt><dd><p>The number of initializations to perform. The best results are kept.</p>
+</dd>
+<dt>init_params<span class="classifier">{‘kmeans’, ‘k-means++’, ‘random’, ‘random_from_data’},     default=’kmeans’</span></dt><dd><p>The method used to initialize the weights, the means and the
+precisions.
+String must be one of:</p>
+<ul class="simple">
+<li><p>‘kmeans’ : responsibilities are initialized using kmeans.</p></li>
+<li><p>‘k-means++’ : use the k-means++ method to initialize.</p></li>
+<li><p>‘random’ : responsibilities are initialized randomly.</p></li>
+<li><p>‘random_from_data’ : initial means are randomly selected data points.</p></li>
+</ul>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version v1.1: </span><cite>init_params</cite> now accepts ‘random_from_data’ and ‘k-means++’ as
+initialization methods.</p>
+</div>
+</dd>
+<dt>weights_init<span class="classifier">array-like of shape (n_components, ), default=None</span></dt><dd><p>The user-provided initial weights.
+If it is None, weights are initialized using the <cite>init_params</cite> method.</p>
+</dd>
+<dt>means_init<span class="classifier">array-like of shape (n_components, n_features), default=None</span></dt><dd><p>The user-provided initial means,
+If it is None, means are initialized using the <cite>init_params</cite> method.</p>
+</dd>
+<dt>precisions_init<span class="classifier">array-like, default=None</span></dt><dd><p>The user-provided initial precisions (inverse of the covariance
+matrices).
+If it is None, precisions are initialized using the ‘init_params’
+method.
+The shape depends on ‘covariance_type’:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_components</span><span class="p">,)</span>                        <span class="k">if</span> <span class="s1">&#39;spherical&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>               <span class="k">if</span> <span class="s1">&#39;tied&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>             <span class="k">if</span> <span class="s1">&#39;diag&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span>
+</pre></div>
+</div>
+</dd>
+<dt>random_state<span class="classifier">int, RandomState instance or None, default=None</span></dt><dd><p>Controls the random seed given to the method chosen to initialize the
+parameters (see <cite>init_params</cite>).
+In addition, it controls the generation of random samples from the
+fitted distribution (see the method <cite>sample</cite>).
+Pass an int for reproducible output across multiple function calls.
+See <span class="xref std std-term">Glossary</span>.</p>
+</dd>
+<dt>warm_start<span class="classifier">bool, default=False</span></dt><dd><p>If ‘warm_start’ is True, the solution of the last fitting is used as
+initialization for the next call of fit(). This can speed up
+convergence when fit is called several times on similar problems.
+In that case, ‘n_init’ is ignored and only a single initialization
+occurs upon the first call.
+See <span class="xref std std-term">the Glossary</span>.</p>
+</dd>
+<dt>verbose<span class="classifier">int, default=0</span></dt><dd><p>Enable verbose output. If 1 then it prints the current
+initialization and each iteration step. If greater than 1 then
+it prints also the log probability and the time needed
+for each step.</p>
+</dd>
+<dt>verbose_interval<span class="classifier">int, default=10</span></dt><dd><p>Number of iteration done before the next print.</p>
+</dd>
+</dl>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h3>
+<dl>
+<dt><a href="#id12"><span class="problematic" id="id13">weights_</span></a><span class="classifier">array-like of shape (n_components,)</span></dt><dd><p>The weights of each mixture components.</p>
+</dd>
+<dt><a href="#id14"><span class="problematic" id="id15">means_</span></a><span class="classifier">array-like of shape (n_components, n_features)</span></dt><dd><p>The mean of each mixture component.</p>
+</dd>
+<dt><a href="#id16"><span class="problematic" id="id17">covariances_</span></a><span class="classifier">array-like</span></dt><dd><p>The covariance of each mixture component.
+The shape depends on <cite>covariance_type</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_components</span><span class="p">,)</span>                        <span class="k">if</span> <span class="s1">&#39;spherical&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>               <span class="k">if</span> <span class="s1">&#39;tied&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>             <span class="k">if</span> <span class="s1">&#39;diag&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span>
+</pre></div>
+</div>
+</dd>
+<dt><a href="#id18"><span class="problematic" id="id19">precisions_</span></a><span class="classifier">array-like</span></dt><dd><p>The precision matrices for each component in the mixture. A precision
+matrix is the inverse of a covariance matrix. A covariance matrix is
+symmetric positive definite so the mixture of Gaussian can be
+equivalently parameterized by the precision matrices. Storing the
+precision matrices instead of the covariance matrices makes it more
+efficient to compute the log-likelihood of new samples at test time.
+The shape depends on <cite>covariance_type</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_components</span><span class="p">,)</span>                        <span class="k">if</span> <span class="s1">&#39;spherical&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>               <span class="k">if</span> <span class="s1">&#39;tied&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>             <span class="k">if</span> <span class="s1">&#39;diag&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span>
+</pre></div>
+</div>
+</dd>
+<dt><a href="#id20"><span class="problematic" id="id21">precisions_cholesky_</span></a><span class="classifier">array-like</span></dt><dd><p>The cholesky decomposition of the precision matrices of each mixture
+component. A precision matrix is the inverse of a covariance matrix.
+A covariance matrix is symmetric positive definite so the mixture of
+Gaussian can be equivalently parameterized by the precision matrices.
+Storing the precision matrices instead of the covariance matrices makes
+it more efficient to compute the log-likelihood of new samples at test
+time. The shape depends on <cite>covariance_type</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_components</span><span class="p">,)</span>                        <span class="k">if</span> <span class="s1">&#39;spherical&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>               <span class="k">if</span> <span class="s1">&#39;tied&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>             <span class="k">if</span> <span class="s1">&#39;diag&#39;</span><span class="p">,</span>
+<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span>
+</pre></div>
+</div>
+</dd>
+<dt><a href="#id22"><span class="problematic" id="id23">converged_</span></a><span class="classifier">bool</span></dt><dd><p>True when convergence of the best fit of EM was reached, False otherwise.</p>
+</dd>
+<dt><a href="#id24"><span class="problematic" id="id25">n_iter_</span></a><span class="classifier">int</span></dt><dd><p>Number of step used by the best fit of EM to reach the convergence.</p>
+</dd>
+<dt><a href="#id26"><span class="problematic" id="id27">lower_bound_</span></a><span class="classifier">float</span></dt><dd><p>Lower bound value on the log-likelihood (of the training data with
+respect to the model) of the best fit of EM.</p>
+</dd>
+<dt><a href="#id28"><span class="problematic" id="id29">n_features_in_</span></a><span class="classifier">int</span></dt><dd><p>Number of features seen during <span class="xref std std-term">fit</span>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.24.</span></p>
+</div>
+</dd>
+<dt><a href="#id30"><span class="problematic" id="id31">feature_names_in_</span></a><span class="classifier">ndarray of shape (<cite>n_features_in_</cite>,)</span></dt><dd><p>Names of features seen during <span class="xref std std-term">fit</span>. Defined only when <cite>X</cite>
+has feature names that are all strings.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.0.</span></p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="see-also">
+<h3>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>BayesianGaussianMixture<span class="classifier">Gaussian mixture model fit with a variational</span></dt><dd><p>inference.</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.mixture</span> <span class="kn">import</span> <span class="n">GaussianMixture</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gm</span> <span class="o">=</span> <span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gm</span><span class="o">.</span><span class="n">means_</span>
+<span class="go">array([[10.,  2.],</span>
+<span class="go">       [ 1.,  2.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gm</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="go">array([1, 0])</span>
+</pre></div>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.mixture.gmm.GaussianMixture._fit_cpu">
 <span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/gmm.html#GaussianMixture._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.gmm.GaussianMixture._fit_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit mocked function for local CPU(s).</p>
+<dd><p>Estimate Gaussian Mixture model parameters with the EM algorithm using
+CPU only.</p>
+<p>The method fits the model <code class="docutils literal notranslate"><span class="pre">n_init</span></code> times and sets the parameters with
+which the model has the largest likelihood or lower bound. Within each
+trial, the method iterates between E-step and M-step for <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>
+times until the change of likelihood or lower bound is less than
+<code class="docutils literal notranslate"><span class="pre">tol</span></code>, otherwise, a <code class="docutils literal notranslate"><span class="pre">ConvergenceWarning</span></code> is raised.
+If <code class="docutils literal notranslate"><span class="pre">warm_start</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, then <code class="docutils literal notranslate"><span class="pre">n_init</span></code> is ignored and a single
+initialization is performed upon the first call. Upon consecutive
+calls, training starts where it left off.</p>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>List of n_features-dimensional data points. Each row
+corresponds to a single data point.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present for API consistency by convention.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>The fitted mixture.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.mixture.gmm.GaussianMixture._fit_predict_cpu">
 <span class="sig-name descname"><span class="pre">_fit_predict_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/gmm.html#GaussianMixture._fit_predict_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.gmm.GaussianMixture._fit_predict_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate fit with predict mocked function for local CPU(s).</p>
+<dd><p>Estimate model parameters using X and predict the labels for X using
+CPU only.</p>
+<p>The method fits the model n_init times and sets the parameters with
+which the model has the largest likelihood or lower bound. Within each
+trial, the method iterates between E-step and M-step for <cite>max_iter</cite>
+times until the change of likelihood or lower bound is less than
+<cite>tol</cite>, otherwise, a <code class="xref py py-class docutils literal notranslate"><span class="pre">ConvergenceWarning</span></code> is
+raised. After fitting, it predicts the most probable label for the
+input data points.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 0.20.</span></p>
+</div>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>List of n_features-dimensional data points. Each row
+corresponds to a single data point.</p>
+</dd>
+<dt>y<span class="classifier">Ignored</span></dt><dd><p>Not used, present for API consistency by convention.</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h4>Returns<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>labels<span class="classifier">array, shape (n_samples,)</span></dt><dd><p>Component labels.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.mixture.gmm.GaussianMixture._predict_cpu">
 <span class="sig-name descname"><span class="pre">_predict_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/gmm.html#GaussianMixture._predict_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.gmm.GaussianMixture._predict_cpu" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Predict the labels for the data samples in X using trained model using
+CPU only.</p>
+<section id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>List of n_features-dimensional data points. Each row
+corresponds to a single data point.</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h4>Returns<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>labels<span class="classifier">array, shape (n_samples,)</span></dt><dd><p>Component labels.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.mixture.gmm.GaussianMixture._set_params_cpu">
 <span class="sig-name descname"><span class="pre">_set_params_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/gmm.html#GaussianMixture._set_params_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.gmm.GaussianMixture._set_params_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate set_params mocked function for local CPU(s).</p>
+<dd><p>Set the parameters of this estimator using CPU only.</p>
+<p>The method works on simple estimators as well as on nested objects.
+The latter have parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code>
+so that it’s possible to update each component of a nested object.</p>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>params<span class="classifier">dict</span></dt><dd><p>Estimator parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">estimator instance</span></dt><dd><p>Estimator instance.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.mixture.gmm.GaussianMixture._get_params_cpu">
 <span class="sig-name descname"><span class="pre">_get_params_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/mixture/gmm.html#GaussianMixture._get_params_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.mixture.gmm.GaussianMixture._get_params_cpu" title="Link to this definition"></a></dt>
-<dd><p>Respective immediate get_params mocked function for local CPU(s).</p>
-</dd></dl>
-
+<dd><p>Get parameters for this estimator using CPU only.</p>
+<section id="id10">
+<h4>Parameters<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>deep<span class="classifier">bool, default=True</span></dt><dd><p>If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>params<span class="classifier">dict</span></dt><dd><p>Parameter names mapped to their values.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </section>
+</dd></dl>
+
 </section>
 </section>
 

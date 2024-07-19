@@ -1,14 +1,16 @@
-:py:mod:`dasf.datasets.base`
-============================
+dasf.datasets.base
+==================
 
 .. py:module:: dasf.datasets.base
 
+.. autoapi-nested-parse::
 
-Module Contents
----------------
+   Base module for most of the DASF Datasets. 
+
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -22,12 +24,13 @@ Classes
    dasf.datasets.base.DatasetParquet
 
 
-
+Module Contents
+---------------
 
 .. py:class:: Dataset(name, download = False, root = None, *args, **kwargs)
 
-
    Bases: :py:obj:`dasf.transforms.base.TargeteredTransform`
+
 
    Class representing a generic dataset based on a TargeteredTransform
    object.
@@ -46,11 +49,15 @@ Classes
        Additional keyworkded arguments.
 
 
+   Constructor of the object Dataset. 
+
+
    .. py:method:: __set_dataset_cache_dir()
 
       Generate cached directory in $HOME to store dataset(s).
 
               
+
 
 
    .. py:method:: download()
@@ -60,11 +67,13 @@ Classes
               
 
 
+
    .. py:method:: __len__()
 
       Return internal data length.
 
               
+
 
 
    .. py:method:: __getitem__(idx)
@@ -81,8 +90,8 @@ Classes
 
 .. py:class:: DatasetArray(name, download = False, root = None, chunks='auto')
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as an array of a defined
    shape.
@@ -99,19 +108,27 @@ Classes
        Number of blocks of the array (the default is "auto").
 
 
-   .. py:property:: shape
-      :type: tuple
-
-      Returns the shape of an array.
-
-      Returns
-      -------
-      tuple
-          A tuple with the shape.
-
+   Constructor of the object DatasetArray. 
 
 
    .. py:method:: __operator_check__(other)
+
+      Check what type of the data we are handling
+
+      Examples:
+          DatasetArray with array-like; or
+          DatasetArray with DatasetArray
+
+      Parameters
+      ----------
+      other : Any
+          array-like of DatasetArray for the operation.
+
+      Returns
+      -------
+      data : Any
+          A data representing the internal array or the class itself.
+
 
 
    .. py:method:: __repr__()
@@ -121,7 +138,21 @@ Classes
               
 
 
+
    .. py:method:: __array__(dtype=None)
+
+      Array interface is required to support most of the array functions.
+
+      Parameters
+      ----------
+      dtype : Any
+          Type of the internal array, default=None (not used)
+
+      Returns
+      -------
+      data : Any
+          A data representing the internal array or the class itself.
+
 
 
    .. py:method:: __array_ufunc__(ufunc, method, *inputs, **kwargs)
@@ -146,6 +177,7 @@ Classes
 
 
 
+
    .. py:method:: __add__(other)
 
       Internal function of adding two array datasets.
@@ -159,6 +191,7 @@ Classes
       -------
       DatasetArry
           A sum with two arrays.
+
 
 
 
@@ -178,6 +211,7 @@ Classes
 
 
 
+
    .. py:method:: __mul__(other)
 
       Internal function of multiplication two array datasets.
@@ -191,6 +225,7 @@ Classes
       -------
       DatasetArry
           A multiplication of two arrays.
+
 
 
 
@@ -210,6 +245,7 @@ Classes
 
 
 
+
    .. py:method:: __copy_attrs_from_data()
 
       Extends metadata to new transformed object (after operations).
@@ -217,11 +253,13 @@ Classes
               
 
 
+
    .. py:method:: __npy_header()
 
       Read an array header from a filelike object.
 
               
+
 
 
    .. py:method:: _lazy_load(xp, **kwargs)
@@ -242,6 +280,7 @@ Classes
 
 
 
+
    .. py:method:: _load(xp, **kwargs)
 
       Load data using CPU container.
@@ -252,6 +291,7 @@ Classes
           A module that load data (implement `load` function)
       **kwargs : type
           Additional `kwargs` to `xp.load` function.
+
 
 
 
@@ -266,11 +306,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_gpu()
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_cpu()
@@ -280,11 +322,13 @@ Classes
               
 
 
+
    .. py:method:: _load_gpu()
 
       Load data with GPU container (e.g. cupy).
 
               
+
 
 
    .. py:method:: _load_cpu()
@@ -294,7 +338,16 @@ Classes
               
 
 
+
    .. py:method:: from_array(array)
+
+      Load data from an existing array.
+
+      Parameters
+      ----------
+      array : array-like
+          Input data to be initialized.
+
 
 
    .. py:method:: load()
@@ -302,6 +355,20 @@ Classes
       Placeholder for load function.
 
               
+
+
+
+   .. py:property:: shape
+      :type: tuple
+
+      Returns the shape of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the shape.
+
+
 
 
    .. py:method:: inspect_metadata()
@@ -318,8 +385,8 @@ Classes
 
 .. py:class:: DatasetZarr(name, download = False, root = None, backend = None, chunks=None)
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as a Zarr array of a
    defined shape.
@@ -336,27 +403,7 @@ Classes
        Number of blocks of the array (the default is "auto").
 
 
-   .. py:property:: shape
-      :type: tuple
-
-      Returns the shape of an array.
-
-      Returns
-      -------
-      tuple
-          A tuple with the shape.
-
-
-
-   .. py:property:: chunksize
-
-      Returns the chunksize of an array.
-
-      Returns
-      -------
-      tuple
-          A tuple with the chunksize.
-
+   Constructor of the object DatasetZarr. 
 
 
    .. py:method:: _lazy_load(xp, **kwargs)
@@ -377,6 +424,7 @@ Classes
 
 
 
+
    .. py:method:: _load(xp, **kwargs)
 
       Load data using CPU container.
@@ -390,11 +438,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_cpu()
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_gpu()
@@ -404,11 +454,13 @@ Classes
               
 
 
+
    .. py:method:: _load_cpu()
 
       Load data with CPU container (e.g. numpy).
 
               
+
 
 
    .. py:method:: _load_gpu()
@@ -418,11 +470,13 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
 
               
+
 
 
    .. py:method:: _load_meta()
@@ -436,11 +490,37 @@ Classes
 
 
 
+
    .. py:method:: __read_zarray(key)
 
       Returns the value of ZArray JSON metadata.
 
               
+
+
+
+   .. py:property:: shape
+      :type: tuple
+
+      Returns the shape of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the shape.
+
+
+
+
+   .. py:property:: chunksize
+      Returns the chunksize of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the chunksize.
+
+
 
 
    .. py:method:: inspect_metadata()
@@ -454,11 +534,13 @@ Classes
 
 
 
+
    .. py:method:: __repr__()
 
       Return a class representation based on internal array.
 
               
+
 
 
    .. py:method:: __check_op_input(in_data)
@@ -480,6 +562,7 @@ Classes
 
 
 
+
    .. py:method:: __add__(other)
 
       Internal function of adding two array datasets.
@@ -493,6 +576,7 @@ Classes
       -------
       DatasetArry
           A sum with two arrays.
+
 
 
 
@@ -512,6 +596,7 @@ Classes
 
 
 
+
    .. py:method:: __mul__(other)
 
       Internal function of multiplication two array datasets.
@@ -525,6 +610,7 @@ Classes
       -------
       DatasetArry
           A multiplication of two arrays.
+
 
 
 
@@ -544,6 +630,7 @@ Classes
 
 
 
+
    .. py:method:: __copy_attrs_from_data()
 
       Extends metadata to new transformed object (after operations).
@@ -554,8 +641,8 @@ Classes
 
 .. py:class:: DatasetHDF5(name, download = False, root = None, chunks='auto', dataset_path = None)
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as a HDF5 dataset of a
    defined shape.
@@ -572,6 +659,9 @@ Classes
        Number of blocks of the array (the default is "auto").
    dataset_path : str
        Relative path of the internal HDF5 dataset (the default is None).
+
+
+   Constructor of the object DatasetHDF5. 
 
 
    .. py:method:: _lazy_load(xp, **kwargs)
@@ -592,6 +682,7 @@ Classes
 
 
 
+
    .. py:method:: _load(xp=None, **kwargs)
 
       Load data using CPU container.
@@ -605,11 +696,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_cpu()
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_gpu()
@@ -619,11 +712,13 @@ Classes
               
 
 
+
    .. py:method:: _load_cpu()
 
       Load data with CPU container (e.g. numpy).
 
               
+
 
 
    .. py:method:: _load_gpu()
@@ -633,11 +728,13 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
 
               
+
 
 
    .. py:method:: _load_meta()
@@ -648,6 +745,7 @@ Classes
       -------
       dict
           A dictionary with metadata information.
+
 
 
 
@@ -665,8 +763,8 @@ Classes
 
 .. py:class:: DatasetXarray(name, download = False, root = None, chunks=None, data_var=None)
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as a Xarray dataset of a
    defined shape.
@@ -685,11 +783,15 @@ Classes
        Key (or index) of the internal Xarray dataset (the default is None).
 
 
+   Constructor of the object DatasetXarray. 
+
+
    .. py:method:: _lazy_load_cpu()
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_gpu()
@@ -699,11 +801,13 @@ Classes
               
 
 
+
    .. py:method:: _load_cpu()
 
       Load data with CPU container (e.g. numpy).
 
               
+
 
 
    .. py:method:: _load_gpu()
@@ -713,11 +817,13 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
 
               
+
 
 
    .. py:method:: _load_meta()
@@ -728,6 +834,7 @@ Classes
       -------
       dict
           A dictionary with metadata information.
+
 
 
 
@@ -742,11 +849,13 @@ Classes
 
 
 
+
    .. py:method:: __len__()
 
       Return internal data length.
 
               
+
 
 
    .. py:method:: __getitem__(idx)
@@ -763,8 +872,8 @@ Classes
 
 .. py:class:: DatasetLabeled(name, download = False, root = None, chunks='auto')
 
-
    Bases: :py:obj:`Dataset`
+
 
    A class representing a labeled dataset. Each item is a 2-element tuple,
    where the first element is a array of data and the second element is the
@@ -787,11 +896,15 @@ Classes
        Description of attribute `__chunks`.
 
 
+   Constructor of the object DatasetLabeled. 
+
+
    .. py:method:: download()
 
       Download the dataset.
 
               
+
 
 
    .. py:method:: inspect_metadata()
@@ -803,6 +916,7 @@ Classes
       -------
       dict
           A dictionary with metadata information.
+
 
 
 
@@ -824,6 +938,7 @@ Classes
 
 
 
+
    .. py:method:: _load(xp, **kwargs)
 
       Load data using CPU container.
@@ -842,6 +957,7 @@ Classes
 
 
 
+
    .. py:method:: _load_meta()
 
       Load metadata to inspect.
@@ -853,11 +969,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_gpu()
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_cpu()
@@ -867,11 +985,13 @@ Classes
               
 
 
+
    .. py:method:: _load_gpu()
 
       Load data with GPU container (e.g. cupy).
 
               
+
 
 
    .. py:method:: _load_cpu()
@@ -881,11 +1001,13 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
 
               
+
 
 
    .. py:method:: __getitem__(idx)
@@ -902,8 +1024,8 @@ Classes
 
 .. py:class:: DatasetDataFrame(name, download = True, root = None, chunks='auto')
 
-
    Bases: :py:obj:`Dataset`
+
 
    Class representing an dataset wich is defined as a dataframe.
 
@@ -919,16 +1041,7 @@ Classes
        Number of blocks of the array (the default is "auto").
 
 
-   .. py:property:: shape
-      :type: tuple
-
-      Returns the shape of an array.
-
-      Returns
-      -------
-      tuple
-          A tuple with the shape.
-
+   Constructor of the object DatasetDataFrame. 
 
 
    .. py:method:: _load_meta()
@@ -939,6 +1052,7 @@ Classes
       -------
       dict
           A dictionary with metadata information.
+
 
 
 
@@ -953,11 +1067,13 @@ Classes
 
 
 
+
    .. py:method:: _lazy_load_gpu()
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_cpu()
@@ -967,11 +1083,13 @@ Classes
               
 
 
+
    .. py:method:: _load_gpu()
 
       Load data with GPU container (e.g. CuDF).
 
               
+
 
 
    .. py:method:: _load_cpu()
@@ -981,6 +1099,7 @@ Classes
               
 
 
+
    .. py:method:: load()
 
       Placeholder for load function.
@@ -988,10 +1107,25 @@ Classes
               
 
 
+
+   .. py:property:: shape
+      :type: tuple
+
+      Returns the shape of an array.
+
+      Returns
+      -------
+      tuple
+          A tuple with the shape.
+
+
+
+
    .. py:method:: __len__()
 
       Return internal data length.
               
+
 
 
    .. py:method:: __getitem__(idx)
@@ -1008,8 +1142,8 @@ Classes
 
 .. py:class:: DatasetParquet(name, download = True, root = None, chunks='auto')
 
-
    Bases: :py:obj:`DatasetDataFrame`
+
 
    Class representing an dataset wich is defined as a Parquet.
 
@@ -1025,11 +1159,15 @@ Classes
        Number of blocks of the array (the default is "auto").
 
 
+   Constructor of the object DatasetParquet. 
+
+
    .. py:method:: _lazy_load_gpu()
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
               
+
 
 
    .. py:method:: _lazy_load_cpu()
@@ -1039,11 +1177,13 @@ Classes
               
 
 
+
    .. py:method:: _load_gpu()
 
       Load data with GPU container (e.g. CuDF).
 
               
+
 
 
    .. py:method:: _load_cpu()

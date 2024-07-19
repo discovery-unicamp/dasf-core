@@ -1,41 +1,46 @@
-:py:mod:`dasf.ml.xgboost`
-=========================
+dasf.ml.xgboost
+===============
 
 .. py:module:: dasf.ml.xgboost
+
+.. autoapi-nested-parse::
+
+   Init module for XGBoost ML algorithms. 
+
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   xgboost/index.rst
+   /autoapi/dasf/ml/xgboost/xgboost/index
 
-
-Package Contents
-----------------
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.ml.xgboost.XGBRegressor
 
 
-
+Package Contents
+----------------
 
 .. py:class:: XGBRegressor(max_depth=None, max_leaves=None, max_bin=None, grow_policy=None, learning_rate=None, n_estimators=100, verbosity=None, objective=None, booster=None, tree_method=None, n_jobs=None, gamma=None, min_child_weight=None, max_delta_step=None, subsample=None, sampling_method=None, colsample_bytree=None, colsample_bylevel=None, colsample_bynode=None, reg_alpha=None, reg_lambda=None, scale_pos_weight=None, base_score=None, random_state=None, num_parallel_tree=None, monotone_constraints=None, interaction_constraints=None, importance_type=None, gpu_id=None, validate_parameters=None, predictor=None, enable_categorical=False, max_cat_to_onehot=None, eval_metric=None, early_stopping_rounds=None, callbacks=None, **kwargs)
 
-
    Bases: :py:obj:`dasf.transforms.Fit`, :py:obj:`dasf.transforms.FitPredict`, :py:obj:`dasf.transforms.Predict`
 
+
    Class representing a Fit operation of the pipeline.
+
 
    .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None, *args, **kwargs)
 
       Respective lazy fit mocked function for CPUs.
+
 
 
    .. py:method:: _lazy_fit_gpu(X, y=None, sample_weight=None, *args, **kwargs)
@@ -43,9 +48,11 @@ Classes
       Respective lazy fit mocked function for GPUs.
 
 
+
    .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
 
       Respective immediate fit mocked function for local CPU(s).
+
 
 
    .. py:method:: _fit_gpu(X, y=None, sample_weight=None, *args, **kwargs)
@@ -53,9 +60,11 @@ Classes
       Respective immediate fit mocked function for local GPU(s).
 
 
+
    .. py:method:: _lazy_predict_cpu(X, sample_weight=None, **kwargs)
 
       Respective lazy predict mocked function for CPUs.
+
 
 
    .. py:method:: _lazy_predict_gpu(X, sample_weight=None, **kwargs)
@@ -63,9 +72,11 @@ Classes
       Respective lazy predict mocked function for GPUs.
 
 
+
    .. py:method:: _predict_cpu(X, sample_weight=None, **kwargs)
 
       Respective immediate predict mocked function for local CPU(s).
+
 
 
    .. py:method:: _predict_gpu(X, sample_weight=None, **kwargs)

@@ -1,26 +1,23 @@
-:py:mod:`dasf.pipeline.executors`
-=================================
+dasf.pipeline.executors
+=======================
 
 .. py:module:: dasf.pipeline.executors
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   base/index.rst
-   dask/index.rst
-   ray/index.rst
-   wrapper/index.rst
+   /autoapi/dasf/pipeline/executors/base/index
+   /autoapi/dasf/pipeline/executors/dask/index
+   /autoapi/dasf/pipeline/executors/ray/index
+   /autoapi/dasf/pipeline/executors/wrapper/index
 
-
-Package Contents
-----------------
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -31,17 +28,19 @@ Classes
    dasf.pipeline.executors.LocalExecutor
 
 
-
+Package Contents
+----------------
 
 .. py:class:: Executor
-
 
    .. py:property:: is_connected
       :type: bool
 
 
+
    .. py:property:: info
       :type: str
+
 
 
    .. py:method:: has_dataset(key)
@@ -52,6 +51,7 @@ Classes
 
    .. py:method:: get_dataset(key)
       :abstractmethod:
+
 
 
    .. py:method:: register_plugin(plugin)
@@ -69,17 +69,15 @@ Classes
    .. py:method:: shutdown()
 
 
-
 .. py:class:: DaskPBSPipelineExecutor(**kwargs)
-
 
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
 
 
 .. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, protocol=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
 
-
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
+
 
    A pipeline engine based on dask data flow.
 
@@ -95,16 +93,20 @@ Classes
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
 
+
    .. py:property:: ngpus
       :type: int
+
 
 
    .. py:property:: is_connected
       :type: bool
 
 
+
    .. py:property:: info
       :type: str
+
 
 
    .. py:method:: execute(fn, *args, **kwargs)
@@ -128,11 +130,10 @@ Classes
    .. py:method:: close()
 
 
-
 .. py:class:: DaskTasksPipelineExecutor(address=None, port=8786, local=False, use_gpu=True, profiler=None, protocol=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
 
-
    Bases: :py:obj:`DaskPipelineExecutor`
+
 
    A not centric execution engine based on dask.
 
@@ -146,6 +147,7 @@ Classes
    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
+
 
    .. py:method:: pre_run(pipeline)
 
@@ -171,16 +173,16 @@ Classes
    .. py:method:: close()
 
 
-
 .. py:class:: LocalExecutor(use_gpu=None, backend='numpy', gpu_allocator='cupy')
-
 
    .. py:property:: ngpus
       :type: int
 
 
+
    .. py:property:: is_connected
       :type: bool
+
 
 
    .. py:method:: pre_run(pipeline)
@@ -193,6 +195,5 @@ Classes
 
 
    .. py:method:: execute(fn, *args, **kwargs)
-
 
 

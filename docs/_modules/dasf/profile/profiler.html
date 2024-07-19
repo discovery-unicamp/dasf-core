@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dasf.profile.profiler &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            DASF
+          </a>
+              <div class="version">
+                1.0b5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../principles.html">Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">DASF API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DASF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dasf.profile.profiler</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dasf.profile.profiler</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">fcntl</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">queue</span> <span class="kn">import</span> <span class="n">SimpleQueue</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">ormsgpack</span>
+<span class="kn">import</span> <span class="nn">portalocker</span>
+
+
+<div class="viewcode-block" id="EventPhases">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventPhases">[docs]</a>
+<span class="k">class</span> <span class="nc">EventPhases</span><span class="p">:</span>
+    <span class="n">COMPLETE</span> <span class="o">=</span> <span class="s2">&quot;X&quot;</span>
+    <span class="n">DURATION_BEGIN</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span>
+    <span class="n">DURATION_END</span> <span class="o">=</span> <span class="s2">&quot;E&quot;</span>
+    <span class="n">INSTANT</span> <span class="o">=</span> <span class="s2">&quot;I&quot;</span>
+    <span class="n">ASYNC_BEGIN</span> <span class="o">=</span> <span class="s2">&quot;b&quot;</span>
+    <span class="n">ASYNC_INSTANT</span> <span class="o">=</span> <span class="s2">&quot;n&quot;</span>
+    <span class="n">ASYNC_END</span> <span class="o">=</span> <span class="s2">&quot;e&quot;</span>
+    <span class="n">FLOW_BEGIN</span> <span class="o">=</span> <span class="s2">&quot;s&quot;</span>
+    <span class="n">FLOW_STEP</span> <span class="o">=</span> <span class="s2">&quot;t&quot;</span>
+    <span class="n">FLOW_END</span> <span class="o">=</span> <span class="s2">&quot;f&quot;</span>
+    <span class="n">COUNTER</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
+    <span class="n">OBJECT_CREATED</span> <span class="o">=</span> <span class="s2">&quot;N&quot;</span>
+    <span class="n">OBJECT_SNAPSHOT</span> <span class="o">=</span> <span class="s2">&quot;O&quot;</span>
+    <span class="n">OBJECT_DESTROYED</span> <span class="o">=</span> <span class="s2">&quot;D&quot;</span>
+    <span class="n">METADATA</span> <span class="o">=</span> <span class="s2">&quot;M&quot;</span>
+    <span class="n">MARK</span> <span class="o">=</span> <span class="s2">&quot;R&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="InstantEventScope">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.InstantEventScope">[docs]</a>
+<span class="k">class</span> <span class="nc">InstantEventScope</span><span class="p">:</span>
+    <span class="n">GLOBAL</span> <span class="o">=</span> <span class="s2">&quot;g&quot;</span>
+    <span class="n">PROCESS</span> <span class="o">=</span> <span class="s2">&quot;p&quot;</span>
+    <span class="n">THREAD</span> <span class="o">=</span> <span class="s2">&quot;t&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="InstantEvent">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.InstantEvent">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">InstantEvent</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">phase</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">EventPhases</span><span class="o">.</span><span class="n">INSTANT</span>
+    <span class="n">scope</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">InstantEventScope</span><span class="o">.</span><span class="n">GLOBAL</span>
+    <span class="n">process_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">thread_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">args</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CompleteEvent">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.CompleteEvent">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CompleteEvent</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">phase</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">EventPhases</span><span class="o">.</span><span class="n">COMPLETE</span>
+    <span class="n">process_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">thread_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">args</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="DurationBeginEvent">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.DurationBeginEvent">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">DurationBeginEvent</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">phase</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">EventPhases</span><span class="o">.</span><span class="n">DURATION_BEGIN</span>
+    <span class="n">process_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">thread_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">args</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="DurationEndEvent">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.DurationEndEvent">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">DurationEndEvent</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">phase</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">EventPhases</span><span class="o">.</span><span class="n">DURATION_BEGIN</span>
+    <span class="n">process_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">thread_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">args</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span></div>
+
+
+
+<span class="n">EventTypes</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">CompleteEvent</span><span class="p">,</span> <span class="n">InstantEvent</span><span class="p">,</span> <span class="n">DurationBeginEvent</span><span class="p">,</span> <span class="n">DurationEndEvent</span><span class="p">]</span>
+<span class="n">event_classes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">EventPhases</span><span class="o">.</span><span class="n">COMPLETE</span><span class="p">:</span> <span class="n">CompleteEvent</span><span class="p">,</span>
+    <span class="n">EventPhases</span><span class="o">.</span><span class="n">INSTANT</span><span class="p">:</span> <span class="n">InstantEvent</span><span class="p">,</span>
+    <span class="n">EventPhases</span><span class="o">.</span><span class="n">DURATION_BEGIN</span><span class="p">:</span> <span class="n">DurationBeginEvent</span><span class="p">,</span>
+    <span class="n">EventPhases</span><span class="o">.</span><span class="n">DURATION_END</span><span class="p">:</span> <span class="n">DurationEndEvent</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="EventDatabase">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventDatabase">[docs]</a>
+<span class="k">class</span> <span class="nc">EventDatabase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="EventDatabase.open">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventDatabase.open">[docs]</a>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EventDatabase&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="EventDatabase.record">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventDatabase.record">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">EventTypes</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="EventDatabase.commit">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventDatabase.commit">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="EventDatabase.get_traces">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventDatabase.get_traces">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_traces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">EventTypes</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="EventDatabase.close">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventDatabase.close">[docs]</a>
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="EventDatabase.__enter__">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventDatabase.__enter__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="EventDatabase.__exit__">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventDatabase.__exit__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="FileDatabase">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.FileDatabase">[docs]</a>
+<span class="k">class</span> <span class="nc">FileDatabase</span><span class="p">(</span><span class="n">EventDatabase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">database_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;traces.msgpack&quot;</span><span class="p">,</span>
+        <span class="n">commit_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="n">remove_old_output_file</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">commit_on_close</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">lock_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="n">default_byte_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">flush</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">database_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commit_threshold</span> <span class="o">=</span> <span class="n">commit_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commit_on_close</span> <span class="o">=</span> <span class="n">commit_on_close</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">SimpleQueue</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span> <span class="o">=</span> <span class="n">lock_timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">byte_size</span> <span class="o">=</span> <span class="n">default_byte_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flush</span> <span class="o">=</span> <span class="n">flush</span>
+        <span class="k">if</span> <span class="n">remove_old_output_file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database_file</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">missing_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Register a function to commit the events when the program exits</span>
+        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FileDatabase.record">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.FileDatabase.record">[docs]</a>
+    <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">EventTypes</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">qsize</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commit_threshold</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FileDatabase.commit">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.FileDatabase.commit">[docs]</a>
+    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO implement async commit</span>
+        <span class="c1"># Create a exclusive lock file to prevent other processes from writing to the file</span>
+        <span class="k">with</span> <span class="n">portalocker</span><span class="o">.</span><span class="n">Lock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># Write each event to file</span>
+            <span class="c1"># Always write the size of the event first (8 bytes) then the event data </span>
+            <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+                <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="n">packed_data</span> <span class="o">=</span> <span class="n">ormsgpack</span><span class="o">.</span><span class="n">packb</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">packed_data</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">byte_size</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s2">&quot;big&quot;</span><span class="p">)</span>
+                <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+                <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">packed_data</span><span class="p">)</span>
+            <span class="n">events</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+        
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">fsync</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="FileDatabase.get_traces">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.FileDatabase.get_traces">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_traces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">EventTypes</span><span class="p">]:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">byte_size</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">chunk</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="k">return</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s2">&quot;big&quot;</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">ormsgpack</span><span class="o">.</span><span class="n">unpackb</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">event_classes</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;phase&quot;</span><span class="p">]](</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="FileDatabase.close">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.FileDatabase.close">[docs]</a>
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">commit_on_close</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+        
+<div class="viewcode-block" id="FileDatabase.__str__">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.FileDatabase.__str__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;FileDatabase at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">database_file</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+    
+<div class="viewcode-block" id="FileDatabase.__repr__">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.FileDatabase.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;FileDatabase at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">database_file</span><span class="si">}</span><span class="s2">&quot;</span></div>
+</div>
+
+
+
+<span class="c1"># Singleton instance of the database</span>
+<div class="viewcode-block" id="EventProfiler">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler">[docs]</a>
+<span class="k">class</span> <span class="nc">EventProfiler</span><span class="p">:</span>
+    <span class="n">traces_file_prefix</span> <span class="o">=</span> <span class="s2">&quot;traces-&quot;</span>
+
+    <span class="n">default_database</span> <span class="o">=</span> <span class="n">FileDatabase</span>
+    <span class="n">default_database_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;commit_threshold&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="s2">&quot;remove_old_output_file&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;commit_on_close&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">database_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">database_creation_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">database</span><span class="p">:</span> <span class="n">EventDatabase</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">database</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">database_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Cannot specify both output_file and database arguments&quot;</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">database</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">database_creation_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">database_creation_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_database_kwargs</span>
+            <span class="k">if</span> <span class="n">database_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">database_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">traces_file_prefix</span><span class="si">}{</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">.msgpack&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="n">database_file</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_database</span><span class="p">(</span>
+                <span class="n">database_file</span><span class="p">,</span> <span class="o">**</span><span class="n">database_creation_kwargs</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="EventProfiler._record">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler._record">[docs]</a>
+    <span class="k">def</span> <span class="nf">_record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">EventTypes</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EventProfiler.record_complete_event">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler.record_complete_event">[docs]</a>
+    <span class="k">def</span> <span class="nf">record_complete_event</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">(</span><span class="n">CompleteEvent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="EventProfiler.record_instant_event">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler.record_instant_event">[docs]</a>
+    <span class="k">def</span> <span class="nf">record_instant_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">(</span><span class="n">InstantEvent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="EventProfiler.record_duration_begin_event">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler.record_duration_begin_event">[docs]</a>
+    <span class="k">def</span> <span class="nf">record_duration_begin_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">(</span><span class="n">DurationBeginEvent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="EventProfiler.record_duration_end_event">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler.record_duration_end_event">[docs]</a>
+    <span class="k">def</span> <span class="nf">record_duration_end_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">(</span><span class="n">DurationEndEvent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="EventProfiler.get_traces">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler.get_traces">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_traces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">EventTypes</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">get_traces</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="EventProfiler.__str__">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler.__str__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;EventProfiler(database=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+    
+<div class="viewcode-block" id="EventProfiler.__repr__">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;EventProfiler(database=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+    
+<div class="viewcode-block" id="EventProfiler.commit">
+<a class="viewcode-back" href="../../../autoapi/dasf/profile/profiler/index.html#dasf.profile.profiler.EventProfiler.commit">[docs]</a>
+    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

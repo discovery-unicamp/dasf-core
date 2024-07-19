@@ -1,0 +1,39 @@
+dasf.pipeline.types
+===================
+
+.. py:module:: dasf.pipeline.types
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   dasf.pipeline.types.TaskExecutorType
+
+
+Module Contents
+---------------
+
+.. py:class:: TaskExecutorType
+
+   Bases: :py:obj:`enum.IntEnum`
+
+
+   Enum where members are also (and must be) ints
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: single_cpu
+
+
+   .. py:attribute:: multi_cpu
+
+
+   .. py:attribute:: single_gpu
+
+
+   .. py:attribute:: multi_gpu
+
+

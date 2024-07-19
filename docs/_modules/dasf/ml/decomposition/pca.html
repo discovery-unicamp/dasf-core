@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.decomposition.pca &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -81,6 +81,8 @@
   <h1>Source code for dasf.ml.decomposition.pca</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
+<span class="sd">&quot;&quot;&quot; Principal Component Analysis algorithm module. &quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">dask_ml.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="k">as</span> <span class="n">PCA_MCPU</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="k">as</span> <span class="n">PCA_CPU</span>
 
@@ -97,6 +99,269 @@
 <div class="viewcode-block" id="PCA">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA">[docs]</a>
 <span class="k">class</span> <span class="nc">PCA</span><span class="p">(</span><span class="n">Fit</span><span class="p">,</span> <span class="n">FitTransform</span><span class="p">,</span> <span class="n">TargeteredTransform</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Principal component analysis (PCA).</span>
+
+<span class="sd">    Linear dimensionality reduction using Singular Value Decomposition of the</span>
+<span class="sd">    data to project it to a lower dimensional space. The input data is centered</span>
+<span class="sd">    but not scaled for each feature before applying the SVD.</span>
+
+<span class="sd">    It uses the LAPACK implementation of the full SVD or a randomized truncated</span>
+<span class="sd">    SVD by the method of Halko et al. 2009, depending on the shape of the input</span>
+<span class="sd">    data and the number of components to extract.</span>
+
+<span class="sd">    With sparse inputs, the ARPACK implementation of the truncated SVD can be</span>
+<span class="sd">    used (i.e. through :func:`scipy.sparse.linalg.svds`). Alternatively, one</span>
+<span class="sd">    may consider :class:`TruncatedSVD` where the data are not centered.</span>
+
+<span class="sd">    Notice that this class only supports sparse inputs for some solvers such as</span>
+<span class="sd">    &quot;arpack&quot; and &quot;covariance_eigh&quot;. See :class:`TruncatedSVD` for an</span>
+<span class="sd">    alternative with sparse data.</span>
+
+<span class="sd">    For a usage example, see</span>
+<span class="sd">    :ref:`sphx_glr_auto_examples_decomposition_plot_pca_iris.py`</span>
+
+<span class="sd">    Read more in the :ref:`User Guide &lt;PCA&gt;`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_components : int, float or &#39;mle&#39;, default=None</span>
+<span class="sd">        Number of components to keep.</span>
+<span class="sd">        if n_components is not set all components are kept::</span>
+
+<span class="sd">            n_components == min(n_samples, n_features)</span>
+
+<span class="sd">        If ``n_components == &#39;mle&#39;`` and ``svd_solver == &#39;full&#39;``, Minka&#39;s</span>
+<span class="sd">        MLE is used to guess the dimension. Use of ``n_components == &#39;mle&#39;``</span>
+<span class="sd">        will interpret ``svd_solver == &#39;auto&#39;`` as ``svd_solver == &#39;full&#39;``.</span>
+
+<span class="sd">        If ``0 &lt; n_components &lt; 1`` and ``svd_solver == &#39;full&#39;``, select the</span>
+<span class="sd">        number of components such that the amount of variance that needs to be</span>
+<span class="sd">        explained is greater than the percentage specified by n_components.</span>
+
+<span class="sd">        If ``svd_solver == &#39;arpack&#39;``, the number of components must be</span>
+<span class="sd">        strictly less than the minimum of n_features and n_samples.</span>
+
+<span class="sd">        Hence, the None case results in::</span>
+
+<span class="sd">            n_components == min(n_samples, n_features) - 1</span>
+
+<span class="sd">    copy : bool, default=True</span>
+<span class="sd">        If False, data passed to fit are overwritten and running</span>
+<span class="sd">        fit(X).transform(X) will not yield the expected results,</span>
+<span class="sd">        use fit_transform(X) instead.</span>
+
+<span class="sd">    whiten : bool, default=False</span>
+<span class="sd">        When True (False by default) the `components_` vectors are multiplied</span>
+<span class="sd">        by the square root of n_samples and then divided by the singular values</span>
+<span class="sd">        to ensure uncorrelated outputs with unit component-wise variances.</span>
+
+<span class="sd">        Whitening will remove some information from the transformed signal</span>
+<span class="sd">        (the relative variance scales of the components) but can sometime</span>
+<span class="sd">        improve the predictive accuracy of the downstream estimators by</span>
+<span class="sd">        making their data respect some hard-wired assumptions.</span>
+
+<span class="sd">    svd_solver : {&#39;auto&#39;, &#39;full&#39;, &#39;covariance_eigh&#39;, &#39;arpack&#39;, &#39;randomized&#39;},\</span>
+<span class="sd">            default=&#39;auto&#39;</span>
+<span class="sd">        &quot;auto&quot; :</span>
+<span class="sd">            The solver is selected by a default &#39;auto&#39; policy is based on `X.shape` and</span>
+<span class="sd">            `n_components`: if the input data has fewer than 1000 features and</span>
+<span class="sd">            more than 10 times as many samples, then the &quot;covariance_eigh&quot;</span>
+<span class="sd">            solver is used. Otherwise, if the input data is larger than 500x500</span>
+<span class="sd">            and the number of components to extract is lower than 80% of the</span>
+<span class="sd">            smallest dimension of the data, then the more efficient</span>
+<span class="sd">            &quot;randomized&quot; method is selected. Otherwise the exact &quot;full&quot; SVD is</span>
+<span class="sd">            computed and optionally truncated afterwards.</span>
+<span class="sd">        &quot;full&quot; :</span>
+<span class="sd">            Run exact full SVD calling the standard LAPACK solver via</span>
+<span class="sd">            `scipy.linalg.svd` and select the components by postprocessing</span>
+<span class="sd">        &quot;covariance_eigh&quot; :</span>
+<span class="sd">            Precompute the covariance matrix (on centered data), run a</span>
+<span class="sd">            classical eigenvalue decomposition on the covariance matrix</span>
+<span class="sd">            typically using LAPACK and select the components by postprocessing.</span>
+<span class="sd">            This solver is very efficient for n_samples &gt;&gt; n_features and small</span>
+<span class="sd">            n_features. It is, however, not tractable otherwise for large</span>
+<span class="sd">            n_features (large memory footprint required to materialize the</span>
+<span class="sd">            covariance matrix). Also note that compared to the &quot;full&quot; solver,</span>
+<span class="sd">            this solver effectively doubles the condition number and is</span>
+<span class="sd">            therefore less numerical stable (e.g. on input data with a large</span>
+<span class="sd">            range of singular values).</span>
+<span class="sd">        &quot;arpack&quot; :</span>
+<span class="sd">            Run SVD truncated to `n_components` calling ARPACK solver via</span>
+<span class="sd">            `scipy.sparse.linalg.svds`. It requires strictly</span>
+<span class="sd">            `0 &lt; n_components &lt; min(X.shape)`</span>
+<span class="sd">        &quot;randomized&quot; :</span>
+<span class="sd">            Run randomized SVD by the method of Halko et al.</span>
+
+<span class="sd">        .. versionadded:: 0.18.0</span>
+
+<span class="sd">        .. versionchanged:: 1.5</span>
+<span class="sd">            Added the &#39;covariance_eigh&#39; solver.</span>
+
+<span class="sd">    tol : float, default=0.0</span>
+<span class="sd">        Tolerance for singular values computed by svd_solver == &#39;arpack&#39;.</span>
+<span class="sd">        Must be of range [0.0, infinity).</span>
+
+<span class="sd">        .. versionadded:: 0.18.0</span>
+
+<span class="sd">    iterated_power : int or &#39;auto&#39;, default=&#39;auto&#39;</span>
+<span class="sd">        Number of iterations for the power method computed by</span>
+<span class="sd">        svd_solver == &#39;randomized&#39;.</span>
+<span class="sd">        Must be of range [0, infinity).</span>
+
+<span class="sd">        .. versionadded:: 0.18.0</span>
+
+<span class="sd">    n_oversamples : int, default=10</span>
+<span class="sd">        This parameter is only relevant when `svd_solver=&quot;randomized&quot;`.</span>
+<span class="sd">        It corresponds to the additional number of random vectors to sample the</span>
+<span class="sd">        range of `X` so as to ensure proper conditioning. See</span>
+<span class="sd">        :func:`~sklearn.utils.extmath.randomized_svd` for more details.</span>
+
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">    power_iteration_normalizer : {&#39;auto&#39;, &#39;QR&#39;, &#39;LU&#39;, &#39;none&#39;}, default=&#39;auto&#39;</span>
+<span class="sd">        Power iteration normalizer for randomized SVD solver.</span>
+<span class="sd">        Not used by ARPACK. See :func:`~sklearn.utils.extmath.randomized_svd`</span>
+<span class="sd">        for more details.</span>
+
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">    random_state : int, RandomState instance or None, default=None</span>
+<span class="sd">        Used when the &#39;arpack&#39; or &#39;randomized&#39; solvers are used. Pass an int</span>
+<span class="sd">        for reproducible results across multiple function calls.</span>
+<span class="sd">        See :term:`Glossary &lt;random_state&gt;`.</span>
+
+<span class="sd">        .. versionadded:: 0.18.0</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    components_ : ndarray of shape (n_components, n_features)</span>
+<span class="sd">        Principal axes in feature space, representing the directions of</span>
+<span class="sd">        maximum variance in the data. Equivalently, the right singular</span>
+<span class="sd">        vectors of the centered input data, parallel to its eigenvectors.</span>
+<span class="sd">        The components are sorted by decreasing ``explained_variance_``.</span>
+
+<span class="sd">    explained_variance_ : ndarray of shape (n_components,)</span>
+<span class="sd">        The amount of variance explained by each of the selected components.</span>
+<span class="sd">        The variance estimation uses `n_samples - 1` degrees of freedom.</span>
+
+<span class="sd">        Equal to n_components largest eigenvalues</span>
+<span class="sd">        of the covariance matrix of X.</span>
+
+<span class="sd">        .. versionadded:: 0.18</span>
+
+<span class="sd">    explained_variance_ratio_ : ndarray of shape (n_components,)</span>
+<span class="sd">        Percentage of variance explained by each of the selected components.</span>
+
+<span class="sd">        If ``n_components`` is not set then all components are stored and the</span>
+<span class="sd">        sum of the ratios is equal to 1.0.</span>
+
+<span class="sd">    singular_values_ : ndarray of shape (n_components,)</span>
+<span class="sd">        The singular values corresponding to each of the selected components.</span>
+<span class="sd">        The singular values are equal to the 2-norms of the ``n_components``</span>
+<span class="sd">        variables in the lower-dimensional space.</span>
+
+<span class="sd">        .. versionadded:: 0.19</span>
+
+<span class="sd">    mean_ : ndarray of shape (n_features,)</span>
+<span class="sd">        Per-feature empirical mean, estimated from the training set.</span>
+
+<span class="sd">        Equal to `X.mean(axis=0)`.</span>
+
+<span class="sd">    n_components_ : int</span>
+<span class="sd">        The estimated number of components. When n_components is set</span>
+<span class="sd">        to &#39;mle&#39; or a number between 0 and 1 (with svd_solver == &#39;full&#39;) this</span>
+<span class="sd">        number is estimated from input data. Otherwise it equals the parameter</span>
+<span class="sd">        n_components, or the lesser value of n_features and n_samples</span>
+<span class="sd">        if n_components is None.</span>
+
+<span class="sd">    n_samples_ : int</span>
+<span class="sd">        Number of samples in the training data.</span>
+
+<span class="sd">    noise_variance_ : float</span>
+<span class="sd">        The estimated noise covariance following the Probabilistic PCA model</span>
+<span class="sd">        from Tipping and Bishop 1999. See &quot;Pattern Recognition and</span>
+<span class="sd">        Machine Learning&quot; by C. Bishop, 12.2.1 p. 574 or</span>
+<span class="sd">        http://www.miketipping.com/papers/met-mppca.pdf. It is required to</span>
+<span class="sd">        compute the estimated data covariance and score samples.</span>
+
+<span class="sd">        Equal to the average of (min(n_features, n_samples) - n_components)</span>
+<span class="sd">        smallest eigenvalues of the covariance matrix of X.</span>
+
+<span class="sd">    n_features_in_ : int</span>
+<span class="sd">        Number of features seen during :term:`fit`.</span>
+
+<span class="sd">        .. versionadded:: 0.24</span>
+
+<span class="sd">    feature_names_in_ : ndarray of shape (`n_features_in_`,)</span>
+<span class="sd">        Names of features seen during :term:`fit`. Defined only when `X`</span>
+<span class="sd">        has feature names that are all strings.</span>
+
+<span class="sd">        .. versionadded:: 1.0</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    KernelPCA : Kernel Principal Component Analysis.</span>
+<span class="sd">    SparsePCA : Sparse Principal Component Analysis.</span>
+<span class="sd">    TruncatedSVD : Dimensionality reduction using truncated SVD.</span>
+<span class="sd">    IncrementalPCA : Incremental Principal Component Analysis.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    For n_components == &#39;mle&#39;, this class uses the method from:</span>
+<span class="sd">    `Minka, T. P.. &quot;Automatic choice of dimensionality for PCA&quot;.</span>
+<span class="sd">    In NIPS, pp. 598-604 &lt;https://tminka.github.io/papers/pca/minka-pca.pdf&gt;`_</span>
+
+<span class="sd">    Implements the probabilistic PCA model from:</span>
+<span class="sd">    `Tipping, M. E., and Bishop, C. M. (1999). &quot;Probabilistic principal</span>
+<span class="sd">    component analysis&quot;. Journal of the Royal Statistical Society:</span>
+<span class="sd">    Series B (Statistical Methodology), 61(3), 611-622.</span>
+<span class="sd">    &lt;http://www.miketipping.com/papers/met-mppca.pdf&gt;`_</span>
+<span class="sd">    via the score and score_samples methods.</span>
+
+<span class="sd">    For svd_solver == &#39;arpack&#39;, refer to `scipy.sparse.linalg.svds`.</span>
+
+<span class="sd">    For svd_solver == &#39;randomized&#39;, see:</span>
+<span class="sd">    :doi:`Halko, N., Martinsson, P. G., and Tropp, J. A. (2011).</span>
+<span class="sd">    &quot;Finding structure with randomness: Probabilistic algorithms for</span>
+<span class="sd">    constructing approximate matrix decompositions&quot;.</span>
+<span class="sd">    SIAM review, 53(2), 217-288.</span>
+<span class="sd">    &lt;10.1137/090771806&gt;`</span>
+<span class="sd">    and also</span>
+<span class="sd">    :doi:`Martinsson, P. G., Rokhlin, V., and Tygert, M. (2011).</span>
+<span class="sd">    &quot;A randomized algorithm for the decomposition of matrices&quot;.</span>
+<span class="sd">    Applied and Computational Harmonic Analysis, 30(1), 47-68.</span>
+<span class="sd">    &lt;10.1016/j.acha.2010.02.003&gt;`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.decomposition import PCA</span>
+<span class="sd">    &gt;&gt;&gt; X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])</span>
+<span class="sd">    &gt;&gt;&gt; pca = PCA(n_components=2)</span>
+<span class="sd">    &gt;&gt;&gt; pca.fit(X)</span>
+<span class="sd">    PCA(n_components=2)</span>
+<span class="sd">    &gt;&gt;&gt; print(pca.explained_variance_ratio_)</span>
+<span class="sd">    [0.9924... 0.0075...]</span>
+<span class="sd">    &gt;&gt;&gt; print(pca.singular_values_)</span>
+<span class="sd">    [6.30061... 0.54980...]</span>
+
+<span class="sd">    &gt;&gt;&gt; pca = PCA(n_components=2, svd_solver=&#39;full&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; pca.fit(X)</span>
+<span class="sd">    PCA(n_components=2, svd_solver=&#39;full&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(pca.explained_variance_ratio_)</span>
+<span class="sd">    [0.9924... 0.00755...]</span>
+<span class="sd">    &gt;&gt;&gt; print(pca.singular_values_)</span>
+<span class="sd">    [6.30061... 0.54980...]</span>
+
+<span class="sd">    &gt;&gt;&gt; pca = PCA(n_components=1, svd_solver=&#39;arpack&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; pca.fit(X)</span>
+<span class="sd">    PCA(n_components=1, svd_solver=&#39;arpack&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(pca.explained_variance_ratio_)</span>
+<span class="sd">    [0.99244...]</span>
+<span class="sd">    &gt;&gt;&gt; print(pca.singular_values_)</span>
+<span class="sd">    [6.30061...]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n_components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -169,42 +434,156 @@
 <div class="viewcode-block" id="PCA._lazy_fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model with X using Dask with CPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns the instance itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mcpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._lazy_fit_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model with X using Dask with GPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns the instance itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._fit_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model with X using CPU only</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns the instance itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._fit_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model with X with GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns the instance itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._lazy_fit_transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model with X and apply the dimensionality reduction on X using</span>
+<span class="sd">        Dask with CPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : ndarray of shape (n_samples, n_components)</span>
+<span class="sd">            Transformed values.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method returns a Fortran-ordered array. To convert it to a</span>
+<span class="sd">        C-ordered array, use &#39;np.ascontiguousarray&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mcpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._lazy_fit_transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_fit_transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model with X and apply the dimensionality reduction on X using</span>
+<span class="sd">        Dask with GPUs only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : ndarray of shape (n_samples, n_components)</span>
+<span class="sd">            Transformed values.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method returns a Fortran-ordered array. To convert it to a</span>
+<span class="sd">        C-ordered array, use &#39;cp.ascontiguousarray&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="c1"># The argument &#39;y&#39; is just to keep the API consistent</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
@@ -212,73 +591,230 @@
 <div class="viewcode-block" id="PCA._fit_transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model with X and apply the dimensionality reduction on X using</span>
+<span class="sd">        CPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : ndarray of shape (n_samples, n_components)</span>
+<span class="sd">            Transformed values.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method returns a Fortran-ordered array. To convert it to a</span>
+<span class="sd">        C-ordered array, use &#39;np.ascontiguousarray&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._fit_transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._fit_transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_fit_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model with X and apply the dimensionality reduction on X using</span>
+<span class="sd">        GPU only.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : ndarray of shape (n_samples, n_components)</span>
+<span class="sd">            Transformed values.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method returns a Fortran-ordered array. To convert it to a</span>
+<span class="sd">        C-ordered array, use &#39;cp.ascontiguousarray&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._lazy_transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply dimensionality reduction to X using Dask with CPUs only.</span>
+
+<span class="sd">        X is projected on the first principal components previously extracted</span>
+<span class="sd">        from a training set.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            New data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array-like of shape (n_samples, n_components)</span>
+<span class="sd">            Projection of X in the first principal components, where `n_samples`</span>
+<span class="sd">            is the number of samples and `n_components` is the number of the components.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mcpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._lazy_transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._lazy_transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_lazy_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply dimensionality reduction to X using Dask with GPUs only.</span>
+
+<span class="sd">        X is projected on the first principal components previously extracted</span>
+<span class="sd">        from a training set.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            New data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array-like of shape (n_samples, n_components)</span>
+<span class="sd">            Projection of X in the first principal components, where `n_samples`</span>
+<span class="sd">            is the number of samples and `n_components` is the number of the components.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_mgpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._transform_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._transform_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_transform_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply dimensionality reduction to X using CPU only.</span>
+
+<span class="sd">        X is projected on the first principal components previously extracted</span>
+<span class="sd">        from a training set.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            New data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array-like of shape (n_samples, n_components)</span>
+<span class="sd">            Projection of X in the first principal components, where `n_samples`</span>
+<span class="sd">            is the number of samples and `n_components` is the number of the components.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._transform_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._transform_gpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_transform_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply dimensionality reduction to X using GPU only.</span>
+
+<span class="sd">        X is projected on the first principal components previously extracted</span>
+<span class="sd">        from a training set.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            New data, where `n_samples` is the number of samples</span>
+<span class="sd">            and `n_features` is the number of features.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array-like of shape (n_samples, n_components)</span>
+<span class="sd">            Projection of X in the first principal components, where `n_samples`</span>
+<span class="sd">            is the number of samples and `n_components` is the number of the components.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_gpu</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._get_covariance_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._get_covariance_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_get_covariance_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute data covariance with the generative model for CPU only.</span>
+
+<span class="sd">        ``cov = components_.T * S**2 * components_ + sigma2 * eye(n_features)``</span>
+<span class="sd">        where S**2 contains the explained variances, and sigma2 contains the</span>
+<span class="sd">        noise variances.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cov : array of shape=(n_features, n_features)</span>
+<span class="sd">            Estimated covariance of data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">get_covariance</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="PCA.get_covariance">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA.get_covariance">[docs]</a>
     <span class="k">def</span> <span class="nf">get_covariance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic function to get the covariance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cov : array of shape=(n_features, n_features)</span>
+<span class="sd">            Estimated covariance of data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_dask_supported</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_covariance_cpu</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PCA._get_precision_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA._get_precision_cpu">[docs]</a>
     <span class="k">def</span> <span class="nf">_get_precision_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute data precision matrix with the generative model for CPU only.</span>
+
+<span class="sd">        Equals the inverse of the covariance but computed with</span>
+<span class="sd">        the matrix inversion lemma for efficiency.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        precision : array, shape=(n_features, n_features)</span>
+<span class="sd">            Estimated precision of data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pca_cpu</span><span class="o">.</span><span class="n">get_precision</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="PCA.get_precision">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/decomposition/pca/index.html#dasf.ml.decomposition.PCA.get_precision">[docs]</a>
     <span class="k">def</span> <span class="nf">get_precision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic function to get the precision.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        precision : array, shape=(n_features, n_features)</span>
+<span class="sd">            Estimated precision of data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_dask_supported</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_gpu_supported</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_precision_cpu</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GPU is not supported&quot;</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

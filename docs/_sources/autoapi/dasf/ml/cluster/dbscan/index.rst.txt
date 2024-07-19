@@ -1,26 +1,29 @@
-:py:mod:`dasf.ml.cluster.dbscan`
-================================
+dasf.ml.cluster.dbscan
+======================
 
 .. py:module:: dasf.ml.cluster.dbscan
 
+.. autoapi-nested-parse::
 
-Module Contents
----------------
+   DBSCAN algorithm module. 
+
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.ml.cluster.dbscan.DBSCAN
 
 
-
+Module Contents
+---------------
 
 .. py:class:: DBSCAN(eps=0.5, leaf_size=40, metric='euclidean', min_samples=5, p=None, output_type=None, calc_core_sample_indices=True, verbose=False, **kwargs)
 
-
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
+
 
    Perform DBSCAN clustering from vector array or distance matrix.
 
@@ -126,34 +129,174 @@ Classes
    ACM Transactions on Database Systems (TODS), 42(3), 19.
 
 
+   A generic constructor method. 
+
+
    .. py:method:: _lazy_fit_gpu(X, y=None, out_dtype='int32')
 
-      Respective lazy fit mocked function for GPUs.
+      Perform DBSCAN clustering from features, or distance matrix using Dask
+      with GPUs only (from CuML).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or             (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``metric='precomputed'``. If a sparse matrix is provided, it will
+          be converted into a sparse ``csr_matrix``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          Weight of each sample, such that a sample with a weight of at least
+          ``min_samples`` is by itself a core sample; a sample with a
+          negative weight may inhibit its eps-neighbor from being core.
+          Note that weights are absolute, and default to 1.
+
+      Returns
+      -------
+      self : object
+          Returns a fitted instance of self.
+
 
 
    .. py:method:: _fit_cpu(X, y=None, sample_weight=None)
 
-      Respective immediate fit mocked function for local CPU(s).
+      Perform DBSCAN clustering from features, or distance matrix using CPU
+      only.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or             (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``metric='precomputed'``. If a sparse matrix is provided, it will
+          be converted into a sparse ``csr_matrix``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          Weight of each sample, such that a sample with a weight of at least
+          ``min_samples`` is by itself a core sample; a sample with a
+          negative weight may inhibit its eps-neighbor from being core.
+          Note that weights are absolute, and default to 1.
+
+      Returns
+      -------
+      self : object
+          Returns a fitted instance of self.
+
 
 
    .. py:method:: _fit_gpu(X, y=None, out_dtype='int32')
 
-      Respective immediate fit mocked function for local GPU(s).
+      Perform DBSCAN clustering from features, or distance matrix using GPU
+      only (from CuML).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or             (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``metric='precomputed'``. If a sparse matrix is provided, it will
+          be converted into a sparse ``csr_matrix``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          Weight of each sample, such that a sample with a weight of at least
+          ``min_samples`` is by itself a core sample; a sample with a
+          negative weight may inhibit its eps-neighbor from being core.
+          Note that weights are absolute, and default to 1.
+
+      Returns
+      -------
+      self : object
+          Returns a fitted instance of self.
+
 
 
    .. py:method:: _lazy_fit_predict_gpu(X, y=None, out_dtype='int32')
 
-      Respective lazy fit with predict mocked function for GPUs.
+      Compute clusters from a data or distance matrix and predict labels
+      using Dask and GPUs (from CuML).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or             (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``metric='precomputed'``. If a sparse matrix is provided, it will
+          be converted into a sparse ``csr_matrix``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          Weight of each sample, such that a sample with a weight of at least
+          ``min_samples`` is by itself a core sample; a sample with a
+          negative weight may inhibit its eps-neighbor from being core.
+          Note that weights are absolute, and default to 1.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Cluster labels. Noisy samples are given the label -1.
+
 
 
    .. py:method:: _fit_predict_cpu(X, y=None, sample_weight=None)
 
-      Respective immediate fit with predict mocked function for local CPU(s).
+      Compute clusters from a data or distance matrix and predict labels
+      using CPU only.
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or             (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``metric='precomputed'``. If a sparse matrix is provided, it will
+          be converted into a sparse ``csr_matrix``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          Weight of each sample, such that a sample with a weight of at least
+          ``min_samples`` is by itself a core sample; a sample with a
+          negative weight may inhibit its eps-neighbor from being core.
+          Note that weights are absolute, and default to 1.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Cluster labels. Noisy samples are given the label -1.
+
 
 
    .. py:method:: _fit_predict_gpu(X, y=None, out_dtype='int32')
 
-      Respective immediate fit with predict mocked function for local GPU(s).
+      Compute clusters from a data or distance matrix and predict labels
+      using GPU only (from CuML).
+
+      Parameters
+      ----------
+      X : {array-like, sparse matrix} of shape (n_samples, n_features), or             (n_samples, n_samples)
+          Training instances to cluster, or distances between instances if
+          ``metric='precomputed'``. If a sparse matrix is provided, it will
+          be converted into a sparse ``csr_matrix``.
+
+      y : Ignored
+          Not used, present here for API consistency by convention.
+
+      sample_weight : array-like of shape (n_samples,), default=None
+          Weight of each sample, such that a sample with a weight of at least
+          ``min_samples`` is by itself a core sample; a sample with a
+          negative weight may inhibit its eps-neighbor from being core.
+          Note that weights are absolute, and default to 1.
+
+      Returns
+      -------
+      labels : ndarray of shape (n_samples,)
+          Cluster labels. Noisy samples are given the label -1.
 
 
 

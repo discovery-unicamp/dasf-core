@@ -1,26 +1,23 @@
-:py:mod:`dasf.profile`
-======================
+dasf.profile
+============
 
 .. py:module:: dasf.profile
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   analysis/index.rst
-   plugins/index.rst
-   profiler/index.rst
-   utils/index.rst
+   /autoapi/dasf/profile/analysis/index
+   /autoapi/dasf/profile/plugins/index
+   /autoapi/dasf/profile/profiler/index
+   /autoapi/dasf/profile/utils/index
 
-
-Package Contents
-----------------
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -28,18 +25,18 @@ Classes
    dasf.profile.MultiEventDatabase
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    dasf.profile.register_default_profiler
 
 
+Package Contents
+----------------
 
 .. py:class:: TraceAnalyser(database, process_trace_before = True)
-
 
    .. py:method:: create_annotated_task_graph()
 
@@ -53,9 +50,7 @@ Functions
    .. py:method:: per_task_bottleneck()
 
 
-
 .. py:class:: MultiEventDatabase(databases)
-
 
    .. py:method:: __iter__()
 
@@ -65,6 +60,7 @@ Functions
       Return str(self).
 
 
+
    .. py:method:: __repr__()
 
       Return repr(self).
@@ -72,5 +68,4 @@ Functions
 
 
 .. py:function:: register_default_profiler(pipeline, name = None, enable_nvtx = False, add_time_suffix = True)
-
 

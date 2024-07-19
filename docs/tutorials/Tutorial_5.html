@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial 5: Using profiler &mdash; DASF 1.0b5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=524f00e3"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DASF
+          </a>
+              <div class="version">
+                1.0b5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../principles.html">Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">DASF API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial 5: Using profiler</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/Tutorial_5.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Tutorial-5:-Using-profiler">
+<h1>Tutorial 5: Using profiler<a class="headerlink" href="#Tutorial-5:-Using-profiler" title="Link to this heading"></a></h1>
+<p>This tutorial shows how to use the profiler to measure the performance of your code. We used the same pipeline of the previous tutorial.</p>
+<p>The profile is a tool that measures the time spent in each function of your code. It is very useful to identify bottlenecks and to optimize your code. By default it is not enabled and the simplest way to enable the default profiler is to use the <code class="docutils literal notranslate"><span class="pre">register_default_profiler</span></code> function. It will be shown later, in the notebook.</p>
+<p>The profile consists in two steps: 1. Register the profiler and execute the desired pipeline. It will generate different files, which contains traces of the execution, in the current directory. Each file will have different information, depending on the plugins attached. Using the <code class="docutils literal notranslate"><span class="pre">register_default_profiler</span></code> function, two plugins will be attached, one to measure the dask task time (and other useful information, such as, per task data shape, type, MB, etc.) and a resource usage plugin (which
+measure GPU, CPU, memory and IO usage). 2. Perform analysis of the generated files. Some analysis are already implemented in the <code class="docutils literal notranslate"><span class="pre">profiler</span></code> module, but you can also implement your own analysis. For now we have the followig analysis: per function time, per task time and per worker task balance. It will be shown later, in the notebook.</p>
+<section id="Enabling-profiling">
+<h2>Enabling profiling<a class="headerlink" href="#Enabling-profiling" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">dasf.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">n_bins</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># Generate 3 blobs with 2 classes where the second blob contains</span>
+<span class="c1"># half positive samples and half negative samples. Probability in this</span>
+<span class="c1"># blob is therefore 0.5.</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;X.npy&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;y.npy&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.datasets</span> <span class="kn">import</span> <span class="n">DatasetArray</span>
+<span class="kn">from</span> <span class="nn">dasf.datasets</span> <span class="kn">import</span> <span class="n">DatasetLabeled</span>
+
+
+<span class="k">class</span> <span class="nc">MyMakeBlobs</span><span class="p">(</span><span class="n">DatasetLabeled</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Own make_blobs()&quot;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Let&#39;s assign the train and val data.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_train</span> <span class="o">=</span> <span class="n">DatasetArray</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="s2">&quot;X.npy&quot;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">=</span> <span class="n">DatasetArray</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="s2">&quot;y.npy&quot;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">5000</span><span class="p">))</span>
+
+<span class="n">make_blobs</span> <span class="o">=</span> <span class="n">MyMakeBlobs</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.transforms</span> <span class="kn">import</span> <span class="n">Normalize</span>
+
+<span class="n">normalize</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.pipeline.executors</span> <span class="kn">import</span> <span class="n">DaskPipelineExecutor</span>
+
+<span class="n">dask</span> <span class="o">=</span> <span class="n">DaskPipelineExecutor</span><span class="p">(</span><span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2023-08-15 11:55:48,568 - distributed.preloading - INFO - Creating preload: dask_cuda.initialize
+2023-08-15 11:55:48,568 - distributed.preloading - INFO - Import preload module: dask_cuda.initialize
+2023-08-15 11:55:48,568 - distributed.preloading - INFO - Creating preload: dask_cuda.initialize
+2023-08-15 11:55:48,568 - distributed.preloading - INFO - Import preload module: dask_cuda.initialize
+2023-08-15 11:55:48,673 - distributed.preloading - INFO - Creating preload: dask_cuda.initialize
+2023-08-15 11:55:48,673 - distributed.preloading - INFO - Import preload module: dask_cuda.initialize
+2023-08-15 11:55:48,752 - distributed.preloading - INFO - Creating preload: dask_cuda.initialize
+2023-08-15 11:55:48,752 - distributed.preloading - INFO - Import preload module: dask_cuda.initialize
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.ml.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">dasf.ml.cluster</span> <span class="kn">import</span> <span class="n">SOM</span>
+
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">som</span> <span class="o">=</span> <span class="n">SOM</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">input_len</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.transforms</span> <span class="kn">import</span> <span class="n">PersistDaskData</span>
+
+<span class="n">persist_kmeans</span> <span class="o">=</span> <span class="n">PersistDaskData</span><span class="p">()</span>
+<span class="n">persist_som</span> <span class="o">=</span> <span class="n">PersistDaskData</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="s2">&quot;A KMeans and SOM Pipeline&quot;</span><span class="p">,</span> <span class="n">executor</span><span class="o">=</span><span class="n">dask</span><span class="p">)</span>
+
+<span class="n">pipeline</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">normalize</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">make_blobs</span><span class="o">.</span><span class="n">_train</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">normalize</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">som</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">normalize</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">persist_kmeans</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">persist_som</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">som</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">visualize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Tutorial_5_8_0.svg" src="../_images/tutorials_Tutorial_5_8_0.svg" />
+</div>
+</div>
+<p>Once you created your pipeline we can attach the profiler to it. The profiler will collect the data and store it in a file (one for each plugin). The file will be stored in the same directory as the notebook. The file name will be controled by the <code class="docutils literal notranslate"><span class="pre">name</span></code> parameter followed by <code class="docutils literal notranslate"><span class="pre">.msgpack</span></code> extension. If you do not provide the <code class="docutils literal notranslate"><span class="pre">name</span></code> parameter it will be <code class="docutils literal notranslate"><span class="pre">default</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">enable_nvtx</span></code> parameter will enable the NVTX markers. This will allow you to see the pipeline in the NVIDIA Nsight Systems. This is only available on NVIDIA GPUs.</p>
+<p>Finally, the <code class="docutils literal notranslate"><span class="pre">add_time_suffix</span></code> parameter will add the current time to the file name (useful for unique file names).In this way you can run the same pipeline multiple times and get different files. The file name will be <code class="docutils literal notranslate"><span class="pre">name_time.msgpack</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.profile</span> <span class="kn">import</span> <span class="n">register_default_profiler</span>
+
+<span class="n">register_default_profiler</span><span class="p">(</span>
+    <span class="n">pipeline</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Tutorial_5_Profile&quot;</span><span class="p">,</span>
+    <span class="n">enable_nvtx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_time_suffix</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Registered worker plugin: Tutorial_5_Profile-TracePlugin
+Registered resource plugin: Tutorial_5_Profile-ResourceMonitor
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> pipeline.run()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2023-08-15 11:55:50-0300] INFO - Beginning pipeline run for &#39;A KMeans and SOM Pipeline&#39;
+[2023-08-15 11:55:50-0300] INFO - Task &#39;DatasetArray.load&#39;: Starting task run...
+[2023-08-15 11:55:50-0300] INFO - Task &#39;DatasetArray.load&#39;: Finished task run
+[2023-08-15 11:55:50-0300] INFO - Task &#39;Normalize.transform&#39;: Starting task run...
+[2023-08-15 11:55:50-0300] INFO - Task &#39;Normalize.transform&#39;: Finished task run
+[2023-08-15 11:55:50-0300] INFO - Task &#39;KMeans.fit_predict&#39;: Starting task run...
+[2023-08-15 11:55:55-0300] INFO - Task &#39;KMeans.fit_predict&#39;: Finished task run
+[2023-08-15 11:55:55-0300] INFO - Task &#39;SOM.fit_predict&#39;: Starting task run...
+[2023-08-15 11:56:21-0300] INFO - Task &#39;SOM.fit_predict&#39;: Finished task run
+[2023-08-15 11:56:21-0300] INFO - Task &#39;PersistDaskData.transform&#39;: Starting task run...
+[2023-08-15 11:56:21-0300] INFO - Task &#39;PersistDaskData.transform&#39;: Finished task run
+[2023-08-15 11:56:21-0300] INFO - Task &#39;PersistDaskData.transform&#39;: Starting task run...
+[2023-08-15 11:56:21-0300] INFO - Task &#39;PersistDaskData.transform&#39;: Finished task run
+[2023-08-15 11:56:21-0300] INFO - Pipeline run successfully
+CPU times: user 11.8 s, sys: 739 ms, total: 12.5 s
+Wall time: 31.2 s
+</pre></div></div>
+</div>
+<p>The resource monitor plugin runs indefinitely, until the program exits. As the database are buffered, in order to reduce the IO pressure, the data are flushed to the database only after 5000 entries (or when program exits). We can shutdown the executor, in order to flush the data to the database.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dask</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2023-08-15 11:56:54,586 - distributed.active_memory_manager - WARNING - Tried retiring worker tcp://127.0.0.1:35871, but 14 tasks could not be moved as there are no suitable workers to receive them. The worker will not be retired.
+2023-08-15 11:56:54,587 - distributed.active_memory_manager - WARNING - Tried retiring worker tcp://127.0.0.1:35148, but 14 tasks could not be moved as there are no suitable workers to receive them. The worker will not be retired.
+2023-08-15 11:56:54,587 - distributed.active_memory_manager - WARNING - Tried retiring worker tcp://127.0.0.1:38191, but 16 tasks could not be moved as there are no suitable workers to receive them. The worker will not be retired.
+2023-08-15 11:56:54,588 - distributed.active_memory_manager - WARNING - Tried retiring worker tcp://127.0.0.1:39400, but 14 tasks could not be moved as there are no suitable workers to receive them. The worker will not be retired.
+</pre></div></div>
+</div>
+</section>
+<section id="Analysing-the-profile-data">
+<h2>Analysing the profile data<a class="headerlink" href="#Analysing-the-profile-data" title="Link to this heading"></a></h2>
+<p>Once the code ran, and traceevents were collected, we can perform analysis to understand the performance of the code. The first step is the load the databases. The <code class="docutils literal notranslate"><span class="pre">register_default_profiler</span></code> attachs two plugins <code class="docutils literal notranslate"><span class="pre">TracePlugin</span></code> (which trace dask tasks) and <code class="docutils literal notranslate"><span class="pre">ResourceMonitorPlugin</span></code> (which traces the resource usage of the workers). So there will be two files: <code class="docutils literal notranslate"><span class="pre">Tutorial_5_Profile-ResourceMonitor-c096.msgpack</span></code> and <code class="docutils literal notranslate"><span class="pre">Tutorial_5_Profile-TracePlugin-c096.msgpack</span></code>. We can load the events using the
+<code class="docutils literal notranslate"><span class="pre">EventProfiler</span></code> class (the same used to register events).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.profile.profiler</span> <span class="kn">import</span> <span class="n">EventProfiler</span>
+<span class="kn">from</span> <span class="nn">dasf.profile</span> <span class="kn">import</span> <span class="n">MultiEventDatabase</span>
+
+<span class="n">db1</span> <span class="o">=</span> <span class="n">EventProfiler</span><span class="p">(</span><span class="s2">&quot;Tutorial_5_Profile-ResourceMonitor-c096.msgpack&quot;</span><span class="p">)</span>
+<span class="n">db2</span> <span class="o">=</span> <span class="n">EventProfiler</span><span class="p">(</span><span class="s2">&quot;Tutorial_5_Profile-TracePlugin-c096.msgpack&quot;</span><span class="p">)</span>
+
+<span class="n">db1</span><span class="p">,</span> <span class="n">db2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(EventProfiler(database=FileDatabase at Tutorial_5_Profile-ResourceMonitor-c096.msgpack),
+ EventProfiler(database=FileDatabase at Tutorial_5_Profile-TracePlugin-c096.msgpack))
+</pre></div></div>
+</div>
+<p>Database are collection of events. Each event is a dataclass and follows the <a class="reference external" href="https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview">Chrome Trace Event Format</a>. The <code class="docutils literal notranslate"><span class="pre">EventProfiler</span></code> class is a wrapper around a list of events. It provides methods to add events and to write the database to a file.</p>
+<p>We can iterate over the events in a database using the <code class="docutils literal notranslate"><span class="pre">get_traces</span></code> function. It will return an iterator over the events in the database. The events are returned in the order they were recorded.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">db1</span><span class="o">.</span><span class="n">get_traces</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="k">break</span>
+
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">db2</span><span class="o">.</span><span class="n">get_traces</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.01274743, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 40.2, &#39;memory&#39;: 2744729600, &#39;time&#39;: 1692111381.5415905, &#39;host_net_io.read_bps&#39;: 10685583.118998485, &#39;host_net_io.write_bps&#39;: 10673829.571746167, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 134589.30723739465, &#39;num_fds&#39;: 189, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3158966272})
+CompleteEvent(name=&#39;Compute&#39;, timestamp=3837.884328029, duration=0.050518035888671875, phase=&#39;X&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-2&#39;, args={&#39;key&#39;: &#39;getGPUs-42237764-1836-4be8-ae62-948ce02e1d6a&#39;, &#39;name&#39;: &#39;tGPUs-42237764-1836-4be8-ae62&#39;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 280, &#39;shape&#39;: [], &#39;dtype&#39;: &#39;unknown&#39;, &#39;type&#39;: &#34;&lt;class &#39;list&#39;&gt;&#34;, &#39;dependencies&#39;: [], &#39;dependents&#39;: []})
+</pre></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">MultiEventDatabase</span></code> allow use traverse multiple databases at the same time (usually, needed for analyses).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">database</span> <span class="o">=</span> <span class="n">MultiEventDatabase</span><span class="p">([</span><span class="n">db1</span><span class="p">,</span> <span class="n">db2</span><span class="p">])</span>
+<span class="n">database</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MultiEventDatabase with 2 databases
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">database</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.01274743, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 40.2, &#39;memory&#39;: 2744729600, &#39;time&#39;: 1692111381.5415905, &#39;host_net_io.read_bps&#39;: 10685583.118998485, &#39;host_net_io.write_bps&#39;: 10673829.571746167, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 134589.30723739465, &#39;num_fds&#39;: 189, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3158966272})
+</pre></div></div>
+</div>
+<p>Or generate a list with all events</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_events</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+<span class="n">all_events</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.01274743, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 40.2, &#39;memory&#39;: 2744729600, &#39;time&#39;: 1692111381.5415905, &#39;host_net_io.read_bps&#39;: 10685583.118998485, &#39;host_net_io.write_bps&#39;: 10673829.571746167, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 134589.30723739465, &#39;num_fds&#39;: 189, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3158966272}),
+ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.018545822, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 0.0, &#39;memory&#39;: 2744729600, &#39;time&#39;: 1692111381.5495014, &#39;host_net_io.read_bps&#39;: 24242915.31342638, &#39;host_net_io.write_bps&#39;: 24415081.283950076, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 0.0, &#39;num_fds&#39;: 189, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3158966272}),
+ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.118886256, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 69.9, &#39;memory&#39;: 2744729600, &#39;time&#39;: 1692111381.649612, &#39;host_net_io.read_bps&#39;: 30272623.59462569, &#39;host_net_io.write_bps&#39;: 28577096.880356316, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 10024124.945820678, &#39;num_fds&#39;: 189, &#39;gpu_utilization&#39;: 1, &#39;gpu_memory_used&#39;: 3158966272}),
+ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.219099359, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 10.0, &#39;memory&#39;: 2744995840, &#39;time&#39;: 1692111381.7498834, &#39;host_net_io.read_bps&#39;: 3102557.5490633715, &#39;host_net_io.write_bps&#39;: 3103435.1666125604, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 0.0, &#39;num_fds&#39;: 193, &#39;gpu_utilization&#39;: 1, &#39;gpu_memory_used&#39;: 3158966272}),
+ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.319312409, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 0.0, &#39;memory&#39;: 2744995840, &#39;time&#39;: 1692111381.850187, &#39;host_net_io.read_bps&#39;: 5343.775123098109, &#39;host_net_io.write_bps&#39;: 5622.927554901742, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 0.0, &#39;num_fds&#39;: 193, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3158966272}),
+ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.418357631, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 0.0, &#39;memory&#39;: 2744995840, &#39;time&#39;: 1692111381.9493108, &#39;host_net_io.read_bps&#39;: 2703.691829652832, &#39;host_net_io.write_bps&#39;: 3147.58153302867, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 0.0, &#39;num_fds&#39;: 193, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3158966272}),
+ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.518484708, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 10.0, &#39;memory&#39;: 2744995840, &#39;time&#39;: 1692111382.0494256, &#39;host_net_io.read_bps&#39;: 19927.11012718611, &#39;host_net_io.write_bps&#39;: 19927.11012718611, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 0.0, &#39;num_fds&#39;: 193, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3158966272}),
+ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.620366242, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 60.1, &#39;memory&#39;: 2745241600, &#39;time&#39;: 1692111382.1493354, &#39;host_net_io.read_bps&#39;: 2815376.423511278, &#39;host_net_io.write_bps&#39;: 2813654.866414532, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 0.0, &#39;num_fds&#39;: 193, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3194617856}),
+ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.721167103, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 70.0, &#39;memory&#39;: 2745511936, &#39;time&#39;: 1692111382.2492902, &#39;host_net_io.read_bps&#39;: 3200509.781330604, &#39;host_net_io.write_bps&#39;: 3200509.781330604, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 0.0, &#39;num_fds&#39;: 193, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3194617856}),
+ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.821650885, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=None, args={&#39;cpu&#39;: 79.1, &#39;memory&#39;: 2745782272, &#39;time&#39;: 1692111382.350485, &#39;host_net_io.read_bps&#39;: 3472817.2998334193, &#39;host_net_io.write_bps&#39;: 4041423.6761417557, &#39;host_disk_io.read_bps&#39;: 0.0, &#39;host_disk_io.write_bps&#39;: 0.0, &#39;num_fds&#39;: 193, &#39;gpu_utilization&#39;: 0, &#39;gpu_memory_used&#39;: 3194617856})]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_events</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[InstantEvent(name=&#39;Managed Memory&#39;, timestamp=3907.782270047, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#34;(&#39;reshape-b1532816c7b1745efbdc8cb9a24f29f9&#39;, 0, 0)&#34;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 300048, &#39;tasks&#39;: 17}),
+ CompleteEvent(name=&#39;Compute&#39;, timestamp=3907.792064168, duration=8.106231689453125e-06, phase=&#39;X&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#39;original-array-64bef1cc631f078a2e8f3d2c24d62e99&#39;, &#39;name&#39;: &#39;iginal-array&#39;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 8, &#39;shape&#39;: [2], &#39;dtype&#39;: &#39;float32&#39;, &#39;type&#39;: &#34;&lt;class &#39;cupy._core.core.ndarray&#39;&gt;&#34;, &#39;dependencies&#39;: [], &#39;dependents&#39;: []}),
+ InstantEvent(name=&#39;Managed Memory&#39;, timestamp=3907.792064168, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#39;original-array-64bef1cc631f078a2e8f3d2c24d62e99&#39;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 300032, &#39;tasks&#39;: 15}),
+ CompleteEvent(name=&#39;Compute&#39;, timestamp=3907.792960693, duration=5.4836273193359375e-06, phase=&#39;X&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#39;original-array-808dd9f17eb2378b6fb7a3aeddc6cb36&#39;, &#39;name&#39;: &#39;iginal-array&#39;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 8, &#39;shape&#39;: [2], &#39;dtype&#39;: &#39;float32&#39;, &#39;type&#39;: &#34;&lt;class &#39;cupy._core.core.ndarray&#39;&gt;&#34;, &#39;dependencies&#39;: [], &#39;dependents&#39;: []}),
+ InstantEvent(name=&#39;Managed Memory&#39;, timestamp=3907.792960693, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#39;original-array-808dd9f17eb2378b6fb7a3aeddc6cb36&#39;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 300040, &#39;tasks&#39;: 16}),
+ CompleteEvent(name=&#39;Compute&#39;, timestamp=3907.803720107, duration=5.698204040527344e-05, phase=&#39;X&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#34;(&#39;array-reshape-22612059257db170fa304ae3f488407c&#39;, 0, 0)&#34;, &#39;name&#39;: &#39;array-reshape&#39;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 8, &#39;shape&#39;: [1, 2], &#39;dtype&#39;: &#39;float32&#39;, &#39;type&#39;: &#34;&lt;class &#39;cupy._core.core.ndarray&#39;&gt;&#34;, &#39;dependencies&#39;: [&#39;original-array-64bef1cc631f078a2e8f3d2c24d62e99&#39;], &#39;dependents&#39;: []}),
+ InstantEvent(name=&#39;Managed Memory&#39;, timestamp=3907.803720107, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#34;(&#39;array-reshape-22612059257db170fa304ae3f488407c&#39;, 0, 0)&#34;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 300032, &#39;tasks&#39;: 15}),
+ CompleteEvent(name=&#39;Compute&#39;, timestamp=3907.804997844, duration=4.4345855712890625e-05, phase=&#39;X&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#34;(&#39;array-reshape-f70b70b2e4718d09ca3086bb97bec087&#39;, 0, 0)&#34;, &#39;name&#39;: &#39;array-reshape&#39;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 8, &#39;shape&#39;: [1, 2], &#39;dtype&#39;: &#39;float32&#39;, &#39;type&#39;: &#34;&lt;class &#39;cupy._core.core.ndarray&#39;&gt;&#34;, &#39;dependencies&#39;: [&#39;original-array-808dd9f17eb2378b6fb7a3aeddc6cb36&#39;], &#39;dependents&#39;: []}),
+ InstantEvent(name=&#39;Managed Memory&#39;, timestamp=3907.804997844, phase=&#39;I&#39;, scope=&#39;g&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#34;(&#39;array-reshape-f70b70b2e4718d09ca3086bb97bec087&#39;, 0, 0)&#34;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 300040, &#39;tasks&#39;: 16}),
+ CompleteEvent(name=&#39;Compute&#39;, timestamp=3907.811160065, duration=5.245208740234375e-06, phase=&#39;X&#39;, process_id=&#39;c096&#39;, thread_id=&#39;worker-c096-1&#39;, args={&#39;key&#39;: &#34;(&#39;reshape-22612059257db170fa304ae3f488407c&#39;, 0, 0)&#34;, &#39;name&#39;: &#39;reshape&#39;, &#39;state&#39;: &#39;memory&#39;, &#39;size&#39;: 8, &#39;shape&#39;: [1, 2], &#39;dtype&#39;: &#39;float32&#39;, &#39;type&#39;: &#34;&lt;class &#39;cupy._core.core.ndarray&#39;&gt;&#34;, &#39;dependencies&#39;: [&#34;(&#39;array-reshape-22612059257db170fa304ae3f488407c&#39;, 0, 0)&#34;], &#39;dependents&#39;: []})]
+</pre></div></div>
+</div>
+<p>Given a <code class="docutils literal notranslate"><span class="pre">MultiEventDatabase</span></code> we can use the <code class="docutils literal notranslate"><span class="pre">TraceAnalyser</span></code> that perform analyses over the database. It is useful to find bottlenecks in the code and to understand how the code is executed.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dasf.profile</span> <span class="kn">import</span> <span class="n">TraceAnalyser</span>
+<span class="n">analyser</span> <span class="o">=</span> <span class="n">TraceAnalyser</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Function-Bottleneck-Report">
+<h3>Function Bottleneck Report<a class="headerlink" href="#Function-Bottleneck-Report" title="Link to this heading"></a></h3>
+<p>The function bootleneck report will show us the function that is taking the most time to run. This is useful for optimizing code. Here, a function is composed by a set of tasks that applies this function in different chunks of data. It is the function used by <code class="docutils literal notranslate"><span class="pre">map_blocks</span></code> (where a function is applyed to several chunks). This report is a dataframe with the following columns: - <code class="docutils literal notranslate"><span class="pre">Host</span></code>: the host where the function is running - <code class="docutils literal notranslate"><span class="pre">GPU</span></code>: the GPU where the function is running - <code class="docutils literal notranslate"><span class="pre">Function</span></code>: the
+function name - <code class="docutils literal notranslate"><span class="pre">Duration</span></code>: the time spent in the function - <code class="docutils literal notranslate"><span class="pre">Percentage</span> <span class="pre">of</span> <span class="pre">total</span> <span class="pre">time</span> <span class="pre">(%)</span></code>: the percentage of total compute time spent in the function - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">GPU</span> <span class="pre">Utilization</span> <span class="pre">(%)</span></code>: the mean GPU utilization during the function execution - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">GPU</span> <span class="pre">Memory</span> <span class="pre">Used</span> <span class="pre">(GB)</span></code>: the mean GPU memory used during the function execution - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">Data</span> <span class="pre">Size</span> <span class="pre">(MB)</span></code>: the mean data size used during the function execution (as input) - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">Data</span> <span class="pre">Throughput</span> <span class="pre">(MB/s)</span></code>: the mean data throughput during the
+function execution (as input) - <code class="docutils literal notranslate"><span class="pre">Num</span> <span class="pre">tasks</span> <span class="pre">(chunks)</span></code>: the number of tasks (chunks) that the function was applied - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">Task</span> <span class="pre">Time</span> <span class="pre">(s)</span></code>: the mean time spent in each task (chunk)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">func_bottleneck_dataframe</span> <span class="o">=</span> <span class="n">analyser</span><span class="o">.</span><span class="n">per_function_bottleneck</span><span class="p">()</span>
+<span class="n">func_bottleneck_dataframe</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Creating annotated task graph: 100%|███████████████████████████████████| 122391/122391 [00:00&lt;00:00, 480393.43it/s]
+[function_bottleneck] Analysing traces: 100%|███████████████████████████| 122391/122391 [00:07&lt;00:00, 17441.83it/s]
+[function_bottleneck] Creating dataframe: 100%|██████████████████████████████████████| 4/4 [00:00&lt;00:00, 41.34it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Host</th>
+      <th>GPU</th>
+      <th>Function</th>
+      <th>Duration (s)</th>
+      <th>Percentage of total time (%)</th>
+      <th>Mean GPU Utilization (%)</th>
+      <th>Mean GPU Memory Used (GB)</th>
+      <th>Mean Data Size (MB)</th>
+      <th>Mean Throughput (MB/s)</th>
+      <th>Num Tasks (chunks)</th>
+      <th>Mean Task time (s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>624</th>
+      <td>c096</td>
+      <td>0</td>
+      <td>unc_fit-62a75b12-6b7a-49b0-b279</td>
+      <td>2.471439</td>
+      <td>34.967563</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.160000</td>
+      <td>0.064740</td>
+      <td>1</td>
+      <td>2.471439</td>
+    </tr>
+    <tr>
+      <th>1753</th>
+      <td>c096</td>
+      <td>1</td>
+      <td>unc_fit-2d612856-11c9-4d72-8062</td>
+      <td>2.471328</td>
+      <td>35.497386</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.200000</td>
+      <td>0.080928</td>
+      <td>1</td>
+      <td>2.471328</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>c096</td>
+      <td>2</td>
+      <td>unc_fit-abdc6ba0-f141-4e3c-909e</td>
+      <td>2.463677</td>
+      <td>33.690773</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.240000</td>
+      <td>0.097415</td>
+      <td>1</td>
+      <td>2.463677</td>
+    </tr>
+    <tr>
+      <th>1228</th>
+      <td>c096</td>
+      <td>3</td>
+      <td>unc_fit-d813c7ea-7042-4c69-8a72</td>
+      <td>2.463437</td>
+      <td>34.930821</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.200000</td>
+      <td>0.081187</td>
+      <td>1</td>
+      <td>2.463437</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>c096</td>
+      <td>2</td>
+      <td>var-partial</td>
+      <td>1.172959</td>
+      <td>16.040208</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000908</td>
+      <td>0.619854</td>
+      <td>685</td>
+      <td>0.001712</td>
+    </tr>
+    <tr>
+      <th>1750</th>
+      <td>c096</td>
+      <td>1</td>
+      <td>var-partial</td>
+      <td>1.105952</td>
+      <td>15.885550</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000907</td>
+      <td>0.624356</td>
+      <td>670</td>
+      <td>0.001651</td>
+    </tr>
+    <tr>
+      <th>1225</th>
+      <td>c096</td>
+      <td>3</td>
+      <td>var-partial</td>
+      <td>1.049221</td>
+      <td>14.877642</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000907</td>
+      <td>0.617285</td>
+      <td>639</td>
+      <td>0.001642</td>
+    </tr>
+    <tr>
+      <th>622</th>
+      <td>c096</td>
+      <td>0</td>
+      <td>var-partial</td>
+      <td>1.018737</td>
+      <td>14.413764</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000906</td>
+      <td>0.623162</td>
+      <td>570</td>
+      <td>0.001787</td>
+    </tr>
+    <tr>
+      <th>1223</th>
+      <td>c096</td>
+      <td>3</td>
+      <td>var</td>
+      <td>0.825022</td>
+      <td>11.698578</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.040000</td>
+      <td>70.562086</td>
+      <td>711</td>
+      <td>0.001160</td>
+    </tr>
+    <tr>
+      <th>621</th>
+      <td>c096</td>
+      <td>0</td>
+      <td>mean_combine-partial</td>
+      <td>0.534140</td>
+      <td>7.557362</td>
+      <td>1.0</td>
+      <td>3.158966</td>
+      <td>0.000752</td>
+      <td>1.198554</td>
+      <td>674</td>
+      <td>0.000792</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Task-Bootleneck-Report">
+<h3>Task Bootleneck Report<a class="headerlink" href="#Task-Bootleneck-Report" title="Link to this heading"></a></h3>
+<p>The task bottleneck report shows the tasks that are the most time consuming in the application. This is similar to the above report, but is per task instead of per function (i.e., each block). This is similar to DASK task breakdown report.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task_bottleneck_dataframe</span> <span class="o">=</span> <span class="n">analyser</span><span class="o">.</span><span class="n">per_task_bottleneck</span><span class="p">()</span>
+<span class="n">task_bottleneck_dataframe</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Creating annotated task graph: 100%|███████████████████████████████████| 122391/122391 [00:00&lt;00:00, 426913.80it/s]
+[task_bottleneck] Analysing traces: 100%|███████████████████████████████| 122391/122391 [00:11&lt;00:00, 10857.61it/s]
+[task_bottleneck] Creating dataframe: 100%|██████████████████████████████████████████| 4/4 [00:00&lt;00:00,  5.47it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Host</th>
+      <th>GPU</th>
+      <th>Task Key</th>
+      <th>Duration (s)</th>
+      <th>Percentage of total time (%)</th>
+      <th>Memory usage (Mb)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10453</th>
+      <td>c096</td>
+      <td>0</td>
+      <td>_func_fit-62a75b12-6b7a-49b0-b279-160a8ff3ee3b</td>
+      <td>2.471439</td>
+      <td>34.967563</td>
+      <td>0.000048</td>
+    </tr>
+    <tr>
+      <th>31484</th>
+      <td>c096</td>
+      <td>1</td>
+      <td>_func_fit-2d612856-11c9-4d72-8062-7dfff911cf37</td>
+      <td>2.471328</td>
+      <td>35.497386</td>
+      <td>0.000048</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>c096</td>
+      <td>2</td>
+      <td>_func_fit-abdc6ba0-f141-4e3c-909e-059f1f2eed4f</td>
+      <td>2.463677</td>
+      <td>33.690773</td>
+      <td>0.000048</td>
+    </tr>
+    <tr>
+      <th>21017</th>
+      <td>c096</td>
+      <td>3</td>
+      <td>_func_fit-d813c7ea-7042-4c69-8a72-7bdafcec69fb</td>
+      <td>2.463437</td>
+      <td>34.930821</td>
+      <td>0.000048</td>
+    </tr>
+    <tr>
+      <th>31507</th>
+      <td>c096</td>
+      <td>1</td>
+      <td>_update-96127d18-5249-4874-accc-a95d91831a7f</td>
+      <td>0.452484</td>
+      <td>6.499339</td>
+      <td>0.000092</td>
+    </tr>
+    <tr>
+      <th>10497</th>
+      <td>c096</td>
+      <td>0</td>
+      <td>_update-988648be-51da-405b-a484-a25c9db01ee3</td>
+      <td>0.430781</td>
+      <td>6.094980</td>
+      <td>0.000092</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>c096</td>
+      <td>2</td>
+      <td>_update-8c69b565-dc4d-4abc-80bb-e8085e2960bb</td>
+      <td>0.426465</td>
+      <td>5.831903</td>
+      <td>0.000092</td>
+    </tr>
+    <tr>
+      <th>21070</th>
+      <td>c096</td>
+      <td>3</td>
+      <td>_update-af7e6144-6bc1-4f85-9b66-4dd7e5f241d0</td>
+      <td>0.425992</td>
+      <td>6.040446</td>
+      <td>0.000092</td>
+    </tr>
+    <tr>
+      <th>21006</th>
+      <td>c096</td>
+      <td>3</td>
+      <td>('var-e4678ef53eb782384180081aa58da0be', 13, 0)</td>
+      <td>0.363825</td>
+      <td>5.158930</td>
+      <td>0.000450</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>c096</td>
+      <td>2</td>
+      <td>('mean_chunk-0ff2c4ec843f304adcd7d25ca35c47a7'...</td>
+      <td>0.259243</td>
+      <td>3.545143</td>
+      <td>0.000376</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Task-balance">
+<h3>Task balance<a class="headerlink" href="#Task-balance" title="Link to this heading"></a></h3>
+<p>This report show the number of tasks in memory (per worker), in each instant of time. This is useful to check imbalance in the load of the workers.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task_balance_dataframe</span> <span class="o">=</span> <span class="n">analyser</span><span class="o">.</span><span class="n">per_worker_task_balance</span><span class="p">()</span>
+<span class="n">task_balance_dataframe</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+[task_balance] Analysing traces: 100%|████████████████████████████████| 122391/122391 [00:00&lt;00:00, 1256360.33it/s]
+[task_balance] Creating dataframe: 100%|███████████████████████████████████████| 71/71 [00:00&lt;00:00, 359222.66it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Time Interval (seconds from begin)</th>
+      <th>worker-c096-0</th>
+      <th>worker-c096-1</th>
+      <th>worker-c096-2</th>
+      <th>worker-c096-3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>10.0</td>
+      <td>12.0</td>
+      <td>16.0</td>
+      <td>11.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>6</td>
+      <td>33.0</td>
+      <td>13.0</td>
+      <td>15.0</td>
+      <td>35.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7</td>
+      <td>8.0</td>
+      <td>14.0</td>
+      <td>32.0</td>
+      <td>17.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>8</td>
+      <td>32.0</td>
+      <td>15.0</td>
+      <td>31.0</td>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>9</td>
+      <td>32.0</td>
+      <td>30.0</td>
+      <td>19.0</td>
+      <td>19.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>10</td>
+      <td>14.0</td>
+      <td>14.0</td>
+      <td>14.0</td>
+      <td>15.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>11</td>
+      <td>13.0</td>
+      <td>15.0</td>
+      <td>14.0</td>
+      <td>21.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>12</td>
+      <td>16.0</td>
+      <td>19.0</td>
+      <td>9.0</td>
+      <td>16.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>13</td>
+      <td>18.0</td>
+      <td>15.0</td>
+      <td>17.0</td>
+      <td>20.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022--2023, UNICAMP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

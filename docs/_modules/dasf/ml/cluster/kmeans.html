@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.ml.cluster.kmeans &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -80,6 +80,8 @@
              
   <h1>Source code for dasf.ml.cluster.kmeans</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="sd">&quot;&quot;&quot; K-Means algorithm module. &quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">dask_ml.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span> <span class="k">as</span> <span class="n">KMeans_MCPU</span>
 <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span> <span class="k">as</span> <span class="n">KMeans_CPU</span>
@@ -377,7 +379,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        self</span>
+<span class="sd">        self : object</span>
 <span class="sd">            Fitted estimator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_mcpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
@@ -407,7 +409,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        self</span>
+<span class="sd">        self : object</span>
 <span class="sd">            Fitted estimator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_mgpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -439,7 +441,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        self</span>
+<span class="sd">        self : object</span>
 <span class="sd">            Fitted estimator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_cpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span></div>
@@ -469,7 +471,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        self</span>
+<span class="sd">        self : object</span>
 <span class="sd">            Fitted estimator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__kmeans_gpu</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span></div>
@@ -732,6 +734,7 @@
 <span class="sd">            Index of the cluster each sample belongs to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">__predict</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Block function to predict data per block.&quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict_cpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">map_blocks</span><span class="p">(</span>
@@ -764,6 +767,7 @@
 <span class="sd">            Index of the cluster each sample belongs to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">__predict</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Block function to predict data per block.&quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict_gpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">map_blocks</span><span class="p">(</span>
@@ -773,13 +777,71 @@
 
 <div class="viewcode-block" id="KMeans._predict2_cpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._predict2_cpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_predict2_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_predict2_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compat</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A block predict using Scikit Learn variant as a placeholder.</span>
+
+<span class="sd">        In the vector quantization literature, `cluster_centers_` is called</span>
+<span class="sd">        the code book and each value returned by `predict` is the index of</span>
+<span class="sd">        the closest code in the code book.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            New data to predict.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            The weights for each observation in X. If None, all observations</span>
+<span class="sd">            are assigned equal weight.</span>
+
+<span class="sd">        compat : bool</span>
+<span class="sd">            There is no version for single CPU/GPU for predict2. This</span>
+<span class="sd">            compatibility parameter uses the original predict method.</span>
+<span class="sd">            Otherwise, it raises an exception.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        labels : ndarray of shape (n_samples,)</span>
+<span class="sd">            Index of the cluster each sample belongs to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">compat</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict_cpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span>
+
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Method available only for Dask.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="KMeans._predict2_gpu">
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans._predict2_gpu">[docs]</a>
-    <span class="k">def</span> <span class="nf">_predict2_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_predict2_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compat</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A block predict using CuML variant as a placeholder.</span>
+
+<span class="sd">        In the vector quantization literature, `cluster_centers_` is called</span>
+<span class="sd">        the code book and each value returned by `predict` is the index of</span>
+<span class="sd">        the closest code in the code book.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : {array-like, sparse matrix} of shape (n_samples, n_features)</span>
+<span class="sd">            New data to predict.</span>
+
+<span class="sd">        sample_weight : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            The weights for each observation in X. If None, all observations</span>
+<span class="sd">            are assigned equal weight.</span>
+
+<span class="sd">        compat : bool</span>
+<span class="sd">            There is no version for single CPU/GPU for predict2. This</span>
+<span class="sd">            compatibility parameter uses the original predict method.</span>
+<span class="sd">            Otherwise, it raises an exception.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        labels : ndarray of shape (n_samples,)</span>
+<span class="sd">            Index of the cluster each sample belongs to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">compat</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict_gpu</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span>
+
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Method available only for Dask.&quot;</span><span class="p">)</span></div>
 
 
@@ -787,6 +849,9 @@
 <a class="viewcode-back" href="../../../../autoapi/dasf/ml/cluster/kmeans/index.html#dasf.ml.cluster.KMeans.predict2">[docs]</a>
     <span class="nd">@task_handler</span>
     <span class="k">def</span> <span class="nf">predict2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic predict2 funtion according executor (for some ML methods only).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span></div>
 </div>
 

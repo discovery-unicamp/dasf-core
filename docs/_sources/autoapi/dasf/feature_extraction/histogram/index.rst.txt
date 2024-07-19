@@ -1,26 +1,29 @@
-:py:mod:`dasf.feature_extraction.histogram`
-===========================================
+dasf.feature_extraction.histogram
+=================================
 
 .. py:module:: dasf.feature_extraction.histogram
 
+.. autoapi-nested-parse::
 
-Module Contents
----------------
+   Histogram module. 
+
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    dasf.feature_extraction.histogram.Histogram
 
 
-
+Module Contents
+---------------
 
 .. py:class:: Histogram(bins = None, range = None, normed = False, weights=None, density=None, *args, **kwargs)
 
-
    Bases: :py:obj:`dasf.transforms.base.TargeteredTransform`, :py:obj:`dasf.transforms.base.Transform`
+
 
    Operator to extract the histogram of a data.
 
@@ -52,30 +55,126 @@ Classes
    density
 
 
+   Generic constructor of the class Histogram. 
+
+
    .. py:method:: __lazy_transform_generic(X)
+
+      Compute the histogram of a dataset using Dask.
+
+      Parameters
+      ----------
+      X : array_like
+          Input data. The histogram is computed over the flattened array.
+
+      Returns
+      -------
+      hist : array
+          The values of the histogram. See `density` and `weights` for a
+          description of the possible semantics.  If `weights` are given,
+          ``hist.dtype`` will be taken from `weights`.
+      bin_edges : array of dtype float
+          Return the bin edges ``(length(hist)+1)``.
+
 
 
    .. py:method:: __transform_generic(X, xp)
 
+      Compute the histogram of a dataset using local libraries.
+
+      Parameters
+      ----------
+      X : array_like
+          Input data. The histogram is computed over the flattened array.
+
+      Returns
+      -------
+      hist : array
+          The values of the histogram. See `density` and `weights` for a
+          description of the possible semantics.  If `weights` are given,
+          ``hist.dtype`` will be taken from `weights`.
+      bin_edges : array of dtype float
+          Return the bin edges ``(length(hist)+1)``.
+
+
 
    .. py:method:: _lazy_transform_cpu(X)
 
-      Respective lazy transform mocked function for CPUs.
+      Compute the histogram of a dataset using Dask with CPUs only.
+
+      Parameters
+      ----------
+      X : array_like
+          Input data. The histogram is computed over the flattened array.
+
+      Returns
+      -------
+      hist : array
+          The values of the histogram. See `density` and `weights` for a
+          description of the possible semantics.  If `weights` are given,
+          ``hist.dtype`` will be taken from `weights`.
+      bin_edges : array of dtype float
+          Return the bin edges ``(length(hist)+1)``.
+
 
 
    .. py:method:: _lazy_transform_gpu(X, **kwargs)
 
-      Respective lazy transform mocked function for GPUs.
+      Compute the histogram of a dataset using Dask with GPUs only.
+
+      Parameters
+      ----------
+      X : array_like
+          Input data. The histogram is computed over the flattened array.
+
+      Returns
+      -------
+      hist : array
+          The values of the histogram. See `density` and `weights` for a
+          description of the possible semantics.  If `weights` are given,
+          ``hist.dtype`` will be taken from `weights`.
+      bin_edges : array of dtype float
+          Return the bin edges ``(length(hist)+1)``.
+
 
 
    .. py:method:: _transform_cpu(X, **kwargs)
 
-      Respective immediate transform mocked function for local CPU(s).
+      Compute the histogram of a dataset using CPU only.
+
+      Parameters
+      ----------
+      X : array_like
+          Input data. The histogram is computed over the flattened array.
+
+      Returns
+      -------
+      hist : array
+          The values of the histogram. See `density` and `weights` for a
+          description of the possible semantics.  If `weights` are given,
+          ``hist.dtype`` will be taken from `weights`.
+      bin_edges : array of dtype float
+          Return the bin edges ``(length(hist)+1)``.
+
 
 
    .. py:method:: _transform_gpu(X, **kwargs)
 
-      Respective immediate transform mocked function for local GPU(s).
+      Compute the histogram of a dataset using GPU only.
+
+      Parameters
+      ----------
+      X : array_like
+          Input data. The histogram is computed over the flattened array.
+
+      Returns
+      -------
+      hist : array
+          The values of the histogram. See `density` and `weights` for a
+          description of the possible semantics.  If `weights` are given,
+          ``hist.dtype`` will be taken from `weights`.
+      bin_edges : array of dtype float
+          Return the bin edges ``(length(hist)+1)``.
 
 
 
