@@ -49,6 +49,12 @@ root project directory (the same where `pyproject.toml` lives).
 pip3 install .
 ```
 
+### Examples
+
+If you want to see some examples of how to use DASF, you can visit the
+[tutorials](https://discovery-unicamp.github.io/dasf-core/tutorials.html)
+page to get more information of basic and advanced usage.
+
 ### Testing
 
 If you have a working environment with DASF installed, you can execute the all 
