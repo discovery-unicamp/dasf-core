@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tutorial 5: Using profiler &mdash; DASF 1.0b5 documentation</title>
+  <title>Tutorial 5 - Using profiler &mdash; DASF 1.0b5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
@@ -61,16 +61,14 @@
 <li class="toctree-l2"><a class="reference internal" href="Tutorial_2.html">Tutorial 2 - How to extend DASF Datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial_3.html">Tutorial 3 - How Create Your Own Trasform</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial_4.html">Tutorial 4 - How Create an Agnostic Pipeline</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial 5: Using profiler</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial 5 - Using profiler</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Enabling-profiling">Enabling profiling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Analysing-the-profile-data">Analysing the profile data</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Function-Bottleneck-Report">Function Bottleneck Report</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Task-Bootleneck-Report">Task Bootleneck Report</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Task-balance">Task balance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Analysing-the-profile-data">Analysing the profile data</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#Function-Bottleneck-Report">Function Bottleneck Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Task-Bootleneck-Report">Task Bootleneck Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Task-balance">Task balance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial_6.html">Tutorial 6 - How Use the ApplyPatches Operator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial_7.html">Tutorial 7 - Trainig a PyTorch Lightning model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Tutorial_8.html">Tutorial 8 - HDBSCAN Differences between CPU and GPU versions</a></li>
@@ -94,7 +92,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../tutorials.html">Tutorials</a></li>
-      <li class="breadcrumb-item active">Tutorial 5: Using profiler</li>
+      <li class="breadcrumb-item active">Tutorial 5 - Using profiler</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tutorials/Tutorial_5.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -104,8 +102,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Tutorial-5:-Using-profiler">
-<h1>Tutorial 5: Using profiler<a class="headerlink" href="#Tutorial-5:-Using-profiler" title="Link to this heading"></a></h1>
+  <section id="Tutorial-5---Using-profiler">
+<h1>Tutorial 5 - Using profiler<a class="headerlink" href="#Tutorial-5---Using-profiler" title="Link to this heading"></a></h1>
 <p>This tutorial shows how to use the profiler to measure the performance of your code. We used the same pipeline of the previous tutorial.</p>
 <p>The profile is a tool that measures the time spent in each function of your code. It is very useful to identify bottlenecks and to optimize your code. By default it is not enabled and the simplest way to enable the default profiler is to use the <code class="docutils literal notranslate"><span class="pre">register_default_profiler</span></code> function. It will be shown later, in the notebook.</p>
 <p>The profile consists in two steps: 1. Register the profiler and execute the desired pipeline. It will generate different files, which contains traces of the execution, in the current directory. Each file will have different information, depending on the plugins attached. Using the <code class="docutils literal notranslate"><span class="pre">register_default_profiler</span></code> function, two plugins will be attached, one to measure the dask task time (and other useful information, such as, per task data shape, type, MB, etc.) and a resource usage plugin (which
@@ -470,8 +468,10 @@ InstantEvent(name=&#39;Resource Usage&#39;, timestamp=3869.01274743, phase=&#39;
 </pre></div>
 </div>
 </div>
+</section>
+</section>
 <section id="Function-Bottleneck-Report">
-<h3>Function Bottleneck Report<a class="headerlink" href="#Function-Bottleneck-Report" title="Link to this heading"></a></h3>
+<h1>Function Bottleneck Report<a class="headerlink" href="#Function-Bottleneck-Report" title="Link to this heading"></a></h1>
 <p>The function bootleneck report will show us the function that is taking the most time to run. This is useful for optimizing code. Here, a function is composed by a set of tasks that applies this function in different chunks of data. It is the function used by <code class="docutils literal notranslate"><span class="pre">map_blocks</span></code> (where a function is applyed to several chunks). This report is a dataframe with the following columns: - <code class="docutils literal notranslate"><span class="pre">Host</span></code>: the host where the function is running - <code class="docutils literal notranslate"><span class="pre">GPU</span></code>: the GPU where the function is running - <code class="docutils literal notranslate"><span class="pre">Function</span></code>: the
 function name - <code class="docutils literal notranslate"><span class="pre">Duration</span></code>: the time spent in the function - <code class="docutils literal notranslate"><span class="pre">Percentage</span> <span class="pre">of</span> <span class="pre">total</span> <span class="pre">time</span> <span class="pre">(%)</span></code>: the percentage of total compute time spent in the function - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">GPU</span> <span class="pre">Utilization</span> <span class="pre">(%)</span></code>: the mean GPU utilization during the function execution - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">GPU</span> <span class="pre">Memory</span> <span class="pre">Used</span> <span class="pre">(GB)</span></code>: the mean GPU memory used during the function execution - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">Data</span> <span class="pre">Size</span> <span class="pre">(MB)</span></code>: the mean data size used during the function execution (as input) - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">Data</span> <span class="pre">Throughput</span> <span class="pre">(MB/s)</span></code>: the mean data throughput during the
 function execution (as input) - <code class="docutils literal notranslate"><span class="pre">Num</span> <span class="pre">tasks</span> <span class="pre">(chunks)</span></code>: the number of tasks (chunks) that the function was applied - <code class="docutils literal notranslate"><span class="pre">Mean</span> <span class="pre">Task</span> <span class="pre">Time</span> <span class="pre">(s)</span></code>: the mean time spent in each task (chunk)</p>
@@ -677,7 +677,7 @@ Creating annotated task graph: 100%|██████████████�
 </div>
 </section>
 <section id="Task-Bootleneck-Report">
-<h3>Task Bootleneck Report<a class="headerlink" href="#Task-Bootleneck-Report" title="Link to this heading"></a></h3>
+<h1>Task Bootleneck Report<a class="headerlink" href="#Task-Bootleneck-Report" title="Link to this heading"></a></h1>
 <p>The task bottleneck report shows the tasks that are the most time consuming in the application. This is similar to the above report, but is per task instead of per function (i.e., each block). This is similar to DASK task breakdown report.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -826,7 +826,7 @@ Creating annotated task graph: 100%|██████████████�
 </div>
 </section>
 <section id="Task-balance">
-<h3>Task balance<a class="headerlink" href="#Task-balance" title="Link to this heading"></a></h3>
+<h1>Task balance<a class="headerlink" href="#Task-balance" title="Link to this heading"></a></h1>
 <p>This report show the number of tasks in memory (per worker), in each instant of time. This is useful to check imbalance in the load of the workers.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -961,8 +961,6 @@ Creating annotated task graph: 100%|██████████████�
 </table>
 </div></div>
 </div>
-</section>
-</section>
 </section>
 
 
