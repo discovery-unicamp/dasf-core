@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
 import unittest
-import numpy as np
-import dask.array as da
 
+import dask.array as da
+import numpy as np
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import SpectralClustering
-from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_dask_cpu_array
+from dasf.utils.types import is_cpu_array, is_dask_cpu_array
 
 
 class TestSpectralClustering(unittest.TestCase):

@@ -1,33 +1,35 @@
 #!/usr/bin/env python3
 
+import functools
 import os
 import shutil
 import tempfile
 import unittest
-import functools
-import numpy as np
-import pandas as pd
+
 import dask.array as da
 import dask.dataframe as dd
+import numpy as np
+import pandas as pd
 
 try:
-    import cupy as cp
     import cudf
+    import cupy as cp
     import dask_cudf as dcudf
 except ImportError:
     pass
 
-from dasf.transforms.base import MappedTransform
-from dasf.transforms.base import ReductionTransform
-from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_gpu_array
-from dasf.utils.types import is_dask_cpu_array
-from dasf.utils.types import is_dask_gpu_array
-from dasf.utils.types import is_cpu_dataframe
-from dasf.utils.types import is_gpu_dataframe
-from dasf.utils.types import is_dask_cpu_dataframe
-from dasf.utils.types import is_dask_gpu_dataframe
+from dasf.transforms.base import MappedTransform, ReductionTransform
 from dasf.utils.funcs import is_gpu_supported
+from dasf.utils.types import (
+    is_cpu_array,
+    is_cpu_dataframe,
+    is_dask_cpu_array,
+    is_dask_cpu_dataframe,
+    is_dask_gpu_array,
+    is_dask_gpu_dataframe,
+    is_gpu_array,
+    is_gpu_dataframe,
+)
 
 
 class TestMappedTransform(unittest.TestCase):

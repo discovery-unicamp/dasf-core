@@ -3,13 +3,11 @@
 import unittest
 
 import numpy as np
-
 from mock import MagicMock
 
-from dasf.pipeline import Pipeline
 from dasf.datasets import DatasetArray
-from dasf.transforms.base import Transform
-from dasf.transforms.base import TargeteredTransform
+from dasf.pipeline import Pipeline
+from dasf.transforms.base import TargeteredTransform, Transform
 
 
 class Dataset_A(DatasetArray):

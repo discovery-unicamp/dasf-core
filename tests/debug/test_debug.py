@@ -2,10 +2,11 @@
 
 import os
 import unittest
-import numpy as np
+
 import dask.array as da
-import pandas as pd
 import dask.dataframe as ddf
+import numpy as np
+import pandas as pd
 
 try:
     import cudf
@@ -15,11 +16,12 @@ except ImportError:
     pass 
 
 from io import StringIO
-from mock import patch, Mock, ANY
-from IPython.core.display import HTML
 
-from dasf.utils.funcs import is_gpu_supported
+from IPython.core.display import HTML
+from mock import ANY, Mock, patch
+
 from dasf.debug import Debug, VisualizeDaskData
+from dasf.utils.funcs import is_gpu_supported
 
 
 class TestDebug(unittest.TestCase):

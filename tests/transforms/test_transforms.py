@@ -1,35 +1,38 @@
 #!/usr/bin/env python3
 
 import os
-import zarr
 import shutil
 import tempfile
 import unittest
-import numpy as np
+
 import dask.array as da
+import numpy as np
+import zarr
 
 try:
     import cupy as cp
 except ImportError:
     pass
 
-from dasf.datasets import DatasetArray
-from dasf.datasets import DatasetZarr
-from dasf.datasets import DatasetHDF5
-from dasf.transforms import Normalize
-from dasf.transforms import ArrayToZarr
-from dasf.transforms import ArrayToHDF5
-from dasf.transforms import ZarrToArray
-from dasf.transforms import ArraysToDataFrame
-from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_gpu_array
-from dasf.utils.types import is_dask_cpu_array
-from dasf.utils.types import is_dask_gpu_array
-from dasf.utils.types import is_cpu_dataframe
-from dasf.utils.types import is_gpu_dataframe
-from dasf.utils.types import is_dask_cpu_dataframe
-from dasf.utils.types import is_dask_gpu_dataframe
+from dasf.datasets import DatasetArray, DatasetHDF5, DatasetZarr
+from dasf.transforms import (
+    ArraysToDataFrame,
+    ArrayToHDF5,
+    ArrayToZarr,
+    Normalize,
+    ZarrToArray,
+)
 from dasf.utils.funcs import is_gpu_supported
+from dasf.utils.types import (
+    is_cpu_array,
+    is_cpu_dataframe,
+    is_dask_cpu_array,
+    is_dask_cpu_dataframe,
+    is_dask_gpu_array,
+    is_dask_gpu_dataframe,
+    is_gpu_array,
+    is_gpu_dataframe,
+)
 
 
 class TestNormalize(unittest.TestCase):

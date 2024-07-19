@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Download module for datasets. """
+
 from dasf.datasets.base import Dataset
 from dasf.utils.funcs import download_file, download_file_from_gdrive
 
@@ -24,6 +26,7 @@ class DownloadWget(Dataset):
                  filename: str,
                  root: str,
                  download: bool = True):
+        """ Constructor of the object DownloadWget. """
         self.__url = url
         self.__filename = filename
 
@@ -31,9 +34,7 @@ class DownloadWget(Dataset):
         Dataset.__init__(self, name="Download Wget", download=download, root=root)
 
     def download(self):
-        """Download the dataset.
-
-        """
+        """ Download the dataset. """
         if not self._download or self.__url is None:
             return
 
@@ -66,6 +67,7 @@ class DownloadGDrive(Dataset):
                  filename: str,
                  root: str,
                  download: bool = True):
+        """ Constructor of the object DownloadGDrive. """
         self.__google_file_id = google_file_id
         self.__filename = filename
 
@@ -75,9 +77,7 @@ class DownloadGDrive(Dataset):
         )
 
     def download(self):
-        """Download the dataset.
-
-        """
+        """ Download the dataset. """
         if not self._download or self.__google_file_id is None:
             return
 

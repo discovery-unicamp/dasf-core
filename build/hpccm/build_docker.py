@@ -19,6 +19,7 @@ else:
 rapidsai_version = USERARG.get('rapids-version', '23.08')
 ubuntu_version = USERARG.get('ubuntu-version', '20.04')
 python_version = USERARG.get('python-version', '3.10')
+repo_branch = USERARG.get('repo-branch', 'main')
 
 if python_version:
     python_version = f"-py{python_version}"
@@ -54,7 +55,7 @@ if is_devel:
     # Install NVIDIA NSight packages
     package_list += ["nsight-compute"]
 
-pip_package_install = "pip3 install --extra-index-url https://test.pypi.org/simple/ XPySom-dask git+https://github.com/discovery-unicamp/dasf-core.git"
+pip_package_install = f"pip3 install -U git+https://github.com/discovery-unicamp/dasf-core.git@{repo_branch}"
 
 if device_target.lower() == "cpu":
     packages_list.extend(["python3-pip"])
@@ -70,21 +71,17 @@ elif device_target.lower() == "gpu":
         Stage0 += apt_get(keys=apt_keys, ospackages=packages_list)
         Stage0 += apt_get(ospackages=packages_list)
 
-    pip_package_install = ("%s cupy_xarray" % pip_package_install)
+    Stage0 += shell(commands=["pip install --no-dependencies cupy_xarray==0.1.3"]) # this avoids CuPy being installed twice and taking too long (installation process doesn't find CuPy because its named cupy_cuda12x)
 
     if is_devel:
         pip_package_install = ("%s %s" % (pip_package_install, "git+https://github.com/cupy/cupy.git"))
     else:
-        pip_package_install = ("%s %s" % (pip_package_install, "cupy==13.0.0b1"))
-        Stage0 += shell(commands=["rm -r /usr/local/lib/python3.10/dist-packages/cupy_cuda12x-12.0.0b3.dist-info"]) # not the best solution but it works
+        pip_package_install = ("%s %s" % (pip_package_install, "cupy-cuda12x==13.2.0"))
 
 
 Stage0 += shell(commands=["pip3 install pip --upgrade"])
 
 Stage0 += shell(commands=[pip_package_install])
-
-# TODO: fix numpy issue with version 1.24 and other fixed reqs
-Stage0 += shell(commands=["pip install \"numpy<1.24\" bokeh==2.4.3 \"protobuf<=3.20.1\" \"charset-normalizer<3.0\" \"tornado<6.2\""])
 
 if is_devel:
     Stage0 += shell(commands=["wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && bash Miniconda3-latest-Linux-x86_64.sh -b && cp /root/miniconda3/bin/conda /usr/bin/conda"])

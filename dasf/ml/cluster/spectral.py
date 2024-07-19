@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Spectral Clustering algorithm module. """
+
 from dask_ml.cluster import SpectralClustering as SpectralClustering_MCPU
 from sklearn.cluster import SpectralClustering as SpectralClustering_CPU
 
@@ -261,10 +263,79 @@ class SpectralClustering(ClusterClassifier):
         )
 
     def _fit_cpu(self, X, y=None, sample_weight=None):
+        """
+        Perform spectral clustering from features, or affinity matrix using CPU
+        only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features) or \
+                (n_samples, n_samples)
+            Training instances to cluster, similarities / affinities between
+            instances if ``affinity='precomputed'``, or distances between
+            instances if ``affinity='precomputed_nearest_neighbors``. If a
+            sparse matrix is provided in a format other than ``csr_matrix``,
+            ``csc_matrix``, or ``coo_matrix``, it will be converted into a
+            sparse ``csr_matrix``.
+
+        y : Ignored
+            Not used, present here for API consistency by convention.
+
+        Returns
+        -------
+        self : object
+            A fitted instance of the estimator.
+        """
         return self.__sc_cpu.fit(X=X, y=y)
 
     def _lazy_fit_predict_cpu(self, X, y=None, sample_weight=None):
+        """
+        Perform spectral clustering on `X` and return cluster labels using Dask
+        with CPU only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features) or \
+                (n_samples, n_samples)
+            Training instances to cluster, similarities / affinities between
+            instances if ``affinity='precomputed'``, or distances between
+            instances if ``affinity='precomputed_nearest_neighbors``. If a
+            sparse matrix is provided in a format other than ``csr_matrix``,
+            ``csc_matrix``, or ``coo_matrix``, it will be converted into a
+            sparse ``csr_matrix``.
+
+        y : Ignored
+            Not used, present here for API consistency by convention.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels.
+        """
         return self.__sc_mcpu.fit_predict(X=X)
 
     def _fit_predict_cpu(self, X, y=None, sample_weight=None):
+        """
+        Perform spectral clustering on `X` and return cluster labels using CPU
+        only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features) or \
+                (n_samples, n_samples)
+            Training instances to cluster, similarities / affinities between
+            instances if ``affinity='precomputed'``, or distances between
+            instances if ``affinity='precomputed_nearest_neighbors``. If a
+            sparse matrix is provided in a format other than ``csr_matrix``,
+            ``csc_matrix``, or ``coo_matrix``, it will be converted into a
+            sparse ``csr_matrix``.
+
+        y : Ignored
+            Not used, present here for API consistency by convention.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels.
+        """
         return self.__sc_cpu.fit_predict(X)

@@ -56,7 +56,7 @@ jobs:
         run: |
           echo "* **interrogate results:** $(interrogate -i --fail-under=15 dasf/ | cut -d: -d" " -f4)" >> $GITHUB_STEP_SUMMARY
           # We should have at least 80% of docs covered
-          interrogate -vv -i --fail-under=20 --badge-format svg -g . -e build/ -e tests/
+          interrogate -vv -i --fail-under=45 --badge-format svg -g . -e build/ -e tests/
     
   test_cpu:
     runs-on: ubuntu-latest
@@ -88,11 +88,15 @@ jobs:
           chmod 600 ~/.ssh/id_rsa.pub
           ssh-keyscan -H ${{ secrets.CLUSTER_ADDRESS }} >> ~/.ssh/known_hosts
       - name: Test SSH connection
+        id: test_connection
         run: |
           ssh -T ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 > /dev/null
+        continue-on-error: true
       - name: Pull latest docker image
+        if: success() && steps.test_connection.outcome == 'success'
         run: |
           ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker pull jcfaracco/dasf:gpu\""
       - name: Run test cases remotely
+        if: success() && steps.test_connection.outcome == 'success'
         run: |
           ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --rm --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ tests/ && cd -'\""

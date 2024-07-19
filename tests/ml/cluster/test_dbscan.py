@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 import unittest
+
 import numpy as np
 
 try:
     import cupy as cp
-
     from dask.distributed import Client
     from dask_cuda import LocalCUDACluster
 except ImportError:
@@ -14,9 +14,8 @@ except ImportError:
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import DBSCAN
-from dasf.utils.types import is_cpu_array
-from dasf.utils.types import is_gpu_array
 from dasf.utils.funcs import is_gpu_supported
+from dasf.utils.types import is_cpu_array, is_gpu_array
 
 
 class TestDBSCAN(unittest.TestCase):

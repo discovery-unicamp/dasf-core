@@ -4,18 +4,19 @@ import os
 import unittest
 
 import numpy as np
-
-from pytest import fixture
 from parameterized import parameterized_class
+from pytest import fixture
 
+from dasf.datasets import (
+    DatasetArray,
+    DatasetDataFrame,
+    DatasetHDF5,
+    DatasetLabeled,
+    DatasetParquet,
+    DatasetXarray,
+    DatasetZarr,
+)
 from dasf.utils.funcs import is_gpu_supported
-from dasf.datasets import DatasetArray
-from dasf.datasets import DatasetZarr
-from dasf.datasets import DatasetHDF5
-from dasf.datasets import DatasetXarray
-from dasf.datasets import DatasetLabeled
-from dasf.datasets import DatasetDataFrame
-from dasf.datasets import DatasetParquet
 
 
 def parameterize_dataset_type():

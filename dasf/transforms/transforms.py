@@ -19,6 +19,15 @@ except ImportError: # pragma: no cover
     pass
 
 
+class ExtractData(Transform):
+    """Extract Data from Dataset Object
+    """
+    def transform(self, X):
+        if hasattr(X, "_data") and X._data is not None:
+            return X._data
+        raise ValueError("Data could not be extracted. Dataset needs to be previously loaded.")
+
+
 class Normalize(Transform):
     def transform(self, X):
         return (X - X.mean()) / (X.std(ddof=0))

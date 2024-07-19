@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+""" Init module for Datasets objects. """
+
 from dasf.datasets.base import *  # noqa
 from dasf.datasets.datasets import *  # noqa
 

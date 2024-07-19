@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Kohonen's Self-Organized Map (SOM) algorithm module. """
+
 import numpy as np
 from xpysom_dask import XPySom
 
@@ -214,61 +216,329 @@ class SOM(ClusterClassifier):
             )
 
     def _lazy_fit_cpu(self, X, y=None, sample_weight=None):
+        """
+        Fit SOM method using Dask with CPUs only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit methods. This is not used by SOM.
+
+        Returns
+        -------
+        self : object
+            Returns a fitted instance of self.
+        """
         self.__som = self.__som_mcpu
         return self.__som_mcpu.train(X, self.num_epochs)
 
     def _lazy_fit_gpu(self, X, y=None, sample_weight=None):
+        """
+        Fit SOM method using Dask with GPUs only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit methods. This is not used by SOM.
+
+        Returns
+        -------
+        self : object
+            Returns a fitted instance of self.
+        """
         self.__som = self.__som_mgpu
         return self.__som_mgpu.train(X, self.num_epochs)
 
     def _fit_cpu(self, X, y=None, sample_weight=None):
+        """
+        Fit SOM method using CPU only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit methods. This is not used by SOM.
+
+        Returns
+        -------
+        self : object
+            Returns a fitted instance of self.
+        """
         self.__som = self.__som_cpu
         return self.__som_cpu.train(X, self.num_epochs)
 
     def _fit_gpu(self, X, y=None, sample_weight=None):
+        """
+        Fit SOM method using GPU only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit methods. This is not used by SOM.
+
+        Returns
+        -------
+        self : object
+            Returns a fitted instance of self.
+        """
         self.__som = self.__som_gpu
         return self.__som_gpu.train(X, self.num_epochs)
 
     def _lazy_fit_predict_cpu(self, X, y=None, sample_weight=None):
+        """
+        Fit SOM and select the winner neurons for the input using Dask with
+        CPUs only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        y : {array-like, sparse matrix} of shape (n_samples).
+            This is just a placeholder to keep the compatibility with other
+            fit_predict methods. SOM does not use labels to verify the input.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit_predict methods. This is not used by SOM.
+
+        Returns
+        -------
+        self : object
+            Returns a fitted instance of self.
+        """
         self.__som = self.__som_mcpu
         return self.__som_mcpu.train(X, self.num_epochs).predict(X)
 
     def _lazy_fit_predict_gpu(self, X, y=None, sample_weight=None):
+        """
+        Fit SOM and select the winner neurons for the input using Dask with
+        GPUs only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        y : {array-like, sparse matrix} of shape (n_samples).
+            This is just a placeholder to keep the compatibility with other
+            fit_predict methods. SOM does not use labels to verify the input.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit_predict methods. This is not used by SOM.
+
+        Returns
+        -------
+        self : object
+            Returns a fitted instance of self.
+        """
         self.__som = self.__som_mgpu
         return self.__som_mgpu.train(X, self.num_epochs).predict(X)
 
     def _fit_predict_cpu(self, X, y=None, sample_weight=None):
+        """
+        Fit SOM and select the winner neurons for the input using CPU only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        y : {array-like, sparse matrix} of shape (n_samples).
+            This is just a placeholder to keep the compatibility with other
+            fit_predict methods. SOM does not use labels to verify the input.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit_predict methods. This is not used by SOM.
+
+        Returns
+        -------
+        self : object
+            Returns a fitted instance of self.
+        """
         self.__som = self.__som_cpu
         return self.__som_cpu.train(X, self.num_epochs).predict(X)
 
     def _fit_predict_gpu(self, X, y=None, sample_weight=None):
+        """
+        Fit SOM and select the winner neurons for the input using GPU only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        y : {array-like, sparse matrix} of shape (n_samples).
+            This is just a placeholder to keep the compatibility with other
+            fit_predict methods. SOM does not use labels to verify the input.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit_predict methods. This is not used by SOM.
+
+        Returns
+        -------
+        self : object
+            Returns a fitted instance of self.
+        """
         self.__som = self.__som_gpu
         return self.__som_gpu.train(X, self.num_epochs).predict(X)
 
     def _lazy_predict_cpu(self, X, sample_weight=None):
+        """
+        Predict the input using a fitted SOM using Dask with CPUs only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit methods. This is not used by SOM.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels. Noisy samples are given the label -1.
+        """
         return self.__som_mcpu.predict(X)
 
     def _lazy_predict_gpu(self, X, sample_weight=None):
+        """
+        Predict the input using a fitted SOM using Dask with GPUs only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit methods. This is not used by SOM.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels. Noisy samples are given the label -1.
+        """
         return self.__som_mgpu.predict(X)
 
     def _predict_cpu(self, X, sample_weight=None):
+        """
+        Predict the input using a fitted SOM using CPU only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit methods. This is not used by SOM.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels. Noisy samples are given the label -1.
+        """
         return self.__som_cpu.predict(X)
 
     def _predict_gpu(self, X, sample_weight=None):
+        """
+        Predict the input using a fitted SOM using GPU only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            This is just a placeholder to keep the compatibility with other
+            fit methods. This is not used by SOM.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels. Noisy samples are given the label -1.
+        """
         return self.__som_gpu.predict(X)
 
     def _lazy_quantization_error_cpu(self, X):
+        """
+        Returns the quantization error computed as the average distance
+        between each input sample and its best matching unit using Dask with
+        CPUs only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        Returns
+        -------
+        error : float
+            The quantization error of the trained SOM.
+        """
         return self.__som_mcpu.quantization_error(X)
 
     def _lazy_quantization_error_gpu(self, X):
+        """
+        Returns the quantization error computed as the average distance
+        between each input sample and its best matching unit using Dask with
+        GPUs only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        Returns
+        -------
+        error : float
+            The quantization error of the trained SOM.
+        """
         return self.__som_mgpu.quantization_error(X)
 
     def _quantization_error_cpu(self, X):
+        """
+        Returns the quantization error computed as the average distance
+        between each input sample and its best matching unit using CPU only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        Returns
+        -------
+        error : float
+            The quantization error of the trained SOM.
+        """
         return self.__som_cpu.quantization_error(X)
 
     def _quantization_error_gpu(self, X):
+        """
+        Returns the quantization error computed as the average distance
+        between each input sample and its best matching unit using GPU only.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features).
+
+        Returns
+        -------
+        error : float
+            The quantization error of the trained SOM.
+        """
         return self.__som_gpu.quantization_error(X)
 
     @task_handler
     def quantization_error(self, X):
+        """
+        Generic quantization_error funtion according executor (for SOM method
+        only).
+        """
         ...

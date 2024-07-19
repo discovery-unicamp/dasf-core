@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Debug DASF module. """
+
 from IPython.core.display import HTML as iHTML
 from IPython.core.display import display as idisplay
 
@@ -20,7 +22,18 @@ class Debug:
 
     """
     def display(self, X):
-        print(is_notebook())
+        """Display useful information of the input data.
+
+        Parameters
+        ----------
+        X : Any
+            Any data that can be represented as a dataset.
+
+        Returns
+        -------
+        data : Any
+            Same input data without any transformation.
+        """
         if (is_dask_array(X) or is_dask_dataframe(X)) and is_notebook():
             idisplay(iHTML(X._repr_html_()))
         else:
@@ -45,9 +58,22 @@ class VisualizeDaskData:
 
     """
     def __init__(self, filename: str = None):
+        """ Generic constructor of the VisualizeDaskData object. """
         self.filename = filename
 
     def display(self, X):
+        """Display Dask task graph using visualize method.
+
+        Parameters
+        ----------
+        X : Any
+            Any data that can be represented as a dataset.
+
+        Returns
+        -------
+        data : Any
+            Same input data without any transformation.
+        """
         if not is_dask_array(X) and not is_dask_dataframe(X):
             print("WARNING: This is not a Dask element.")
             return X

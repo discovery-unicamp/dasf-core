@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" K-Means algorithm module. """
+
 from dask_ml.cluster import KMeans as KMeans_MCPU
 from sklearn.cluster import KMeans as KMeans_CPU
 
@@ -292,7 +294,7 @@ class KMeans(ClusterClassifier):
 
         Returns
         -------
-        self
+        self : object
             Fitted estimator.
         """
         return self.__kmeans_mcpu.fit(X=X, y=y)
@@ -319,7 +321,7 @@ class KMeans(ClusterClassifier):
 
         Returns
         -------
-        self
+        self : object
             Fitted estimator.
         """
         if self.__kmeans_mgpu is None:
@@ -348,7 +350,7 @@ class KMeans(ClusterClassifier):
 
         Returns
         -------
-        self
+        self : object
             Fitted estimator.
         """
         return self.__kmeans_cpu.fit(X=X, y=y, sample_weight=sample_weight)
@@ -375,7 +377,7 @@ class KMeans(ClusterClassifier):
 
         Returns
         -------
-        self
+        self : object
             Fitted estimator.
         """
         return self.__kmeans_gpu.fit(X=X, sample_weight=sample_weight)
@@ -611,6 +613,7 @@ class KMeans(ClusterClassifier):
             Index of the cluster each sample belongs to.
         """
         def __predict(block):
+            """Block function to predict data per block."""
             return self._predict_cpu.predict(block, sample_weight=sample_weight)
 
         return X.map_blocks(
@@ -640,18 +643,80 @@ class KMeans(ClusterClassifier):
             Index of the cluster each sample belongs to.
         """
         def __predict(block):
+            """Block function to predict data per block."""
             return self._predict_gpu.predict(block, sample_weight=sample_weight)
 
         return X.map_blocks(
             __predict, chunks=(X.chunks[0],), drop_axis=[1], dtype=X.dtype
         )
 
-    def _predict2_cpu(self, X, sample_weight=None):
+    def _predict2_cpu(self, X, sample_weight=None, compat=True):
+        """
+        A block predict using Scikit Learn variant as a placeholder.
+
+        In the vector quantization literature, `cluster_centers_` is called
+        the code book and each value returned by `predict` is the index of
+        the closest code in the code book.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to predict.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+        compat : bool
+            There is no version for single CPU/GPU for predict2. This
+            compatibility parameter uses the original predict method.
+            Otherwise, it raises an exception.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
+        if compat:
+            return self._predict_cpu.predict(X, sample_weight=sample_weight)
+
         raise NotImplementedError("Method available only for Dask.")
 
-    def _predict2_gpu(self, X, sample_weight=None):
+    def _predict2_gpu(self, X, sample_weight=None, compat=True):
+        """
+        A block predict using CuML variant as a placeholder.
+
+        In the vector quantization literature, `cluster_centers_` is called
+        the code book and each value returned by `predict` is the index of
+        the closest code in the code book.
+
+        Parameters
+        ----------
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
+            New data to predict.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            The weights for each observation in X. If None, all observations
+            are assigned equal weight.
+
+        compat : bool
+            There is no version for single CPU/GPU for predict2. This
+            compatibility parameter uses the original predict method.
+            Otherwise, it raises an exception.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Index of the cluster each sample belongs to.
+        """
+        if compat:
+            return self._predict_gpu.predict(X, sample_weight=sample_weight)
+
         raise NotImplementedError("Method available only for Dask.")
 
     @task_handler
     def predict2(self, sample_weight=None):
+        """
+        Generic predict2 funtion according executor (for some ML methods only).
+        """
         ...
