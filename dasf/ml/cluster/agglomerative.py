@@ -31,12 +31,11 @@ class AgglomerativeClustering(ClusterClassifier):
         The number of clusters to find. It must be ``None`` if
         ``distance_threshold`` is not ``None``.
 
-    affinity : str or callable, default='euclidean'
-        Metric used to compute the linkage. Can be "euclidean", "l1", "l2",
-        "manhattan", "cosine", or "precomputed".
-        If linkage is "ward", only "euclidean" is accepted.
-        If "precomputed", a distance matrix (instead of a similarity matrix)
-        is needed as input for the fit method.
+    metric : str or callable, default=”euclidean”
+        Metric used to compute the linkage. Can be “euclidean”, “l1”, “l2”,
+        “manhattan”, “cosine”, or “precomputed”. If linkage is “ward”, only
+        “euclidean” is accepted. If “precomputed”, a distance matrix is needed
+        as input for the fit method.
 
     memory : str or object with the joblib.Memory interface, default=None
         Used to cache the output of the computation of the tree.
@@ -120,7 +119,7 @@ class AgglomerativeClustering(ClusterClassifier):
     def __init__(
         self,
         n_clusters=2,
-        affinity="euclidean",
+        metric="euclidean",
         connectivity=None,
         linkage="single",
         memory=None,
@@ -136,7 +135,7 @@ class AgglomerativeClustering(ClusterClassifier):
         super().__init__(**kwargs)
 
         self.n_clusters = n_clusters
-        self.affinity = affinity
+        self.metric = metric
         self.connectivity = connectivity
         self.linkage = linkage
         self.memory = memory
@@ -150,7 +149,7 @@ class AgglomerativeClustering(ClusterClassifier):
 
         self.__agg_cluster_cpu = AgglomerativeClustering_CPU(
             n_clusters=n_clusters,
-            affinity=affinity,
+            metric=metric,
             memory=memory,
             connectivity=connectivity,
             compute_full_tree=compute_full_tree,
@@ -165,7 +164,7 @@ class AgglomerativeClustering(ClusterClassifier):
 
             self.__agg_cluster_gpu = AgglomerativeClustering_GPU(
                 n_clusters=n_clusters,
-                affinity=affinity,
+                affinity=metric,
                 linkage=linkage,
                 handle=handle,
                 verbose=verbose,
