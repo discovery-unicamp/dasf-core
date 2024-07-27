@@ -54,7 +54,7 @@ scikit-learn = "1.5.1"
 tornado = "^6.3"
 xarray = "2023.11.0"
 xgboost = "1.7.5"
-xpysom-dask = { git = "https://github.com/jcfaracco/xpysom-dask#egg=dask" }
+xpysom-dask = { git = "https://github.com/jcfaracco/xpysom-dask#egg=master" }
 zarr = "2.16.1"
 
 
