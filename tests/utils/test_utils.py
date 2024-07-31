@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import time
 import shutil
 import unittest
 
@@ -33,6 +34,7 @@ from dasf.utils.funcs import (
     is_gpu_supported,
     is_jax_supported,
     is_notebook,
+    NotebookProgressBar,
     set_executor_cpu,
     set_executor_default,
     set_executor_gpu,
@@ -496,3 +498,32 @@ class TestDTypes(unittest.TestCase):
     ])
     def test_executor_strings(self, dtype, ret):
         self.assertEqual(executor_to_string(dtype), ret)
+
+
+class TestNotebookProgressBar(unittest.TestCase):
+    def test_simple_run(self):
+        pbar = NotebookProgressBar()
+        pbar.show()
+
+        pbar.start()
+
+        time.sleep(3)
+
+        pbar.set_current(500, 1000)
+
+        time.sleep(3)
+
+        self.assertEqual(pbar.bar.value, 50)
+        self.assertEqual(pbar.percentage.value, "50 %%")
+        self.assertEqual(pbar.data.value, "500 / 1000")
+
+        time.sleep(3)
+
+        pbar.set_current(1000, 1000)
+
+        time.sleep(3)
+
+        self.assertEqual(pbar.bar.value, 100)
+        self.assertEqual(pbar.percentage.value, "100 %%")
+        self.assertEqual(pbar.data.value, "1000 / 1000")
+        self.assertEqual(pbar.bar.style.bar_color, '#03c04a')

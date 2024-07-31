@@ -34,7 +34,7 @@ class ConcatenateToArray(Transform):
                     datas = xp.asarray([flat])
                 else:
                     data = xp.asarray(kwargs[key])
-                    datas = xp.expand_dim(data, axis=len(data.shape))
+                    datas = xp.expand_dims(data, axis=len(data.shape))
             else:
                 if self.flatten:
                     flat = kwargs[key].flatten()
@@ -42,7 +42,7 @@ class ConcatenateToArray(Transform):
                                       axis=0)
                 else:
                     data = xp.asarray(kwargs[key])
-                    datas = xp.append(datas, data, axis=len(data.shape))
+                    datas = xp.append(datas, data[..., xp.newaxis], axis=len(data.shape))
 
         if self.flatten:
             data = xp.transpose(datas)
@@ -50,7 +50,6 @@ class ConcatenateToArray(Transform):
             data = datas
 
         return data
-#        return data.rechunk({1: data.shape[1]})
 
     def _transform_cpu(self, **kwargs):
         return self.__transform_generic(np, **kwargs)

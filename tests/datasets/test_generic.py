@@ -16,6 +16,7 @@ from dasf.datasets import (
     DatasetXarray,
     DatasetZarr,
 )
+from dasf.transforms import ExtractData
 from dasf.utils.funcs import is_gpu_supported
 
 
@@ -150,3 +151,30 @@ class TestDatasetArray(unittest.TestCase):
 #        dataset.load()
 #
 #        self.assertEqual(dataset.avg(), 0.0)
+
+    def test_extract_data(self):
+        filename = os.getenv('PYTEST_CURRENT_TEST')
+        test_dir, _ = os.path.splitext(filename)
+        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+
+        dataset = DatasetArray(name="Array", root=raw_path, download=False)
+        extract = ExtractData()
+
+        dataset._load_cpu()
+
+        data = extract.transform(X=dataset)
+
+        self.assertTrue(isinstance(data, np.ndarray))
+
+    def test_extract_data_exception(self):
+        filename = os.getenv('PYTEST_CURRENT_TEST')
+        test_dir, _ = os.path.splitext(filename)
+        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+
+        dataset = DatasetArray(name="Array", root=raw_path, download=False)
+        extract = ExtractData()
+
+        with self.assertRaises(ValueError) as context:
+            data = extract.transform(X=dataset)
+
+            self.assertTrue('Data could not be extracted.' in str(context.exception))
