@@ -1,7 +1,11 @@
 import os
 from typing import Any, Tuple, Union
 
-import lightning as L
+try:
+    import lightning as L
+except ImportError:
+    pass
+
 import numpy as np
 from torch.utils.data import DataLoader
 
@@ -75,7 +79,7 @@ class LazyDatasetComputer:
 class LightningTrainer:
     def __init__(
         self,
-        model: L.LightningModule,
+        model,
         use_gpu: bool = False,
         batch_size: int = 1,
         max_epochs: int = 1,
