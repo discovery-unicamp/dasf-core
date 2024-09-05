@@ -84,6 +84,19 @@ The table below is a list of supported machine learning algorithms by DASF frame
 | Boosted Trees            |    X    |    X    |       X       |       X       |    dasf.ml.xgboost    |
 | KNN                      |    X    |    X    |               |               |   dasf.ml.neighbors   |
 
+### Cite
+
+```bibtex
+@inproceedings{dasf,
+  title        = {DASF: a high-performance and scalable framework for large seismic datasets},
+  author       = {Julio C. Faracco and Otávio O. Napoli and João Seródio and Carlos A. Astudillo and Leandro Villas and Edson Borin and Alan A. Souza and Daniel C. Miranda and João Paulo Navarro},
+  year         = {2024},
+  month        = {August},
+  booktitle    = {Proceedings of the The International Meeting for Applied Geoscience and Energy},
+  address      = {Houston, TX},
+  organization = {AAPG/SEG}
+}
+```
 
 ### Authors
 
