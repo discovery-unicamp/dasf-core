@@ -86,6 +86,8 @@ The table below is a list of supported machine learning algorithms by DASF frame
 
 ### Cite
 
+If you are using this project in your research, please cite our first paper where DASF was proposed.
+
 ```bibtex
 @inproceedings{dasf,
   title        = {DASF: a high-performance and scalable framework for large seismic datasets},
