@@ -12,11 +12,10 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Operating System :: OS Independent",
-    "Development Status :: 1 - Planning",
     "Environment :: GPU :: NVIDIA CUDA",
 ]
 readme="README.md"
@@ -51,7 +50,7 @@ portalocker = "2.8.2"
 protobuf = "<=3.20.1"
 psutil = "5.9.4"
 pyarrow = "^14.0.1"
-python = "^3.8"
+python = "^3.10"
 scikit-learn = "1.5.1"
 tornado = "^6.3"
 xarray = "2023.11.0"
