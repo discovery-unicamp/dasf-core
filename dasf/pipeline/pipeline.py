@@ -193,7 +193,7 @@ class Pipeline:
 
         if not hasattr(self._executor, "execute"):
             raise Exception(
-                f"Executor {self._executor.__name__} has not a execute() "
+                f"Executor {self._executor.__class__.__name__} has not a execute() "
                 "method."
             )
 
@@ -238,6 +238,8 @@ class Pipeline:
                 self.execute_callbacks("on_task_error", func=func,
                                        params=params, name=name, exception=e)
                 failed = True
+                failed_at = name
+
                 err = str(e)
                 self._logger.exception(f"Task '{name}': Failed with:\n{err}")
 
@@ -247,7 +249,7 @@ class Pipeline:
                 self._logger.error(f"Task '{name}': Finished task run")
 
         if failed:
-            self._logger.info(f"Pipeline failed at '{name}'")
+            self._logger.info(f"Pipeline failed at '{failed_at}'")
         else:
             self._logger.info("Pipeline run successfully")
 

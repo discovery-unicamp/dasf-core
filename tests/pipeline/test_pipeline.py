@@ -8,6 +8,7 @@ from mock import MagicMock
 from dasf.datasets import DatasetArray
 from dasf.pipeline import Pipeline
 from dasf.transforms.base import TargeteredTransform, Transform
+from dasf.pipeline.executors.base import Executor
 
 
 class Dataset_A(DatasetArray):
@@ -46,8 +47,25 @@ class Transform_F(TargeteredTransform):
         return X - 4
 
 
+class Transform_Fail(Transform):
+    def transform(self, X):
+        raise Exception('Throw an exception from a transformation.')
+        return X
+
+
 def transform_g(X):
     return X - 4
+
+
+class TestExecutorDisconnected(Executor):
+    @property
+    def is_connected(self):
+        return False
+
+
+class TestNonExecutor:
+    def __init__(self):
+        pass
 
 
 class TestPipeline(unittest.TestCase):
@@ -211,3 +229,83 @@ class TestPipeline(unittest.TestCase):
         # executor.register_dataset.assert_called_once_with(**kwargs)
         # executor.has_dataset.assert_called_with(key)
         raise unittest.SkipTest("Datasets are disabled for now")
+
+    def test_pipeline_failure(self):
+        dataset_A = Dataset_A(name="Test Dataset A")
+
+        t_A = Transform_A()
+        t_B = Transform_B()
+        t_F = Transform_Fail()
+
+        pipeline = Pipeline("Test Pipeline Creation")
+
+        pipeline = pipeline.add(t_F, X=dataset_A) \
+                           .add(t_A, X=t_F) \
+                           .add(t_B, X=t_A)
+
+        with self.assertLogs('DASF', level='INFO') as plogs:
+            pipeline.run()
+
+            self.assertIn('Pipeline failed at \'Transform_Fail.transform\'', plogs.output[-1])
+
+            all_output = '\n'.join(plogs.output)
+
+            self.assertIn('Dataset_A', all_output)
+            self.assertIn('Transform_Fail', all_output)
+            self.assertIn('Transform_A', all_output)
+            self.assertIn('Transform_B', all_output)
+
+            self.assertIn('ERROR', all_output)
+            self.assertIn('Failed', all_output)
+
+    def test_pipeline_loop(self):
+        t_A = Transform_A()
+        t_B = Transform_B()
+        t_C = Transform_C()
+
+        pipeline = Pipeline("Test Pipeline Loop")
+
+        pipeline = pipeline.add(t_B, X=t_A) \
+                           .add(t_C, X=t_B) \
+                           .add(t_A, X=t_C)
+
+        with self.assertRaises(Exception) as context:
+            pipeline.run()
+
+        self.assertTrue('Pipeline has not a DAG format.' in str(context.exception))
+
+    def test_pipeline_executor_disconnected(self):
+        dataset_A = Dataset_A(name="Test Dataset A")
+
+        t_A = Transform_A()
+        t_B = Transform_B()
+
+        executor = TestExecutorDisconnected()
+
+        pipeline = Pipeline("Test Pipeline Creation", executor=executor)
+
+        pipeline = pipeline.add(t_A, X=dataset_A) \
+                           .add(t_B, X=t_A)
+
+        with self.assertRaises(Exception) as context:
+            pipeline.run()
+
+        self.assertTrue('Executor is not connected.' in str(context.exception))
+
+    def test_pipeline_non_executor(self):
+        dataset_A = Dataset_A(name="Test Dataset A")
+
+        t_A = Transform_A()
+        t_B = Transform_B()
+
+        executor = TestNonExecutor()
+
+        pipeline = Pipeline("Test Pipeline Creation", executor=executor)
+
+        pipeline = pipeline.add(t_A, X=dataset_A) \
+                           .add(t_B, X=t_A)
+
+        with self.assertRaises(Exception) as context:
+            pipeline.run()
+
+        self.assertTrue('Executor TestNonExecutor has not a execute() method.' in str(context.exception))
