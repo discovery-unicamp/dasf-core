@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+""" Init module for all transformation structures. """
+
 from dasf.transforms.base import MappedTransform  # noqa
 from dasf.transforms.base import ReductionTransform  # noqa
 from dasf.transforms.base import TargeteredTransform  # noqa
