@@ -131,6 +131,8 @@ class TestGetSubDataframe(unittest.TestCase):
 
         self.assertRaises(NotImplementedError, sample.transform, X=data)
 
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
     def test_get_sub_dataframe_gpu(self):
         data = cudf.DataFrame(cp.random.random((100)), columns=['A'])
 
@@ -140,6 +142,8 @@ class TestGetSubDataframe(unittest.TestCase):
 
         self.assertEqual(len(new), 75)
 
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
     def test_get_sub_dataframe_mgpu(self):
         data = cuddf.from_cudf(cudf.DataFrame(cp.random.random((100)), columns=['A']), npartitions=4)
 
