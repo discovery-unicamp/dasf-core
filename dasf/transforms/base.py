@@ -8,10 +8,9 @@ import dask.array as da
 import numpy as np
 
 try:
-    from rmm._cuda.gpu import CUDARuntimeError
-
     import cupy as cp
     import dask_cudf as dcudf
+    from rmm._cuda.gpu import CUDARuntimeError
 except ImportError: # pragma: no cover
     pass
 except CUDARuntimeError:

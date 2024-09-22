@@ -58,7 +58,7 @@ class ConcatenateToArray(Transform):
         return self.__transform_generic(cp, **kwargs)
 
 
-class SampleDataframe:
+class SampleDataframe(Transform):
     """Return a subset with random samples of the original dataset.
 
     Parameters
@@ -70,7 +70,7 @@ class SampleDataframe:
     def __init__(self, percent: float):
         self.__percent = float(percent / 100.0)
 
-    def run(self, X):
+    def transform(self, X):
         """Returns a subset with random samples from the dataset `X`.
 
         Parameters
@@ -84,7 +84,7 @@ class SampleDataframe:
             The sampled subset.
 
         """
-        return X.sample(n=int(len(X) * self.__percent))
+        return X.sample(frac=self.__percent)
 
 
 class GetSubeCubeArray:
