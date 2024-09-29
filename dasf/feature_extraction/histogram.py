@@ -1,12 +1,12 @@
-""" Histogram module. """
 #!/usr/bin/env python3
+""" Histogram module. """
 
 import dask.array as da
 import numpy as np
 
 try:
     import cupy as cp
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dasf.transforms.base import TargeteredTransform, Transform
@@ -60,7 +60,7 @@ class Histogram(TargeteredTransform, Transform):
         self._weights = weights
         self._density = density
 
-    def __lazy_transform_generic(self, X):
+    def _lazy_transform_generic(self, X):
         """
         Compute the histogram of a dataset using Dask.
 
@@ -78,6 +78,9 @@ class Histogram(TargeteredTransform, Transform):
         bin_edges : array of dtype float
             Return the bin edges ``(length(hist)+1)``.
         """
+        if self._range is None:
+            raise ValueError("Argument `range` cannot be None for Dask based methods.")
+
         return da.histogram(
             X,
             bins=self._bins,
@@ -87,7 +90,7 @@ class Histogram(TargeteredTransform, Transform):
             density=self._density,
         )
 
-    def __transform_generic(self, X, xp):
+    def _transform_generic(self, X, xp):
         """
         Compute the histogram of a dataset using local libraries.
 
@@ -105,13 +108,17 @@ class Histogram(TargeteredTransform, Transform):
         bin_edges : array of dtype float
             Return the bin edges ``(length(hist)+1)``.
         """
+        kwargs = {}
+        if xp == np:
+            kwargs['normed'] = self._normed
+
         return xp.histogram(
             X,
             bins=self._bins,
             range=self._range,
-            normed=self._normed,
             weights=self._weights,
             density=self._density,
+            **kwargs,
         )
 
     def _lazy_transform_cpu(self, X):
@@ -132,7 +139,7 @@ class Histogram(TargeteredTransform, Transform):
         bin_edges : array of dtype float
             Return the bin edges ``(length(hist)+1)``.
         """
-        return self.__lazy_transform_generic(X)
+        return self._lazy_transform_generic(X)
 
     def _lazy_transform_gpu(self, X, **kwargs):
         """
@@ -152,7 +159,7 @@ class Histogram(TargeteredTransform, Transform):
         bin_edges : array of dtype float
             Return the bin edges ``(length(hist)+1)``.
         """
-        return self.__lazy_transform_generic(X)
+        return self._lazy_transform_generic(X)
 
     def _transform_cpu(self, X, **kwargs):
         """
@@ -172,7 +179,7 @@ class Histogram(TargeteredTransform, Transform):
         bin_edges : array of dtype float
             Return the bin edges ``(length(hist)+1)``.
         """
-        return self.__transform_generic(X, np)
+        return self._transform_generic(X, np)
 
     def _transform_gpu(self, X, **kwargs):
         """
@@ -192,4 +199,4 @@ class Histogram(TargeteredTransform, Transform):
         bin_edges : array of dtype float
             Return the bin edges ``(length(hist)+1)``.
         """
-        return self.__transform_generic(X, cp)
+        return self._transform_generic(X, cp)

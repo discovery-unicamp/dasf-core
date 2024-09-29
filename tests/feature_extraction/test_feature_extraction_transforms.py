@@ -2,6 +2,7 @@
 
 import unittest
 
+import dask.array as da
 import dask.dataframe as ddf
 import numpy as np
 import pandas as pd
@@ -16,6 +17,7 @@ except ImportError:
 from dasf.feature_extraction import ConcatenateToArray
 from dasf.feature_extraction import SampleDataframe
 from dasf.feature_extraction import GetSubDataframe
+from dasf.feature_extraction import GetSubCubeArray
 
 from dasf.utils.funcs import is_gpu_supported
 
@@ -113,6 +115,13 @@ class TestSampleDataframe(unittest.TestCase):
         # Dask usually returns values depending on the partition size
         self.assertTrue(70 <= len(new) <= 80)
 
+    def test_sample_dataframe_with_array(self):
+        data = np.random.random((40, 40, 40))
+
+        sample = SampleDataframe(75.0)
+
+        self.assertRaises(ValueError, sample.transform, X=data)
+
 
 class TestGetSubDataframe(unittest.TestCase):
     def test_get_sub_dataframe_cpu(self):
@@ -150,3 +159,46 @@ class TestGetSubDataframe(unittest.TestCase):
         sample = GetSubDataframe(75.0)
 
         self.assertRaises(NotImplementedError, sample.transform, X=data)
+
+
+class TestGetSubCubeArray(unittest.TestCase):
+    def test_get_sub_cube_array_cpu(self):
+        data = np.random.random((40, 40, 40))
+
+        subcube = GetSubCubeArray(75.0)
+
+        new = subcube.transform(X=data)
+
+        self.assertEqual(new.shape, (30, 30, 30))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_get_sub_cube_array_gpu(self):
+        data = cp.random.random((40, 40, 40))
+
+        subcube = GetSubCubeArray(75.0)
+
+        new = subcube.transform(X=data)
+
+        self.assertEqual(new.shape, (30, 30, 30))
+
+    def test_get_sub_cube_array_mcpu(self):
+        data = da.random.random((40, 40, 40))
+
+        subcube = GetSubCubeArray(75.0)
+
+        new = subcube.transform(X=data)
+
+        self.assertEqual(new.shape, (30, 30, 30))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_concatenate_to_array_flat_gpu(self):
+        data = cp.random.random((40, 40, 40))
+        data = da.from_array(data)
+
+        subcube = GetSubCubeArray(75.0)
+
+        new = subcube.transform(X=data)
+
+        self.assertEqual(new.shape, (30, 30, 30))

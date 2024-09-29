@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+""" Tranform module for feature extraction. """
 
 import numpy as np
 
 try:
     import cupy as cp
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dasf.transforms.base import Transform
@@ -84,10 +85,13 @@ class SampleDataframe(Transform):
             The sampled subset.
 
         """
+        if not is_dataframe(X):
+            raise ValueError(f"Data should be a `DataFrame` and not `{type(X)}`.")
+
         return X.sample(frac=self.__percent)
 
 
-class GetSubeCubeArray:
+class GetSubCubeArray:
     """Get a subcube with x% of samples from the original one.
 
     Parameters
