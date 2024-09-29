@@ -7,13 +7,14 @@ SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
+PACKAGE_MGR   = apt
 
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 deps_install:
-	python3 -m pip install toml && python3 -c 'import toml; c = toml.load("../pyproject.toml"); print("\n".join(c["tool"]["poetry"]["group"]["docs"]["dependencies"]))' | python3 -m pip install -r /dev/stdin
+	python3 -m pip install toml && python3 -c 'import toml; c = toml.load("../pyproject.toml"); print("\n".join(c["tool"]["poetry"]["group"]["docs"]["dependencies"]))' | python3 -m pip install -r /dev/stdin && $(PACKAGE_MGR) update && $(PACKAGE_MGR) install pandoc -y
 
 .PHONY: help Makefile
 
