@@ -114,12 +114,11 @@
 <span class="sd">        The number of clusters to find. It must be ``None`` if</span>
 <span class="sd">        ``distance_threshold`` is not ``None``.</span>
 
-<span class="sd">    affinity : str or callable, default=&#39;euclidean&#39;</span>
-<span class="sd">        Metric used to compute the linkage. Can be &quot;euclidean&quot;, &quot;l1&quot;, &quot;l2&quot;,</span>
-<span class="sd">        &quot;manhattan&quot;, &quot;cosine&quot;, or &quot;precomputed&quot;.</span>
-<span class="sd">        If linkage is &quot;ward&quot;, only &quot;euclidean&quot; is accepted.</span>
-<span class="sd">        If &quot;precomputed&quot;, a distance matrix (instead of a similarity matrix)</span>
-<span class="sd">        is needed as input for the fit method.</span>
+<span class="sd">    metric : str or callable, default=”euclidean”</span>
+<span class="sd">        Metric used to compute the linkage. Can be “euclidean”, “l1”, “l2”,</span>
+<span class="sd">        “manhattan”, “cosine”, or “precomputed”. If linkage is “ward”, only</span>
+<span class="sd">        “euclidean” is accepted. If “precomputed”, a distance matrix is needed</span>
+<span class="sd">        as input for the fit method.</span>
 
 <span class="sd">    memory : str or object with the joblib.Memory interface, default=None</span>
 <span class="sd">        Used to cache the output of the computation of the tree.</span>
@@ -203,7 +202,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-        <span class="n">affinity</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+        <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
         <span class="n">connectivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">linkage</span><span class="o">=</span><span class="s2">&quot;single&quot;</span><span class="p">,</span>
         <span class="n">memory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -216,10 +215,11 @@
         <span class="n">output_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Constructor of the class AgglomerativeClustering. &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">n_clusters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">affinity</span> <span class="o">=</span> <span class="n">affinity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connectivity</span> <span class="o">=</span> <span class="n">connectivity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">linkage</span> <span class="o">=</span> <span class="n">linkage</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="n">memory</span>
@@ -233,7 +233,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__agg_cluster_cpu</span> <span class="o">=</span> <span class="n">AgglomerativeClustering_CPU</span><span class="p">(</span>
             <span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span>
-            <span class="n">affinity</span><span class="o">=</span><span class="n">affinity</span><span class="p">,</span>
+            <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
             <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">,</span>
             <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">,</span>
             <span class="n">compute_full_tree</span><span class="o">=</span><span class="n">compute_full_tree</span><span class="p">,</span>
@@ -248,7 +248,7 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">__agg_cluster_gpu</span> <span class="o">=</span> <span class="n">AgglomerativeClustering_GPU</span><span class="p">(</span>
                 <span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span>
-                <span class="n">affinity</span><span class="o">=</span><span class="n">affinity</span><span class="p">,</span>
+                <span class="n">affinity</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
                 <span class="n">linkage</span><span class="o">=</span><span class="n">linkage</span><span class="p">,</span>
                 <span class="n">handle</span><span class="o">=</span><span class="n">handle</span><span class="p">,</span>
                 <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>

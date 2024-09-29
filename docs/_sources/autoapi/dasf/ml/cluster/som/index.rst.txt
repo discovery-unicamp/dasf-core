@@ -105,7 +105,61 @@ Module Contents
    SOM(x=3, y=2, input_len=2, num_epochs=100)
 
 
-   A generic constructor method. 
+   Constructor of the class SOM. 
+
+
+   .. py:attribute:: x
+
+
+   .. py:attribute:: y
+
+
+   .. py:attribute:: input_len
+
+
+   .. py:attribute:: num_epochs
+
+
+   .. py:attribute:: sigma
+
+
+   .. py:attribute:: sigmaN
+
+
+   .. py:attribute:: learning_rate
+
+
+   .. py:attribute:: learning_rateN
+
+
+   .. py:attribute:: decay_function
+
+
+   .. py:attribute:: neighborhood_function
+
+
+   .. py:attribute:: std_coeff
+
+
+   .. py:attribute:: topology
+
+
+   .. py:attribute:: activation_distance
+
+
+   .. py:attribute:: random_seed
+
+
+   .. py:attribute:: n_parallel
+
+
+   .. py:attribute:: compact_support
+
+
+   .. py:attribute:: __som_cpu
+
+
+   .. py:attribute:: __som_mcpu
 
 
    .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None)

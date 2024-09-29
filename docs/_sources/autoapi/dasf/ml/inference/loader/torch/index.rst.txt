@@ -28,6 +28,18 @@ Module Contents
    device: device to place model ("cpu" or "gpu")
 
 
+   .. py:attribute:: model_class_or_file
+
+
+   .. py:attribute:: dtype
+
+
+   .. py:attribute:: checkpoint
+
+
+   .. py:attribute:: device
+
+
    .. py:method:: load_model(**kwargs)
 
       Load Model method is specific for each framework/model.
@@ -35,8 +47,5 @@ Module Contents
 
 
    .. py:method:: inference(model, data)
-
-      Inference method, receives model and input data
-
 
 

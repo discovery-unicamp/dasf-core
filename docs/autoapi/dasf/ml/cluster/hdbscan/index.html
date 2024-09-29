@@ -118,7 +118,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.cluster.hdbscan.</span></span><span class="sig-name descname"><span class="pre">HDBSCAN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gen_min_span_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaf_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_cluster_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approx_min_span_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_dist_n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_selection_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eom'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_single_cluster</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prediction_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_reference_implementation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'knn'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.cluster.hdbscan.</span></span><span class="sig-name descname"><span class="pre">HDBSCAN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gen_min_span_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leaf_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_cluster_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approx_min_span_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_dist_n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_selection_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eom'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_single_cluster</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prediction_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_reference_implementation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'knn'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/hdbscan.html#HDBSCAN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../classifier/index.html#dasf.ml.cluster.classifier.ClusterClassifier" title="dasf.ml.cluster.classifier.ClusterClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.ml.cluster.classifier.ClusterClassifier</span></code></a></p>
 <p>Perform HDBSCAN clustering from vector array or distance matrix.</p>
 <p>HDBSCAN - Hierarchical Density-Based Spatial Clustering of Applications
@@ -295,10 +295,100 @@ Sander, J., 2014. Density-Based Clustering Validation. In SDM
 Density-based Cluster Selection. arxiv preprint 1911.02282.</p>
 </aside>
 </aside>
-<p>A generic constructor method.</p>
+<p>Constructor of the class HDBSCAN.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.alpha">
+<span class="sig-name descname"><span class="pre">alpha</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.alpha" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.gen_min_span_tree">
+<span class="sig-name descname"><span class="pre">gen_min_span_tree</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.gen_min_span_tree" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.leaf_size">
+<span class="sig-name descname"><span class="pre">leaf_size</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.leaf_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.metric">
+<span class="sig-name descname"><span class="pre">metric</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.metric" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.min_cluster_size">
+<span class="sig-name descname"><span class="pre">min_cluster_size</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.min_cluster_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.min_samples">
+<span class="sig-name descname"><span class="pre">min_samples</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.min_samples" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.p">
+<span class="sig-name descname"><span class="pre">p</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.p" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.algorithm">
+<span class="sig-name descname"><span class="pre">algorithm</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.algorithm" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.approx_min_span_tree">
+<span class="sig-name descname"><span class="pre">approx_min_span_tree</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.approx_min_span_tree" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.core_dist_n_jobs">
+<span class="sig-name descname"><span class="pre">core_dist_n_jobs</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.core_dist_n_jobs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.cluster_selection_method">
+<span class="sig-name descname"><span class="pre">cluster_selection_method</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.cluster_selection_method" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.allow_single_cluster">
+<span class="sig-name descname"><span class="pre">allow_single_cluster</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.allow_single_cluster" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.prediction_data">
+<span class="sig-name descname"><span class="pre">prediction_data</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.prediction_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.match_reference_implementation">
+<span class="sig-name descname"><span class="pre">match_reference_implementation</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.match_reference_implementation" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.connectivity">
+<span class="sig-name descname"><span class="pre">connectivity</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.connectivity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.output_type">
+<span class="sig-name descname"><span class="pre">output_type</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.output_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.verbose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN.__hdbscan_cpu">
+<span class="sig-name descname"><span class="pre">__hdbscan_cpu</span></span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN.__hdbscan_cpu" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN._fit_cpu">
-<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN._fit_cpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/hdbscan.html#HDBSCAN._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN._fit_cpu" title="Link to this definition"></a></dt>
 <dd><p>Perform HDBSCAN clustering from features or distance matrix using CPU only.</p>
 <section id="id8">
 <h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
@@ -319,7 +409,7 @@ Density-based Cluster Selection. arxiv preprint 1911.02282.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN._fit_gpu">
-<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN._fit_gpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/hdbscan.html#HDBSCAN._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN._fit_gpu" title="Link to this definition"></a></dt>
 <dd><p>Perform HDBSCAN clustering from features or distance matrix using GPU only
 (from CuML).</p>
 <section id="id9">
@@ -341,7 +431,7 @@ Density-based Cluster Selection. arxiv preprint 1911.02282.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_cpu">
-<span class="sig-name descname"><span class="pre">_fit_predict_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_cpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_fit_predict_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/hdbscan.html#HDBSCAN._fit_predict_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_cpu" title="Link to this definition"></a></dt>
 <dd><p>Performs clustering on X and returns cluster labels using only CPU.</p>
 <section id="id11">
 <h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
@@ -362,7 +452,7 @@ Density-based Cluster Selection. arxiv preprint 1911.02282.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_gpu">
-<span class="sig-name descname"><span class="pre">_fit_predict_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_gpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_fit_predict_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/hdbscan.html#HDBSCAN._fit_predict_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.hdbscan.HDBSCAN._fit_predict_gpu" title="Link to this definition"></a></dt>
 <dd><p>Performs clustering on X and returns cluster labels using only GPU
 (from CuML).</p>
 <section id="id13">

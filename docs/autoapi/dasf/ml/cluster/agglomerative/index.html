@@ -118,7 +118,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.cluster.agglomerative.</span></span><span class="sig-name descname"><span class="pre">AgglomerativeClustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affinity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linkage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'single'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_full_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_distances</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.cluster.agglomerative.</span></span><span class="sig-name descname"><span class="pre">AgglomerativeClustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linkage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'single'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_full_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_distances</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/agglomerative.html#AgglomerativeClustering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../classifier/index.html#dasf.ml.cluster.classifier.ClusterClassifier" title="dasf.ml.cluster.classifier.ClusterClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.ml.cluster.classifier.ClusterClassifier</span></code></a></p>
 <p>Agglomerative Clustering</p>
 <p>Recursively merges the pair of clusters that minimally increases
@@ -130,11 +130,10 @@ a given linkage distance.</p>
 <dt>n_clusters<span class="classifier">int or None, default=2</span></dt><dd><p>The number of clusters to find. It must be <code class="docutils literal notranslate"><span class="pre">None</span></code> if
 <code class="docutils literal notranslate"><span class="pre">distance_threshold</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
-<dt>affinity<span class="classifier">str or callable, default=’euclidean’</span></dt><dd><p>Metric used to compute the linkage. Can be “euclidean”, “l1”, “l2”,
-“manhattan”, “cosine”, or “precomputed”.
-If linkage is “ward”, only “euclidean” is accepted.
-If “precomputed”, a distance matrix (instead of a similarity matrix)
-is needed as input for the fit method.</p>
+<dt>metric<span class="classifier">str or callable, default=”euclidean”</span></dt><dd><p>Metric used to compute the linkage. Can be “euclidean”, “l1”, “l2”,
+“manhattan”, “cosine”, or “precomputed”. If linkage is “ward”, only
+“euclidean” is accepted. If “precomputed”, a distance matrix is needed
+as input for the fit method.</p>
 </dd>
 <dt>memory<span class="classifier">str or object with the joblib.Memory interface, default=None</span></dt><dd><p>Used to cache the output of the computation of the tree.
 By default, no caching is done. If a string is given, it is the
@@ -211,7 +210,72 @@ Configuration for more info.</p>
 <p>For further informations see:
 - <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html">https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html</a>
 - <a class="reference external" href="https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering">https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering</a></p>
-<p>A generic constructor method.</p>
+<p>Constructor of the class AgglomerativeClustering.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.n_clusters">
+<span class="sig-name descname"><span class="pre">n_clusters</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.n_clusters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.metric">
+<span class="sig-name descname"><span class="pre">metric</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.metric" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.connectivity">
+<span class="sig-name descname"><span class="pre">connectivity</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.connectivity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.linkage">
+<span class="sig-name descname"><span class="pre">linkage</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.linkage" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.memory">
+<span class="sig-name descname"><span class="pre">memory</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.memory" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.compute_full_tree">
+<span class="sig-name descname"><span class="pre">compute_full_tree</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.compute_full_tree" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.distance_threshold">
+<span class="sig-name descname"><span class="pre">distance_threshold</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.distance_threshold" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.compute_distances">
+<span class="sig-name descname"><span class="pre">compute_distances</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.compute_distances" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.handle" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.verbose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.n_neighbors">
+<span class="sig-name descname"><span class="pre">n_neighbors</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.n_neighbors" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.output_type">
+<span class="sig-name descname"><span class="pre">output_type</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.output_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering.__agg_cluster_cpu">
+<span class="sig-name descname"><span class="pre">__agg_cluster_cpu</span></span><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering.__agg_cluster_cpu" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.cluster.agglomerative.AgglomerativeClustering._fit_cpu">
 <span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/cluster/agglomerative.html#AgglomerativeClustering._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.cluster.agglomerative.AgglomerativeClustering._fit_cpu" title="Link to this definition"></a></dt>

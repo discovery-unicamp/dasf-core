@@ -106,7 +106,7 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="histogram/index.html">dasf.feature_extraction.histogram</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transform/index.html">dasf.feature_extraction.transform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transforms/index.html">dasf.feature_extraction.transforms</a></li>
 </ul>
 </div>
 </section>
@@ -123,10 +123,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.feature_extraction.GetSubDataframe" title="dasf.feature_extraction.GetSubDataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GetSubDataframe</span></code></a></p></td>
 <td><p>Get the first x% samples from the dataset.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#dasf.feature_extraction.GetSubeCubeArray" title="dasf.feature_extraction.GetSubeCubeArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GetSubeCubeArray</span></code></a></p></td>
-<td><p>Get a subcube with x% of samples from the original one.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#dasf.feature_extraction.SampleDataframe" title="dasf.feature_extraction.SampleDataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleDataframe</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#dasf.feature_extraction.SampleDataframe" title="dasf.feature_extraction.SampleDataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleDataframe</span></code></a></p></td>
 <td><p>Return a subset with random samples of the original dataset.</p></td>
 </tr>
 </tbody>
@@ -168,9 +165,34 @@ normed
 weights
 density</p>
 <p>Generic constructor of the class Histogram.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.feature_extraction.Histogram._bins">
+<span class="sig-name descname"><span class="pre">_bins</span></span><a class="headerlink" href="#dasf.feature_extraction.Histogram._bins" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.feature_extraction.Histogram._range">
+<span class="sig-name descname"><span class="pre">_range</span></span><a class="headerlink" href="#dasf.feature_extraction.Histogram._range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.feature_extraction.Histogram._normed">
+<span class="sig-name descname"><span class="pre">_normed</span></span><a class="headerlink" href="#dasf.feature_extraction.Histogram._normed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.feature_extraction.Histogram._weights">
+<span class="sig-name descname"><span class="pre">_weights</span></span><a class="headerlink" href="#dasf.feature_extraction.Histogram._weights" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.feature_extraction.Histogram._density">
+<span class="sig-name descname"><span class="pre">_density</span></span><a class="headerlink" href="#dasf.feature_extraction.Histogram._density" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.feature_extraction.Histogram.__lazy_transform_generic">
-<span class="sig-name descname"><span class="pre">__lazy_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.Histogram.__lazy_transform_generic" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.feature_extraction.Histogram._lazy_transform_generic">
+<span class="sig-name descname"><span class="pre">_lazy_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/histogram.html#Histogram._lazy_transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.Histogram._lazy_transform_generic" title="Link to this definition"></a></dt>
 <dd><p>Compute the histogram of a dataset using Dask.</p>
 <section id="id1">
 <h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
@@ -193,8 +215,8 @@ description of the possible semantics.  If <cite>weights</cite> are given,
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.feature_extraction.Histogram.__transform_generic">
-<span class="sig-name descname"><span class="pre">__transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.Histogram.__transform_generic" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.feature_extraction.Histogram._transform_generic">
+<span class="sig-name descname"><span class="pre">_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/histogram.html#Histogram._transform_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.Histogram._transform_generic" title="Link to this definition"></a></dt>
 <dd><p>Compute the histogram of a dataset using local libraries.</p>
 <section id="id2">
 <h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
@@ -326,7 +348,7 @@ description of the possible semantics.  If <cite>weights</cite> are given,
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.feature_extraction.ConcatenateToArray">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.</span></span><span class="sig-name descname"><span class="pre">ConcatenateToArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flatten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transform.html#ConcatenateToArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.ConcatenateToArray" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.</span></span><span class="sig-name descname"><span class="pre">ConcatenateToArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flatten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transforms.html#ConcatenateToArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.ConcatenateToArray" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../transforms/base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
 <p>Concatenate data from different Arrays into a single array.</p>
 <section id="id12">
@@ -337,6 +359,11 @@ arrays must share the shape of last dimansions in order to be
 concatenated (the default is False).</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.feature_extraction.ConcatenateToArray.flatten">
+<span class="sig-name descname"><span class="pre">flatten</span></span><a class="headerlink" href="#dasf.feature_extraction.ConcatenateToArray.flatten" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.feature_extraction.ConcatenateToArray.__transform_generic">
 <span class="sig-name descname"><span class="pre">__transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.feature_extraction.ConcatenateToArray.__transform_generic" title="Link to this definition"></a></dt>
@@ -344,13 +371,13 @@ concatenated (the default is False).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.feature_extraction.ConcatenateToArray._transform_cpu">
-<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transform.html#ConcatenateToArray._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.ConcatenateToArray._transform_cpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_transform_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transforms.html#ConcatenateToArray._transform_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.ConcatenateToArray._transform_cpu" title="Link to this definition"></a></dt>
 <dd><p>Respective immediate transform mocked function for local CPU(s).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.feature_extraction.ConcatenateToArray._transform_gpu">
-<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transform.html#ConcatenateToArray._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.ConcatenateToArray._transform_gpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_transform_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transforms.html#ConcatenateToArray._transform_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.ConcatenateToArray._transform_gpu" title="Link to this definition"></a></dt>
 <dd><p>Respective immediate transform mocked function for local GPU(s).</p>
 </dd></dl>
 
@@ -364,7 +391,7 @@ concatenated (the default is False).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.feature_extraction.GetSubDataframe">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.</span></span><span class="sig-name descname"><span class="pre">GetSubDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transform.html#GetSubDataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.GetSubDataframe" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.</span></span><span class="sig-name descname"><span class="pre">GetSubDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transforms.html#GetSubDataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.GetSubDataframe" title="Link to this definition"></a></dt>
 <dd><p>Get the first x% samples from the dataset.</p>
 <section id="id13">
 <h3>Parameters<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
@@ -372,32 +399,14 @@ concatenated (the default is False).</p>
 <dt>percent<span class="classifier">float</span></dt><dd><p>Percentage of the samples to get from the dataframe.</p>
 </dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="dasf.feature_extraction.GetSubDataframe.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transform.html#GetSubDataframe.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.GetSubDataframe.transform" title="Link to this definition"></a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.feature_extraction.GetSubDataframe.__percent">
+<span class="sig-name descname"><span class="pre">__percent</span></span><a class="headerlink" href="#dasf.feature_extraction.GetSubDataframe.__percent" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
-</section>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>percent</strong> (<em>float</em>)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="dasf.feature_extraction.GetSubeCubeArray">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.</span></span><span class="sig-name descname"><span class="pre">GetSubeCubeArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transform.html#GetSubeCubeArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.GetSubeCubeArray" title="Link to this definition"></a></dt>
-<dd><p>Get a subcube with x% of samples from the original one.</p>
-<section id="id14">
-<h3>Parameters<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>percent<span class="classifier">float</span></dt><dd><p>Percentage of the samples to get from the cube.</p>
-</dd>
-</dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.feature_extraction.GetSubeCubeArray.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transform.html#GetSubeCubeArray.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.GetSubeCubeArray.transform" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.feature_extraction.GetSubDataframe.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transforms.html#GetSubDataframe.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.GetSubDataframe.transform" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>
@@ -410,27 +419,33 @@ concatenated (the default is False).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.feature_extraction.SampleDataframe">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.</span></span><span class="sig-name descname"><span class="pre">SampleDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transform.html#SampleDataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.SampleDataframe" title="Link to this definition"></a></dt>
-<dd><p>Return a subset with random samples of the original dataset.</p>
-<section id="id15">
-<h3>Parameters<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.feature_extraction.</span></span><span class="sig-name descname"><span class="pre">SampleDataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transforms.html#SampleDataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.SampleDataframe" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../transforms/base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
+<p>Return a subset with random samples of the original dataset.</p>
+<section id="id14">
+<h3>Parameters<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>percent<span class="classifier">float</span></dt><dd><p>Percentage of the samples to get from the dataset.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.feature_extraction.SampleDataframe.__percent">
+<span class="sig-name descname"><span class="pre">__percent</span></span><a class="headerlink" href="#dasf.feature_extraction.SampleDataframe.__percent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="dasf.feature_extraction.SampleDataframe.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transform.html#SampleDataframe.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.SampleDataframe.run" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="dasf.feature_extraction.SampleDataframe.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/feature_extraction/transforms.html#SampleDataframe.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.feature_extraction.SampleDataframe.transform" title="Link to this definition"></a></dt>
 <dd><p>Returns a subset with random samples from the dataset <cite>X</cite>.</p>
-<section id="id16">
-<h4>Parameters<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<section id="id15">
+<h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
 <dl class="simple">
 <dt>X<span class="classifier">Any</span></dt><dd><p>The dataset.</p>
 </dd>
 </dl>
 </section>
-<section id="id17">
-<h4>Returns<a class="headerlink" href="#id17" title="Link to this heading"></a></h4>
+<section id="id16">
+<h4>Returns<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
 <dl class="simple">
 <dt>Any</dt><dd><p>The sampled subset.</p>
 </dd>

@@ -35,6 +35,9 @@ Module Contents
 
 .. py:class:: TimeBenchmark(backend='cprofile')
 
+   .. py:attribute:: __backend
+
+
    .. py:method:: __enter__()
 
 
@@ -45,6 +48,21 @@ Module Contents
 
 
 .. py:class:: MemoryBenchmark(backend='memray', debug=False, output_file=None, *args, **kwargs)
+
+   .. py:attribute:: __backend
+
+
+   .. py:attribute:: __debug
+
+
+   .. py:attribute:: __output_file
+
+
+   .. py:attribute:: __args
+
+
+   .. py:attribute:: __kwargs
+
 
    .. py:method:: __enter__()
 

@@ -3,6 +3,11 @@ dasf.transforms
 
 .. py:module:: dasf.transforms
 
+.. autoapi-nested-parse::
+
+   Init module for all transformation structures. 
+
+
 
 Submodules
 ----------
@@ -83,6 +88,27 @@ Package Contents
 
 
 
+   .. py:attribute:: function
+
+
+   .. py:attribute:: depth
+
+
+   .. py:attribute:: boundary
+
+
+   .. py:attribute:: trim
+
+
+   .. py:attribute:: output_chunk
+
+
+   .. py:attribute:: drop_axis
+
+
+   .. py:attribute:: new_axis
+
+
    .. py:method:: __lazy_transform_generic(X, xp, **kwargs)
 
 
@@ -138,6 +164,18 @@ Package Contents
        The function to combine each reduction of aggregate (the
        default is None).
 
+
+
+   .. py:attribute:: output_size
+
+
+   .. py:attribute:: func_aggregate
+
+
+   .. py:attribute:: func_chunk
+
+
+   .. py:attribute:: func_combine
 
 
    .. py:method:: _operation_aggregate_cpu(block, axis=None, keepdims=False)
@@ -205,6 +243,14 @@ Package Contents
    run_gpu : bool
        Define if the operator will use GPU(s) or not.
 
+
+   Constructor of the class TargeteredTransform. 
+
+
+   .. py:attribute:: _run_local
+
+
+   .. py:attribute:: _run_gpu
 
 
 .. py:class:: Fit
@@ -555,6 +601,9 @@ Package Contents
 
 
 
+   .. py:attribute:: shape
+
+
    .. py:method:: fit(X, y=None)
 
       Generic fit funtion according executor.
@@ -569,6 +618,9 @@ Package Contents
    Class representing a Transform operation of the pipeline.
 
 
+   .. py:attribute:: x
+
+
    .. py:method:: transform(X)
 
       Generic transform funtion according executor.
@@ -581,6 +633,15 @@ Package Contents
 
 
    Class representing a Transform operation of the pipeline.
+
+
+   .. py:attribute:: x
+
+
+   .. py:attribute:: y
+
+
+   .. py:attribute:: z
 
 
    .. py:method:: transform(X)
@@ -638,6 +699,20 @@ Package Contents
    Class representing a Transform operation of the pipeline.
 
 
+   .. py:attribute:: dataset_path
+
+
+   .. py:attribute:: chunks
+
+
+   .. py:attribute:: save
+      :value: True
+
+
+
+   .. py:attribute:: filename
+
+
    .. py:method:: _convert_filename(url)
       :staticmethod:
 
@@ -687,6 +762,17 @@ Package Contents
    Class representing a Transform operation of the pipeline.
 
 
+   .. py:attribute:: chunks
+
+
+   .. py:attribute:: save
+      :value: True
+
+
+
+   .. py:attribute:: filename
+
+
    .. py:method:: _convert_filename(url)
       :staticmethod:
 
@@ -733,13 +819,25 @@ Package Contents
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
 
-   Extract Data from Dataset Object
-       
+   Extract data from Dataset object
+
 
 
    .. py:method:: transform(X)
 
-      Generic transform funtion according executor.
+      Extract data from datasets that contains internal data.
+
+      Parameters
+      ----------
+      X : Dataset-like
+          A dataset object that could be anything that contains an internal
+          structure representing the raw data.
+
+      Returns
+      -------
+      data : Any
+          Any representation of the internal Dataset data.
+
 
 
 
@@ -748,12 +846,25 @@ Package Contents
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
 
-   Class representing a Transform operation of the pipeline.
+   Normalize data object
+
 
 
    .. py:method:: transform(X)
 
-      Generic transform funtion according executor.
+      Normalize the input data based on mean() and std().
+
+      Parameters
+      ----------
+      X : Any
+          Any data that could be normalized based on mean and standard
+          deviation.
+
+      Returns
+      -------
+      data : Any
+          Normalized data
+
 
 
 
@@ -763,6 +874,15 @@ Package Contents
 
 
    Class representing a Transform operation of the pipeline.
+
+
+   .. py:attribute:: chunks
+
+
+   .. py:attribute:: save
+
+
+   .. py:attribute:: filename
 
 
    .. py:method:: _convert_filename(url)

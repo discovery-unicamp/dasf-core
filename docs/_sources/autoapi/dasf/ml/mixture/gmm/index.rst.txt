@@ -206,6 +206,9 @@ Module Contents
    array([1, 0])
 
 
+   .. py:attribute:: __gmm_cpu
+
+
    .. py:method:: _fit_cpu(X, y=None)
 
       Estimate Gaussian Mixture model parameters with the EM algorithm using

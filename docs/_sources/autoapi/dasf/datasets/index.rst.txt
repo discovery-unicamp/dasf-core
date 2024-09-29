@@ -45,7 +45,7 @@ Package Contents
    Bases: :py:obj:`dasf.transforms.base.TargeteredTransform`
 
 
-   Class representing a generic dataset based on a TargeteredTransform
+       Class representing a generic dataset based on a TargeteredTransform
    object.
 
    Parameters
@@ -62,14 +62,36 @@ Package Contents
        Additional keyworkded arguments.
 
 
-   Constructor of the object Dataset. 
+   Constructor of the object Dataset.
+
+
+
+   .. py:attribute:: _name
+
+
+   .. py:attribute:: _download
+
+
+   .. py:attribute:: _root
+
+
+   .. py:attribute:: _metadata
+
+
+   .. py:attribute:: _data
+      :value: None
+
+
+
+   .. py:attribute:: _chunks
+      :value: None
+
 
 
    .. py:method:: __set_dataset_cache_dir()
 
       Generate cached directory in $HOME to store dataset(s).
 
-              
 
 
 
@@ -77,7 +99,6 @@ Package Contents
 
       Skeleton of the download method.
 
-              
 
 
 
@@ -85,7 +106,6 @@ Package Contents
 
       Return internal data length.
 
-              
 
 
 
@@ -106,7 +126,7 @@ Package Contents
    Bases: :py:obj:`Dataset`
 
 
-   Class representing an dataset wich is defined as an array of a defined
+       Class representing an dataset wich is defined as an array of a defined
    shape.
 
    Parameters
@@ -121,7 +141,13 @@ Package Contents
        Number of blocks of the array (the default is "auto").
 
 
-   Constructor of the object DatasetArray. 
+   Constructor of the object DatasetArray.
+
+
+   .. py:attribute:: _chunks
+
+
+   .. py:attribute:: _root_file
 
 
    .. py:method:: __operator_check__(other)
@@ -148,8 +174,6 @@ Package Contents
 
       Return a class representation based on internal array.
 
-              
-
 
 
    .. py:method:: __array__(dtype=None)
@@ -169,6 +193,34 @@ Package Contents
 
 
    .. py:method:: __array_ufunc__(ufunc, method, *inputs, **kwargs)
+
+      Any class, array subclass or not, can define this method or set
+      it to None in order to override the behavior of Arrays ufuncs.
+
+      Parameters
+      ----------
+      ufunc : Callable
+          The ufunc object that was called.
+
+      method : Str
+          A string indicating which Ufunc method was called (one of
+          "__call__", "reduce", "reduceat", "accumulate", "outer", "inner").
+
+      inputs : Any
+          A tuple of the input arguments to the ufunc.
+
+      kwargs : Any
+          A dictionary containing the optional input arguments of the ufunc.
+          If given, any out arguments, both positional and keyword, are
+          passed as a tuple in kwargs. See the discussion in Universal
+          functions (ufunc) for details.
+
+      Returns
+      -------
+      array : array-like
+          The return either the result of the operation.
+
+
 
 
    .. py:method:: __check_op_input(in_data)
@@ -202,7 +254,7 @@ Package Contents
 
       Returns
       -------
-      DatasetArry
+      DatasetArray
           A sum with two arrays.
 
 
@@ -263,7 +315,6 @@ Package Contents
 
       Extends metadata to new transformed object (after operations).
 
-              
 
 
 
@@ -271,7 +322,6 @@ Package Contents
 
       Read an array header from a filelike object.
 
-              
 
 
 
@@ -324,7 +374,6 @@ Package Contents
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -332,7 +381,6 @@ Package Contents
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -340,7 +388,6 @@ Package Contents
 
       Load data with GPU container (e.g. cupy).
 
-              
 
 
 
@@ -348,7 +395,6 @@ Package Contents
 
       Load data with CPU container (e.g. numpy).
 
-              
 
 
 
@@ -367,7 +413,6 @@ Package Contents
 
       Placeholder for load function.
 
-              
 
 
 
@@ -384,7 +429,7 @@ Package Contents
 
 
 
-   .. py:method:: inspect_metadata()
+   .. py:method:: metadata()
 
       Return a dictionary with all metadata information from data.
 
@@ -417,6 +462,15 @@ Package Contents
 
 
    Constructor of the object DatasetZarr. 
+
+
+   .. py:attribute:: _backend
+
+
+   .. py:attribute:: _chunks
+
+
+   .. py:attribute:: _root_file
 
 
    .. py:method:: _lazy_load(xp, **kwargs)
@@ -536,7 +590,7 @@ Package Contents
 
 
 
-   .. py:method:: inspect_metadata()
+   .. py:method:: metadata()
 
       Return a dictionary with all metadata information from data.
 
@@ -552,7 +606,6 @@ Package Contents
 
       Return a class representation based on internal array.
 
-              
 
 
 
@@ -648,7 +701,6 @@ Package Contents
 
       Extends metadata to new transformed object (after operations).
 
-              
 
 
 
@@ -674,7 +726,17 @@ Package Contents
        Relative path of the internal HDF5 dataset (the default is None).
 
 
-   Constructor of the object DatasetHDF5. 
+   Constructor of the object DatasetHDF5.
+
+
+
+   .. py:attribute:: _chunks
+
+
+   .. py:attribute:: _root_file
+
+
+   .. py:attribute:: _dataset_path
 
 
    .. py:method:: _lazy_load(xp, **kwargs)
@@ -714,7 +776,6 @@ Package Contents
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -722,7 +783,6 @@ Package Contents
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -730,7 +790,6 @@ Package Contents
 
       Load data with CPU container (e.g. numpy).
 
-              
 
 
 
@@ -738,7 +797,6 @@ Package Contents
 
       Load data with GPU container (e.g. cupy).
 
-              
 
 
 
@@ -746,7 +804,6 @@ Package Contents
 
       Placeholder for load function.
 
-              
 
 
 
@@ -762,7 +819,7 @@ Package Contents
 
 
 
-   .. py:method:: inspect_metadata()
+   .. py:method:: metadata()
 
       Return a dictionary with all metadata information from data.
 
@@ -796,14 +853,23 @@ Package Contents
        Key (or index) of the internal Xarray dataset (the default is None).
 
 
-   Constructor of the object DatasetXarray. 
+   Constructor of the object DatasetXarray.
+
+
+
+   .. py:attribute:: _chunks
+
+
+   .. py:attribute:: _root_file
+
+
+   .. py:attribute:: _data_var
 
 
    .. py:method:: _lazy_load_cpu()
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -811,7 +877,6 @@ Package Contents
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -819,7 +884,6 @@ Package Contents
 
       Load data with CPU container (e.g. numpy).
 
-              
 
 
 
@@ -827,7 +891,6 @@ Package Contents
 
       Load data with GPU container (e.g. cupy).
 
-              
 
 
 
@@ -835,7 +898,6 @@ Package Contents
 
       Placeholder for load function.
 
-              
 
 
 
@@ -851,7 +913,7 @@ Package Contents
 
 
 
-   .. py:method:: inspect_metadata()
+   .. py:method:: metadata()
 
       Return a dictionary with all metadata information from data.
 
@@ -867,7 +929,6 @@ Package Contents
 
       Return internal data length.
 
-              
 
 
 
@@ -909,18 +970,21 @@ Package Contents
        Description of attribute `__chunks`.
 
 
-   Constructor of the object DatasetLabeled. 
+   Constructor of the object DatasetLabeled.
+
+
+
+   .. py:attribute:: _chunks
 
 
    .. py:method:: download()
 
       Download the dataset.
 
-              
 
 
 
-   .. py:method:: inspect_metadata()
+   .. py:method:: metadata()
 
       Return a dictionary with all metadata information from data
       (train and labels).
@@ -987,7 +1051,6 @@ Package Contents
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -995,7 +1058,6 @@ Package Contents
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -1003,7 +1065,6 @@ Package Contents
 
       Load data with GPU container (e.g. cupy).
 
-              
 
 
 
@@ -1011,7 +1072,6 @@ Package Contents
 
       Load data with CPU container (e.g. numpy).
 
-              
 
 
 
@@ -1019,7 +1079,6 @@ Package Contents
 
       Placeholder for load function.
 
-              
 
 
 
@@ -1054,7 +1113,14 @@ Package Contents
        Number of blocks of the array (the default is "auto").
 
 
-   Constructor of the object DatasetDataFrame. 
+   Constructor of the object DatasetDataFrame.
+
+
+
+   .. py:attribute:: _chunks
+
+
+   .. py:attribute:: _root_file
 
 
    .. py:method:: _load_meta()
@@ -1069,7 +1135,7 @@ Package Contents
 
 
 
-   .. py:method:: inspect_metadata()
+   .. py:method:: metadata()
 
       Return a dictionary with all metadata information from data.
 
@@ -1085,7 +1151,6 @@ Package Contents
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -1093,7 +1158,6 @@ Package Contents
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -1101,7 +1165,6 @@ Package Contents
 
       Load data with GPU container (e.g. CuDF).
 
-              
 
 
 
@@ -1109,7 +1172,6 @@ Package Contents
 
       Load data with CPU container (e.g. pandas).
 
-              
 
 
 
@@ -1117,7 +1179,6 @@ Package Contents
 
       Placeholder for load function.
 
-              
 
 
 
@@ -1137,7 +1198,6 @@ Package Contents
    .. py:method:: __len__()
 
       Return internal data length.
-              
 
 
 
@@ -1158,7 +1218,7 @@ Package Contents
    Bases: :py:obj:`DatasetDataFrame`
 
 
-   Class representing an dataset wich is defined as a Parquet.
+       Class representing an dataset wich is defined as a Parquet.
 
    Parameters
    ----------
@@ -1172,14 +1232,14 @@ Package Contents
        Number of blocks of the array (the default is "auto").
 
 
-   Constructor of the object DatasetParquet. 
+   Constructor of the object DatasetParquet.
+
 
 
    .. py:method:: _lazy_load_gpu()
 
       Load data with GPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -1187,7 +1247,6 @@ Package Contents
 
       Load data with CPU container + DASK. (It does not load immediattly)
 
-              
 
 
 
@@ -1195,7 +1254,6 @@ Package Contents
 
       Load data with GPU container (e.g. CuDF).
 
-              
 
 
 
@@ -1203,7 +1261,6 @@ Package Contents
 
       Load data with CPU container (e.g. pandas).
 
-              
 
 
 

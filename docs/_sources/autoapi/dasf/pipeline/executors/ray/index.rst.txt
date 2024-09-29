@@ -54,6 +54,12 @@ Module Contents
    Constructor of the object RayPipelineExecutor. 
 
 
+   .. py:attribute:: address
+
+
+   .. py:attribute:: port
+
+
    .. py:property:: ngpus
       Return the number of GPUs in total.
 

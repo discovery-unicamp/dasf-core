@@ -3,6 +3,11 @@ dasf.utils
 
 .. py:module:: dasf.utils
 
+.. autoapi-nested-parse::
+
+   Init module for any utils in DASF. 
+
+
 
 Submodules
 ----------

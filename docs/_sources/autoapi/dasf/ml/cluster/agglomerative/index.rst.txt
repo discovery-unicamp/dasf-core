@@ -20,7 +20,7 @@ Classes
 Module Contents
 ---------------
 
-.. py:class:: AgglomerativeClustering(n_clusters=2, affinity='euclidean', connectivity=None, linkage='single', memory=None, compute_full_tree='auto', distance_threshold=None, compute_distances=False, handle=None, verbose=False, n_neighbors=10, output_type=None, **kwargs)
+.. py:class:: AgglomerativeClustering(n_clusters=2, metric='euclidean', connectivity=None, linkage='single', memory=None, compute_full_tree='auto', distance_threshold=None, compute_distances=False, handle=None, verbose=False, n_neighbors=10, output_type=None, **kwargs)
 
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
 
@@ -38,12 +38,11 @@ Module Contents
        The number of clusters to find. It must be ``None`` if
        ``distance_threshold`` is not ``None``.
 
-   affinity : str or callable, default='euclidean'
-       Metric used to compute the linkage. Can be "euclidean", "l1", "l2",
-       "manhattan", "cosine", or "precomputed".
-       If linkage is "ward", only "euclidean" is accepted.
-       If "precomputed", a distance matrix (instead of a similarity matrix)
-       is needed as input for the fit method.
+   metric : str or callable, default=”euclidean”
+       Metric used to compute the linkage. Can be “euclidean”, “l1”, “l2”,
+       “manhattan”, “cosine”, or “precomputed”. If linkage is “ward”, only
+       “euclidean” is accepted. If “precomputed”, a distance matrix is needed
+       as input for the fit method.
 
    memory : str or object with the joblib.Memory interface, default=None
        Used to cache the output of the computation of the tree.
@@ -124,7 +123,46 @@ Module Contents
    - https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering
 
 
-   A generic constructor method. 
+   Constructor of the class AgglomerativeClustering. 
+
+
+   .. py:attribute:: n_clusters
+
+
+   .. py:attribute:: metric
+
+
+   .. py:attribute:: connectivity
+
+
+   .. py:attribute:: linkage
+
+
+   .. py:attribute:: memory
+
+
+   .. py:attribute:: compute_full_tree
+
+
+   .. py:attribute:: distance_threshold
+
+
+   .. py:attribute:: compute_distances
+
+
+   .. py:attribute:: handle
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: n_neighbors
+
+
+   .. py:attribute:: output_type
+
+
+   .. py:attribute:: __agg_cluster_cpu
 
 
    .. py:method:: _fit_cpu(X, y=None, convert_dtype=True)

@@ -129,7 +129,34 @@ Module Contents
    ACM Transactions on Database Systems (TODS), 42(3), 19.
 
 
-   A generic constructor method. 
+   Constructor of the class DBSCAN. 
+
+
+   .. py:attribute:: eps
+
+
+   .. py:attribute:: leaf_size
+
+
+   .. py:attribute:: metric
+
+
+   .. py:attribute:: min_samples
+
+
+   .. py:attribute:: p
+
+
+   .. py:attribute:: output_type
+
+
+   .. py:attribute:: calc_core_sample_indices
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: __dbscan_cpu
 
 
    .. py:method:: _lazy_fit_gpu(X, y=None, out_dtype='int32')

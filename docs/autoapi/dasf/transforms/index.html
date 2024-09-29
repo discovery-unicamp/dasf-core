@@ -101,6 +101,7 @@
              
   <section id="module-dasf.transforms">
 <span id="dasf-transforms"></span><h1>dasf.transforms<a class="headerlink" href="#module-dasf.transforms" title="Link to this heading"></a></h1>
+<p>Init module for all transformation structures.</p>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
@@ -165,10 +166,10 @@
 <td><p>Class representing a Transform operation of the pipeline.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.transforms.ExtractData" title="dasf.transforms.ExtractData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExtractData</span></code></a></p></td>
-<td><p>Extract Data from Dataset Object</p></td>
+<td><p>Extract data from Dataset object</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#dasf.transforms.Normalize" title="dasf.transforms.Normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Normalize</span></code></a></p></td>
-<td><p>Class representing a Transform operation of the pipeline.</p></td>
+<td><p>Normalize data object</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#dasf.transforms.ZarrToArray" title="dasf.transforms.ZarrToArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZarrToArray</span></code></a></p></td>
 <td><p>Class representing a Transform operation of the pipeline.</p></td>
@@ -212,6 +213,41 @@ default is None).</p>
 (the default is None).</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.MappedTransform.function">
+<span class="sig-name descname"><span class="pre">function</span></span><a class="headerlink" href="#dasf.transforms.MappedTransform.function" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.MappedTransform.depth">
+<span class="sig-name descname"><span class="pre">depth</span></span><a class="headerlink" href="#dasf.transforms.MappedTransform.depth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.MappedTransform.boundary">
+<span class="sig-name descname"><span class="pre">boundary</span></span><a class="headerlink" href="#dasf.transforms.MappedTransform.boundary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.MappedTransform.trim">
+<span class="sig-name descname"><span class="pre">trim</span></span><a class="headerlink" href="#dasf.transforms.MappedTransform.trim" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.MappedTransform.output_chunk">
+<span class="sig-name descname"><span class="pre">output_chunk</span></span><a class="headerlink" href="#dasf.transforms.MappedTransform.output_chunk" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.MappedTransform.drop_axis">
+<span class="sig-name descname"><span class="pre">drop_axis</span></span><a class="headerlink" href="#dasf.transforms.MappedTransform.drop_axis" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.MappedTransform.new_axis">
+<span class="sig-name descname"><span class="pre">new_axis</span></span><a class="headerlink" href="#dasf.transforms.MappedTransform.new_axis" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.MappedTransform.__lazy_transform_generic">
 <span class="sig-name descname"><span class="pre">__lazy_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.transforms.MappedTransform.__lazy_transform_generic" title="Link to this definition"></a></dt>
@@ -270,6 +306,26 @@ object.</p>
 default is None).</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ReductionTransform.output_size">
+<span class="sig-name descname"><span class="pre">output_size</span></span><a class="headerlink" href="#dasf.transforms.ReductionTransform.output_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ReductionTransform.func_aggregate">
+<span class="sig-name descname"><span class="pre">func_aggregate</span></span><a class="headerlink" href="#dasf.transforms.ReductionTransform.func_aggregate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ReductionTransform.func_chunk">
+<span class="sig-name descname"><span class="pre">func_chunk</span></span><a class="headerlink" href="#dasf.transforms.ReductionTransform.func_chunk" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ReductionTransform.func_combine">
+<span class="sig-name descname"><span class="pre">func_combine</span></span><a class="headerlink" href="#dasf.transforms.ReductionTransform.func_combine" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.ReductionTransform._operation_aggregate_cpu">
 <span class="sig-name descname"><span class="pre">_operation_aggregate_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/base.html#ReductionTransform._operation_aggregate_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.ReductionTransform._operation_aggregate_cpu" title="Link to this definition"></a></dt>
@@ -348,6 +404,17 @@ constructor.</p>
 <dt>run_gpu<span class="classifier">bool</span></dt><dd><p>Define if the operator will use GPU(s) or not.</p>
 </dd>
 </dl>
+<p>Constructor of the class TargeteredTransform.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.TargeteredTransform._run_local">
+<span class="sig-name descname"><span class="pre">_run_local</span></span><a class="headerlink" href="#dasf.transforms.TargeteredTransform._run_local" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.TargeteredTransform._run_gpu">
+<span class="sig-name descname"><span class="pre">_run_gpu</span></span><a class="headerlink" href="#dasf.transforms.TargeteredTransform._run_gpu" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 </dd></dl>
 
@@ -645,6 +712,11 @@ It will gather the data blocks from all workers and resembles locally.</p>
 <dt>iline_index<span class="classifier">int</span></dt><dd><p>The index of the inline to get.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.Reshape.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#dasf.transforms.Reshape.shape" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.Reshape.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/operations.html#Reshape.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.Reshape.fit" title="Link to this definition"></a></dt>
@@ -664,6 +736,11 @@ It will gather the data blocks from all workers and resembles locally.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">SliceArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/operations.html#SliceArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.SliceArray" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
 <p>Class representing a Transform operation of the pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.SliceArray.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#dasf.transforms.SliceArray.x" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.SliceArray.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/operations.html#SliceArray.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.SliceArray.transform" title="Link to this definition"></a></dt>
@@ -677,6 +754,21 @@ It will gather the data blocks from all workers and resembles locally.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">SliceArrayByPercent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/operations.html#SliceArrayByPercent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.SliceArrayByPercent" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
 <p>Class representing a Transform operation of the pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.SliceArrayByPercent.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#dasf.transforms.SliceArrayByPercent.x" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.SliceArrayByPercent.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#dasf.transforms.SliceArrayByPercent.y" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.SliceArrayByPercent.z">
+<span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#dasf.transforms.SliceArrayByPercent.z" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.SliceArrayByPercent.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/operations.html#SliceArrayByPercent.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.SliceArrayByPercent.transform" title="Link to this definition"></a></dt>
@@ -736,6 +828,26 @@ It will gather the data blocks from all workers and resembles locally.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">ArrayToHDF5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.ArrayToHDF5" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
 <p>Class representing a Transform operation of the pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ArrayToHDF5.dataset_path">
+<span class="sig-name descname"><span class="pre">dataset_path</span></span><a class="headerlink" href="#dasf.transforms.ArrayToHDF5.dataset_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ArrayToHDF5.chunks">
+<span class="sig-name descname"><span class="pre">chunks</span></span><a class="headerlink" href="#dasf.transforms.ArrayToHDF5.chunks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ArrayToHDF5.save">
+<span class="sig-name descname"><span class="pre">save</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#dasf.transforms.ArrayToHDF5.save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ArrayToHDF5.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#dasf.transforms.ArrayToHDF5.filename" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.ArrayToHDF5._convert_filename">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#ArrayToHDF5._convert_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.ArrayToHDF5._convert_filename" title="Link to this definition"></a></dt>
@@ -792,6 +904,21 @@ It will gather the data blocks from all workers and resembles locally.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">ArrayToZarr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#ArrayToZarr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.ArrayToZarr" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
 <p>Class representing a Transform operation of the pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ArrayToZarr.chunks">
+<span class="sig-name descname"><span class="pre">chunks</span></span><a class="headerlink" href="#dasf.transforms.ArrayToZarr.chunks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ArrayToZarr.save">
+<span class="sig-name descname"><span class="pre">save</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#dasf.transforms.ArrayToZarr.save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ArrayToZarr.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#dasf.transforms.ArrayToZarr.filename" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.ArrayToZarr._convert_filename">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#ArrayToZarr._convert_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.ArrayToZarr._convert_filename" title="Link to this definition"></a></dt>
@@ -847,11 +974,26 @@ It will gather the data blocks from all workers and resembles locally.</p>
 <dt class="sig sig-object py" id="dasf.transforms.ExtractData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">ExtractData</span></span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#ExtractData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.ExtractData" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
-<p>Extract Data from Dataset Object</p>
+<p>Extract data from Dataset object</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.ExtractData.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#ExtractData.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.ExtractData.transform" title="Link to this definition"></a></dt>
-<dd><p>Generic transform funtion according executor.</p>
+<dd><p>Extract data from datasets that contains internal data.</p>
+<section id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>X<span class="classifier">Dataset-like</span></dt><dd><p>A dataset object that could be anything that contains an internal
+structure representing the raw data.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>data<span class="classifier">Any</span></dt><dd><p>Any representation of the internal Dataset data.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </dd></dl>
@@ -860,11 +1002,26 @@ It will gather the data blocks from all workers and resembles locally.</p>
 <dt class="sig sig-object py" id="dasf.transforms.Normalize">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">Normalize</span></span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#Normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.Normalize" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
-<p>Class representing a Transform operation of the pipeline.</p>
+<p>Normalize data object</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.Normalize.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#Normalize.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.Normalize.transform" title="Link to this definition"></a></dt>
-<dd><p>Generic transform funtion according executor.</p>
+<dd><p>Normalize the input data based on mean() and std().</p>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>X<span class="classifier">Any</span></dt><dd><p>Any data that could be normalized based on mean and standard
+deviation.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>data<span class="classifier">Any</span></dt><dd><p>Normalized data</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </dd></dl>
@@ -874,6 +1031,21 @@ It will gather the data blocks from all workers and resembles locally.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.</span></span><span class="sig-name descname"><span class="pre">ZarrToArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#ZarrToArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.ZarrToArray" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
 <p>Class representing a Transform operation of the pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ZarrToArray.chunks">
+<span class="sig-name descname"><span class="pre">chunks</span></span><a class="headerlink" href="#dasf.transforms.ZarrToArray.chunks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ZarrToArray.save">
+<span class="sig-name descname"><span class="pre">save</span></span><a class="headerlink" href="#dasf.transforms.ZarrToArray.save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.ZarrToArray.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#dasf.transforms.ZarrToArray.filename" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.ZarrToArray._convert_filename">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/dasf/transforms/transforms.html#ZarrToArray._convert_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.ZarrToArray._convert_filename" title="Link to this definition"></a></dt>

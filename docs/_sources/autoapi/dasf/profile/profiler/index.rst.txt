@@ -308,6 +308,27 @@ Module Contents
    inheritance.
 
 
+   .. py:attribute:: database_file
+
+
+   .. py:attribute:: commit_threshold
+
+
+   .. py:attribute:: commit_on_close
+
+
+   .. py:attribute:: queue
+
+
+   .. py:attribute:: lock_timeout
+
+
+   .. py:attribute:: byte_size
+
+
+   .. py:attribute:: flush
+
+
    .. py:method:: record(event)
 
 
@@ -322,14 +343,8 @@ Module Contents
 
    .. py:method:: __str__()
 
-      Return str(self).
-
-
 
    .. py:method:: __repr__()
-
-      Return repr(self).
-
 
 
 .. py:class:: EventProfiler(database_file = None, database_creation_kwargs = None, database = None)
@@ -343,6 +358,11 @@ Module Contents
 
 
    .. py:attribute:: default_database_kwargs
+
+
+   .. py:attribute:: output_file
+      :value: None
+
 
 
    .. py:method:: _record(event)
@@ -365,14 +385,8 @@ Module Contents
 
    .. py:method:: __str__()
 
-      Return str(self).
-
-
 
    .. py:method:: __repr__()
-
-      Return repr(self).
-
 
 
    .. py:method:: commit()

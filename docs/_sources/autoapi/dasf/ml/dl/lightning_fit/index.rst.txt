@@ -34,6 +34,12 @@ Module Contents
        The dimension to be unsqueezed in the output, by default None
 
 
+   .. py:attribute:: dataset
+
+
+   .. py:attribute:: unsqueeze_dim
+
+
    .. py:method:: __len__()
 
 
@@ -82,6 +88,39 @@ Module Contents
        The strategy to use for distributed training, by default "ddp".
    unsqueeze_dim : int, optional
        The dimension to unsqueeze the input data, by default None.
+
+
+   .. py:attribute:: model
+
+
+   .. py:attribute:: accelerator
+
+
+   .. py:attribute:: batch_size
+
+
+   .. py:attribute:: max_epochs
+
+
+   .. py:attribute:: limit_train_batches
+
+
+   .. py:attribute:: limit_val_batches
+
+
+   .. py:attribute:: devices
+
+
+   .. py:attribute:: num_nodes
+
+
+   .. py:attribute:: shuffle
+
+
+   .. py:attribute:: strategy
+
+
+   .. py:attribute:: unsqueeze_dim
 
 
    .. py:method:: fit(train_data, val_data = None)

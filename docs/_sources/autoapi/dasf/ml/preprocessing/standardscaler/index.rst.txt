@@ -126,6 +126,12 @@ Module Contents
    Constructor of the class StandardScaler. 
 
 
+   .. py:attribute:: __std_scaler_cpu
+
+
+   .. py:attribute:: __std_scaler_dask
+
+
    .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None)
 
       Compute the mean and std to be used for later scaling using Dask with

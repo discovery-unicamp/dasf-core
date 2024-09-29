@@ -3,6 +3,11 @@ dasf.transforms.transforms
 
 .. py:module:: dasf.transforms.transforms
 
+.. autoapi-nested-parse::
+
+   All the essential data transforms module. 
+
+
 
 Classes
 -------
@@ -25,13 +30,25 @@ Module Contents
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
 
-   Extract Data from Dataset Object
-       
+   Extract data from Dataset object
+
 
 
    .. py:method:: transform(X)
 
-      Generic transform funtion according executor.
+      Extract data from datasets that contains internal data.
+
+      Parameters
+      ----------
+      X : Dataset-like
+          A dataset object that could be anything that contains an internal
+          structure representing the raw data.
+
+      Returns
+      -------
+      data : Any
+          Any representation of the internal Dataset data.
+
 
 
 
@@ -40,12 +57,25 @@ Module Contents
    Bases: :py:obj:`dasf.transforms.base.Transform`
 
 
-   Class representing a Transform operation of the pipeline.
+   Normalize data object
+
 
 
    .. py:method:: transform(X)
 
-      Generic transform funtion according executor.
+      Normalize the input data based on mean() and std().
+
+      Parameters
+      ----------
+      X : Any
+          Any data that could be normalized based on mean and standard
+          deviation.
+
+      Returns
+      -------
+      data : Any
+          Normalized data
+
 
 
 
@@ -55,6 +85,17 @@ Module Contents
 
 
    Class representing a Transform operation of the pipeline.
+
+
+   .. py:attribute:: chunks
+
+
+   .. py:attribute:: save
+      :value: True
+
+
+
+   .. py:attribute:: filename
 
 
    .. py:method:: _convert_filename(url)
@@ -106,6 +147,20 @@ Module Contents
    Class representing a Transform operation of the pipeline.
 
 
+   .. py:attribute:: dataset_path
+
+
+   .. py:attribute:: chunks
+
+
+   .. py:attribute:: save
+      :value: True
+
+
+
+   .. py:attribute:: filename
+
+
    .. py:method:: _convert_filename(url)
       :staticmethod:
 
@@ -153,6 +208,15 @@ Module Contents
 
 
    Class representing a Transform operation of the pipeline.
+
+
+   .. py:attribute:: chunks
+
+
+   .. py:attribute:: save
+
+
+   .. py:attribute:: filename
 
 
    .. py:method:: _convert_filename(url)

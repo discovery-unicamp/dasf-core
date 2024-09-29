@@ -140,6 +140,9 @@ Package Contents
    Constructor of the class NearestNeighbors. 
 
 
+   .. py:attribute:: __nn_cpu
+
+
    .. py:method:: _fit_cpu(X, y=None, **kwargs)
 
       Fit the nearest neighbors estimator from the training dataset using

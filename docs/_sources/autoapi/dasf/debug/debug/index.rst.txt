@@ -66,6 +66,9 @@ Module Contents
    Generic constructor of the VisualizeDaskData object. 
 
 
+   .. py:attribute:: filename
+
+
    .. py:method:: display(X)
 
       Display Dask task graph using visualize method.

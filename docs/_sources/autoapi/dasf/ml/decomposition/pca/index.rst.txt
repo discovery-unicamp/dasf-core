@@ -286,6 +286,14 @@ Module Contents
    >>> print(pca.singular_values_)
    [6.30061...]
 
+   Constructor of the class PCA. 
+
+
+   .. py:attribute:: __pca_cpu
+
+
+   .. py:attribute:: __pca_mcpu
+
 
    .. py:method:: _lazy_fit_cpu(X, y=None, sample_weights=None)
 

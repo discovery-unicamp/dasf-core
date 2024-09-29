@@ -3,6 +3,11 @@ dasf.pipeline
 
 .. py:module:: dasf.pipeline
 
+.. autoapi-nested-parse::
+
+   Init module for DASF Pipeline and its features. 
+
+
 
 Subpackages
 -----------
@@ -36,6 +41,30 @@ Package Contents
 ----------------
 
 .. py:class:: Pipeline(name, executor=None, verbose=False, callbacks = None)
+
+   .. py:attribute:: _name
+
+
+   .. py:attribute:: _executor
+
+
+   .. py:attribute:: _verbose
+
+
+   .. py:attribute:: _dag
+
+
+   .. py:attribute:: _dag_table
+
+
+   .. py:attribute:: _dag_g
+
+
+   .. py:attribute:: _logger
+
+
+   .. py:attribute:: _callbacks
+
 
    .. py:method:: register_plugin(plugin)
 

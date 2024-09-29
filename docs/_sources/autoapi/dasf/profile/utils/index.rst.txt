@@ -25,19 +25,16 @@ Module Contents
 
 .. py:class:: MultiEventDatabase(databases)
 
+   .. py:attribute:: _databases
+
+
    .. py:method:: __iter__()
 
 
    .. py:method:: __str__()
 
-      Return str(self).
-
-
 
    .. py:method:: __repr__()
-
-      Return repr(self).
-
 
 
 .. py:function:: register_default_profiler(pipeline, name = None, enable_nvtx = False, add_time_suffix = True)

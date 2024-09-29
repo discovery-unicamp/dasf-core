@@ -58,6 +58,9 @@ Module Contents
    >>> client.register_worker_plugin(plugin)  # doctest: +SKIP
 
 
+   .. py:attribute:: name
+
+
    .. py:method:: setup(worker)
 
       Run when the plugin is attached to a worker. This happens when the plugin is registered
@@ -93,6 +96,24 @@ Module Contents
 
 
 .. py:class:: ResourceMonitor(time=100, autostart = True, name = 'ResourceMonitor', **monitor_kwargs)
+
+   .. py:attribute:: time
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: hostname
+
+
+   .. py:attribute:: database
+
+
+   .. py:attribute:: monitor
+
+
+   .. py:attribute:: callback
+
 
    .. py:method:: __del__()
 
@@ -145,6 +166,17 @@ Module Contents
    >>> import logging
    >>> plugin = ErrorLogger(logging)
    >>> client.register_worker_plugin(plugin)  # doctest: +SKIP
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: gpu_num
+      :value: None
+
+
+
+   .. py:attribute:: marks
 
 
    .. py:method:: setup(worker)

@@ -3,6 +3,11 @@ dasf.transforms.memory
 
 .. py:module:: dasf.transforms.memory
 
+.. autoapi-nested-parse::
+
+   Memory Management module. 
+
+
 
 Classes
 -------

@@ -191,7 +191,61 @@ Module Contents
           Density-based Cluster Selection. arxiv preprint 1911.02282.
 
 
-   A generic constructor method. 
+   Constructor of the class HDBSCAN. 
+
+
+   .. py:attribute:: alpha
+
+
+   .. py:attribute:: gen_min_span_tree
+
+
+   .. py:attribute:: leaf_size
+
+
+   .. py:attribute:: metric
+
+
+   .. py:attribute:: min_cluster_size
+
+
+   .. py:attribute:: min_samples
+
+
+   .. py:attribute:: p
+
+
+   .. py:attribute:: algorithm
+
+
+   .. py:attribute:: approx_min_span_tree
+
+
+   .. py:attribute:: core_dist_n_jobs
+
+
+   .. py:attribute:: cluster_selection_method
+
+
+   .. py:attribute:: allow_single_cluster
+
+
+   .. py:attribute:: prediction_data
+
+
+   .. py:attribute:: match_reference_implementation
+
+
+   .. py:attribute:: connectivity
+
+
+   .. py:attribute:: output_type
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: __hdbscan_cpu
 
 
    .. py:method:: _fit_cpu(X, y=None)

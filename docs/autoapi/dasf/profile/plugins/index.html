@@ -157,6 +157,11 @@ future workers with <code class="docutils literal notranslate"><span class="pre"
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">register_worker_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>  
 </pre></div>
 </div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.WorkerTaskPlugin.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#dasf.profile.plugins.WorkerTaskPlugin.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.profile.plugins.WorkerTaskPlugin.setup">
 <span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#WorkerTaskPlugin.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.WorkerTaskPlugin.setup" title="Link to this definition"></a></dt>
@@ -212,6 +217,36 @@ One of waiting, ready, executing, long-running, memory, error.</p>
 </ul>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.time">
+<span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.hostname">
+<span class="sig-name descname"><span class="pre">hostname</span></span><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.hostname" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.database">
+<span class="sig-name descname"><span class="pre">database</span></span><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.database" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.monitor">
+<span class="sig-name descname"><span class="pre">monitor</span></span><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.monitor" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.callback">
+<span class="sig-name descname"><span class="pre">callback</span></span><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.callback" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.profile.plugins.ResourceMonitor.__del__">
 <span class="sig-name descname"><span class="pre">__del__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#ResourceMonitor.__del__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.ResourceMonitor.__del__" title="Link to this definition"></a></dt>
@@ -271,6 +306,21 @@ future workers with <code class="docutils literal notranslate"><span class="pre"
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">register_worker_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>  
 </pre></div>
 </div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.GPUAnnotationPlugin.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#dasf.profile.plugins.GPUAnnotationPlugin.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.GPUAnnotationPlugin.gpu_num">
+<span class="sig-name descname"><span class="pre">gpu_num</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dasf.profile.plugins.GPUAnnotationPlugin.gpu_num" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.profile.plugins.GPUAnnotationPlugin.marks">
+<span class="sig-name descname"><span class="pre">marks</span></span><a class="headerlink" href="#dasf.profile.plugins.GPUAnnotationPlugin.marks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.profile.plugins.GPUAnnotationPlugin.setup">
 <span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/profile/plugins.html#GPUAnnotationPlugin.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.profile.plugins.GPUAnnotationPlugin.setup" title="Link to this definition"></a></dt>

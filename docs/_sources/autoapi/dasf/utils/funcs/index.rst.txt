@@ -119,6 +119,35 @@ Module Contents
    .. py:attribute:: MIN_TOTAL
 
 
+   .. py:attribute:: bar
+      :value: None
+
+
+
+   .. py:attribute:: percentage
+      :value: None
+
+
+
+   .. py:attribute:: data
+      :value: None
+
+
+
+   .. py:attribute:: __lock
+
+
+   .. py:attribute:: __current
+
+
+   .. py:attribute:: __total
+
+
+   .. py:attribute:: __error
+      :value: False
+
+
+
    .. py:method:: show()
 
       Return the HTML representation of the ProgressBar.

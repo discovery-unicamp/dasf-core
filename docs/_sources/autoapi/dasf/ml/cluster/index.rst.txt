@@ -40,7 +40,7 @@ Classes
 Package Contents
 ----------------
 
-.. py:class:: AgglomerativeClustering(n_clusters=2, affinity='euclidean', connectivity=None, linkage='single', memory=None, compute_full_tree='auto', distance_threshold=None, compute_distances=False, handle=None, verbose=False, n_neighbors=10, output_type=None, **kwargs)
+.. py:class:: AgglomerativeClustering(n_clusters=2, metric='euclidean', connectivity=None, linkage='single', memory=None, compute_full_tree='auto', distance_threshold=None, compute_distances=False, handle=None, verbose=False, n_neighbors=10, output_type=None, **kwargs)
 
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
 
@@ -58,12 +58,11 @@ Package Contents
        The number of clusters to find. It must be ``None`` if
        ``distance_threshold`` is not ``None``.
 
-   affinity : str or callable, default='euclidean'
-       Metric used to compute the linkage. Can be "euclidean", "l1", "l2",
-       "manhattan", "cosine", or "precomputed".
-       If linkage is "ward", only "euclidean" is accepted.
-       If "precomputed", a distance matrix (instead of a similarity matrix)
-       is needed as input for the fit method.
+   metric : str or callable, default=”euclidean”
+       Metric used to compute the linkage. Can be “euclidean”, “l1”, “l2”,
+       “manhattan”, “cosine”, or “precomputed”. If linkage is “ward”, only
+       “euclidean” is accepted. If “precomputed”, a distance matrix is needed
+       as input for the fit method.
 
    memory : str or object with the joblib.Memory interface, default=None
        Used to cache the output of the computation of the tree.
@@ -144,7 +143,46 @@ Package Contents
    - https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering
 
 
-   A generic constructor method. 
+   Constructor of the class AgglomerativeClustering. 
+
+
+   .. py:attribute:: n_clusters
+
+
+   .. py:attribute:: metric
+
+
+   .. py:attribute:: connectivity
+
+
+   .. py:attribute:: linkage
+
+
+   .. py:attribute:: memory
+
+
+   .. py:attribute:: compute_full_tree
+
+
+   .. py:attribute:: distance_threshold
+
+
+   .. py:attribute:: compute_distances
+
+
+   .. py:attribute:: handle
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: n_neighbors
+
+
+   .. py:attribute:: output_type
+
+
+   .. py:attribute:: __agg_cluster_cpu
 
 
    .. py:method:: _fit_cpu(X, y=None, convert_dtype=True)
@@ -338,7 +376,34 @@ Package Contents
    ACM Transactions on Database Systems (TODS), 42(3), 19.
 
 
-   A generic constructor method. 
+   Constructor of the class DBSCAN. 
+
+
+   .. py:attribute:: eps
+
+
+   .. py:attribute:: leaf_size
+
+
+   .. py:attribute:: metric
+
+
+   .. py:attribute:: min_samples
+
+
+   .. py:attribute:: p
+
+
+   .. py:attribute:: output_type
+
+
+   .. py:attribute:: calc_core_sample_indices
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: __dbscan_cpu
 
 
    .. py:method:: _lazy_fit_gpu(X, y=None, out_dtype='int32')
@@ -680,7 +745,61 @@ Package Contents
           Density-based Cluster Selection. arxiv preprint 1911.02282.
 
 
-   A generic constructor method. 
+   Constructor of the class HDBSCAN. 
+
+
+   .. py:attribute:: alpha
+
+
+   .. py:attribute:: gen_min_span_tree
+
+
+   .. py:attribute:: leaf_size
+
+
+   .. py:attribute:: metric
+
+
+   .. py:attribute:: min_cluster_size
+
+
+   .. py:attribute:: min_samples
+
+
+   .. py:attribute:: p
+
+
+   .. py:attribute:: algorithm
+
+
+   .. py:attribute:: approx_min_span_tree
+
+
+   .. py:attribute:: core_dist_n_jobs
+
+
+   .. py:attribute:: cluster_selection_method
+
+
+   .. py:attribute:: allow_single_cluster
+
+
+   .. py:attribute:: prediction_data
+
+
+   .. py:attribute:: match_reference_implementation
+
+
+   .. py:attribute:: connectivity
+
+
+   .. py:attribute:: output_type
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: __hdbscan_cpu
 
 
    .. py:method:: _fit_cpu(X, y=None)
@@ -753,7 +872,7 @@ Package Contents
 
 
 
-.. py:class:: KMeans(n_clusters=8, init=None, n_init=None, max_iter=300, tol=0.0001, verbose=0, random_state=None, copy_x=True, algorithm='full', oversampling_factor=2.0, n_jobs=1, init_max_iter=None, max_samples_per_batch=32768, precompute_distances='auto', output_type=None, **kwargs)
+.. py:class:: KMeans(n_clusters=8, init=None, n_init=None, max_iter=300, tol=0.0001, verbose=0, random_state=None, copy_x=True, algorithm='lloyd', oversampling_factor=2.0, n_jobs=1, init_max_iter=None, max_samples_per_batch=32768, precompute_distances='auto', output_type=None, **kwargs)
 
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
 
@@ -839,15 +958,12 @@ Package Contents
    init_max_iter : int, default=None
        Number of iterations for init step.
 
-   algorithm : {"auto", "full", "elkan"}, default="full"
-       K-means algorithm to use. The classical EM-style algorithm is "full".
-       The "elkan" variation is more efficient on data with well-defined
-       clusters, by using the triangle inequality. However it's more memory
-       intensive due to the allocation of an extra array of shape
-       (n_samples, n_clusters).
-
-       For now "auto" (kept for backward compatibiliy) chooses "elkan" but it
-       might change in the future for a better heuristic.
+   algorithm : {“lloyd”, “elkan”}, default=”lloyd”
+       K-means algorithm to use. The classical EM-style algorithm is "lloyd".
+       The "elkan" variation can be more efficient on some datasets with
+       well-defined clusters, by using the triangle inequality. However
+       it’s more memory intensive due to the allocation of an extra array of
+       shape (n_samples, n_clusters).
 
        .. versionchanged:: 0.18
            Added Elkan algorithm
@@ -919,7 +1035,58 @@ Package Contents
    - https://docs.rapids.ai/api/cuml/stable/api.html#cuml.dask.cluster.KMeans
 
 
-   A generic constructor method. 
+   Constructor of the class KMeans. 
+
+
+   .. py:attribute:: n_clusters
+
+
+   .. py:attribute:: random_state
+
+
+   .. py:attribute:: max_iter
+
+
+   .. py:attribute:: init
+
+
+   .. py:attribute:: n_init
+
+
+   .. py:attribute:: tol
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: copy_x
+
+
+   .. py:attribute:: algorithm
+
+
+   .. py:attribute:: oversampling_factor
+
+
+   .. py:attribute:: n_jobs
+
+
+   .. py:attribute:: init_max_iter
+
+
+   .. py:attribute:: max_samples_per_batch
+
+
+   .. py:attribute:: precompute_distances
+
+
+   .. py:attribute:: output_type
+
+
+   .. py:attribute:: __kmeans_cpu
+
+
+   .. py:attribute:: __kmeans_mcpu
 
 
    .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None)
@@ -1429,7 +1596,61 @@ Package Contents
    SOM(x=3, y=2, input_len=2, num_epochs=100)
 
 
-   A generic constructor method. 
+   Constructor of the class SOM. 
+
+
+   .. py:attribute:: x
+
+
+   .. py:attribute:: y
+
+
+   .. py:attribute:: input_len
+
+
+   .. py:attribute:: num_epochs
+
+
+   .. py:attribute:: sigma
+
+
+   .. py:attribute:: sigmaN
+
+
+   .. py:attribute:: learning_rate
+
+
+   .. py:attribute:: learning_rateN
+
+
+   .. py:attribute:: decay_function
+
+
+   .. py:attribute:: neighborhood_function
+
+
+   .. py:attribute:: std_coeff
+
+
+   .. py:attribute:: topology
+
+
+   .. py:attribute:: activation_distance
+
+
+   .. py:attribute:: random_seed
+
+
+   .. py:attribute:: n_parallel
+
+
+   .. py:attribute:: compact_support
+
+
+   .. py:attribute:: __som_cpu
+
+
+   .. py:attribute:: __som_mcpu
 
 
    .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None)
@@ -1927,7 +2148,64 @@ Package Contents
      https://www1.icsi.berkeley.edu/~stellayu/publication/doc/2003kwayICCV.pdf
 
 
-   A generic constructor method. 
+   Constructor of the class SpectralClustering. 
+
+
+   .. py:attribute:: n_clusters
+
+
+   .. py:attribute:: eigen_solver
+
+
+   .. py:attribute:: random_state
+
+
+   .. py:attribute:: n_init
+
+
+   .. py:attribute:: gamma
+
+
+   .. py:attribute:: affinity
+
+
+   .. py:attribute:: n_neighbors
+
+
+   .. py:attribute:: eigen_tol
+
+
+   .. py:attribute:: assign_labels
+
+
+   .. py:attribute:: degree
+
+
+   .. py:attribute:: coef0
+
+
+   .. py:attribute:: kernel_params
+
+
+   .. py:attribute:: n_jobs
+
+
+   .. py:attribute:: n_components
+
+
+   .. py:attribute:: persist_embedding
+
+
+   .. py:attribute:: kmeans_params
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: __sc_cpu
+
+
+   .. py:attribute:: __sc_mcpu
 
 
    .. py:method:: _fit_cpu(X, y=None, sample_weight=None)

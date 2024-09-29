@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dasf.utils.funcs &mdash; DASF 1.0b5 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
 
@@ -372,6 +372,12 @@
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">progressbar</span><span class="p">:</span>
             <span class="n">progressbar</span><span class="o">.</span><span class="n">set_error</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># XXX: workaround to fix thread starvation while gdown does not support</span>
+    <span class="c1"># external pbar&#39;s. See [1].</span>
+    <span class="c1"># [1] https://github.com/wkentaro/gdown/pull/241</span>
+    <span class="k">if</span> <span class="n">progressbar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">progressbar</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output</span></div>
 

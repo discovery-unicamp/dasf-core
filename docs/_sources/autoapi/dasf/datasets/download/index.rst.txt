@@ -43,6 +43,12 @@ Module Contents
    Constructor of the object DownloadWget. 
 
 
+   .. py:attribute:: __url
+
+
+   .. py:attribute:: __filename
+
+
    .. py:method:: download()
 
       Download the dataset. 
@@ -69,6 +75,12 @@ Module Contents
 
 
    Constructor of the object DownloadGDrive. 
+
+
+   .. py:attribute:: __google_file_id
+
+
+   .. py:attribute:: __filename
 
 
    .. py:method:: download()

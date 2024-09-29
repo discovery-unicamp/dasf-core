@@ -461,6 +461,17 @@ constructor.</p>
 <dt>run_gpu<span class="classifier">bool</span></dt><dd><p>Define if the operator will use GPU(s) or not.</p>
 </dd>
 </dl>
+<p>Constructor of the class TargeteredTransform.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.TargeteredTransform._run_local">
+<span class="sig-name descname"><span class="pre">_run_local</span></span><a class="headerlink" href="#dasf.transforms.base.TargeteredTransform._run_local" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.TargeteredTransform._run_gpu">
+<span class="sig-name descname"><span class="pre">_run_gpu</span></span><a class="headerlink" href="#dasf.transforms.base.TargeteredTransform._run_gpu" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 </dd></dl>
 
@@ -498,6 +509,41 @@ default is None).</p>
 (the default is None).</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.MappedTransform.function">
+<span class="sig-name descname"><span class="pre">function</span></span><a class="headerlink" href="#dasf.transforms.base.MappedTransform.function" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.MappedTransform.depth">
+<span class="sig-name descname"><span class="pre">depth</span></span><a class="headerlink" href="#dasf.transforms.base.MappedTransform.depth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.MappedTransform.boundary">
+<span class="sig-name descname"><span class="pre">boundary</span></span><a class="headerlink" href="#dasf.transforms.base.MappedTransform.boundary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.MappedTransform.trim">
+<span class="sig-name descname"><span class="pre">trim</span></span><a class="headerlink" href="#dasf.transforms.base.MappedTransform.trim" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.MappedTransform.output_chunk">
+<span class="sig-name descname"><span class="pre">output_chunk</span></span><a class="headerlink" href="#dasf.transforms.base.MappedTransform.output_chunk" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.MappedTransform.drop_axis">
+<span class="sig-name descname"><span class="pre">drop_axis</span></span><a class="headerlink" href="#dasf.transforms.base.MappedTransform.drop_axis" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.MappedTransform.new_axis">
+<span class="sig-name descname"><span class="pre">new_axis</span></span><a class="headerlink" href="#dasf.transforms.base.MappedTransform.new_axis" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.base.MappedTransform.__lazy_transform_generic">
 <span class="sig-name descname"><span class="pre">__lazy_transform_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.transforms.base.MappedTransform.__lazy_transform_generic" title="Link to this definition"></a></dt>
@@ -556,6 +602,26 @@ object.</p>
 default is None).</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.ReductionTransform.output_size">
+<span class="sig-name descname"><span class="pre">output_size</span></span><a class="headerlink" href="#dasf.transforms.base.ReductionTransform.output_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.ReductionTransform.func_aggregate">
+<span class="sig-name descname"><span class="pre">func_aggregate</span></span><a class="headerlink" href="#dasf.transforms.base.ReductionTransform.func_aggregate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.ReductionTransform.func_chunk">
+<span class="sig-name descname"><span class="pre">func_chunk</span></span><a class="headerlink" href="#dasf.transforms.base.ReductionTransform.func_chunk" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.base.ReductionTransform.func_combine">
+<span class="sig-name descname"><span class="pre">func_combine</span></span><a class="headerlink" href="#dasf.transforms.base.ReductionTransform.func_combine" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.base.ReductionTransform._operation_aggregate_cpu">
 <span class="sig-name descname"><span class="pre">_operation_aggregate_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/base.html#ReductionTransform._operation_aggregate_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.base.ReductionTransform._operation_aggregate_cpu" title="Link to this definition"></a></dt>

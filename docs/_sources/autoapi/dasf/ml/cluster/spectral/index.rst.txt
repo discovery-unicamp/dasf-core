@@ -196,7 +196,64 @@ Module Contents
      https://www1.icsi.berkeley.edu/~stellayu/publication/doc/2003kwayICCV.pdf
 
 
-   A generic constructor method. 
+   Constructor of the class SpectralClustering. 
+
+
+   .. py:attribute:: n_clusters
+
+
+   .. py:attribute:: eigen_solver
+
+
+   .. py:attribute:: random_state
+
+
+   .. py:attribute:: n_init
+
+
+   .. py:attribute:: gamma
+
+
+   .. py:attribute:: affinity
+
+
+   .. py:attribute:: n_neighbors
+
+
+   .. py:attribute:: eigen_tol
+
+
+   .. py:attribute:: assign_labels
+
+
+   .. py:attribute:: degree
+
+
+   .. py:attribute:: coef0
+
+
+   .. py:attribute:: kernel_params
+
+
+   .. py:attribute:: n_jobs
+
+
+   .. py:attribute:: n_components
+
+
+   .. py:attribute:: persist_embedding
+
+
+   .. py:attribute:: kmeans_params
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: __sc_cpu
+
+
+   .. py:attribute:: __sc_mcpu
 
 
    .. py:method:: _fit_cpu(X, y=None, sample_weight=None)

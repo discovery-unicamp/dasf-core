@@ -20,6 +20,9 @@ Module Contents
    BaseLoader for DL models. When running in a Dask Cluster instantiates a model per worker that will be reused on every subsequent prediction task.
 
 
+   .. py:attribute:: model_instances
+
+
    .. py:method:: inference(model, data)
       :abstractmethod:
 
@@ -69,14 +72,6 @@ Module Contents
    .. py:method:: preprocessing(data)
 
       Preprocessing stage which is called before inference
-
-
-
-   .. py:method:: inference(model, data)
-      :abstractmethod:
-
-
-      Inference method, receives model and input data
 
 
 

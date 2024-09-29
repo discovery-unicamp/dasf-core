@@ -3,6 +3,11 @@ dasf.debug
 
 .. py:module:: dasf.debug
 
+.. autoapi-nested-parse::
+
+   Init module for debugging DASF. 
+
+
 
 Submodules
 ----------
@@ -68,6 +73,9 @@ Package Contents
 
 
    Generic constructor of the VisualizeDaskData object. 
+
+
+   .. py:attribute:: filename
 
 
    .. py:method:: display(X)

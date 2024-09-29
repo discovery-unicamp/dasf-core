@@ -3,6 +3,11 @@ dasf.pipeline.executors.dask
 
 .. py:module:: dasf.pipeline.executors.dask
 
+.. autoapi-nested-parse::
+
+   Dask executor module. 
+
+
 
 Classes
 -------
@@ -45,6 +50,15 @@ Module Contents
    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
+
+
+   .. py:attribute:: address
+
+
+   .. py:attribute:: port
+
+
+   .. py:attribute:: local
 
 
    .. py:property:: ngpus
@@ -102,6 +116,9 @@ Module Contents
    client_kwargs -- extra Client parameters.
 
 
+   .. py:attribute:: _tasks_map
+
+
    .. py:method:: pre_run(pipeline)
 
 
@@ -129,5 +146,8 @@ Module Contents
 .. py:class:: DaskPBSPipelineExecutor(**kwargs)
 
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
+
+
+   .. py:attribute:: client
 
 

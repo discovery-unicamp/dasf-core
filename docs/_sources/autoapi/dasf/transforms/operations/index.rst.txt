@@ -3,6 +3,11 @@ dasf.transforms.operations
 
 .. py:module:: dasf.transforms.operations
 
+.. autoapi-nested-parse::
+
+   Basic transform operations module. 
+
+
 
 Classes
 -------
@@ -35,6 +40,9 @@ Module Contents
 
 
 
+   .. py:attribute:: shape
+
+
    .. py:method:: fit(X, y=None)
 
       Generic fit funtion according executor.
@@ -47,6 +55,9 @@ Module Contents
 
 
    Class representing a Transform operation of the pipeline.
+
+
+   .. py:attribute:: x
 
 
    .. py:method:: transform(X)
@@ -63,6 +74,15 @@ Module Contents
    Class representing a Transform operation of the pipeline.
 
 
+   .. py:attribute:: x
+
+
+   .. py:attribute:: y
+
+
+   .. py:attribute:: z
+
+
    .. py:method:: transform(X)
 
       Generic transform funtion according executor.
@@ -75,6 +95,9 @@ Module Contents
 
 
    Class representing a Transform operation of the pipeline.
+
+
+   .. py:attribute:: p
 
 
    .. py:method:: _internal_chunk_array_positive(block, axis=None, keepdims=False, xp=np)
@@ -125,6 +148,24 @@ Module Contents
    input_size: size of input to the function to be applied,
    overlap: dictionary containing overlapping/padding configurations to use with np.pad or dask.overlap.overlap. Its important that for the base patch set the whole "chunk core" is covered by the patches.
    offsets: list of offsets for overlapping patches extraction
+
+
+   .. py:attribute:: _function
+
+
+   .. py:attribute:: _weight_function
+
+
+   .. py:attribute:: _input_size
+
+
+   .. py:attribute:: _offsets
+
+
+   .. py:attribute:: overlap
+
+
+   .. py:attribute:: _overlap_config
 
 
    .. py:method:: _apply_patches(patch_set)
@@ -234,6 +275,12 @@ Module Contents
    offsets: list of offsets for overlapping patches extraction
    voting: voting method. "hard"  or "soft"
    num_classes: number of classes possible
+
+
+   .. py:attribute:: _voting
+
+
+   .. py:attribute:: _num_classes
 
 
    .. py:method:: _combine_patches(results, offsets, indexes)

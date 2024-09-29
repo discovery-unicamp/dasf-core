@@ -102,6 +102,7 @@
              
   <section id="module-dasf.ml.dl">
 <span id="dasf-ml-dl"></span><h1>dasf.ml.dl<a class="headerlink" href="#module-dasf.ml.dl" title="Link to this heading"></a></h1>
+<p>Init module for Deep Learning algorithms.</p>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
@@ -137,7 +138,7 @@
 <h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.</span></span><span class="sig-name descname"><span class="pre">LightningTrainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_train_batches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_val_batches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ddp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsqueeze_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.</span></span><span class="sig-name descname"><span class="pre">LightningTrainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_train_batches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_val_batches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ddp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsqueeze_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/lightning_fit.html#LightningTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.LightningTrainer" title="Link to this definition"></a></dt>
 <dd><p>Initialize the LightningFit class.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
@@ -165,9 +166,64 @@
 <dt>unsqueeze_dim<span class="classifier">int, optional</span></dt><dd><p>The dimension to unsqueeze the input data, by default None.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.accelerator">
+<span class="sig-name descname"><span class="pre">accelerator</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.accelerator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.batch_size">
+<span class="sig-name descname"><span class="pre">batch_size</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.batch_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.max_epochs">
+<span class="sig-name descname"><span class="pre">max_epochs</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.max_epochs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.limit_train_batches">
+<span class="sig-name descname"><span class="pre">limit_train_batches</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.limit_train_batches" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.limit_val_batches">
+<span class="sig-name descname"><span class="pre">limit_val_batches</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.limit_val_batches" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.devices">
+<span class="sig-name descname"><span class="pre">devices</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.devices" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.num_nodes">
+<span class="sig-name descname"><span class="pre">num_nodes</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.num_nodes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.shuffle">
+<span class="sig-name descname"><span class="pre">shuffle</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.shuffle" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.strategy">
+<span class="sig-name descname"><span class="pre">strategy</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.strategy" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.unsqueeze_dim">
+<span class="sig-name descname"><span class="pre">unsqueeze_dim</span></span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.unsqueeze_dim" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.fit" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/lightning_fit.html#LightningTrainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.LightningTrainer.fit" title="Link to this definition"></a></dt>
 <dd><p>Perform the training of the model using torch Lightning.</p>
 <section id="id1">
 <h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
@@ -190,34 +246,33 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer._fit">
-<span class="sig-name descname"><span class="pre">_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._fit" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/lightning_fit.html#LightningTrainer._fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._fit" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer._lazy_fit_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._lazy_fit_cpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/lightning_fit.html#LightningTrainer._lazy_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._lazy_fit_cpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer._lazy_fit_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._lazy_fit_gpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/lightning_fit.html#LightningTrainer._lazy_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._lazy_fit_gpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer._fit_cpu">
-<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._fit_cpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/lightning_fit.html#LightningTrainer._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._fit_cpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.LightningTrainer._fit_gpu">
-<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._fit_gpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/lightning_fit.html#LightningTrainer._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.LightningTrainer._fit_gpu" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>lightning.LightningModule</em>)</p></li>
 <li><p><strong>use_gpu</strong> (<em>bool</em>)</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em>)</p></li>
 <li><p><strong>max_epochs</strong> (<em>int</em>)</p></li>
@@ -235,23 +290,68 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.</span></span><span class="sig-name descname"><span class="pre">NeuralNetClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.</span></span><span class="sig-name descname"><span class="pre">NeuralNetClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/pytorch_lightning.html#NeuralNetClassifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../transforms/base/index.html#dasf.transforms.base.Fit" title="dasf.transforms.base.Fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Fit</span></code></a></p>
 <p>Class representing a Fit operation of the pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._model">
+<span class="sig-name descname"><span class="pre">_model</span></span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._accel">
+<span class="sig-name descname"><span class="pre">_accel</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._accel" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._strategy">
+<span class="sig-name descname"><span class="pre">_strategy</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._strategy" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._max_iter">
+<span class="sig-name descname"><span class="pre">_max_iter</span></span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._max_iter" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._devices">
+<span class="sig-name descname"><span class="pre">_devices</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._devices" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._ngpus">
+<span class="sig-name descname"><span class="pre">_ngpus</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._ngpus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._batch_size">
+<span class="sig-name descname"><span class="pre">_batch_size</span></span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._batch_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier.__trainer">
+<span class="sig-name descname"><span class="pre">__trainer</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier.__trainer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier.__handler">
+<span class="sig-name descname"><span class="pre">__handler</span></span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier.__handler" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._lazy_fit_generic">
-<span class="sig-name descname"><span class="pre">_lazy_fit_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngpus</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._lazy_fit_generic" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_lazy_fit_generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngpus</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/pytorch_lightning.html#NeuralNetClassifier._lazy_fit_generic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._lazy_fit_generic" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._lazy_fit_gpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._lazy_fit_gpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_lazy_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/pytorch_lightning.html#NeuralNetClassifier._lazy_fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._lazy_fit_gpu" title="Link to this definition"></a></dt>
 <dd><p>Respective lazy fit mocked function for GPUs.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._lazy_fit_cpu">
-<span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._lazy_fit_cpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_lazy_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/pytorch_lightning.html#NeuralNetClassifier._lazy_fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._lazy_fit_cpu" title="Link to this definition"></a></dt>
 <dd><p>Respective lazy fit mocked function for CPUs.</p>
 </dd></dl>
 
@@ -262,13 +362,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._fit_gpu">
-<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._fit_gpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_fit_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/pytorch_lightning.html#NeuralNetClassifier._fit_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._fit_gpu" title="Link to this definition"></a></dt>
 <dd><p>Respective immediate fit mocked function for local GPU(s).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.NeuralNetClassifier._fit_cpu">
-<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._fit_cpu" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_fit_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/ml/dl/pytorch_lightning.html#NeuralNetClassifier._fit_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.NeuralNetClassifier._fit_cpu" title="Link to this definition"></a></dt>
 <dd><p>Respective immediate fit mocked function for local CPU(s).</p>
 </dd></dl>
 

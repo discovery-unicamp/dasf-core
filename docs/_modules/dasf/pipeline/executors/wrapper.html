@@ -81,26 +81,14 @@
   <h1>Source code for dasf.pipeline.executors.wrapper</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
     <span class="kn">import</span> <span class="nn">rmm</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
-    <span class="k">pass</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jit</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
     <span class="k">pass</span>
 
 <span class="kn">from</span> <span class="nn">dasf.pipeline.types</span> <span class="kn">import</span> <span class="n">TaskExecutorType</span>
-<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">get_backend_supported</span><span class="p">,</span>
-    <span class="n">get_gpu_count</span><span class="p">,</span>
-    <span class="n">is_gpu_supported</span><span class="p">,</span>
-    <span class="n">is_jax_supported</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">get_backend_supported</span><span class="p">,</span> <span class="n">get_gpu_count</span><span class="p">,</span> <span class="n">is_gpu_supported</span>
 
 
 <div class="viewcode-block" id="LocalExecutor">

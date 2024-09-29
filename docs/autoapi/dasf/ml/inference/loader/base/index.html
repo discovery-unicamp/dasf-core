@@ -120,6 +120,11 @@
 <dt class="sig sig-object py" id="dasf.ml.inference.loader.base.BaseLoader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.inference.loader.base.</span></span><span class="sig-name descname"><span class="pre">BaseLoader</span></span><a class="reference internal" href="../../../../../../_modules/dasf/ml/inference/loader/base.html#BaseLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.inference.loader.base.BaseLoader" title="Link to this definition"></a></dt>
 <dd><p>BaseLoader for DL models. When running in a Dask Cluster instantiates a model per worker that will be reused on every subsequent prediction task.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.inference.loader.base.BaseLoader.model_instances">
+<span class="sig-name descname"><span class="pre">model_instances</span></span><a class="headerlink" href="#dasf.ml.inference.loader.base.BaseLoader.model_instances" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.inference.loader.base.BaseLoader.inference">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/inference/loader/base.html#BaseLoader.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.inference.loader.base.BaseLoader.inference" title="Link to this definition"></a></dt>
@@ -182,12 +187,6 @@
 <dt class="sig sig-object py" id="dasf.ml.inference.loader.base.BaseLoader.preprocessing">
 <span class="sig-name descname"><span class="pre">preprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/inference/loader/base.html#BaseLoader.preprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.inference.loader.base.BaseLoader.preprocessing" title="Link to this definition"></a></dt>
 <dd><p>Preprocessing stage which is called before inference</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id0">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/inference/loader/base.html#BaseLoader.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
-<dd><p>Inference method, receives model and input data</p>
 </dd></dl>
 
 <dl class="py method">

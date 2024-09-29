@@ -119,7 +119,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.clusters.dask.</span></span><span class="sig-name descname"><span class="pre">DaskClusterEnvironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.clusters.dask.</span></span><span class="sig-name descname"><span class="pre">DaskClusterEnvironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/dl/clusters/dask.html#DaskClusterEnvironment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pytorch_lightning.plugins.environments.ClusterEnvironment</span></code></p>
 <p>Create a Dask Cluster environment for workers</p>
 <section id="parameters">
@@ -129,9 +129,14 @@
 </dd>
 </dl>
 <p>Constructor of the object DaskClusterEnvironment using dict metadata.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment._master_port">
+<span class="sig-name descname"><span class="pre">_master_port</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">23456</span></em><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment._master_port" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment.detect">
-<span class="sig-name descname"><span class="pre">detect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.detect" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">detect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/dl/clusters/dask.html#DaskClusterEnvironment.detect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.detect" title="Link to this definition"></a></dt>
 <dd><p>Detect if important data are present into metadata dictionary.</p>
 <section id="returns">
 <h4>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
@@ -180,7 +185,7 @@ yourself).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment.creates_children">
-<span class="sig-name descname"><span class="pre">creates_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.creates_children" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">creates_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/dl/clusters/dask.html#DaskClusterEnvironment.creates_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.creates_children" title="Link to this definition"></a></dt>
 <dd><p>Fork children when generate a cluster.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -191,7 +196,7 @@ yourself).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment.world_size">
-<span class="sig-name descname"><span class="pre">world_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.world_size" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">world_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/dl/clusters/dask.html#DaskClusterEnvironment.world_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.world_size" title="Link to this definition"></a></dt>
 <dd><p>Return worker world size.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -202,7 +207,7 @@ yourself).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment.global_rank">
-<span class="sig-name descname"><span class="pre">global_rank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.global_rank" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">global_rank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/dl/clusters/dask.html#DaskClusterEnvironment.global_rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.global_rank" title="Link to this definition"></a></dt>
 <dd><p>Return worker global rank.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -213,7 +218,7 @@ yourself).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment.local_rank">
-<span class="sig-name descname"><span class="pre">local_rank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.local_rank" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">local_rank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/dl/clusters/dask.html#DaskClusterEnvironment.local_rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.local_rank" title="Link to this definition"></a></dt>
 <dd><p>Return worker local rank.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -224,7 +229,7 @@ yourself).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment.node_rank">
-<span class="sig-name descname"><span class="pre">node_rank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.node_rank" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">node_rank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/dl/clusters/dask.html#DaskClusterEnvironment.node_rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.node_rank" title="Link to this definition"></a></dt>
 <dd><p>Return worker node rank (which is similar to global rank).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -235,7 +240,7 @@ yourself).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment.set_world_size">
-<span class="sig-name descname"><span class="pre">set_world_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.set_world_size" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_world_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/dl/clusters/dask.html#DaskClusterEnvironment.set_world_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.set_world_size" title="Link to this definition"></a></dt>
 <dd><p>Set the index of the world size.</p>
 <section id="id1">
 <h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
@@ -256,7 +261,7 @@ yourself).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.clusters.dask.DaskClusterEnvironment.set_global_rank">
-<span class="sig-name descname"><span class="pre">set_global_rank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.set_global_rank" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_global_rank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/dasf/ml/dl/clusters/dask.html#DaskClusterEnvironment.set_global_rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.clusters.dask.DaskClusterEnvironment.set_global_rank" title="Link to this definition"></a></dt>
 <dd><p>Set the index of the global rank.</p>
 <section id="id2">
 <h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>

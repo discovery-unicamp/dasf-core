@@ -74,6 +74,9 @@ Package Contents
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
 
 
+   .. py:attribute:: client
+
+
 .. py:class:: DaskPipelineExecutor(address=None, port=8786, local=False, use_gpu=False, profiler=None, protocol=None, gpu_allocator='cupy', cluster_kwargs=None, client_kwargs=None)
 
    Bases: :py:obj:`dasf.pipeline.executors.base.Executor`
@@ -92,6 +95,15 @@ Package Contents
    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
    client_kwargs -- extra Client parameters.
+
+
+   .. py:attribute:: address
+
+
+   .. py:attribute:: port
+
+
+   .. py:attribute:: local
 
 
    .. py:property:: ngpus
@@ -149,6 +161,9 @@ Package Contents
    client_kwargs -- extra Client parameters.
 
 
+   .. py:attribute:: _tasks_map
+
+
    .. py:method:: pre_run(pipeline)
 
 
@@ -174,6 +189,9 @@ Package Contents
 
 
 .. py:class:: LocalExecutor(use_gpu=None, backend='numpy', gpu_allocator='cupy')
+
+   .. py:attribute:: backend
+
 
    .. py:property:: ngpus
       :type: int

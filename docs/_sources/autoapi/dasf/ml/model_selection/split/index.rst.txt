@@ -33,6 +33,29 @@ Module Contents
        Define if the operator will use GPU(s) or not.
 
 
+   Constructor of the class TargeteredTransform. 
+
+
+   .. py:attribute:: output
+
+
+   .. py:attribute:: test_size
+
+
+   .. py:attribute:: train_size
+
+
+   .. py:attribute:: random_state
+
+
+   .. py:attribute:: shuffle
+
+
+   .. py:attribute:: blockwise
+
+
+   .. py:attribute:: convert_mixed_types
+
 
    .. py:method:: _lazy_transform_cpu(X)
 

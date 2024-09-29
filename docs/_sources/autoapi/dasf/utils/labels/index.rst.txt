@@ -47,6 +47,27 @@ Module Contents
    Bases: :py:obj:`object`
 
 
+   .. py:attribute:: __label
+
+
+   .. py:attribute:: __color
+
+
+   .. py:attribute:: __start
+
+
+   .. py:attribute:: __stop
+
+
+   .. py:attribute:: __hash_attrs
+
+
+   .. py:attribute:: __func_attrs
+
+
+   .. py:attribute:: __data_attrs
+
+
    .. py:method:: start(start)
 
 

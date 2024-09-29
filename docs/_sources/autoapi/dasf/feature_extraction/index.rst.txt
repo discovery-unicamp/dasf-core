@@ -11,7 +11,7 @@ Submodules
    :maxdepth: 1
 
    /autoapi/dasf/feature_extraction/histogram/index
-   /autoapi/dasf/feature_extraction/transform/index
+   /autoapi/dasf/feature_extraction/transforms/index
 
 
 Classes
@@ -22,7 +22,6 @@ Classes
    dasf.feature_extraction.Histogram
    dasf.feature_extraction.ConcatenateToArray
    dasf.feature_extraction.GetSubDataframe
-   dasf.feature_extraction.GetSubeCubeArray
    dasf.feature_extraction.SampleDataframe
 
 
@@ -67,7 +66,22 @@ Package Contents
    Generic constructor of the class Histogram. 
 
 
-   .. py:method:: __lazy_transform_generic(X)
+   .. py:attribute:: _bins
+
+
+   .. py:attribute:: _range
+
+
+   .. py:attribute:: _normed
+
+
+   .. py:attribute:: _weights
+
+
+   .. py:attribute:: _density
+
+
+   .. py:method:: _lazy_transform_generic(X)
 
       Compute the histogram of a dataset using Dask.
 
@@ -87,7 +101,7 @@ Package Contents
 
 
 
-   .. py:method:: __transform_generic(X, xp)
+   .. py:method:: _transform_generic(X, xp)
 
       Compute the histogram of a dataset using local libraries.
 
@@ -203,6 +217,9 @@ Package Contents
 
 
 
+   .. py:attribute:: flatten
+
+
    .. py:method:: __transform_generic(xp, **kwargs)
 
 
@@ -229,24 +246,16 @@ Package Contents
 
 
 
-   .. py:method:: transform(X)
-
-
-.. py:class:: GetSubeCubeArray(percent)
-
-   Get a subcube with x% of samples from the original one.
-
-   Parameters
-   ----------
-   percent : float
-       Percentage of the samples to get from the cube.
-
+   .. py:attribute:: __percent
 
 
    .. py:method:: transform(X)
 
 
 .. py:class:: SampleDataframe(percent)
+
+   Bases: :py:obj:`dasf.transforms.base.Transform`
+
 
    Return a subset with random samples of the original dataset.
 
@@ -257,7 +266,10 @@ Package Contents
 
 
 
-   .. py:method:: run(X)
+   .. py:attribute:: __percent
+
+
+   .. py:method:: transform(X)
 
       Returns a subset with random samples from the dataset `X`.
 

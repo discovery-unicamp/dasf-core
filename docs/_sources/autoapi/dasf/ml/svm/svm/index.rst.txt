@@ -202,6 +202,9 @@ Module Contents
        Array dimensions of training vector ``X``.
 
 
+   .. py:attribute:: __svc_cpu
+
+
    .. py:method:: _fit_cpu(X, y, sample_weight=None)
 
       Respective immediate fit mocked function for local CPU(s).
@@ -361,6 +364,9 @@ Module Contents
        Support vectors.
 
    Constructor of the class SVR. 
+
+
+   .. py:attribute:: __svr_cpu
 
 
    .. py:method:: _fit_cpu(X, y, sample_weight=None)
@@ -527,6 +533,9 @@ Module Contents
        Maximum number of iterations run across all classes.
 
    Constructor of the class LinearSVC. 
+
+
+   .. py:attribute:: __linear_svc_cpu
 
 
    .. py:method:: _fit_cpu(X, y, sample_weight=None)
@@ -696,6 +705,9 @@ Module Contents
        Maximum number of iterations run across all classes.
 
    Constructor of the class LinearSVR. 
+
+
+   .. py:attribute:: __linear_svr_cpu
 
 
    .. py:method:: _fit_cpu(X, y, sample_weight=None)

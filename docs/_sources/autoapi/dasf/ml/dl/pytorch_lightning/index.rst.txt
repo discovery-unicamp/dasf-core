@@ -66,6 +66,18 @@ Module Contents
            Default value is False.
 
 
+   .. py:attribute:: _train
+
+
+   .. py:attribute:: _val
+
+
+   .. py:attribute:: _test
+
+
+   .. py:attribute:: _batch_size
+
+
    .. py:method:: prepare_data()
 
       Use this to download and prepare data. Downloading and saving data with multiple processes (distributed
@@ -338,6 +350,43 @@ Module Contents
 
 
    Class representing a Fit operation of the pipeline.
+
+
+   .. py:attribute:: _model
+
+
+   .. py:attribute:: _accel
+      :value: None
+
+
+
+   .. py:attribute:: _strategy
+      :value: None
+
+
+
+   .. py:attribute:: _max_iter
+
+
+   .. py:attribute:: _devices
+      :value: 0
+
+
+
+   .. py:attribute:: _ngpus
+      :value: 0
+
+
+
+   .. py:attribute:: _batch_size
+
+
+   .. py:attribute:: __trainer
+      :value: False
+
+
+
+   .. py:attribute:: __handler
 
 
    .. py:method:: _lazy_fit_generic(X, y, accel, ngpus)

@@ -102,6 +102,7 @@
              
   <section id="module-dasf.transforms.operations">
 <span id="dasf-transforms-operations"></span><h1>dasf.transforms.operations<a class="headerlink" href="#module-dasf.transforms.operations" title="Link to this heading"></a></h1>
+<p>Basic transform operations module.</p>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
@@ -143,6 +144,11 @@
 <dt>iline_index<span class="classifier">int</span></dt><dd><p>The index of the inline to get.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.Reshape.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#dasf.transforms.operations.Reshape.shape" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.operations.Reshape.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/operations.html#Reshape.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.operations.Reshape.fit" title="Link to this definition"></a></dt>
@@ -162,6 +168,11 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.operations.</span></span><span class="sig-name descname"><span class="pre">SliceArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/operations.html#SliceArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.operations.SliceArray" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
 <p>Class representing a Transform operation of the pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.SliceArray.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#dasf.transforms.operations.SliceArray.x" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.operations.SliceArray.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/operations.html#SliceArray.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.operations.SliceArray.transform" title="Link to this definition"></a></dt>
@@ -175,6 +186,21 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.operations.</span></span><span class="sig-name descname"><span class="pre">SliceArrayByPercent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/operations.html#SliceArrayByPercent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.operations.SliceArrayByPercent" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
 <p>Class representing a Transform operation of the pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.SliceArrayByPercent.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#dasf.transforms.operations.SliceArrayByPercent.x" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.SliceArrayByPercent.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#dasf.transforms.operations.SliceArrayByPercent.y" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.SliceArrayByPercent.z">
+<span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#dasf.transforms.operations.SliceArrayByPercent.z" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.operations.SliceArrayByPercent.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/operations.html#SliceArrayByPercent.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.operations.SliceArrayByPercent.transform" title="Link to this definition"></a></dt>
@@ -188,6 +214,11 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.transforms.operations.</span></span><span class="sig-name descname"><span class="pre">SliceArrayByPercentile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percentile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/operations.html#SliceArrayByPercentile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.operations.SliceArrayByPercentile" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base/index.html#dasf.transforms.base.Transform" title="dasf.transforms.base.Transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.transforms.base.Transform</span></code></a></p>
 <p>Class representing a Transform operation of the pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.SliceArrayByPercentile.p">
+<span class="sig-name descname"><span class="pre">p</span></span><a class="headerlink" href="#dasf.transforms.operations.SliceArrayByPercentile.p" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.operations.SliceArrayByPercentile._internal_chunk_array_positive">
 <span class="sig-name descname"><span class="pre">_internal_chunk_array_positive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/operations.html#SliceArrayByPercentile._internal_chunk_array_positive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.operations.SliceArrayByPercentile._internal_chunk_array_positive" title="Link to this definition"></a></dt>
@@ -244,6 +275,36 @@ weight_function: weight attribution function, must receive a shape and produce a
 input_size: size of input to the function to be applied,
 overlap: dictionary containing overlapping/padding configurations to use with np.pad or dask.overlap.overlap. Its important that for the base patch set the whole “chunk core” is covered by the patches.
 offsets: list of offsets for overlapping patches extraction</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesBase._function">
+<span class="sig-name descname"><span class="pre">_function</span></span><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesBase._function" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesBase._weight_function">
+<span class="sig-name descname"><span class="pre">_weight_function</span></span><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesBase._weight_function" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesBase._input_size">
+<span class="sig-name descname"><span class="pre">_input_size</span></span><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesBase._input_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesBase._offsets">
+<span class="sig-name descname"><span class="pre">_offsets</span></span><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesBase._offsets" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesBase.overlap">
+<span class="sig-name descname"><span class="pre">overlap</span></span><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesBase.overlap" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesBase._overlap_config">
+<span class="sig-name descname"><span class="pre">_overlap_config</span></span><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesBase._overlap_config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesBase._apply_patches">
 <span class="sig-name descname"><span class="pre">_apply_patches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patch_set</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/operations.html#ApplyPatchesBase._apply_patches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesBase._apply_patches" title="Link to this definition"></a></dt>
@@ -350,6 +411,16 @@ overlap: dictionary containing overlapping/padding configurations to use with np
 offsets: list of offsets for overlapping patches extraction
 voting: voting method. “hard”  or “soft”
 num_classes: number of classes possible</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesVoting._voting">
+<span class="sig-name descname"><span class="pre">_voting</span></span><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesVoting._voting" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesVoting._num_classes">
+<span class="sig-name descname"><span class="pre">_num_classes</span></span><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesVoting._num_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.transforms.operations.ApplyPatchesVoting._combine_patches">
 <span class="sig-name descname"><span class="pre">_combine_patches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/transforms/operations.html#ApplyPatchesVoting._combine_patches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.transforms.operations.ApplyPatchesVoting._combine_patches" title="Link to this definition"></a></dt>

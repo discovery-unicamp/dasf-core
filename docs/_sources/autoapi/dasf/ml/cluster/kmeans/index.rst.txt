@@ -20,7 +20,7 @@ Classes
 Module Contents
 ---------------
 
-.. py:class:: KMeans(n_clusters=8, init=None, n_init=None, max_iter=300, tol=0.0001, verbose=0, random_state=None, copy_x=True, algorithm='full', oversampling_factor=2.0, n_jobs=1, init_max_iter=None, max_samples_per_batch=32768, precompute_distances='auto', output_type=None, **kwargs)
+.. py:class:: KMeans(n_clusters=8, init=None, n_init=None, max_iter=300, tol=0.0001, verbose=0, random_state=None, copy_x=True, algorithm='lloyd', oversampling_factor=2.0, n_jobs=1, init_max_iter=None, max_samples_per_batch=32768, precompute_distances='auto', output_type=None, **kwargs)
 
    Bases: :py:obj:`dasf.ml.cluster.classifier.ClusterClassifier`
 
@@ -106,15 +106,12 @@ Module Contents
    init_max_iter : int, default=None
        Number of iterations for init step.
 
-   algorithm : {"auto", "full", "elkan"}, default="full"
-       K-means algorithm to use. The classical EM-style algorithm is "full".
-       The "elkan" variation is more efficient on data with well-defined
-       clusters, by using the triangle inequality. However it's more memory
-       intensive due to the allocation of an extra array of shape
-       (n_samples, n_clusters).
-
-       For now "auto" (kept for backward compatibiliy) chooses "elkan" but it
-       might change in the future for a better heuristic.
+   algorithm : {“lloyd”, “elkan”}, default=”lloyd”
+       K-means algorithm to use. The classical EM-style algorithm is "lloyd".
+       The "elkan" variation can be more efficient on some datasets with
+       well-defined clusters, by using the triangle inequality. However
+       it’s more memory intensive due to the allocation of an extra array of
+       shape (n_samples, n_clusters).
 
        .. versionchanged:: 0.18
            Added Elkan algorithm
@@ -186,7 +183,58 @@ Module Contents
    - https://docs.rapids.ai/api/cuml/stable/api.html#cuml.dask.cluster.KMeans
 
 
-   A generic constructor method. 
+   Constructor of the class KMeans. 
+
+
+   .. py:attribute:: n_clusters
+
+
+   .. py:attribute:: random_state
+
+
+   .. py:attribute:: max_iter
+
+
+   .. py:attribute:: init
+
+
+   .. py:attribute:: n_init
+
+
+   .. py:attribute:: tol
+
+
+   .. py:attribute:: verbose
+
+
+   .. py:attribute:: copy_x
+
+
+   .. py:attribute:: algorithm
+
+
+   .. py:attribute:: oversampling_factor
+
+
+   .. py:attribute:: n_jobs
+
+
+   .. py:attribute:: init_max_iter
+
+
+   .. py:attribute:: max_samples_per_batch
+
+
+   .. py:attribute:: precompute_distances
+
+
+   .. py:attribute:: output_type
+
+
+   .. py:attribute:: __kmeans_cpu
+
+
+   .. py:attribute:: __kmeans_mcpu
 
 
    .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None)

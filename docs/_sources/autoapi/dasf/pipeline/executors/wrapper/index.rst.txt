@@ -17,6 +17,9 @@ Module Contents
 
 .. py:class:: LocalExecutor(use_gpu=None, backend='numpy', gpu_allocator='cupy')
 
+   .. py:attribute:: backend
+
+
    .. py:property:: ngpus
       :type: int
 

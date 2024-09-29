@@ -58,7 +58,22 @@ Module Contents
    Generic constructor of the class Histogram. 
 
 
-   .. py:method:: __lazy_transform_generic(X)
+   .. py:attribute:: _bins
+
+
+   .. py:attribute:: _range
+
+
+   .. py:attribute:: _normed
+
+
+   .. py:attribute:: _weights
+
+
+   .. py:attribute:: _density
+
+
+   .. py:method:: _lazy_transform_generic(X)
 
       Compute the histogram of a dataset using Dask.
 
@@ -78,7 +93,7 @@ Module Contents
 
 
 
-   .. py:method:: __transform_generic(X, xp)
+   .. py:method:: _transform_generic(X, xp)
 
       Compute the histogram of a dataset using local libraries.
 

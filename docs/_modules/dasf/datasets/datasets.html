@@ -90,7 +90,7 @@
     <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
     <span class="kn">from</span> <span class="nn">cuml.dask.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span> <span class="k">as</span> <span class="n">make_blobs_MGPU</span>
     <span class="kn">from</span> <span class="nn">cuml.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span> <span class="k">as</span> <span class="n">make_blobs_GPU</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
     <span class="k">pass</span>
 
 <span class="kn">from</span> <span class="nn">dask_ml.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span> <span class="k">as</span> <span class="n">make_classification_MCPU</span>
@@ -99,7 +99,7 @@
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">cuml.dask.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span> <span class="k">as</span> <span class="n">make_classification_MGPU</span>
     <span class="kn">from</span> <span class="nn">cuml.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span> <span class="k">as</span> <span class="n">make_classification_GPU</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
     <span class="k">pass</span>
 
 <span class="kn">from</span> <span class="nn">dask_ml.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span> <span class="k">as</span> <span class="n">make_regression_MCPU</span>
@@ -108,7 +108,7 @@
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">cuml.dask.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span> <span class="k">as</span> <span class="n">make_regression_MGPU</span>
     <span class="kn">from</span> <span class="nn">cuml.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span> <span class="k">as</span> <span class="n">make_regression_GPU</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
     <span class="k">pass</span>
 
 <span class="kn">from</span> <span class="nn">dasf.utils.funcs</span> <span class="kn">import</span> <span class="n">is_dask_gpu_supported</span><span class="p">,</span> <span class="n">is_dask_supported</span><span class="p">,</span> <span class="n">is_gpu_supported</span>

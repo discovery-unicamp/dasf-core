@@ -211,6 +211,11 @@
 <dt class="sig sig-object py" id="dasf.pipeline.executors.DaskPBSPipelineExecutor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.</span></span><span class="sig-name descname"><span class="pre">DaskPBSPipelineExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/pipeline/executors/dask.html#DaskPBSPipelineExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.DaskPBSPipelineExecutor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="base/index.html#dasf.pipeline.executors.base.Executor" title="dasf.pipeline.executors.base.Executor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dasf.pipeline.executors.base.Executor</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.DaskPBSPipelineExecutor.client">
+<span class="sig-name descname"><span class="pre">client</span></span><a class="headerlink" href="#dasf.pipeline.executors.DaskPBSPipelineExecutor.client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -231,6 +236,21 @@ protocol – sets the Dask protocol (default TCP)
 gpu_allocator – sets which is the memory allocator for GPU (default cupy).
 cluster_kwargs – extra Dask parameters like memory, processes, etc.
 client_kwargs – extra Client parameters.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.DaskPipelineExecutor.address">
+<span class="sig-name descname"><span class="pre">address</span></span><a class="headerlink" href="#dasf.pipeline.executors.DaskPipelineExecutor.address" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.DaskPipelineExecutor.port">
+<span class="sig-name descname"><span class="pre">port</span></span><a class="headerlink" href="#dasf.pipeline.executors.DaskPipelineExecutor.port" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.DaskPipelineExecutor.local">
+<span class="sig-name descname"><span class="pre">local</span></span><a class="headerlink" href="#dasf.pipeline.executors.DaskPipelineExecutor.local" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.DaskPipelineExecutor.ngpus">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ngpus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dasf.pipeline.executors.DaskPipelineExecutor.ngpus" title="Link to this definition"></a></dt>
@@ -320,6 +340,11 @@ use_gpu – in conjunction with <cite>local</cite>, it kicks off a local CUDA Da
 gpu_allocator – sets which is the memory allocator for GPU (default cupy).
 cluster_kwargs – extra Dask parameters like memory, processes, etc.
 client_kwargs – extra Client parameters.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.DaskTasksPipelineExecutor._tasks_map">
+<span class="sig-name descname"><span class="pre">_tasks_map</span></span><a class="headerlink" href="#dasf.pipeline.executors.DaskTasksPipelineExecutor._tasks_map" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.DaskTasksPipelineExecutor.pre_run">
 <span class="sig-name descname"><span class="pre">pre_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pipeline</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/pipeline/executors/dask.html#DaskTasksPipelineExecutor.pre_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.DaskTasksPipelineExecutor.pre_run" title="Link to this definition"></a></dt>
@@ -365,7 +390,12 @@ client_kwargs – extra Client parameters.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.LocalExecutor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.pipeline.executors.</span></span><span class="sig-name descname"><span class="pre">LocalExecutor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_allocator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cupy'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dasf/pipeline/executors/wrapper.html#LocalExecutor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.pipeline.executors.LocalExecutor" title="Link to this definition"></a></dt>
-<dd><dl class="py property">
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.pipeline.executors.LocalExecutor.backend">
+<span class="sig-name descname"><span class="pre">backend</span></span><a class="headerlink" href="#dasf.pipeline.executors.LocalExecutor.backend" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="dasf.pipeline.executors.LocalExecutor.ngpus">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ngpus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dasf.pipeline.executors.LocalExecutor.ngpus" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">

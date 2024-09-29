@@ -134,7 +134,7 @@
 <h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.models.</span></span><span class="sig-name descname"><span class="pre">TorchPatchDeConvNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learned_billinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.models.</span></span><span class="sig-name descname"><span class="pre">TorchPatchDeConvNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learned_billinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchPatchDeConvNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">NNModule</span></code></p>
 <p>Base class for all neural network modules.</p>
 <p>Your models should also subclass this class.</p>
@@ -168,9 +168,109 @@ evaluation mode.</p>
 </dd>
 </dl>
 <p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.unpool">
+<span class="sig-name descname"><span class="pre">unpool</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.unpool" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.conv_block1">
+<span class="sig-name descname"><span class="pre">conv_block1</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.conv_block1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.conv_block2">
+<span class="sig-name descname"><span class="pre">conv_block2</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.conv_block2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.conv_block3">
+<span class="sig-name descname"><span class="pre">conv_block3</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.conv_block3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.conv_block4">
+<span class="sig-name descname"><span class="pre">conv_block4</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.conv_block4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.conv_block5">
+<span class="sig-name descname"><span class="pre">conv_block5</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.conv_block5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.conv_block6">
+<span class="sig-name descname"><span class="pre">conv_block6</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.conv_block6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.conv_block7">
+<span class="sig-name descname"><span class="pre">conv_block7</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.conv_block7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block8">
+<span class="sig-name descname"><span class="pre">deconv_block8</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block9">
+<span class="sig-name descname"><span class="pre">unpool_block9</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block10">
+<span class="sig-name descname"><span class="pre">deconv_block10</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block11">
+<span class="sig-name descname"><span class="pre">unpool_block11</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block12">
+<span class="sig-name descname"><span class="pre">deconv_block12</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block13">
+<span class="sig-name descname"><span class="pre">unpool_block13</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block13" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block14">
+<span class="sig-name descname"><span class="pre">deconv_block14</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block14" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block15">
+<span class="sig-name descname"><span class="pre">unpool_block15</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block15" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block16">
+<span class="sig-name descname"><span class="pre">deconv_block16</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block16" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block17">
+<span class="sig-name descname"><span class="pre">unpool_block17</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.unpool_block17" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block18">
+<span class="sig-name descname"><span class="pre">deconv_block18</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.deconv_block18" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.seg_score19">
+<span class="sig-name descname"><span class="pre">seg_score19</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.seg_score19" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.forward" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchPatchDeConvNet.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.forward" title="Link to this definition"></a></dt>
 <dd><p>Same as <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.nn.Module.forward()</span></code>.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p><a href="#id1"><span class="problematic" id="id2">*</span></a>args: Whatever you decide to pass into the forward method.
@@ -183,12 +283,12 @@ evaluation mode.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.init_vgg16_params">
-<span class="sig-name descname"><span class="pre">init_vgg16_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vgg16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_fc8</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.init_vgg16_params" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_vgg16_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vgg16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_fc8</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchPatchDeConvNet.init_vgg16_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.init_vgg16_params" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNet.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.load" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchPatchDeConvNet.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNet.load" title="Link to this definition"></a></dt>
 <dd><p>This is just a no-op load method.</p>
 </dd></dl>
 
@@ -196,7 +296,7 @@ evaluation mode.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.models.</span></span><span class="sig-name descname"><span class="pre">TorchPatchDeConvNetSkip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learned_billinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.models.</span></span><span class="sig-name descname"><span class="pre">TorchPatchDeConvNetSkip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learned_billinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchPatchDeConvNetSkip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">NNModule</span></code></p>
 <p>Base class for all neural network modules.</p>
 <p>Your models should also subclass this class.</p>
@@ -230,9 +330,109 @@ evaluation mode.</p>
 </dd>
 </dl>
 <p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool">
+<span class="sig-name descname"><span class="pre">unpool</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block1">
+<span class="sig-name descname"><span class="pre">conv_block1</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block2">
+<span class="sig-name descname"><span class="pre">conv_block2</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block3">
+<span class="sig-name descname"><span class="pre">conv_block3</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block4">
+<span class="sig-name descname"><span class="pre">conv_block4</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block5">
+<span class="sig-name descname"><span class="pre">conv_block5</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block6">
+<span class="sig-name descname"><span class="pre">conv_block6</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block7">
+<span class="sig-name descname"><span class="pre">conv_block7</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.conv_block7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block8">
+<span class="sig-name descname"><span class="pre">deconv_block8</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block9">
+<span class="sig-name descname"><span class="pre">unpool_block9</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block10">
+<span class="sig-name descname"><span class="pre">deconv_block10</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block11">
+<span class="sig-name descname"><span class="pre">unpool_block11</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block12">
+<span class="sig-name descname"><span class="pre">deconv_block12</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block13">
+<span class="sig-name descname"><span class="pre">unpool_block13</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block13" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block14">
+<span class="sig-name descname"><span class="pre">deconv_block14</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block14" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block15">
+<span class="sig-name descname"><span class="pre">unpool_block15</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block15" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block16">
+<span class="sig-name descname"><span class="pre">deconv_block16</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block16" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block17">
+<span class="sig-name descname"><span class="pre">unpool_block17</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.unpool_block17" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block18">
+<span class="sig-name descname"><span class="pre">deconv_block18</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.deconv_block18" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.seg_score19">
+<span class="sig-name descname"><span class="pre">seg_score19</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.seg_score19" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.forward" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchPatchDeConvNetSkip.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.forward" title="Link to this definition"></a></dt>
 <dd><p>Same as <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.nn.Module.forward()</span></code>.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p><a href="#id5"><span class="problematic" id="id6">*</span></a>args: Whatever you decide to pass into the forward method.
@@ -245,12 +445,12 @@ evaluation mode.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.init_vgg16_params">
-<span class="sig-name descname"><span class="pre">init_vgg16_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vgg16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_fc8</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.init_vgg16_params" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_vgg16_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vgg16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_fc8</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchPatchDeConvNetSkip.init_vgg16_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.init_vgg16_params" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchPatchDeConvNetSkip.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.load" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchPatchDeConvNetSkip.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchPatchDeConvNetSkip.load" title="Link to this definition"></a></dt>
 <dd><p>This is just a no-op load method.</p>
 </dd></dl>
 
@@ -258,7 +458,7 @@ evaluation mode.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.models.</span></span><span class="sig-name descname"><span class="pre">TorchSectionDeConvNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learned_billinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.models.</span></span><span class="sig-name descname"><span class="pre">TorchSectionDeConvNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learned_billinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchSectionDeConvNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">NNModule</span></code></p>
 <p>Base class for all neural network modules.</p>
 <p>Your models should also subclass this class.</p>
@@ -292,9 +492,109 @@ evaluation mode.</p>
 </dd>
 </dl>
 <p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.unpool">
+<span class="sig-name descname"><span class="pre">unpool</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.unpool" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.conv_block1">
+<span class="sig-name descname"><span class="pre">conv_block1</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.conv_block1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.conv_block2">
+<span class="sig-name descname"><span class="pre">conv_block2</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.conv_block2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.conv_block3">
+<span class="sig-name descname"><span class="pre">conv_block3</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.conv_block3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.conv_block4">
+<span class="sig-name descname"><span class="pre">conv_block4</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.conv_block4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.conv_block5">
+<span class="sig-name descname"><span class="pre">conv_block5</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.conv_block5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.conv_block6">
+<span class="sig-name descname"><span class="pre">conv_block6</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.conv_block6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.conv_block7">
+<span class="sig-name descname"><span class="pre">conv_block7</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.conv_block7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block8">
+<span class="sig-name descname"><span class="pre">deconv_block8</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block9">
+<span class="sig-name descname"><span class="pre">unpool_block9</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block10">
+<span class="sig-name descname"><span class="pre">deconv_block10</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block11">
+<span class="sig-name descname"><span class="pre">unpool_block11</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block12">
+<span class="sig-name descname"><span class="pre">deconv_block12</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block13">
+<span class="sig-name descname"><span class="pre">unpool_block13</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block13" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block14">
+<span class="sig-name descname"><span class="pre">deconv_block14</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block14" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block15">
+<span class="sig-name descname"><span class="pre">unpool_block15</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block15" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block16">
+<span class="sig-name descname"><span class="pre">deconv_block16</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block16" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block17">
+<span class="sig-name descname"><span class="pre">unpool_block17</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.unpool_block17" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block18">
+<span class="sig-name descname"><span class="pre">deconv_block18</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.deconv_block18" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.seg_score19">
+<span class="sig-name descname"><span class="pre">seg_score19</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.seg_score19" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.forward" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchSectionDeConvNet.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.forward" title="Link to this definition"></a></dt>
 <dd><p>Same as <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.nn.Module.forward()</span></code>.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p><a href="#id9"><span class="problematic" id="id10">*</span></a>args: Whatever you decide to pass into the forward method.
@@ -307,12 +607,12 @@ evaluation mode.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.init_vgg16_params">
-<span class="sig-name descname"><span class="pre">init_vgg16_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vgg16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_fc8</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.init_vgg16_params" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_vgg16_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vgg16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_fc8</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchSectionDeConvNet.init_vgg16_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.init_vgg16_params" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNet.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.load" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchSectionDeConvNet.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNet.load" title="Link to this definition"></a></dt>
 <dd><p>This is just a no-op load method.</p>
 </dd></dl>
 
@@ -320,7 +620,7 @@ evaluation mode.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.models.</span></span><span class="sig-name descname"><span class="pre">TorchSectionDeConvNetSkip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learned_billinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dasf.ml.dl.models.</span></span><span class="sig-name descname"><span class="pre">TorchSectionDeConvNetSkip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learned_billinear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchSectionDeConvNetSkip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">NNModule</span></code></p>
 <p>Base class for all neural network modules.</p>
 <p>Your models should also subclass this class.</p>
@@ -354,9 +654,109 @@ evaluation mode.</p>
 </dd>
 </dl>
 <p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool">
+<span class="sig-name descname"><span class="pre">unpool</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block1">
+<span class="sig-name descname"><span class="pre">conv_block1</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block2">
+<span class="sig-name descname"><span class="pre">conv_block2</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block3">
+<span class="sig-name descname"><span class="pre">conv_block3</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block3" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block4">
+<span class="sig-name descname"><span class="pre">conv_block4</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block5">
+<span class="sig-name descname"><span class="pre">conv_block5</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block6">
+<span class="sig-name descname"><span class="pre">conv_block6</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block6" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block7">
+<span class="sig-name descname"><span class="pre">conv_block7</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.conv_block7" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block8">
+<span class="sig-name descname"><span class="pre">deconv_block8</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block8" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block9">
+<span class="sig-name descname"><span class="pre">unpool_block9</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block9" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block10">
+<span class="sig-name descname"><span class="pre">deconv_block10</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block10" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block11">
+<span class="sig-name descname"><span class="pre">unpool_block11</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block11" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block12">
+<span class="sig-name descname"><span class="pre">deconv_block12</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block12" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block13">
+<span class="sig-name descname"><span class="pre">unpool_block13</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block13" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block14">
+<span class="sig-name descname"><span class="pre">deconv_block14</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block14" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block15">
+<span class="sig-name descname"><span class="pre">unpool_block15</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block15" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block16">
+<span class="sig-name descname"><span class="pre">deconv_block16</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block16" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block17">
+<span class="sig-name descname"><span class="pre">unpool_block17</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.unpool_block17" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block18">
+<span class="sig-name descname"><span class="pre">deconv_block18</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.deconv_block18" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.seg_score19">
+<span class="sig-name descname"><span class="pre">seg_score19</span></span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.seg_score19" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.forward" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchSectionDeConvNetSkip.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.forward" title="Link to this definition"></a></dt>
 <dd><p>Same as <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.nn.Module.forward()</span></code>.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p><a href="#id13"><span class="problematic" id="id14">*</span></a>args: Whatever you decide to pass into the forward method.
@@ -369,12 +769,12 @@ evaluation mode.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.init_vgg16_params">
-<span class="sig-name descname"><span class="pre">init_vgg16_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vgg16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_fc8</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.init_vgg16_params" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_vgg16_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vgg16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_fc8</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchSectionDeConvNetSkip.init_vgg16_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.init_vgg16_params" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dasf.ml.dl.models.TorchSectionDeConvNetSkip.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.load" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/dasf/ml/dl/models/devconvnet.html#TorchSectionDeConvNetSkip.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dasf.ml.dl.models.TorchSectionDeConvNetSkip.load" title="Link to this definition"></a></dt>
 <dd><p>This is just a no-op load method.</p>
 </dd></dl>
 

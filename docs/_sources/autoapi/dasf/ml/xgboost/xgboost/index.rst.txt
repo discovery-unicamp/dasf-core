@@ -23,6 +23,12 @@ Module Contents
    Class representing a Fit operation of the pipeline.
 
 
+   .. py:attribute:: __xgb_cpu
+
+
+   .. py:attribute:: __xgb_mcpu
+
+
    .. py:method:: _lazy_fit_cpu(X, y=None, sample_weight=None, *args, **kwargs)
 
       Respective lazy fit mocked function for CPUs.

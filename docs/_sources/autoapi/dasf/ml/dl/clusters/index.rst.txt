@@ -39,6 +39,11 @@ Package Contents
    Constructor of the object DaskClusterEnvironment using dict metadata. 
 
 
+   .. py:attribute:: _master_port
+      :value: 23456
+
+
+
    .. py:method:: detect()
 
       Detect if important data are present into metadata dictionary.

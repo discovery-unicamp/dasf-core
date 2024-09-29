@@ -58,28 +58,21 @@ Module Contents
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
 
+   .. py:attribute:: idx
+      :value: 0
+
+
+
    .. py:method:: set_idx(idx)
 
 
    .. py:method:: update(preds, target)
 
-      Override this method to update the state variables of your metric class.
-
-
 
    .. py:method:: __str__()
 
-      Return str(self).
-
-
 
    .. py:method:: compute()
-
-      Override this method to compute the final metric value.
-
-      This method will automatically synchronize state variables when running in distributed backend.
-
-
 
 
 .. py:class:: NNModule(n_classes=4, learned_billinear=False, clip=0.1, class_weights=None)
@@ -119,6 +112,18 @@ Module Contents
    :vartype training: bool
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
+
+
+   .. py:attribute:: learned_billinear
+
+
+   .. py:attribute:: n_classes
+
+
+   .. py:attribute:: clip
+
+
+   .. py:attribute:: class_names
 
 
    .. py:method:: cross_entropy_loss(input, target, weight=None, ignore_index=255)
@@ -484,6 +489,66 @@ Module Contents
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
 
+   .. py:attribute:: unpool
+
+
+   .. py:attribute:: conv_block1
+
+
+   .. py:attribute:: conv_block2
+
+
+   .. py:attribute:: conv_block3
+
+
+   .. py:attribute:: conv_block4
+
+
+   .. py:attribute:: conv_block5
+
+
+   .. py:attribute:: conv_block6
+
+
+   .. py:attribute:: conv_block7
+
+
+   .. py:attribute:: deconv_block8
+
+
+   .. py:attribute:: unpool_block9
+
+
+   .. py:attribute:: deconv_block10
+
+
+   .. py:attribute:: unpool_block11
+
+
+   .. py:attribute:: deconv_block12
+
+
+   .. py:attribute:: unpool_block13
+
+
+   .. py:attribute:: deconv_block14
+
+
+   .. py:attribute:: unpool_block15
+
+
+   .. py:attribute:: deconv_block16
+
+
+   .. py:attribute:: unpool_block17
+
+
+   .. py:attribute:: deconv_block18
+
+
+   .. py:attribute:: seg_score19
+
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -543,6 +608,66 @@ Module Contents
    :vartype training: bool
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
+
+
+   .. py:attribute:: unpool
+
+
+   .. py:attribute:: conv_block1
+
+
+   .. py:attribute:: conv_block2
+
+
+   .. py:attribute:: conv_block3
+
+
+   .. py:attribute:: conv_block4
+
+
+   .. py:attribute:: conv_block5
+
+
+   .. py:attribute:: conv_block6
+
+
+   .. py:attribute:: conv_block7
+
+
+   .. py:attribute:: deconv_block8
+
+
+   .. py:attribute:: unpool_block9
+
+
+   .. py:attribute:: deconv_block10
+
+
+   .. py:attribute:: unpool_block11
+
+
+   .. py:attribute:: deconv_block12
+
+
+   .. py:attribute:: unpool_block13
+
+
+   .. py:attribute:: deconv_block14
+
+
+   .. py:attribute:: unpool_block15
+
+
+   .. py:attribute:: deconv_block16
+
+
+   .. py:attribute:: unpool_block17
+
+
+   .. py:attribute:: deconv_block18
+
+
+   .. py:attribute:: seg_score19
 
 
    .. py:method:: forward(x)
@@ -606,6 +731,66 @@ Module Contents
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
 
+   .. py:attribute:: unpool
+
+
+   .. py:attribute:: conv_block1
+
+
+   .. py:attribute:: conv_block2
+
+
+   .. py:attribute:: conv_block3
+
+
+   .. py:attribute:: conv_block4
+
+
+   .. py:attribute:: conv_block5
+
+
+   .. py:attribute:: conv_block6
+
+
+   .. py:attribute:: conv_block7
+
+
+   .. py:attribute:: deconv_block8
+
+
+   .. py:attribute:: unpool_block9
+
+
+   .. py:attribute:: deconv_block10
+
+
+   .. py:attribute:: unpool_block11
+
+
+   .. py:attribute:: deconv_block12
+
+
+   .. py:attribute:: unpool_block13
+
+
+   .. py:attribute:: deconv_block14
+
+
+   .. py:attribute:: unpool_block15
+
+
+   .. py:attribute:: deconv_block16
+
+
+   .. py:attribute:: unpool_block17
+
+
+   .. py:attribute:: deconv_block18
+
+
+   .. py:attribute:: seg_score19
+
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -665,6 +850,66 @@ Module Contents
    :vartype training: bool
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
+
+
+   .. py:attribute:: unpool
+
+
+   .. py:attribute:: conv_block1
+
+
+   .. py:attribute:: conv_block2
+
+
+   .. py:attribute:: conv_block3
+
+
+   .. py:attribute:: conv_block4
+
+
+   .. py:attribute:: conv_block5
+
+
+   .. py:attribute:: conv_block6
+
+
+   .. py:attribute:: conv_block7
+
+
+   .. py:attribute:: deconv_block8
+
+
+   .. py:attribute:: unpool_block9
+
+
+   .. py:attribute:: deconv_block10
+
+
+   .. py:attribute:: unpool_block11
+
+
+   .. py:attribute:: deconv_block12
+
+
+   .. py:attribute:: unpool_block13
+
+
+   .. py:attribute:: deconv_block14
+
+
+   .. py:attribute:: unpool_block15
+
+
+   .. py:attribute:: deconv_block16
+
+
+   .. py:attribute:: unpool_block17
+
+
+   .. py:attribute:: deconv_block18
+
+
+   .. py:attribute:: seg_score19
 
 
    .. py:method:: forward(x)

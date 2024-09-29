@@ -66,6 +66,66 @@ Package Contents
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
 
+   .. py:attribute:: unpool
+
+
+   .. py:attribute:: conv_block1
+
+
+   .. py:attribute:: conv_block2
+
+
+   .. py:attribute:: conv_block3
+
+
+   .. py:attribute:: conv_block4
+
+
+   .. py:attribute:: conv_block5
+
+
+   .. py:attribute:: conv_block6
+
+
+   .. py:attribute:: conv_block7
+
+
+   .. py:attribute:: deconv_block8
+
+
+   .. py:attribute:: unpool_block9
+
+
+   .. py:attribute:: deconv_block10
+
+
+   .. py:attribute:: unpool_block11
+
+
+   .. py:attribute:: deconv_block12
+
+
+   .. py:attribute:: unpool_block13
+
+
+   .. py:attribute:: deconv_block14
+
+
+   .. py:attribute:: unpool_block15
+
+
+   .. py:attribute:: deconv_block16
+
+
+   .. py:attribute:: unpool_block17
+
+
+   .. py:attribute:: deconv_block18
+
+
+   .. py:attribute:: seg_score19
+
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -125,6 +185,66 @@ Package Contents
    :vartype training: bool
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
+
+
+   .. py:attribute:: unpool
+
+
+   .. py:attribute:: conv_block1
+
+
+   .. py:attribute:: conv_block2
+
+
+   .. py:attribute:: conv_block3
+
+
+   .. py:attribute:: conv_block4
+
+
+   .. py:attribute:: conv_block5
+
+
+   .. py:attribute:: conv_block6
+
+
+   .. py:attribute:: conv_block7
+
+
+   .. py:attribute:: deconv_block8
+
+
+   .. py:attribute:: unpool_block9
+
+
+   .. py:attribute:: deconv_block10
+
+
+   .. py:attribute:: unpool_block11
+
+
+   .. py:attribute:: deconv_block12
+
+
+   .. py:attribute:: unpool_block13
+
+
+   .. py:attribute:: deconv_block14
+
+
+   .. py:attribute:: unpool_block15
+
+
+   .. py:attribute:: deconv_block16
+
+
+   .. py:attribute:: unpool_block17
+
+
+   .. py:attribute:: deconv_block18
+
+
+   .. py:attribute:: seg_score19
 
 
    .. py:method:: forward(x)
@@ -188,6 +308,66 @@ Package Contents
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
 
 
+   .. py:attribute:: unpool
+
+
+   .. py:attribute:: conv_block1
+
+
+   .. py:attribute:: conv_block2
+
+
+   .. py:attribute:: conv_block3
+
+
+   .. py:attribute:: conv_block4
+
+
+   .. py:attribute:: conv_block5
+
+
+   .. py:attribute:: conv_block6
+
+
+   .. py:attribute:: conv_block7
+
+
+   .. py:attribute:: deconv_block8
+
+
+   .. py:attribute:: unpool_block9
+
+
+   .. py:attribute:: deconv_block10
+
+
+   .. py:attribute:: unpool_block11
+
+
+   .. py:attribute:: deconv_block12
+
+
+   .. py:attribute:: unpool_block13
+
+
+   .. py:attribute:: deconv_block14
+
+
+   .. py:attribute:: unpool_block15
+
+
+   .. py:attribute:: deconv_block16
+
+
+   .. py:attribute:: unpool_block17
+
+
+   .. py:attribute:: deconv_block18
+
+
+   .. py:attribute:: seg_score19
+
+
    .. py:method:: forward(x)
 
       Same as :meth:`torch.nn.Module.forward()`.
@@ -247,6 +427,66 @@ Package Contents
    :vartype training: bool
 
    Initializes internal Module state, shared by both nn.Module and ScriptModule.
+
+
+   .. py:attribute:: unpool
+
+
+   .. py:attribute:: conv_block1
+
+
+   .. py:attribute:: conv_block2
+
+
+   .. py:attribute:: conv_block3
+
+
+   .. py:attribute:: conv_block4
+
+
+   .. py:attribute:: conv_block5
+
+
+   .. py:attribute:: conv_block6
+
+
+   .. py:attribute:: conv_block7
+
+
+   .. py:attribute:: deconv_block8
+
+
+   .. py:attribute:: unpool_block9
+
+
+   .. py:attribute:: deconv_block10
+
+
+   .. py:attribute:: unpool_block11
+
+
+   .. py:attribute:: deconv_block12
+
+
+   .. py:attribute:: unpool_block13
+
+
+   .. py:attribute:: deconv_block14
+
+
+   .. py:attribute:: unpool_block15
+
+
+   .. py:attribute:: deconv_block16
+
+
+   .. py:attribute:: unpool_block17
+
+
+   .. py:attribute:: deconv_block18
+
+
+   .. py:attribute:: seg_score19
 
 
    .. py:method:: forward(x)

@@ -3,6 +3,11 @@ dasf.ml.dl
 
 .. py:module:: dasf.ml.dl
 
+.. autoapi-nested-parse::
+
+   Init module for Deep Learning algorithms. 
+
+
 
 Subpackages
 -----------
@@ -67,6 +72,39 @@ Package Contents
        The dimension to unsqueeze the input data, by default None.
 
 
+   .. py:attribute:: model
+
+
+   .. py:attribute:: accelerator
+
+
+   .. py:attribute:: batch_size
+
+
+   .. py:attribute:: max_epochs
+
+
+   .. py:attribute:: limit_train_batches
+
+
+   .. py:attribute:: limit_val_batches
+
+
+   .. py:attribute:: devices
+
+
+   .. py:attribute:: num_nodes
+
+
+   .. py:attribute:: shuffle
+
+
+   .. py:attribute:: strategy
+
+
+   .. py:attribute:: unsqueeze_dim
+
+
    .. py:method:: fit(train_data, val_data = None)
 
       Perform the training of the model using torch Lightning.
@@ -101,6 +139,43 @@ Package Contents
 
 
    Class representing a Fit operation of the pipeline.
+
+
+   .. py:attribute:: _model
+
+
+   .. py:attribute:: _accel
+      :value: None
+
+
+
+   .. py:attribute:: _strategy
+      :value: None
+
+
+
+   .. py:attribute:: _max_iter
+
+
+   .. py:attribute:: _devices
+      :value: 0
+
+
+
+   .. py:attribute:: _ngpus
+      :value: 0
+
+
+
+   .. py:attribute:: _batch_size
+
+
+   .. py:attribute:: __trainer
+      :value: False
+
+
+
+   .. py:attribute:: __handler
 
 
    .. py:method:: _lazy_fit_generic(X, y, accel, ngpus)
