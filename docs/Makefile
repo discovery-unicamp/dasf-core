@@ -12,6 +12,9 @@ BUILDDIR      = build
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
+deps_install:
+	python3 -m pip install toml && python3 -c 'import toml; c = toml.load("../pyproject.toml"); print("\n".join(c["tool"]["poetry"]["group"]["docs"]["dependencies"]))' | python3 -m pip install -r /dev/stdin
+
 .PHONY: help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new
