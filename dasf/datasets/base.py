@@ -390,12 +390,12 @@ class DatasetArray(Dataset):
             A dictionary with metadata information.
 
         """
-        assert self._root_file is not None, ("There is no temporary file to "
-                                             "inspect")
-        assert os.path.isfile(self._root_file), ("The root variable should "
-                                                 "be a NPY file")
+        assert self._data is not None or self._root_file is not None, \
+               ("There is no temporary file to inspect")
+        assert self._data is not None or os.path.isfile(self._root_file), \
+               ("The root variable should be a NPY file")
 
-        return self.inspect_metadata()
+        return self.metadata()
 
     def _lazy_load_gpu(self):
         """Load data with GPU container + DASK. (It does not load immediattly)
@@ -457,12 +457,12 @@ class DatasetArray(Dataset):
             A tuple with the shape.
 
         """
-        if self._data:
+        if self._data is not None:
             return self._data.shape
 
         return self.__npy_header()[0]
 
-    def inspect_metadata(self) -> dict:
+    def metadata(self) -> dict:
         """Return a dictionary with all metadata information from data.
 
         Returns
@@ -471,10 +471,14 @@ class DatasetArray(Dataset):
             A dictionary with metadata information.
 
         """
-        array_file_size = human_readable_size(
-            os.path.getsize(self._root_file),
-            decimal=2
-        )
+        if self._root_file is not None:
+            size = os.path.getsize(self._root_file)
+        elif self._data is not None:
+            size = self._data.size
+        else:
+            size = 0
+
+        array_file_size = human_readable_size(size, decimal=2)
 
         npy_shape = self.shape
 
@@ -618,7 +622,7 @@ class DatasetZarr(Dataset):
         """
         assert self._root_file is not None, "There is no temporary file to inspect"
 
-        return self.inspect_metadata()
+        return self.metadata()
 
     def __read_zarray(self, key):
         """Returns the value of ZArray JSON metadata.
@@ -671,7 +675,7 @@ class DatasetZarr(Dataset):
 
         return self._data.chunksize
 
-    def inspect_metadata(self) -> dict:
+    def metadata(self) -> dict:
         """Return a dictionary with all metadata information from data.
 
         Returns
@@ -944,9 +948,9 @@ class DatasetHDF5(Dataset):
         assert self._root_file is not None, "There is no temporary file to inspect"
         assert self._dataset_path is not None, "There is no path to fetch data"
 
-        return self.inspect_metadata()
+        return self.metadata()
 
-    def inspect_metadata(self) -> dict:
+    def metadata(self) -> dict:
         """Return a dictionary with all metadata information from data.
 
         Returns
@@ -1080,9 +1084,9 @@ class DatasetXarray(Dataset):
         """
         assert self._root_file is not None, "There is no temporary file to inspect"
 
-        return self.inspect_metadata()
+        return self.metadata()
 
-    def inspect_metadata(self) -> dict:
+    def metadata(self) -> dict:
         """Return a dictionary with all metadata information from data.
 
         Returns
@@ -1176,7 +1180,7 @@ class DatasetLabeled(Dataset):
         if hasattr(self, "_val") and hasattr(self._val, "download"):
             self._val.download()
 
-    def inspect_metadata(self) -> dict:
+    def metadata(self) -> dict:
         """Return a dictionary with all metadata information from data
         (train and labels).
 
@@ -1186,8 +1190,8 @@ class DatasetLabeled(Dataset):
             A dictionary with metadata information.
 
         """
-        metadata_train = self._train.inspect_metadata()
-        metadata_val = self._val.inspect_metadata()
+        metadata_train = self._train.metadata()
+        metadata_val = self._val.metadata()
 
         assert (
             metadata_train["shape"] == metadata_val["shape"]
@@ -1263,7 +1267,7 @@ class DatasetLabeled(Dataset):
             "The root variable should be a file"
         )
 
-        return self.inspect_metadata()
+        return self.metadata()
 
     def _lazy_load_gpu(self):
         """Load data with GPU container + DASK. (It does not load immediattly)
@@ -1361,9 +1365,9 @@ class DatasetDataFrame(Dataset):
             "There is no temporary file to inspect"
         )
 
-        return self.inspect_metadata()
+        return self.metadata()
 
-    def inspect_metadata(self) -> dict:
+    def metadata(self) -> dict:
         """Return a dictionary with all metadata information from data.
 
         Returns
