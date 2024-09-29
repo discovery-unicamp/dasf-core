@@ -117,6 +117,7 @@ class SOM(ClusterClassifier):
         compact_support=False,
         **kwargs
     ):
+        """ Constructor of the class SOM. """
         super().__init__(**kwargs)
 
         self.x = x

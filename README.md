@@ -6,7 +6,7 @@
 ![Coverage](https://raw.githubusercontent.com/discovery-unicamp/dasf-core/badges/badges/coverage.svg)
 
 DASF is a generic framework specialized in acceleration and scaling common 
-techniques for Machine Learning. DASF uses most methods and function from 
+techniques for Machine Learning. DASF uses most methods and functions from 
 the most common libraries to increase the speed up of most algorithms. Part 
 of this is to use Dask data to scale computation and RAPIDS AI algorithms to 
 extend the support to GPUs as well.
@@ -17,10 +17,10 @@ For now, the installation can be done using docker or singularity (if available)
 
 ### Containers
 
-To install DASF using docker or singularity, you must in the go to the `build/`
+To install DASF using docker or singularity, you must go to the `build/`
 directory and execute the command below directory according to your build type:
 `cpu` or `gpu`. Notice that DASF uses [HPC Container Maker](https://github.com/NVIDIA/hpc-container-maker)
-(HPCCM) to generate recipes for all sort of container types. You should install
+(HPCCM) to generate recipes for all sorts of container types. You should install
 HPCCM first, in order to generate them.
 
 ```bash
@@ -31,7 +31,7 @@ You can also configure other parameters of the container if you want. Run `-h`
 for further information. It includes the container backend: docker or
 singularity.
 
-The `dasf` image will be created and be ready to use. Once it is ready, you 
+The `dasf` image will be created and ready to use. Once it is ready, you 
 can start a jupyter instance by executing the command:
 
 ```bash
@@ -57,8 +57,8 @@ page to get more information of basic and advanced usage.
 
 ### Testing
 
-If you have a working environment with DASF installed, you can execute the all 
-the test set. Make sure you have all development packages installed such as 
+If you have a working environment with DASF installed, you can execute all 
+the test sets. Make sure you have all development packages installed such as 
 **pytest**, **parameterized** and **mock**. To run, you need to execute 
 `pytest` from the `tests/` directory.
 
@@ -84,6 +84,21 @@ The table below is a list of supported machine learning algorithms by DASF frame
 | Boosted Trees            |    X    |    X    |       X       |       X       |    dasf.ml.xgboost    |
 | KNN                      |    X    |    X    |               |               |   dasf.ml.neighbors   |
 
+### Cite
+
+If you are using this project in your research, please cite our first paper where DASF was proposed.
+
+```bibtex
+@inproceedings{dasf,
+  title        = {DASF: a high-performance and scalable framework for large seismic datasets},
+  author       = {Julio C. Faracco and Otávio O. Napoli and João Seródio and Carlos A. Astudillo and Leandro Villas and Edson Borin and Alan A. Souza and Daniel C. Miranda and João Paulo Navarro},
+  year         = {2024},
+  month        = {August},
+  booktitle    = {Proceedings of the International Meeting for Applied Geoscience and Energy},
+  address      = {Houston, TX},
+  organization = {AAPG/SEG}
+}
+```
 
 ### Authors
 

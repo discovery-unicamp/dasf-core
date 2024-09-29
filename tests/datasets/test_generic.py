@@ -16,6 +16,7 @@ from dasf.datasets import (
     DatasetXarray,
     DatasetZarr,
 )
+from dasf.transforms import ExtractData
 from dasf.utils.funcs import is_gpu_supported
 
 
@@ -51,28 +52,31 @@ class TestTypes(unittest.TestCase):
 
 
 class TestDatasetArray(unittest.TestCase):
-    def test_shape(self):
+    def setUp(self):
         filename = os.getenv('PYTEST_CURRENT_TEST')
         test_dir, _ = os.path.splitext(filename)
-        raw_path = os.path.join(test_dir, "simple", "Array.npy")
+        self.raw_path = os.path.join(test_dir, "simple", "Array.npy")
 
-        dataset = DatasetArray(name="Array", root=raw_path, download=False)
+    def test_shape(self):
+        dataset = DatasetArray(name="Array",
+                               root=self.raw_path,
+                               download=False)
 
         self.assertEqual(dataset.shape, (40, 40, 40))
 
     def test_add(self):
-        filename = os.getenv('PYTEST_CURRENT_TEST')
-        test_dir, _ = os.path.splitext(filename)
-        raw_path = os.path.join(test_dir, "simple", "Array.npy")
-
-        dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
-        dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
+        dataset1 = DatasetArray(name="Array",
+                                root=self.raw_path,
+                                download=False)
+        dataset2 = DatasetArray(name="Array",
+                                root=self.raw_path,
+                                download=False)
 
         dataset1._load_cpu()
         dataset2._load_cpu()
 
-        np1 = np.load(raw_path)
-        np2 = np.load(raw_path)
+        np1 = np.load(self.raw_path)
+        np2 = np.load(self.raw_path)
 
         dataset3 = dataset1 + dataset2
 
@@ -81,18 +85,18 @@ class TestDatasetArray(unittest.TestCase):
         self.assertTrue(np.array_equal(dataset3, np3))
 
     def test_sub(self):
-        filename = os.getenv('PYTEST_CURRENT_TEST')
-        test_dir, _ = os.path.splitext(filename)
-        raw_path = os.path.join(test_dir, "simple", "Array.npy")
-
-        dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
-        dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
+        dataset1 = DatasetArray(name="Array",
+                                root=self.raw_path,
+                                download=False)
+        dataset2 = DatasetArray(name="Array",
+                                root=self.raw_path,
+                                download=False)
 
         dataset1._load_cpu()
         dataset2._load_cpu()
 
-        np1 = np.load(raw_path)
-        np2 = np.load(raw_path)
+        np1 = np.load(self.raw_path)
+        np2 = np.load(self.raw_path)
 
         dataset3 = dataset1 - dataset2
 
@@ -101,18 +105,18 @@ class TestDatasetArray(unittest.TestCase):
         self.assertTrue(np.array_equal(dataset3, np3))
 
     def test_mul(self):
-        filename = os.getenv('PYTEST_CURRENT_TEST')
-        test_dir, _ = os.path.splitext(filename)
-        raw_path = os.path.join(test_dir, "simple", "Array.npy")
-
-        dataset1 = DatasetArray(name="Array", root=raw_path, download=False)
-        dataset2 = DatasetArray(name="Array", root=raw_path, download=False)
+        dataset1 = DatasetArray(name="Array",
+                                root=self.raw_path,
+                                download=False)
+        dataset2 = DatasetArray(name="Array",
+                                root=self.raw_path,
+                                download=False)
 
         dataset1._load_cpu()
         dataset2._load_cpu()
 
-        np1 = np.load(raw_path)
-        np2 = np.load(raw_path)
+        np1 = np.load(self.raw_path)
+        np2 = np.load(self.raw_path)
 
         dataset3 = dataset1 * dataset2
 
@@ -150,3 +154,41 @@ class TestDatasetArray(unittest.TestCase):
 #        dataset.load()
 #
 #        self.assertEqual(dataset.avg(), 0.0)
+
+    def test_extract_data(self):
+        dataset = DatasetArray(name="Array",
+                               root=self.raw_path,
+                               download=False)
+
+        extract = ExtractData()
+
+        dataset._load_cpu()
+
+        data = extract.transform(X=dataset)
+
+        self.assertTrue(isinstance(data, np.ndarray))
+
+    def test_extract_data_exception(self):
+        dataset = DatasetArray(name="Array",
+                               root=self.raw_path,
+                               download=False)
+
+        extract = ExtractData()
+
+        with self.assertRaises(ValueError) as context:
+            data = extract.transform(X=dataset)
+
+            self.assertTrue('Data could not be extracted.' in str(context.exception))
+
+    def test_load_from_array(self):
+        dataset = DatasetArray(name="Array")
+
+        array = np.load(self.raw_path)
+
+        dataset.from_array(array)
+
+        extract = ExtractData()
+
+        data = extract.transform(X=dataset)
+
+        self.assertTrue(isinstance(data, np.ndarray))

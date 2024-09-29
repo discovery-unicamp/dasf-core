@@ -266,6 +266,12 @@ def download_file(url, filename=None, directory=None):
         if progressbar:
             progressbar.set_error(True)
 
+    # XXX: workaround to fix thread starvation while gdown does not support
+    # external pbar's. See [1].
+    # [1] https://github.com/wkentaro/gdown/pull/241
+    if progressbar is not None:
+        progressbar.set_current(100, 100)
+
     return output
 
 

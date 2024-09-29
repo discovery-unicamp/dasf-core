@@ -99,15 +99,12 @@ class KMeans(ClusterClassifier):
     init_max_iter : int, default=None
         Number of iterations for init step.
 
-    algorithm : {"auto", "full", "elkan"}, default="full"
-        K-means algorithm to use. The classical EM-style algorithm is "full".
-        The "elkan" variation is more efficient on data with well-defined
-        clusters, by using the triangle inequality. However it's more memory
-        intensive due to the allocation of an extra array of shape
-        (n_samples, n_clusters).
-
-        For now "auto" (kept for backward compatibiliy) chooses "elkan" but it
-        might change in the future for a better heuristic.
+    algorithm : {“lloyd”, “elkan”}, default=”lloyd”
+        K-means algorithm to use. The classical EM-style algorithm is "lloyd".
+        The "elkan" variation can be more efficient on some datasets with
+        well-defined clusters, by using the triangle inequality. However
+        it’s more memory intensive due to the allocation of an extra array of
+        shape (n_samples, n_clusters).
 
         .. versionchanged:: 0.18
             Added Elkan algorithm
@@ -189,7 +186,7 @@ class KMeans(ClusterClassifier):
         verbose=0,
         random_state=None,
         copy_x=True,
-        algorithm='full',
+        algorithm='lloyd',
         oversampling_factor=2.0,
         n_jobs=1,
         init_max_iter=None,
@@ -198,6 +195,7 @@ class KMeans(ClusterClassifier):
         output_type=None,
         **kwargs
     ):
+        """ Constructor of the class KMeans. """
         super().__init__(**kwargs)
 
         self.n_clusters = n_clusters
@@ -564,7 +562,7 @@ class KMeans(ClusterClassifier):
         labels : ndarray of shape (n_samples,)
             Index of the cluster each sample belongs to.
         """
-        return self.__kmeans_cpu.predict(X, sample_weight)
+        return self.__kmeans_cpu.predict(X)
 
     def _predict_gpu(self, X, sample_weight=None):
         """

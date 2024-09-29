@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+""" Tranform module for feature extraction. """
 
 import numpy as np
 
 try:
     import cupy as cp
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dasf.transforms.base import Transform
@@ -34,7 +35,7 @@ class ConcatenateToArray(Transform):
                     datas = xp.asarray([flat])
                 else:
                     data = xp.asarray(kwargs[key])
-                    datas = xp.expand_dim(data, axis=len(data.shape))
+                    datas = xp.expand_dims(data, axis=len(data.shape))
             else:
                 if self.flatten:
                     flat = kwargs[key].flatten()
@@ -42,7 +43,7 @@ class ConcatenateToArray(Transform):
                                       axis=0)
                 else:
                     data = xp.asarray(kwargs[key])
-                    datas = xp.append(datas, data, axis=len(data.shape))
+                    datas = xp.append(datas, data[..., xp.newaxis], axis=len(data.shape))
 
         if self.flatten:
             data = xp.transpose(datas)
@@ -50,7 +51,6 @@ class ConcatenateToArray(Transform):
             data = datas
 
         return data
-#        return data.rechunk({1: data.shape[1]})
 
     def _transform_cpu(self, **kwargs):
         return self.__transform_generic(np, **kwargs)
@@ -59,7 +59,7 @@ class ConcatenateToArray(Transform):
         return self.__transform_generic(cp, **kwargs)
 
 
-class SampleDataframe:
+class SampleDataframe(Transform):
     """Return a subset with random samples of the original dataset.
 
     Parameters
@@ -71,7 +71,7 @@ class SampleDataframe:
     def __init__(self, percent: float):
         self.__percent = float(percent / 100.0)
 
-    def run(self, X):
+    def transform(self, X):
         """Returns a subset with random samples from the dataset `X`.
 
         Parameters
@@ -85,10 +85,13 @@ class SampleDataframe:
             The sampled subset.
 
         """
-        return X.sample(n=int(len(X) * self.__percent))
+        if not is_dataframe(X):
+            raise ValueError(f"Data should be a `DataFrame` and not `{type(X)}`.")
+
+        return X.sample(frac=self.__percent)
 
 
-class GetSubeCubeArray:
+class GetSubCubeArray:
     """Get a subcube with x% of samples from the original one.
 
     Parameters

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import os
+import time
+import shutil
 import unittest
 
 import dask.array as da
@@ -16,6 +19,7 @@ from dasf.utils.funcs import (
     get_backend_supported,
     get_dask_gpu_count,
     get_dask_gpu_names,
+    get_dask_mem_usage,
     get_gpu_count,
     get_machine_memory_avail,
     get_worker_info,
@@ -30,6 +34,7 @@ from dasf.utils.funcs import (
     is_gpu_supported,
     is_jax_supported,
     is_notebook,
+    NotebookProgressBar,
     set_executor_cpu,
     set_executor_default,
     set_executor_gpu,
@@ -174,6 +179,31 @@ class TestArchitetures(unittest.TestCase):
 
         with patch('GPUtil.getGPUs', Mock(return_value=[gpu])):
             self.assertTrue(isinstance(get_dask_gpu_names(fetch=False), Delayed))
+
+    @patch('pathlib.Path.home', return_value=Mock())
+    def test_get_dask_mem_usage(self, home):
+        home.return_value = os.path.dirname(__file__)
+
+        memusage_path = os.path.join(os.path.dirname(__file__), ".cache/dasf/profiler/")
+
+        os.makedirs(memusage_path, exist_ok=True)
+
+        with open(os.path.join(memusage_path, "dask-memusage"), "w") as fp:
+            fp.write("key,min_memory_mb,max_memory_mb\nfunc,10,10\nfunc,10,15\nfunc,10,20\nfunc,10,12")
+
+        memory = get_dask_mem_usage("memusage")
+
+        self.assertEqual(memory, 20)
+
+        shutil.rmtree(os.path.join(os.path.dirname(__file__), ".cache/"))
+
+    @patch('pathlib.Path.home', return_value=Mock())
+    def test_get_dask_mem_usage_non_memusage(self, home):
+        home.return_value = os.path.dirname(__file__)
+
+        memory = get_dask_mem_usage("fil")
+
+        self.assertEqual(memory, 0)
 
 
 class TestBlockChunkReduce(unittest.TestCase):
@@ -468,3 +498,32 @@ class TestDTypes(unittest.TestCase):
     ])
     def test_executor_strings(self, dtype, ret):
         self.assertEqual(executor_to_string(dtype), ret)
+
+
+class TestNotebookProgressBar(unittest.TestCase):
+    def test_simple_run(self):
+        pbar = NotebookProgressBar()
+        pbar.show()
+
+        pbar.start()
+
+        time.sleep(3)
+
+        pbar.set_current(500, 1000)
+
+        time.sleep(3)
+
+        self.assertEqual(pbar.bar.value, 50)
+        self.assertEqual(pbar.percentage.value, "50 %%")
+        self.assertEqual(pbar.data.value, "500 / 1000")
+
+        time.sleep(3)
+
+        pbar.set_current(1000, 1000)
+
+        time.sleep(3)
+
+        self.assertEqual(pbar.bar.value, 100)
+        self.assertEqual(pbar.percentage.value, "100 %%")
+        self.assertEqual(pbar.data.value, "1000 / 1000")
+        self.assertEqual(pbar.bar.style.bar_color, '#03c04a')

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Basic transform operations module. """
+
 import dask.array as da
 import numpy as np
 from scipy import stats

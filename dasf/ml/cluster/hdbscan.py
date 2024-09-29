@@ -202,6 +202,7 @@ class HDBSCAN(ClusterClassifier):
         verbose=0,
         **kwargs
     ):
+        """ Constructor of the class HDBSCAN. """
         super().__init__(**kwargs)
 
         self.alpha = alpha

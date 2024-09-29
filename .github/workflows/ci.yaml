@@ -56,8 +56,8 @@ jobs:
         run: |
           echo "* **interrogate results:** $(interrogate -i --fail-under=15 dasf/ | cut -d: -d" " -f4)" >> $GITHUB_STEP_SUMMARY
           # We should have at least 80% of docs covered
-          interrogate -vv -i --fail-under=45 --badge-format svg -g . -e build/ -e tests/
-    
+          interrogate -vv -i --fail-under=45 --badge-format svg -g /tmp/ -e build/ -e tests/
+
   test_cpu:
     runs-on: ubuntu-latest
     environment: continuous_test
@@ -66,6 +66,9 @@ jobs:
       image: docker.io/jcfaracco/dasf:cpu_ci
     steps:
       - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          pip install pytest-coverage
       - name: Run test cases
         run: |
           pytest tests/
@@ -82,21 +85,16 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "${{ secrets.CLUSTER_SSH_PRIV_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.CLUSTER_SSH_PUB_KEY }}" > ~/.ssh/id_rsa.pub
-          chmod 600 ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa.pub
+          sudo apt-get update
+          sudo apt-get install sshpass -y
           ssh-keyscan -H ${{ secrets.CLUSTER_ADDRESS }} >> ~/.ssh/known_hosts
       - name: Test SSH connection
         id: test_connection
         run: |
-          ssh -T ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 > /dev/null
-        continue-on-error: true
+          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh -T ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 > /dev/null
       - name: Pull latest docker image
-        if: success() && steps.test_connection.outcome == 'success'
         run: |
-          ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker pull jcfaracco/dasf:gpu\""
+          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker pull jcfaracco/dasf:gpu\""
       - name: Run test cases remotely
-        if: success() && steps.test_connection.outcome == 'success'
         run: |
-          ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --rm --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ tests/ && cd -'\""
+          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --rm --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ tests/ && cd -'\""

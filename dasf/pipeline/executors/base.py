@@ -17,8 +17,8 @@ class Executor:
         dataset = list(kwargs.values())
 
         if len(dataset) != 1:
-            raise Exception(f"This function requires one dataset only. "
-                            "We found {len(dataset)}.")
+            raise Exception("This function requires one dataset only. "
+                            f"We found {len(dataset)}.")
 
         return dataset.pop()
 
