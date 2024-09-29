@@ -1,25 +1,13 @@
 #!/usr/bin/env python3
 
-import numpy as np
-
 try:
     import cupy as cp
     import rmm
-except ImportError: # pragma: no cover
-    pass
-
-try:
-    from jax import jit
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dasf.pipeline.types import TaskExecutorType
-from dasf.utils.funcs import (
-    get_backend_supported,
-    get_gpu_count,
-    is_gpu_supported,
-    is_jax_supported,
-)
+from dasf.utils.funcs import get_backend_supported, get_gpu_count, is_gpu_supported
 
 
 class LocalExecutor:

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" Dask executor module. """
 
 import os
 from typing import Union
@@ -6,7 +7,7 @@ from typing import Union
 try:
     import cupy as cp
     import rmm
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from pathlib import Path
@@ -96,7 +97,8 @@ class DaskPipelineExecutor(Executor):
                     LocalCUDACluster(**cluster_kwargs), **client_kwargs
                 )
             else:
-                os.environ["CUDA_VISIBLE_DEVICES"] = "" # This avoids initializing workers on GPU:0 when available
+                # This avoids initializing workers on GPU:0 when available
+                os.environ["CUDA_VISIBLE_DEVICES"] = ""
                 self.client = Client(LocalCluster(**cluster_kwargs),
                                      **client_kwargs)
 

@@ -9,7 +9,7 @@ try:
     import cupy as cp
     from cuml.dask.datasets import make_blobs as make_blobs_MGPU
     from cuml.datasets import make_blobs as make_blobs_GPU
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dask_ml.datasets import make_classification as make_classification_MCPU
@@ -18,7 +18,7 @@ from sklearn.datasets import make_classification as make_classification_CPU
 try:
     from cuml.dask.datasets import make_classification as make_classification_MGPU
     from cuml.datasets import make_classification as make_classification_GPU
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dask_ml.datasets import make_regression as make_regression_MCPU
@@ -27,7 +27,7 @@ from sklearn.datasets import make_regression as make_regression_CPU
 try:
     from cuml.dask.datasets import make_regression as make_regression_MGPU
     from cuml.datasets import make_regression as make_regression_GPU
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dasf.utils.funcs import is_dask_gpu_supported, is_dask_supported, is_gpu_supported

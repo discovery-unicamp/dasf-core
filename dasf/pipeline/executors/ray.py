@@ -7,7 +7,7 @@ try:
     from ray.util.dask import disable_dask_on_ray, enable_dask_on_ray
 
     USE_RAY = True
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     USE_RAY = False
 
 from dasf.pipeline.executors.base import Executor
@@ -15,7 +15,8 @@ from dasf.utils.funcs import get_dask_gpu_count
 
 
 class RayPipelineExecutor(Executor):
-    """A pipeline executor based on ray data flow.
+    """
+    A pipeline executor based on ray data flow.
 
     Parameters
     ----------
