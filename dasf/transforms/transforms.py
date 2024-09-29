@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" All the essential data transforms module. """
+
 import math
 
 import dask
@@ -20,16 +22,52 @@ except ImportError: # pragma: no cover
 
 
 class ExtractData(Transform):
-    """Extract Data from Dataset Object
+    """
+    Extract data from Dataset object
+
     """
     def transform(self, X):
+        """
+        Extract data from datasets that contains internal data.
+
+        Parameters
+        ----------
+        X : Dataset-like
+            A dataset object that could be anything that contains an internal
+            structure representing the raw data.
+
+        Returns
+        -------
+        data : Any
+            Any representation of the internal Dataset data.
+
+        """
         if hasattr(X, "_data") and X._data is not None:
             return X._data
         raise ValueError("Data could not be extracted. Dataset needs to be previously loaded.")
 
 
 class Normalize(Transform):
+    """
+    Normalize data object
+
+    """
     def transform(self, X):
+        """
+        Normalize the input data based on mean() and std().
+
+        Parameters
+        ----------
+        X : Any
+            Any data that could be normalized based on mean and standard
+            deviation.
+
+        Returns
+        -------
+        data : Any
+            Normalized data
+
+        """
         return (X - X.mean()) / (X.std(ddof=0))
 
 

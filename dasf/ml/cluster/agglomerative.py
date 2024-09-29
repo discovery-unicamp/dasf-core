@@ -132,6 +132,7 @@ class AgglomerativeClustering(ClusterClassifier):
         output_type=None,
         **kwargs
     ):
+        """ Constructor of the class AgglomerativeClustering. """
         super().__init__(**kwargs)
 
         self.n_clusters = n_clusters

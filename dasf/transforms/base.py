@@ -1,5 +1,6 @@
-""" Definition of the generic operators of the pipeline. """
 #!/usr/bin/python3
+
+""" Definition of the generic operators of the pipeline. """
 
 import inspect
 from uuid import uuid4
@@ -354,6 +355,7 @@ class TargeteredTransform(Transform):
     """
 
     def __init__(self, run_local=None, run_gpu=None):
+        """ Constructor of the class TargeteredTransform. """
         super().__init__()
 
         self._run_local = run_local

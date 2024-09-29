@@ -202,6 +202,7 @@ class SpectralClustering(ClusterClassifier):
         verbose=False,
         **kwargs
     ):
+        """ Constructor of the class SpectralClustering. """
         super().__init__(**kwargs)
 
         self.n_clusters = n_clusters

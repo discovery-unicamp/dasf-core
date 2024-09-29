@@ -291,6 +291,7 @@ class PCA(Fit, FitTransform, TargeteredTransform):
         *args,
         **kwargs,
     ):
+        """ Constructor of the class PCA. """
         TargeteredTransform.__init__(self, *args, **kwargs)
 
         self.__pca_cpu = PCA_CPU(

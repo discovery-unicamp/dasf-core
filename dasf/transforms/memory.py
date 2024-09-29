@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Memory Management module. """
+
 from dasf.transforms.base import Transform
 from dasf.utils.types import is_dask_array, is_dask_dataframe
 

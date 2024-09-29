@@ -131,6 +131,7 @@ class DBSCAN(ClusterClassifier):
         verbose=False,
         **kwargs
     ):
+        """ Constructor of the class DBSCAN. """
         super().__init__(**kwargs)
 
         self.eps = eps
