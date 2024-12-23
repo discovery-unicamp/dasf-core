@@ -429,7 +429,6 @@ def get_dask_running_client():
         return Client.current()
     except:
         return None
-    
 
 
 def get_backend_supported(func):

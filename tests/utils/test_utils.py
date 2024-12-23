@@ -132,6 +132,28 @@ class TestArchitetures(unittest.TestCase):
     def test_is_dask_gpu_supported_zero_gpus_count(self, dask_check, dask_gpu_count):
         self.assertFalse(is_dask_gpu_supported())
 
+    @patch('dasf.utils.funcs.is_dask_supported', return_value=True)
+    @patch('dask.distributed.Client.current', return_value=Mock())
+    def test_is_dask_gpu_supported_from_workers(self, client_current, dask_check):
+        worker_data = {'workers': {
+                           'tcp://127.0.0.1:11111': {
+                               'host': '127.0.0.1',
+                               'nthreads': 4,
+                               'gpu': [0],
+                               },
+                           'tcp://127.0.0.1:22222': {
+                               'host': '127.0.0.1',
+                               'nthreads': 4,
+                               'gpu': [0],
+                               }
+                           }
+                      }
+
+        client = Mock(cluster=Mock(scheduler_info=worker_data))
+        client_current.return_value = client
+
+        self.assertTrue(is_dask_gpu_supported())
+
     @patch('dasf.utils.funcs.JAX_SUPPORTED', True)
     def test_is_jax_supported_true(self):
         self.assertTrue(is_jax_supported())
