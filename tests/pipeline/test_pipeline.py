@@ -201,6 +201,49 @@ class TestPipeline(unittest.TestCase):
             self.assertTrue(np.array_equal(t_A_r, orig_data + 2))
             self.assertTrue(np.array_equal(t_B_r, orig_data))
 
+    def test_pipeline_results_from_wrong_operator(self):
+        orig_data = np.arange(10)
+
+        dataset_A = Dataset_A(name="Test Dataset A")
+
+        t_A = Transform_A()
+        t_B = Transform_B()
+        t_C = Transform_C()
+
+        pipeline = Pipeline("Test Pipeline Creation")
+
+        pipeline = pipeline.add(t_A, X=dataset_A) \
+                           .add(t_B, X=t_A)
+
+        with self.assertRaises(Exception) as context, \
+             self.assertLogs('DASF', level='INFO') as plogs:
+            pipeline.run()
+
+            self.assertIn('Pipeline run successfully', plogs.output[-1])
+
+            t_C_r = pipeline.get_result_from(t_C)
+
+            self.assertTrue('was not added into pipeline.' in str(context.exception))
+
+    def test_pipeline_results_not_run_exception(self):
+        orig_data = np.arange(10)
+
+        dataset_A = Dataset_A(name="Test Dataset A")
+
+        t_A = Transform_A()
+        t_B = Transform_B()
+
+        pipeline = Pipeline("Test Pipeline Creation")
+
+        pipeline = pipeline.add(t_A, X=dataset_A) \
+                           .add(t_B, X=t_A)
+
+        with self.assertRaises(Exception) as context:
+            t_A_r = pipeline.get_result_from(t_A)
+            t_B_r = pipeline.get_result_from(t_B)
+
+        self.assertTrue('Pipeline was not executed yet.' in str(context.exception))
+
     def test_dataset_registration(self):
         dataset_A = Dataset_A(name="Test Dataset A")
 
