@@ -1,3 +1,4 @@
+---
 name: PyPi Automatic Upload
 
 on:
@@ -19,4 +20,6 @@ jobs:
           poetry build
       - name: Upload artifacts
         run: |
-          twine upload --repository ${{ vars.PYPI_REPOSITORY }} -u ${{ secrets.PYPI_USER }} -p ${{ secrets.PYPI_TOKEN }} dist/*
+          twine upload --repository ${{ vars.PYPI_REPOSITORY }} \
+                       -u ${{ secrets.PYPI_USER }} \
+                       -p ${{ secrets.PYPI_TOKEN }} dist/*
