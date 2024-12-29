@@ -104,7 +104,7 @@ jobs:
           sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --name dasf_core_github --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ --cov-report term --cov-report html --cov-report xml tests/ && cd -'\""
       - name: Fetch coverage.xml from container
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker cp --overwrite dasf_core_github:/dasf/dasf-core/coverage.xml .\""
+          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker cp dasf_core_github:/dasf/dasf-core/coverage.xml .\""
       - name: Clean up the last container
         run: |
           sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker stop dasf_core_github || true && docker rm -f dasf_core_github || true\""
