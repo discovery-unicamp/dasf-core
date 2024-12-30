@@ -104,7 +104,7 @@ jobs:
           sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --name dasf_core_github --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ --cov-report term --cov-report html --cov-report xml tests/ && cd -'\""
       - name: Fetch coverage.xml from container
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker cp dasf_core_github:/dasf/dasf-core/coverage.xml .\""
+          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker cp dasf_core_github:/dasf/dasf-core/coverage.xml /tmp\""
       - name: Clean up the last container
         run: |
           sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker stop dasf_core_github || true && docker rm -f dasf_core_github || true\""
@@ -112,7 +112,8 @@ jobs:
         run: mkdir -p deployment/gpu/tests/
       - name: Generate coverage.xml
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"cat coverage.xml\"" > deployment/gpu/tests/coverage.xml
+          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "scp ${{ secrets.CLUSTER_GPU_ID }}:/tmp/coverage.xml /tmp\""
+          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} scp -P 8686 ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }}:/tmp/coverage.xml deployment/gpu/tests/
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
