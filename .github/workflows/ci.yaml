@@ -107,12 +107,13 @@ jobs:
           sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker stop dasf_core_github || true && docker rm -f dasf_core_github || true\""
       - name: Generate artifacts path
         run: mkdir -p deployment/gpu/tests/
-      - name: Generate coverage.xml
-        run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "scp ${{ secrets.CLUSTER_GPU_ID }}:/tmp/coverage.xml /tmp"
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} scp -P 8686 ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }}:/tmp/coverage.xml deployment/gpu/tests/
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: deployment/gpu/tests/coverage.xml
+#      Disable coverage upload for now
+#      - name: Generate coverage.xml
+#        run: |
+#          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "scp ${{ secrets.CLUSTER_GPU_ID }}:/tmp/coverage.xml /tmp"
+#          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} scp -P 8686 ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }}:/tmp/coverage.xml deployment/gpu/tests/
+#      - name: Upload artifacts
+#         uses: actions/upload-artifact@v4
+#        with:
+#          name: coverage
+#          path: deployment/gpu/tests/coverage.xml
