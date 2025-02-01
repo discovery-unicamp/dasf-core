@@ -73,7 +73,6 @@ The table below is a list of supported machine learning algorithms by DASF frame
 |     **ML Algorithm**     | **CPU** | **GPU** | **Multi-CPU** | **Multi-GPU** |       **Path**        |
 |--------------------------|:-------:|:-------:|:-------------:|:-------------:|:---------------------:|
 | K-Means                  |    X    |    X    |       X       |       X       |    dasf.ml.cluster    |
-| SOM                      |    X    |    X    |       X       |       X       |    dasf.ml.cluster    |
 | Agglomerative Clustering |    X    |    X    |               |               |    dasf.ml.cluster    |
 | DBSCAN                   |    X    |    X    |               |       X       |    dasf.ml.cluster    |
 | HDBSCAN                  |    X    |    X    |               |               |    dasf.ml.cluster    |
