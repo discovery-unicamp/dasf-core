@@ -86,34 +86,47 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh/
-          sudo apt-get update
-          sudo apt-get install sshpass -y
+          echo -e "${{ secrets.CLUSTER_SSH_CONFIG }}" > ~/.ssh/config
+          echo -e "${{ secrets.CLUSTER_SSH_PRIV_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/*
           ssh-keyscan -H ${{ secrets.CLUSTER_ADDRESS }} >> ~/.ssh/known_hosts
       - name: Test SSH connection
         id: test_connection
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh -T ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 > /dev/null
+          ssh -o StrictHostKeyChecking=accept-new -T ${{ secrets.CLUSTER_GPU_ID }} exit > /dev/null
       - name: Pull latest docker image
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker pull jcfaracco/dasf:gpu\""
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "docker pull jcfaracco/dasf:gpu"
       - name: Clean up running containers
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker stop dasf_core_github || true && docker rm -f dasf_core_github || true\""
-      - name: Run test cases remotely
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "docker stop dasf_core_github || true && docker rm -f dasf_core_github || true"
+      - name: Update and commit the container
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --name dasf_core_github --gpus all -v \$HOME:/data/:rw jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ --cov-report term --cov-report html --cov-report xml:/data/coverage.xml tests/ && cd -'\""
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "nohup docker run --name dasf_core_github --gpus all -v \$HOME:/data/:rw jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov pip --upgrade && rm -rf dasf-core /data/dasf-core/* && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall pytorch-lightning -y && pip3 install pytorch-lightning torch==2.1.2 && pip3 install -e . && mkdir -p /data/dasf-core/ && cd -' && docker commit dasf_core_github dasf_core_github_live:latest && docker stop dasf_core_github || true && docker rm -f dasf_core_github || true"
+      - name: Run test cases setup
+        continue-on-error: true
+        run: |
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "nohup docker run --name dasf_core_github --gpus all -v \$HOME:/data/:rw dasf_core_github_live:latest sh -c 'cd dasf-core/ && pytest --cov dasf/ --cov-report term --cov-report html:/data/dasf-core/coverage_html --cov-report xml:/data/dasf-core/coverage.xml --cov-report json:/data/dasf-core/coverage.json tests/ && cd -'"
       - name: Clean up the last container
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker stop dasf_core_github || true && docker rm -f dasf_core_github || true\""
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "docker stop dasf_core_github || true && docker rm -f dasf_core_github || true && docker rmi -f dasf_core_github_live:latest || true"
       - name: Generate artifacts path
         run: mkdir -p deployment/gpu/tests/
-#      Disable coverage upload for now
-#      - name: Generate coverage.xml
-#        run: |
-#          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "scp ${{ secrets.CLUSTER_GPU_ID }}:/tmp/coverage.xml /tmp"
-#          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} scp -P 8686 ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }}:/tmp/coverage.xml deployment/gpu/tests/
-#      - name: Upload artifacts
-#         uses: actions/upload-artifact@v4
-#        with:
-#          name: coverage
-#          path: deployment/gpu/tests/coverage.xml
+      - name: Upload artifacts from runner
+        run: |
+          scp -r ${{ secrets.CLUSTER_GPU_ID }}:~/dasf-core/* deployment/gpu/tests/
+          # Convert HTML directory into a zip file
+          zip -r deployment/gpu/tests/coverage-html.zip deployment/gpu/tests/coverage_html
+          rm -rf deployment/gpu/tests/coverage_html/
+      - name: Upload coverage.xml
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage.xml
+          path: deployment/gpu/tests/coverage.xml
+          if-no-files-found: error
+      - name: Upload coverage HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html.zip
+          path: deployment/gpu/tests/coverage-html.zip
+          if-no-files-found: error
