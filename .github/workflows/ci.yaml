@@ -115,15 +115,20 @@ jobs:
       - name: Upload artifacts from runner
         run: |
           scp -r ${{ secrets.CLUSTER_GPU_ID }}:~/dasf-core/* deployment/gpu/tests/
-          # Convert HTML directory into a zip file
-          zip -r deployment/gpu/tests/coverage-html.zip deployment/gpu/tests/coverage_html
-          rm -rf deployment/gpu/tests/coverage_html/
-      - name: Upload coverage.xml
-        uses: actions/upload-artifact@v4
+          # Convert HTML directory into a zip file and remove target
+          zip -jrm deployment/gpu/tests/coverage-html.zip deployment/gpu/tests/coverage_html
+      - name: Coverage report
+        uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          name: coverage.xml
-          path: deployment/gpu/tests/coverage.xml
-          if-no-files-found: error
+          filename: deployment/gpu/tests/coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          thresholds: '60 80'
       - name: Upload coverage HTML
         uses: actions/upload-artifact@v4
         with:
