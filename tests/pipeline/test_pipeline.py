@@ -7,8 +7,8 @@ from mock import MagicMock
 
 from dasf.datasets import DatasetArray
 from dasf.pipeline import Pipeline
-from dasf.transforms.base import TargeteredTransform, Transform
 from dasf.pipeline.executors.base import Executor
+from dasf.transforms.base import TargeteredTransform, Transform
 
 
 class Dataset_A(DatasetArray):

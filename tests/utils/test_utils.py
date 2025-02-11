@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-import time
 import shutil
+import time
 import unittest
 
 import dask.array as da
@@ -14,6 +14,7 @@ from parameterized import parameterized
 
 from dasf.pipeline.types import TaskExecutorType
 from dasf.utils.funcs import (
+    NotebookProgressBar,
     block_chunk_reduce,
     executor_to_string,
     get_backend_supported,
@@ -34,7 +35,6 @@ from dasf.utils.funcs import (
     is_gpu_supported,
     is_jax_supported,
     is_notebook,
-    NotebookProgressBar,
     set_executor_cpu,
     set_executor_default,
     set_executor_gpu,

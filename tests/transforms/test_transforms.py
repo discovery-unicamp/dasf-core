@@ -208,8 +208,8 @@ class TestZarrToArray(unittest.TestCase):
         self.array = os.path.abspath(f"{tempfile.gettempdir()}/array.npy")
         self.zarr = os.path.abspath(f"{tempfile.gettempdir()}/array.zarr")
 
-        random = z = zarr.array(np.random.random(10000), chunks=100)
-        zarr.save(self.zarr, random)
+        random = np.random.random(10000)
+        zarr.save_array(store=self.zarr, arr=random, chunks=(100))
 
     @staticmethod
     def remove(path):
@@ -233,6 +233,8 @@ class TestZarrToArray(unittest.TestCase):
 
     def test_zarr_to_array_mcpu(self):
         dataset = DatasetZarr(root=self.zarr, download=False, name="Test Zarr")
+
+        print(self.zarr)
 
         dataset = dataset._lazy_load_cpu()
 
@@ -258,7 +260,7 @@ class TestZarrToArray(unittest.TestCase):
 
     def tearDown(self):
         self.remove(self.array)
-        self.remove(self.zarr)
+#        self.remove(self.zarr)
 
 
 class TestArraysToDataFrame(unittest.TestCase):

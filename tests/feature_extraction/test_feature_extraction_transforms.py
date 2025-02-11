@@ -14,11 +14,12 @@ try:
 except ImportError:
     pass
 
-from dasf.feature_extraction import ConcatenateToArray
-from dasf.feature_extraction import SampleDataframe
-from dasf.feature_extraction import GetSubDataframe
-from dasf.feature_extraction import GetSubCubeArray
-
+from dasf.feature_extraction import (
+    ConcatenateToArray,
+    GetSubCubeArray,
+    GetSubDataframe,
+    SampleDataframe,
+)
 from dasf.utils.funcs import is_gpu_supported
 
 

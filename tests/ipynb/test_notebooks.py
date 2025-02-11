@@ -76,23 +76,17 @@ class TestNotebooks(unittest.TestCase):
                 return False
         return True
 
-    def __run_cell(self, shell, iopub, cell, kc):
+    def __run_cell(self, cell, km, kc):
         kc.execute(cell.source)
 
-        # wait for finish, maximum 20s
-        while True:
-            try:
-                shell.get_msg(timeout=1)  # was 20
-            except Empty:
-                break
-        
         outs = []
 
-        while True:
+        while km.is_alive():
             try:
-                msg = iopub.get_msg(timeout=0.2)
+                msg = kc.get_shell_msg(timeout=0.2)
             except Empty:
                 break
+
             msg_type = msg['msg_type']
             if msg_type in ('status', 'execute_input'):
                 continue
@@ -124,6 +118,11 @@ class TestNotebooks(unittest.TestCase):
                 out.ename = content['ename']
                 out.evalue = content['evalue']
                 out.traceback = content['traceback']
+            elif msg_type == 'status' and content['execution_state'] == 'idle':
+                break
+            elif msg_type == 'error':
+                raise Exception(f"Error message received: {content['evalue']}")
+                return
             else:
                 raise Exception(f"Unhandled iopub msg: {msg_type}")
 
@@ -133,24 +132,10 @@ class TestNotebooks(unittest.TestCase):
     def __test_notebook(self, nb):
         km = KernelManager()
         km.start_kernel(extra_arguments=['--pylab=inline'], stderr=open(os.devnull, 'w'))
+        kc = km.client()
 
-        try:
-            kc = km.client()
-            kc.start_channels()
-            iopub = kc.iopub_channel
-        except AttributeError:
-            # IPython 0.13
-            kc = km
-            kc.start_channels()
-            iopub = kc.sub_channel
-
-        shell = kc.shell_channel
-
-        while True:
-            try:
-                iopub.get_msg(timeout=1)
-            except Empty:
-                break
+        while not km.is_alive() and not km.ready.done():
+            continue
 
         successes = 0
         failures = 0
@@ -162,7 +147,7 @@ class TestNotebooks(unittest.TestCase):
                 continue
 
             try:
-                outs = self.__run_cell(shell, iopub, cell, kc)
+                outs = self.__run_cell(cell, km, kc)
                 ncell += 1
             except Exception as e:
                 error_str = f"failed to run cell {ncell}: " + str(e)

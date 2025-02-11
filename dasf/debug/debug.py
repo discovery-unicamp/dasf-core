@@ -34,6 +34,7 @@ class Debug:
         data : Any
             Same input data without any transformation.
         """
+        print(is_dask_array(X), is_dask_dataframe(X), is_notebook())
         if (is_dask_array(X) or is_dask_dataframe(X)) and is_notebook():
             idisplay(iHTML(X._repr_html_()))
         else:

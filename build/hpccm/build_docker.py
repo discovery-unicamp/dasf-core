@@ -16,8 +16,8 @@ if is_devel:
 else:
     cuda_version = USERARG.get('cuda-version', '11.2')
 
-rapidsai_version = USERARG.get('rapids-version', '23.08')
-ubuntu_version = USERARG.get('ubuntu-version', '20.04')
+rapidsai_version = USERARG.get('rapids-version', '24.12')
+ubuntu_version = USERARG.get('ubuntu-version', '24.04')
 python_version = USERARG.get('python-version', '3.10')
 repo_branch = USERARG.get('repo-branch', 'main')
 
@@ -27,7 +27,7 @@ if python_version:
 gpu_image_devel = f"rapidsai/base:{rapidsai_version}-cuda{cuda_version}{python_version}"
 
 # GPU image needs to be fixed due to dependency matrix
-gpu_image = "nvcr.io/nvidia/pytorch:23.06-py3"
+gpu_image = "nvcr.io/nvidia/pytorch:25.01-py3"
 
 cpu_image = f"ubuntu:{ubuntu_version}"
 
@@ -44,18 +44,13 @@ else:
 
 ubuntu_unified_version = "".join(ubuntu_version.split("."))
 
-apt_keys = [
-    f"https://developer.download.nvidia.com/compute/cuda/repos/ubuntu{ubuntu_unified_version}/x86_64/3bf863cc.pub",
-    f"https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu{ubuntu_unified_version}/x86_64/7fa2af80.pub"
-]
-
-packages_list = ["git", "graphviz", "gcc", "python3-dev", "g++", "openssh-client", "wget"]
+packages_list = ["git", "graphviz", "gcc", "python3-dev", "g++", "openssh-client", "wget", "make"]
 
 if is_devel:
     # Install NVIDIA NSight packages
     package_list += ["nsight-compute"]
 
-pip_package_install = f"pip3 install -U git+https://github.com/discovery-unicamp/dasf-core.git@{repo_branch}"
+pip_package_install = f"pip3 install --break-system-packages -U git+https://github.com/discovery-unicamp/dasf-core.git@{repo_branch}"
 
 if device_target.lower() == "cpu":
     packages_list.extend(["python3-pip"])
@@ -68,7 +63,6 @@ elif device_target.lower() == "gpu":
     if is_devel:
         Stage0 += shell(commands=["conda install -n base -c rapidsai git graphviz gcc cxx-compiler openssh wget kvikio -y"])
     else:
-        Stage0 += apt_get(keys=apt_keys, ospackages=packages_list)
         Stage0 += apt_get(ospackages=packages_list)
 
     Stage0 += shell(commands=["pip install --no-dependencies cupy_xarray==0.1.3"]) # this avoids CuPy being installed twice and taking too long (installation process doesn't find CuPy because its named cupy_cuda12x)
@@ -79,7 +73,7 @@ elif device_target.lower() == "gpu":
         pip_package_install = ("%s %s" % (pip_package_install, "cupy-cuda12x==13.2.0"))
 
 
-Stage0 += shell(commands=["pip3 install pip --upgrade"])
+Stage0 += shell(commands=["pip3 install pip --upgrade --user --break-system-packages"])
 
 Stage0 += shell(commands=[pip_package_install])
 

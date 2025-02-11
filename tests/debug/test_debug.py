@@ -91,8 +91,9 @@ class TestDebug(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
-            self.assertIn("Datashape is: (Delayed(", fake_out.getvalue())
-            self.assertIn("Datatype is: <class 'dask.dataframe.core.DataFrame'>", fake_out.getvalue())
+            self.assertIn("Datashape is: (<dask_expr.expr.Scalar: expr=df.size() // 4, dtype=int64>, 4)",
+                          fake_out.getvalue())
+            self.assertIn("Datatype is: <class 'dask_expr._collection.DataFrame'>", fake_out.getvalue())
             self.assertIn("Data content is: Dask DataFrame Structure:\n"
                           "                     A        B        C        D\n"
                           "npartitions=3                                    \n", fake_out.getvalue())
@@ -149,6 +150,8 @@ class TestDebug(unittest.TestCase):
     @patch('dasf.debug.debug.is_notebook', Mock(return_value=True))
     def test_debug_dask_dataframe_ipython(self, idisplay):
         data = ddf.from_pandas(pd.DataFrame(np.random.random((3, 4)), columns=['A', 'B', 'C', 'D']), npartitions=3)
+
+        print(type(data))
 
         debug = Debug()
 

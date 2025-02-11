@@ -108,17 +108,12 @@ class Histogram(TargeteredTransform, Transform):
         bin_edges : array of dtype float
             Return the bin edges ``(length(hist)+1)``.
         """
-        kwargs = {}
-        if xp == np:
-            kwargs['normed'] = self._normed
-
         return xp.histogram(
             X,
             bins=self._bins,
             range=self._range,
             weights=self._weights,
             density=self._density,
-            **kwargs,
         )
 
     def _lazy_transform_cpu(self, X):

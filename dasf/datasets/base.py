@@ -613,7 +613,7 @@ class DatasetZarr(Dataset):
             array = zarr.open_array(store, meta_array=xp.empty(()))
             return da.from_zarr(array, chunks=array.chunks).map_blocks(xp.asarray)
 
-        return da.from_zarr(self._root_file, chunks=self._chunks).map_blocks(xp.asarray)
+        return da.from_zarr(self._root_file).map_blocks(xp.asarray)
 
     def _load(self, xp, **kwargs):
         """
@@ -627,7 +627,7 @@ class DatasetZarr(Dataset):
             Additional `kwargs` to `xp.load` function.
 
         """
-        return zarr.open(self._root_file, mode='r', meta_array=xp.empty(()))
+        return zarr.open_array(self._root_file, mode='r', meta_array=xp.empty(()))
 
     def _lazy_load_cpu(self):
         """Load data with CPU container + DASK. (It does not load immediattly)
@@ -751,25 +751,25 @@ class DatasetZarr(Dataset):
         z = zarr.open(self._root_file, mode='r')
 
         info = {}
-        for k, v in z.info_items():
+        for k, v in z.metadata.to_dict().items():
             info[k] = v
 
         if isinstance(self._chunks, bool) and self._chunks:
-            self._chunks = info["Chunk shape"]
+            self._chunks = z.chunks
 
         if self._chunks is None:
             self._chunks = self.chunksize
 
-        return {
+        info.update({
             "size": human_readable_size(
-                int(info["No. bytes"].split(' ')[0])
+                int(z.nbytes)
             ),
-            "compressor": info["Compressor"],
-            "type": info["Store type"],
+            "type": type(z.store_path.store).__name__,
             "file": self._root_file,
-            "shape": info["Shape"],
             "block": {"chunks": self._chunks},
-        }
+        })
+
+        return info
 
     def __repr__(self):
         """
