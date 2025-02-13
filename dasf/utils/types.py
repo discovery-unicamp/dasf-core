@@ -1,5 +1,5 @@
-""" Data types handlers. """
 #!/usr/bin/env python3
+""" Data types handlers. """
 
 from typing import Union, get_args
 
@@ -55,14 +55,21 @@ def is_array(data) -> bool:
     """
     Returns if data is a generic array.
     """
-    return is_arraylike(data)
+    return isinstance(data, list) or is_arraylike(data)
 
 
 def is_dataframe(data) -> bool:
     """
     Returns if data is a generic dataframe.
     """
-    return (is_series_like(data) or is_dataframe_like(data))
+    return is_dataframe_like(data)
+
+
+def is_series(data) -> bool:
+    """
+    Returns if data is a generic series.
+    """
+    return is_series_like(data)
 
 
 def is_cpu_array(data) -> bool:
@@ -127,7 +134,8 @@ def is_dask_cpu_dataframe(data) -> bool:
     """
     Returns if data is a Dask dataframe with CPU internal dataframe.
     """
-    return (not isinstance(data, DaskDataFrameGPU) and
+    return ((not is_gpu_supported() or
+             not isinstance(data, DaskDataFrameGPU)) and
             is_dask_collection(data) and
             is_dataframe(data))
 
@@ -166,15 +174,14 @@ def is_dask_dataframe(data) -> bool:
     Returns if data is a Dask dataframe.
     """
     return (is_dask_collection(data) and
-            (is_series_like(data) or
-             is_dataframe_like(data)))
+            is_dataframe(data))
 
 
 def is_dask(data) -> bool:
     """
     Returns if data is a Dask data type.
     """
-    return isinstance(data, get_args(DataDask))
+    return is_dask_collection(data)
 
 
 def is_xarray_array(data) -> bool:

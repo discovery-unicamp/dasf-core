@@ -887,9 +887,13 @@ class DatasetZarr(Dataset):
 
         attrs = dir(self._data)
         for attr in attrs:
-            if not attr.startswith("__") and callable(getattr(self._data, attr)):
-                if not hasattr(self, attr):
-                    self.__dict__[attr] = getattr(self._data, attr)
+            try:
+                if not attr.startswith("__") and callable(getattr(self._data, attr)):
+                    if not hasattr(self, attr):
+                        self.__dict__[attr] = getattr(self._data, attr)
+            except TypeError as te:
+                if attr != "compressor":
+                    raise TypeError(str(te))
 
 
 class DatasetHDF5(Dataset):

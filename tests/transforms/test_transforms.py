@@ -154,6 +154,8 @@ class TestArrayToZarr(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             T_1 = T._transform_cpu(dataset)
 
+        print(str(context.exception))
+
         self.assertTrue('Array requires a valid path to convert to Zarr.' in str(context.exception))
 
     def tearDown(self):
@@ -203,13 +205,29 @@ class TestArrayToHDF5(unittest.TestCase):
         self.remove(self.hdf5)
 
 
+# Bug introduced by zarr 3.*
+# We need a fake array because zarr expects an object that has a `chunks`
+# attribute.
+class FakeArray(np.ndarray):
+    def __new__(cls, input_array, chunks=None):
+        obj = np.asarray(input_array).view(cls)
+        obj.chunks = chunks
+        return obj
+
+    def __array_finalize__(self, obj):
+        if obj is None: return
+        self.chunks = getattr(obj, 'chunks', None)
+
+
 class TestZarrToArray(unittest.TestCase):
     def setUp(self):
         self.array = os.path.abspath(f"{tempfile.gettempdir()}/array.npy")
         self.zarr = os.path.abspath(f"{tempfile.gettempdir()}/array.zarr")
 
         random = np.random.random(10000)
-        zarr.save_array(store=self.zarr, arr=random, chunks=(100))
+        fake_random = FakeArray(random)
+        fake_random.chunks=(100,)
+        zarr.save_array(store=self.zarr, arr=fake_random)
 
     @staticmethod
     def remove(path):
