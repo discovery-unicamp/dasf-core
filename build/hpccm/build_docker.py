@@ -65,7 +65,7 @@ elif device_target.lower() == "gpu":
     else:
         Stage0 += apt_get(ospackages=packages_list)
 
-    Stage0 += shell(commands=["pip install --no-dependencies cupy_xarray==0.1.3"]) # this avoids CuPy being installed twice and taking too long (installation process doesn't find CuPy because its named cupy_cuda12x)
+    Stage0 += shell(commands=["pip install --no-dependencies cupy_xarray"]) # this avoids CuPy being installed twice and taking too long (installation process doesn't find CuPy because its named cupy_cuda12x)
 
     if is_devel:
         pip_package_install = ("%s %s" % (pip_package_install, "git+https://github.com/cupy/cupy.git"))
