@@ -120,9 +120,12 @@ class TestDebug(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
-            self.assertIn("Datashape is: (Delayed(", fake_out.getvalue())
-            self.assertIn("Datatype is: <class 'dask_cudf.core.DataFrame'>", fake_out.getvalue())
-            self.assertIn("Data content is: <dask_cudf.DataFrame | 3 tasks | 3 npartitions>", fake_out.getvalue())
+            self.assertIn("Datashape is: (<dask_expr.expr.Scalar: expr=df.size() // 4, dtype=int64>, 4)",
+                          fake_out.getvalue())
+            self.assertIn("Datatype is: <class 'dask_cudf.expr._collection.DataFrame'>", fake_out.getvalue())
+            self.assertIn("Data content is: Dask DataFrame Structure:\n"
+                          "                     A        B        C        D\n"
+                          "npartitions=3                                    \n", fake_out.getvalue())
 
     def test_debug_list(self):
         data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
