@@ -19,8 +19,6 @@ try:
 except ImportError:  # pragma: no cover
     pass
 
-from dasf.utils.funcs import is_gpu_supported
-
 ArrayCPU = Union[list, np.ndarray, zarr.Array]
 DataFrameCPU = Union[pd.DataFrame]
 
@@ -107,17 +105,22 @@ def is_gpu_dataframe(data) -> bool:
     """
     Returns if data is a GPU dataframe like Cudf.
     """
-    return (is_gpu_supported() and
-            isinstance(data, DataFrameGPU) and
-            not is_dask_collection(data) and
-            is_dataframe(data))
+    try:
+        return (isinstance(data, DataFrameGPU) and
+                not is_dask_collection(data) and
+                is_dataframe(data))
+    except NameError:
+        return False
 
 
 def is_gpu_datatype(data) -> bool:
     """
     Returns if data is a GPU data type.
     """
-    return is_gpu_supported() and isinstance(data, get_args(DataGPU))
+    try:
+        return isinstance(data, get_args(DataGPU))
+    except NameError:
+        return False
 
 
 def is_dask_cpu_array(data) -> bool:
@@ -135,19 +138,16 @@ def is_dask_cpu_dataframe(data) -> bool:
     """
     Returns if data is a Dask dataframe with CPU internal dataframe.
     """
-    try:
-        return (not isinstance(data, get_args(DaskDataFrameGPU)) and
-                is_dask_collection(data) and
-                is_dataframe(data))
-    except NameError:
-        return False
-
+    return (hasattr(data, '_meta') and
+            is_cpu_dataframe(data._meta) and
+            is_dask_collection(data) and
+            is_dataframe(data))
 
 def is_dask_gpu_array(data) -> bool:
     """
     Returns if data is a Dask array with GPU internal array.
     """
-    if is_gpu_supported() and isinstance(data, DaskArray):
+    if isinstance(data, DaskArray):
         # pylint: disable=protected-access
         if is_cupy_type(data._meta):
             return True
@@ -158,11 +158,10 @@ def is_dask_gpu_dataframe(data) -> bool:
     """
     Returns if data is a Dask dataframe with GPU internal dataframe.
     """
-    if is_gpu_supported() and isinstance(data, get_args(DaskDataFrame)):
-        # pylint: disable=protected-access
-        if isinstance(data._meta, DataFrameGPU):
-            return True
-    return False
+    return (hasattr(data, '_meta') and
+            is_gpu_dataframe(data._meta) and
+            is_dask_collection(data) and
+            is_dataframe(data))
 
 
 def is_dask_array(data) -> bool:

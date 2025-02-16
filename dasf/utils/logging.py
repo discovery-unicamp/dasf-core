@@ -1,5 +1,6 @@
-""" Logging helpers for functions. """
 #!/usr/bin/env python3
+
+""" Logging helpers for functions. """
 
 import sys
 from logging import INFO, Formatter, Logger, StreamHandler, getLogger
