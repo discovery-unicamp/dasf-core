@@ -103,17 +103,21 @@ class TestNotebooks(unittest.TestCase):
                 out.text = content['text']
                 out.data = content['text']
                 out.name = content['name']
-            elif msg_type in ('display_data', 'pyout', 'execute_result'):
-                out['metadata'] = content['metadata']
-                for mime, data in content['data'].items():
-                    attr = mime.split('/')[-1].lower()
-                    # this gets most right, but fix svg+html, plain
-                    attr = attr.replace('+xml', '').replace('plain', 'text')
-                    setattr(out, attr, data)
-                out.data = content['data']
+            elif msg_type in ('display_data', 'pyout', 'execute_result', 'execute_reply'):
+                if 'metadata' in content:
+                    out['metadata'] = content['metadata']
 
-                if msg_type in ('execute_result', 'pyout'):
-                    out.execution_count = content['execution_count']
+                if 'status' in content:
+                    if content['status'] == 'error':
+                        raise Exception(f"Error message received: {content['evalue']}")
+
+                if 'data' in content:
+                    for mime, data in content['data'].items():
+                        attr = mime.split('/')[-1].lower()
+                        # this gets most right, but fix svg+html, plain
+                        attr = attr.replace('+xml', '').replace('plain', 'text')
+                        setattr(out, attr, data)
+                    out.data = content['data']
             elif msg_type in ('pyerr', 'error'):
                 out.ename = content['ename']
                 out.evalue = content['evalue']
@@ -187,6 +191,13 @@ class TestNotebooks(unittest.TestCase):
 
                 if 'single_gpu' in test_reqs and not is_gpu_supported():
                     self.skipTest("GPU is not available for testing.")
+
+                if 'required_extra_modules' in test_reqs:
+                    for module in test_reqs['required_extra_modules']:
+                        try:
+                            _ = __import__(module)
+                        except ModuleNotFoundError as mnfe:
+                            self.skipTest(str(mnfe))
 
             if self.__test_notebook(nb) < 0:
                 self.skipTest("There is something wrong with some notebook cell output.")
