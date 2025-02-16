@@ -7,6 +7,7 @@ from typing import Union
 try:
     import cupy as cp
     import rmm
+    from rmm.allocators.cupy import rmm_cupy_allocator
 except ImportError:  # pragma: no cover
     pass
 
@@ -114,9 +115,9 @@ class DaskPipelineExecutor(Executor):
                     # Nothing is required yet.
                     pass
                 elif gpu_allocator == "rmm" and is_gpu_supported():
-                    self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
+                    self.client.run(cp.cuda.set_allocator, rmm_cupy_allocator)
                     rmm.reinitialize(managed_memory=True)
-                    cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
+                    cp.cuda.set_allocator(rmm_cupy_allocator)
                 else:
                     raise ValueError(f"'{gpu_allocator}' GPU Memory allocator is not "
                                      "known")
