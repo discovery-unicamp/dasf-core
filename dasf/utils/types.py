@@ -107,12 +107,10 @@ def is_gpu_dataframe(data) -> bool:
     """
     Returns if data is a GPU dataframe like Cudf.
     """
-    try:
-        return (not isinstance(data, get_args(DaskDataFrameGPU)) and
-                is_dask_collection(data) and
-                is_dataframe(data))
-    except NameError:
-        return False
+    return (is_gpu_supported() and
+            isinstance(data, DataFrameGPU) and
+            not is_dask_collection(data) and
+            is_dataframe(data))
 
 
 def is_gpu_datatype(data) -> bool:
@@ -137,10 +135,12 @@ def is_dask_cpu_dataframe(data) -> bool:
     """
     Returns if data is a Dask dataframe with CPU internal dataframe.
     """
-    return ((not is_gpu_supported() or
-             not isinstance(data, DaskDataFrameGPU)) and
-            is_dask_collection(data) and
-            is_dataframe(data))
+    try:
+        return (not isinstance(data, get_args(DaskDataFrameGPU)) and
+                is_dask_collection(data) and
+                is_dataframe(data))
+    except NameError:
+        return False
 
 
 def is_dask_gpu_array(data) -> bool:
