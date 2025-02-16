@@ -151,7 +151,6 @@ class TestTypes(unittest.TestCase):
 
     def test_is_series(self):
         keys = [
-            "Dask Cupy Array",
             "Xarray DataArray"
         ]
 
@@ -160,7 +159,6 @@ class TestTypes(unittest.TestCase):
 
     def test_is_not_series(self):
         keys = [
-            "Dask Cupy Array",
             "Xarray DataArray"
         ]
 

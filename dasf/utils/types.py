@@ -10,13 +10,13 @@ import pandas as pd
 import xarray as xr
 import zarr
 from dask.base import is_dask_collection
-from dask.utils import is_arraylike, is_dataframe_like, is_series_like
+from dask.utils import is_arraylike, is_cupy_type, is_dataframe_like, is_series_like
 
 try:
     import cudf
     import cupy as cp
     import dask_cudf as dcudf
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dasf.utils.funcs import is_gpu_supported
@@ -41,13 +41,14 @@ try:
 
     DataGPU = Union[ArrayGPU, DataFrameGPU]
 
-    DaskDataFrameGPU = Union[dcudf.core.DataFrame]
+    DaskDataFrameGPU = Union[dcudf.core.DataFrame,
+                             dcudf.expr._collection.DataFrame]
 
     Array = Union[Array, ArrayGPU]
     DaskDataFrame = Union[DaskDataFrame, DaskDataFrameGPU]
     DataFrame = Union[DataFrame, DaskDataFrame, DataFrameGPU]
     DataDask = Union[DataDask, DaskDataFrame]
-except NameError: # pragma: no cover
+except NameError:  # pragma: no cover
     pass
 
 
@@ -99,17 +100,19 @@ def is_gpu_array(data) -> bool:
     """
     Returns if data is a GPU array like Cupy.
     """
-    return is_gpu_supported() and isinstance(data, ArrayGPU)
+    return is_cupy_type(data)
 
 
 def is_gpu_dataframe(data) -> bool:
     """
     Returns if data is a GPU dataframe like Cudf.
     """
-    return (is_gpu_supported() and
-            isinstance(data, DataFrameGPU) and
-            not is_dask_collection(data) and
-            is_dataframe(data))
+    try:
+        return (not isinstance(data, get_args(DaskDataFrameGPU)) and
+                is_dask_collection(data) and
+                is_dataframe(data))
+    except NameError:
+        return False
 
 
 def is_gpu_datatype(data) -> bool:
@@ -146,7 +149,7 @@ def is_dask_gpu_array(data) -> bool:
     """
     if is_gpu_supported() and isinstance(data, DaskArray):
         # pylint: disable=protected-access
-        if isinstance(data._meta, ArrayGPU):
+        if is_cupy_type(data._meta):
             return True
     return False
 
