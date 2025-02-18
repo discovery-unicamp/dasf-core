@@ -579,6 +579,9 @@ class DatasetZarr(Dataset):
 
         self._root_file = root
 
+        # For API compatibility
+        self.__major_version = int(zarr.__version__.split('.')[0])
+
         if root is not None:
             if not os.path.isfile(root):
                 self._root = root
@@ -750,21 +753,30 @@ class DatasetZarr(Dataset):
         """
         z = zarr.open(self._root_file, mode='r')
 
+        if self.__major_version >= 3:
+            items = z.metadata.to_dict().items()
+        else:
+            items = z.info_items()
+
         info = {}
-        for k, v in z.metadata.to_dict().items():
+        for k, v in items:
             info[k] = v
 
         if isinstance(self._chunks, bool) and self._chunks:
-            self._chunks = z.chunks
+            self._chunks = z.chunks if hasattr(z, 'chunks') \
+                                    else info["Chunk shape"]
 
         if self._chunks is None:
             self._chunks = self.chunksize
 
         info.update({
             "size": human_readable_size(
-                int(z.nbytes)
+                int(z.nbytes) if hasattr(z, 'nbytes')
+                else int(info["No. bytes"].split(' ')[0])
             ),
-            "type": type(z.store_path.store).__name__,
+            "type": type(z.store_path.store).__name__ if (hasattr(z, 'store_path') and
+                                                          hasattr(z.store_path, 'store'))
+            else info["Store type"],
             "file": self._root_file,
             "block": {"chunks": self._chunks},
         })
