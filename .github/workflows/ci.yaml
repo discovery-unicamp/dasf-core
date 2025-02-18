@@ -62,6 +62,9 @@ jobs:
   test_cpu:
     runs-on: ubuntu-latest
     environment: continuous_test
+    strategy:
+      matrix: 
+        zarr: ['zarr<3.0.0', 'zarr>=3.0.0'] 
     needs: [lint]
     container:
       image: docker.io/jcfaracco/dasf:cpu_ci
@@ -73,6 +76,7 @@ jobs:
       - name: Install project
         run: |
           pip install -e . --break-system-packages
+          pip install "${{ matrix.zarr }}" --break-system-packages
       - name: Run test cases
         run: |
           pytest tests/
