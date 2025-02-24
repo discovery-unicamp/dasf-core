@@ -208,7 +208,7 @@ class GaussianMixture(MixtureClassifier):
         verbose=0,
         verbose_interval=10
     ):
-
+        """ Constructor of the class GaussianMixture. """
         self.__gmm_cpu = GaussianMixture_CPU(
             n_components=n_components,
             covariance_type=covariance_type,
