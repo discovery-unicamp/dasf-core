@@ -35,7 +35,7 @@ class TestNearestNeighbors(unittest.TestCase):
         self.dists = np.array([[0, 3], [1, 3], [2, 7], [3, 1], [4, 9],
                                [5, 9], [6, 5], [7, 2], [8, 7], [9, 5]])
 
-    def test_kmeans_cpu(self):
+    def test_nearestneighbors_cpu(self):
         nn = NearestNeighbors(n_neighbors=2)
 
         nn._fit_cpu(self.X)
@@ -49,7 +49,7 @@ class TestNearestNeighbors(unittest.TestCase):
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
-    def test_kmeans_gpu(self):
+    def test_nearestneighbors_gpu(self):
         nn = NearestNeighbors(n_neighbors=2, output_type='cupy')
 
         cp_X = cp.asarray(self.X)
@@ -62,6 +62,15 @@ class TestNearestNeighbors(unittest.TestCase):
         self.assertTrue(is_gpu_array(dists))
 
         self.assertTrue(np.array_equal(dists.get(), self.dists, equal_nan=True))
+
+    @patch('dasf.ml.neighbors.neighbors.is_gpu_supported', Mock(return_value=False))
+    def test_nearestneighbors_fit_gpu_no_gpu(self):
+        nn = NearestNeighbors(n_neighbors=2, output_type='cupy')
+
+        with self.assertRaises(NotImplementedError) as context:
+            nn._fit_gpu(self.X)
+
+        self.assertTrue('GPU is not supported' in str(context.exception))
 
 
 class TestKNeighborsClassifier(unittest.TestCase):
@@ -91,7 +100,7 @@ class TestKNeighborsClassifier(unittest.TestCase):
 
         return y1, y2
 
-    def test_kmeans_cpu(self):
+    def test_knearestneighbors_cpu(self):
         knn = KNeighborsClassifier(n_neighbors=3)
 
         knn._fit_cpu(self.X, self.y)
@@ -106,7 +115,7 @@ class TestKNeighborsClassifier(unittest.TestCase):
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
-    def test_kmeans_gpu(self):
+    def test_knearestneighbors_gpu(self):
         knn = KNeighborsClassifier(n_neighbors=3, output_type='cupy')
 
         cp_X = cp.asarray(self.X)
@@ -121,3 +130,21 @@ class TestKNeighborsClassifier(unittest.TestCase):
         y1, y2 = self.__match_randomly_labels_created(y.get(), self.y)
 
         self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+
+    @patch('dasf.ml.neighbors.neighbors.is_gpu_supported', Mock(return_value=False))
+    def test_knearestneighbors_fit_gpu_no_gpu(self):
+        knn = KNeighborsClassifier(n_neighbors=3, output_type='cupy')
+
+        with self.assertRaises(NotImplementedError) as context:
+            knn._fit_gpu(self.X)
+
+        self.assertTrue('GPU is not supported' in str(context.exception))
+
+    @patch('dasf.ml.neighbors.neighbors.is_gpu_supported', Mock(return_value=False))
+    def test_knearestneighbors_fit_predict_gpu_no_gpu(self):
+        knn = KNeighborsClassifier(n_neighbors=3, output_type='cupy')
+
+        with self.assertRaises(NotImplementedError) as context:
+            y = knn._predict_gpu(self.X)
+
+        self.assertTrue('GPU is not supported' in str(context.exception))
