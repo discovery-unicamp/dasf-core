@@ -490,7 +490,7 @@ class KNeighborsClassifier(Fit, Predict):
     """
     def __init__(self, n_neighbors=5, weights="uniform", algorithm="auto",
                  leaf_size=30, p=2, metric="minkowski", metric_params=None,
-                 n_jobs=None):
+                 output_type=None, n_jobs=None):
         """ Constructor of the class KNeighborsClassifier. """
         self.__knn_cpu = KNeighborsClassifier_CPU(n_neighbors=n_neighbors,
                                                   weights=weights,
@@ -505,7 +505,8 @@ class KNeighborsClassifier(Fit, Predict):
             self.__knn_gpu = KNeighborsClassifier_GPU(n_neighbors=n_neighbors,
                                                       weights=weights,
                                                       algorithm=algorithm,
-                                                      metric=metric)
+                                                      metric=metric,
+                                                      output_type=output_type)
         else:
             self.__knn_gpu = None
 
@@ -551,7 +552,7 @@ class KNeighborsClassifier(Fit, Predict):
         """
         if self.__knn_gpu is None:
             raise NotImplementedError("GPU is not supported")
-        return self.__knn_gpu.fit(X=X, **kwargs)
+        return self.__knn_gpu.fit(X=X, y=y, **kwargs)
 
     def _predict_cpu(self, X, **kwargs):
         """

@@ -50,7 +50,7 @@ class TestNearestNeighbors(unittest.TestCase):
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_kmeans_gpu(self):
-        nn = NearestNeighbors(n_neighbors=2)
+        nn = NearestNeighbors(n_neighbors=2, output_type='cupy')
 
         cp_X = cp.asarray(self.X)
 
@@ -61,7 +61,7 @@ class TestNearestNeighbors(unittest.TestCase):
         self.assertTrue(is_gpu_array(idxs))
         self.assertTrue(is_gpu_array(dists))
 
-        self.assertTrue(np.array_equal(dists, self.dists, equal_nan=True))
+        self.assertTrue(np.array_equal(dists.get(), self.dists, equal_nan=True))
 
 
 class TestKNeighborsClassifier(unittest.TestCase):
@@ -107,7 +107,7 @@ class TestKNeighborsClassifier(unittest.TestCase):
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_kmeans_gpu(self):
-        knn = KNeighborsClassifier(n_neighbors=3)
+        knn = KNeighborsClassifier(n_neighbors=3, output_type='cupy')
 
         cp_X = cp.asarray(self.X)
         cp_y = cp.asarray(self.y)
