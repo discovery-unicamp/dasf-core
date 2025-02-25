@@ -186,6 +186,10 @@ class TestDaskTasksPipelineExecutor(unittest.TestCase):
 
             dask = DaskTasksPipelineExecutor(address=conn.hostname, port=conn.port, use_gpu=False)
 
+            self.assertTrue('Executor is connected!' in dask.info)
+            self.assertTrue('Executor Type: ' in dask.info)
+            self.assertTrue('Executor Backend: ' in dask.info)
+
             # Compute everything to gracefully shutdown
             dask.shutdown(gracefully=True)
             dask.close()
