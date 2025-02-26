@@ -5,8 +5,10 @@ import socket
 import subprocess
 import unittest
 
+import dask
 import ray as ray_default
 from mock import Mock, patch
+from packaging.version import Version
 
 from dasf.pipeline.executors import RayPipelineExecutor
 from dasf.pipeline.executors.ray import setup_ray_protocol
@@ -30,6 +32,9 @@ class TestRayProtocol(unittest.TestCase):
         self.assertTrue('Protocol foo is not supported.' in str(context.exception))
 
 
+@unittest.skipIf(Version(dask.__version__) >= Version('2024.12.1'),
+                 'There is a bug in ray with recent dask releases. '
+                 f'Current is {dask.__version__}')
 class TestRayExecutor(unittest.TestCase):
     def test_ray_executor_from_existing_nodes(self):
         proc = subprocess.run(["ray", "start", "--head", "--port=9191"],
