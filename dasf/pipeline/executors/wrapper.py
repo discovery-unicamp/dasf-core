@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
+import numpy as np
+
 try:
     import cupy as cp
     import rmm
+    from rmm.allocators.cupy import rmm_cupy_allocator
 except ImportError:  # pragma: no cover
     pass
 
@@ -30,7 +33,7 @@ class LocalExecutor:
 
         if gpu_allocator == "rmm" and self.dtype == TaskExecutorType.single_gpu:
             rmm.reinitialize(managed_memory=True)
-            cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
+            cp.cuda.set_allocator(rmm_cupy_allocator)
 
     @property
     def ngpus(self) -> int:
@@ -47,11 +50,10 @@ class LocalExecutor:
         pass
 
     def get_backend(self):
-        if self.backend == "numpy" and \
-           self.dtype == TaskExecutorType.single_gpu:
-            return eval("cupy")
+        if self.dtype == TaskExecutorType.single_gpu:
+            return eval("cp")
 
-        return eval(self.backend)
+        return eval("np")
 
     def execute(self, fn, *args, **kwargs):
         if get_backend_supported(fn):
