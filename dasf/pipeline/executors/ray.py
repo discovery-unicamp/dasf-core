@@ -14,6 +14,15 @@ from dasf.pipeline.executors.base import Executor
 from dasf.utils.funcs import get_dask_gpu_count
 
 
+def setup_ray_protocol(protocol=None):
+    """Returns the proper URL protocol for ray connections."""
+    if protocol is None or protocol == "tcp":
+        return ""
+    if protocol == "ray":
+        return "ray://"
+    raise ValueError(f"Protocol {protocol} is not supported.")
+
+
 class RayPipelineExecutor(Executor):
     """
     A pipeline executor based on ray data flow.
@@ -29,6 +38,8 @@ class RayPipelineExecutor(Executor):
     use_gpu : bool
         In conjunction with `local`, it kicks off a local CUDA Ray
         cluster, default=False.
+    protocol : str
+        Sets the Ray protocol (default TCP)
     """
 
     def __init__(
@@ -37,6 +48,7 @@ class RayPipelineExecutor(Executor):
         port=6379,
         local=False,
         use_gpu=False,
+        protocol=None,
         ray_kwargs=None,
     ):
         """ Constructor of the object RayPipelineExecutor. """
@@ -53,7 +65,7 @@ class RayPipelineExecutor(Executor):
         enable_dask_on_ray()
 
         if address:
-            address_str = f"ray://{address}:{str(port)}"
+            address_str = f"{setup_ray_protocol(protocol)}{address}:{str(port)}"
 
             ray.init(address=address_str, **ray_kwargs)
         elif local:
@@ -67,7 +79,7 @@ class RayPipelineExecutor(Executor):
         -------
         ngpus : Number of GPUs in total
         """
-        return len(get_dask_gpu_count())
+        return get_dask_gpu_count()
 
     @property
     def is_connected(self):
