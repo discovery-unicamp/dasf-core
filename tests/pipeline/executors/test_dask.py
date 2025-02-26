@@ -111,6 +111,7 @@ class TestDaskExecutor(unittest.TestCase):
             dask.close()
 
             self.assertFalse(dask.is_connected)
+            self.assertTrue('Executor is not connected!' in dask.info)
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
@@ -197,6 +198,7 @@ class TestDaskTasksPipelineExecutor(unittest.TestCase):
             dask.close()
 
             self.assertFalse(dask.is_connected)
+            self.assertTrue('Executor is not connected!' in dask.info)
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")

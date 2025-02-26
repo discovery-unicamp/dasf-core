@@ -163,7 +163,7 @@ class DaskPipelineExecutor(Executor):
         if self.is_connected:
             info += "Executor is connected!\n"
         else:
-            info += "Executor not is connected!\n"
+            info += "Executor is not connected!\n"
 
         info += f"Executor Type: {executor_to_string(self.dtype)}\n"
         info += f"Executor Backend: {self.client.backend}\n"

@@ -51,7 +51,7 @@ class LocalExecutor:
            self.dtype == TaskExecutorType.single_gpu:
             return eval("cupy")
 
-        return eval("cupy")
+        return eval(self.backend)
 
     def execute(self, fn, *args, **kwargs):
         if get_backend_supported(fn):
