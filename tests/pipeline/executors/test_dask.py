@@ -98,6 +98,8 @@ class TestDaskExecutor(unittest.TestCase):
 
             dask = DaskPipelineExecutor(local=True, use_gpu=True)
 
+            self.assertTrue('Available GPUs:' in dask.info)
+
             client = Client.current()
 
             self.assertEqual(hash(dask.client), hash(client))
