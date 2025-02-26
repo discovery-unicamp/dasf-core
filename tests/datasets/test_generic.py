@@ -40,12 +40,46 @@ class TestTypes(unittest.TestCase):
         filename = request.module.__file__
         self.test_dir, _ = os.path.splitext(filename)
         
-    def test_dataset_load(self):
+    def test_dataset_load_cpu(self):
         raw_path = os.path.join(self.test_dir, "simple",
                                 self.file)
-                                
+
         dataset = eval(self.cls)(name=self.name, root=raw_path, download=False, **self.extra_args)
-        dataset.load()
+        dataset._load_cpu()
+
+        self.assertTrue(hasattr(dataset, '_metadata'))
+        self.assertTrue("size" in dataset._metadata)
+
+    def test_dataset_lazy_load_cpu(self):
+        raw_path = os.path.join(self.test_dir, "simple",
+                                self.file)
+
+        dataset = eval(self.cls)(name=self.name, root=raw_path, download=False, **self.extra_args)
+        dataset._lazy_load_cpu()
+
+        self.assertTrue(hasattr(dataset, '_metadata'))
+        self.assertTrue("size" in dataset._metadata)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_dataset_load_gpu(self):
+        raw_path = os.path.join(self.test_dir, "simple",
+                                self.file)
+
+        dataset = eval(self.cls)(name=self.name, root=raw_path, download=False, **self.extra_args)
+        dataset._load_gpu()
+
+        self.assertTrue(hasattr(dataset, '_metadata'))
+        self.assertTrue("size" in dataset._metadata)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_dataset_lazy_load_gpu(self):
+        raw_path = os.path.join(self.test_dir, "simple",
+                                self.file)
+
+        dataset = eval(self.cls)(name=self.name, root=raw_path, download=False, **self.extra_args)
+        dataset._lazy_load_gpu()
 
         self.assertTrue(hasattr(dataset, '_metadata'))
         self.assertTrue("size" in dataset._metadata)
