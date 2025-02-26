@@ -159,20 +159,22 @@ class DaskPipelineExecutor(Executor):
 
     @property
     def info(self) -> str:
+        info = ""
         if self.is_connected:
-            print("Executor is connected!")
+            info += "Executor is connected!\n"
         else:
-            print("Executor not is connected!")
+            info += "Executor not is connected!\n"
 
-        print(f"Executor Type: {executor_to_string(self.dtype)}")
-        print(f"Executor Backend: {self.client.backend}")
+        info += f"Executor Type: {executor_to_string(self.dtype)}\n"
+        info += f"Executor Backend: {self.client.backend}\n"
 
         if self.is_connected and self.ngpus > 0:
-            print(f"With {self.ngpus} GPUs")
+            info += f"With {self.ngpus} GPUs\n"
 
-            print("Available GPUs:")
+            info += "Available GPUs:\n"
             for gpu_name in list(set(get_dask_gpu_names())):
-                print(f"- {gpu_name}")
+                info += f"- {gpu_name}\n"
+        return info
 
     def execute(self, fn, *args, **kwargs):
         return fn(*args, **kwargs)
