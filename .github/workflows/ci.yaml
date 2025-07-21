@@ -16,6 +16,9 @@ jobs:
         python-version: ['3.8']
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -68,6 +71,9 @@ jobs:
     needs: [lint]
     container:
       image: docker.io/jcfaracco/dasf:cpu_ci
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -87,6 +93,9 @@ jobs:
     needs: [lint]
     # Skip this test for PRs due to dangerous code submitted.
     if: ${{ github.event_name != 'pull_request' }}
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
