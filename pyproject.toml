@@ -24,11 +24,11 @@ exclude = ["tests/*", "docs/*"]
 [tool.poetry.dependencies]
 bokeh = "^3.0.0"
 charset-normalizer = "<3.0"
-dask = "^2024.4.1"
+dask = ">=2025.1.0"
 dask_cuda = "*"
 dask_jobqueue = "^0.8.2"
 dask_memusage = "^1.1"
-dask_ml = "^2024.4.1"
+dask_ml = ">=2025.1.0"
 dask-pytorch-ddp = "^0.2.0"
 GPUtil = "^1.4.0"
 gdown = "^4.6"
