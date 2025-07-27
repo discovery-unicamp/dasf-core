@@ -24,7 +24,7 @@ exclude = ["tests/*", "docs/*"]
 [tool.poetry.dependencies]
 bokeh = "^3.0.0"
 charset-normalizer = "<3.0"
-dask = ">=2025.1.0"
+dask = "<=2025.7.0"
 dask_cuda = "*"
 dask_jobqueue = "^0.8.2"
 dask_memusage = "^1.1"
