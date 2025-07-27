@@ -25,7 +25,7 @@ DataFrameCPU = Union[pd.DataFrame]
 DataCPU = Union[ArrayCPU, DataFrameCPU]
 
 DaskArray = Union[da.core.Array]
-DaskDataFrameCPU = Union[ddf.core.DataFrame]
+DaskDataFrameCPU = Union[ddf.DataFrame]
 
 XDataArray = Union[xr.DataArray]
 
