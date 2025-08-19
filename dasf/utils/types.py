@@ -40,7 +40,7 @@ try:
     DataGPU = Union[ArrayGPU, DataFrameGPU]
 
     DaskDataFrameGPU = Union[dcudf.core.DataFrame,
-                             dcudf.expr._collection.DataFrame]
+                             dcudf._expr.collection.DataFrame]
 
     Array = Union[Array, ArrayGPU]
     DaskDataFrame = Union[DaskDataFrame, DaskDataFrameGPU]
