@@ -27,7 +27,7 @@ if python_version:
 gpu_image_devel = f"rapidsai/base:{rapidsai_version}-cuda{cuda_version}{python_version}"
 
 # GPU image needs to be fixed due to dependency matrix
-gpu_image = "nvcr.io/nvidia/pytorch:25.01-py3"
+gpu_image = "nvcr.io/nvidia/pytorch:25.06-py3"
 
 cpu_image = f"ubuntu:{ubuntu_version}"
 
@@ -70,7 +70,7 @@ elif device_target.lower() == "gpu":
     if is_devel:
         pip_package_install = ("%s %s" % (pip_package_install, "git+https://github.com/cupy/cupy.git"))
     else:
-        pip_package_install = ("%s %s" % (pip_package_install, "cupy-cuda12x==13.2.0"))
+        pip_package_install = ("%s %s" % (pip_package_install, "cupy-cuda12x==13.3.0"))
 
 
 Stage0 += shell(commands=["pip3 install pip --upgrade --user --break-system-packages"])
