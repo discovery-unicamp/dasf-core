@@ -1,0 +1,25 @@
+FROM nvcr.io/nvidia/pytorch:25.06-py3
+
+RUN apt-get update -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        g++ \
+        gcc \
+        git \
+        graphviz \
+        make \
+        openssh-client \
+        python3-dev \
+        wget && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-dependencies --upgrade cupy_xarray
+
+RUN pip3 install pip --upgrade --user --break-system-packages
+
+RUN pip3 install --break-system-packages -U cupy-cuda12x==13.3.0
+
+WORKDIR /dasf
+
+LABEL dasf=latest
+
+
