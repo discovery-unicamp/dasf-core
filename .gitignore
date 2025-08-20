@@ -131,3 +131,6 @@ dmypy.json
 
 # Other folders
 build/*.sif
+
+# NumPy data
+*.npy
