@@ -195,9 +195,9 @@ class Overlap(Transform):
         return xp.pad(
             X,
             [
-                (self._pad[0],),
-                (self._pad[1],),
-                (self._pad[2],),
+                (self._pad[0],self._pad[0]),
+                (self._pad[1],self._pad[1]),
+                (self._pad[2],self._pad[2]),
             ],
             mode="edge",
         )
@@ -231,7 +231,7 @@ class Trim(Transform):
         return self._lazy_transform(X)
 
     def _transform(self, X):
-        sl = [slice(t, -t, None) for t in self._trim]
+        sl = [slice(t, -t) if t != 0 else slice(None, None) for t in self._trim]
         return X[tuple(sl)]
 
     def _transform_gpu(self, X):
