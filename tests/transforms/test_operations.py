@@ -21,6 +21,9 @@ from dasf.transforms.operations import (
     SliceArray,
     SliceArrayByPercent,
     SliceArrayByPercentile,
+    Overlap,
+    Trim,
+    Roll,
 )
 from dasf.utils.funcs import is_gpu_supported
 from dasf.utils.types import (
@@ -562,3 +565,144 @@ class TestSliceArrayByPercentile(unittest.TestCase):
         self.assertTrue(is_dask_gpu_array(y))
         self.assertEqual(y.shape, (40, 40, 40))
         self.assertGreater(len(cp.where(y.compute() == 63916.6)), 0)
+
+
+class TestOverlap(unittest.TestCase):
+    def test_overlap_cpu(self):
+        data = np.arange(40 * 40 * 40).reshape((40, 40, 40))
+
+        overlap = Overlap(pad=(2, 3, 5))
+
+        y = overlap._transform_cpu(X=data)
+
+        self.assertTrue(is_cpu_array(y))
+        self.assertEqual(y.shape, (44, 46, 50))
+
+    def test_overlap_mcpu(self):
+        data = da.from_array(np.arange(40 * 40 * 40).reshape((40, 40, 40)), chunks=(5, 5, 5))
+
+        overlap = Overlap(pad=(2, 3, 5))
+
+        y = overlap._lazy_transform_cpu(X=data)
+
+
+        self.assertTrue(is_dask_cpu_array(y))
+        self.assertEqual(y.shape, (72, 88, 120))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_overlap_gpu(self):
+        data = cp.arange(40 * 40 * 40).reshape((40, 40, 40))
+
+        overlap = Overlap(pad=(2, 3, 5))
+
+        y = overlap._transform_gpu(X=data)
+
+        self.assertTrue(is_gpu_array(y))
+        self.assertEqual(y.shape, (44, 46, 50))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_overlap_mgpu(self):
+        data = da.from_array(cp.arange(40 * 40 * 40).reshape((40, 40, 40)), chunks=(5, 5, 5))
+
+        overlap = Overlap(pad=(2, 3, 5))
+
+        y = overlap._lazy_transform_gpu(X=data)
+
+        self.assertTrue(is_dask_gpu_array(y))
+        self.assertEqual(y.shape, (72, 88, 120))
+
+
+class TestTrim(unittest.TestCase):
+    def test_trim_cpu(self):
+        data = np.arange(40 * 40 * 40).reshape((40, 40, 40))
+
+        trim = Trim(trim=(1, 0, 2))
+
+        y = trim._transform_cpu(X=data)
+
+        self.assertTrue(is_cpu_array(y))
+        self.assertEqual(y.shape, (38, 40, 36))
+
+    def test_trim_mcpu(self):
+        data = da.from_array(np.arange(40 * 40 * 40).reshape((40, 40, 40)), chunks=(5, 5, 5))
+
+        trim = Trim(trim=(1, 0, 2))
+
+        y = trim._lazy_transform_cpu(X=data)
+
+
+        self.assertTrue(is_dask_cpu_array(y))
+        self.assertEqual(y.shape, (24, 40, 8))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_trim_gpu(self):
+        data = cp.arange(40 * 40 * 40).reshape((40, 40, 40))
+
+        trim = Trim(trim=(1, 0, 2))
+
+        y = trim._transform_gpu(X=data)
+
+        self.assertTrue(is_gpu_array(y))
+        self.assertEqual(y.shape, (38, 40, 36))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_trim_mgpu(self):
+        data = da.from_array(cp.arange(40 * 40 * 40).reshape((40, 40, 40)), chunks=(5, 5, 5))
+
+        trim = Trim(trim=(1, 0, 2))
+
+        y = trim._lazy_transform_gpu(X=data)
+
+        self.assertTrue(is_dask_gpu_array(y))
+        self.assertEqual(y.shape, (24, 40, 8))
+
+
+class TestRoll(unittest.TestCase):
+    def test_roll_cpu(self):
+        data = np.arange(40 * 40 * 40).reshape((40, 40, 40))
+
+        roll = Roll(shift=(1, 2, 3))
+
+        y = roll._transform_cpu(X=data)
+
+        self.assertTrue(is_cpu_array(y))
+        self.assertEqual(y.shape, (40, 40, 40))
+
+    def test_roll_mcpu(self):
+        data = da.from_array(np.arange(40 * 40 * 40).reshape((40, 40, 40)), chunks=(5, 5, 5))
+
+        roll = Roll(shift=(1, 2, 3))
+
+        y = roll._lazy_transform_cpu(X=data)
+
+
+        self.assertTrue(is_dask_cpu_array(y))
+        self.assertEqual(y.shape, (40, 40, 40))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_roll_gpu(self):
+        data = cp.arange(40 * 40 * 40).reshape((40, 40, 40))
+
+        roll = Roll(shift=(1, 2, 3))
+
+        y = roll._transform_gpu(X=data)
+
+        self.assertTrue(is_gpu_array(y))
+        self.assertEqual(y.shape, (40, 40, 40))
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_roll_mgpu(self):
+        data = da.from_array(cp.arange(40 * 40 * 40).reshape((40, 40, 40)), chunks=(5, 5, 5))
+
+        roll = Roll(shift=(1, 2, 3))
+
+        y = roll._lazy_transform_gpu(X=data)
+
+        self.assertTrue(is_dask_gpu_array(y))
+        self.assertEqual(y.shape, (40, 40, 40))
