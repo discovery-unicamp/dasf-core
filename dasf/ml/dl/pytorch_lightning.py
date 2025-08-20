@@ -3,7 +3,6 @@
 import uuid
 
 import pytorch_lightning as pl
-from dask_pytorch_ddp.results import DaskResultsHandler
 from torch.utils.data import DataLoader
 
 from dasf.ml.dl.clusters import DaskClusterEnvironment
@@ -118,7 +117,6 @@ class NeuralNetClassifier(Fit):
         self._batch_size = batch_size
 
         self.__trainer = False
-        self.__handler = DaskResultsHandler(uuid.uuid4().hex)
 
     def _lazy_fit_generic(self, X, y, accel, ngpus):
         self._accel = accel
