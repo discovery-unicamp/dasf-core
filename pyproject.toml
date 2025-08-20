@@ -5,8 +5,8 @@ description = "DASF is an Accelerated Framework for Machine Learning"
 authors = ["Julio Faracco <jcfaracco@gmail.com>"]
 maintainers = ["Julio Faracco <jcfaracco@gmail.com>"]
 license = "MIT"
-homepage = "https://github.com/lmcad-unicamp/dasf-core"
-repository = "https://github.com/lmcad-unicamp/dasf-core"
+homepage = "https://github.com/discovery-unicamp/dasf-core"
+repository = "https://github.com/discovery-unicamp/dasf-core"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
