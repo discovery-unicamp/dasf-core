@@ -8,6 +8,9 @@ from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.funcs import is_gpu_supported
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
+
     from cuml.cluster import HDBSCAN as HDBSCAN_GPU
 except ImportError:
     pass

@@ -10,6 +10,9 @@ from dasf.utils.decorators import task_handler
 from dasf.utils.funcs import is_gpu_supported
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
+
     from cuml.cluster import KMeans as KMeans_GPU
     from cuml.dask.cluster import KMeans as KMeans_MGPU
 except ImportError:

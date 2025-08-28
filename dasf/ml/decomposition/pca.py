@@ -9,6 +9,9 @@ from dasf.transforms.base import Fit, FitTransform, TargeteredTransform
 from dasf.utils.funcs import is_dask_gpu_supported, is_dask_supported, is_gpu_supported
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
+
     from cuml.dask.decomposition import PCA as PCA_MGPU
     from cuml.decomposition import PCA as PCA_GPU
 except ImportError:

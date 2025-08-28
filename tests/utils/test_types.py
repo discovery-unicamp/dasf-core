@@ -10,10 +10,12 @@ import xarray as xr
 from mock import Mock, patch
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
     import cudf
     import cupy as cp
     import dask_cudf as dcudf
-except ImportError:
+except:
     pass
 
 from dasf.utils.funcs import is_gpu_supported

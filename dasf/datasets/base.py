@@ -16,20 +16,22 @@ import xarray as xr
 import zarr
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
     import cudf
     import cupy as cp
 
     # This is just to enable Xarray Cupy capabilities
     import cupy_xarray as cx  # noqa
     import dask_cudf as dcudf
-except ImportError:  # pragma: no cover
+except:  # pragma: no cover
     pass
 
 try:
     import numcodecs  # noqa
     from kvikio.nvcomp_codec import NvCompBatchCodec
     from kvikio.zarr import GDSStore
-except ImportError:  # pragma: no cover
+except:  # pragma: no cover
     pass
 
 from pathlib import Path
