@@ -8,6 +8,9 @@ from sklearn.svm import LinearSVC as LinearSVC_CPU
 from sklearn.svm import LinearSVR as LinearSVR_CPU
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
+
     from cuml.svm import SVC as SVC_GPU
     from cuml.svm import SVR as SVR_GPU
     from cuml.svm import LienarSVC as LinearSVC_GPU

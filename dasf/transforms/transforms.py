@@ -15,9 +15,11 @@ from dasf.transforms.base import Transform
 from dasf.utils.types import is_array, is_dask_array, is_dask_gpu_array
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
     import cudf
     import cupy as cp
-except ImportError: # pragma: no cover
+except: # pragma: no cover
     pass
 
 

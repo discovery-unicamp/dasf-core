@@ -94,6 +94,8 @@ class DaskPipelineExecutor(Executor):
             self.client = Client(scheduler_file=client_kwargs["scheduler_file"])
         elif local:
             if use_gpu:
+                print("CREATING CUDA CLUSTER")
+                print(cluster_kwargs, client_kwargs)
                 self.client = Client(
                     LocalCUDACluster(**cluster_kwargs), **client_kwargs
                 )

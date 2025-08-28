@@ -9,11 +9,13 @@ import numpy as np
 import pandas as pd
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
     import cudf
     import cupy as cp
     import dask_cudf as cuddf
-except ImportError:
-    pass 
+except:
+    pass
 
 from io import StringIO
 
