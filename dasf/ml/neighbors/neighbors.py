@@ -10,6 +10,9 @@ from dasf.utils.decorators import task_handler
 from dasf.utils.funcs import is_gpu_supported
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
+
     from cuml.neighbors import KNeighborsClassifier as KNeighborsClassifier_GPU
     from cuml.neighbors import NearestNeighbors as NearestNeighbors_GPU
 except ImportError:

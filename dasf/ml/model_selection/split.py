@@ -6,6 +6,9 @@ from sklearn.model_selection import train_test_split as train_test_split_cpu
 from dasf.transforms import TargeteredTransform, Transform
 
 try:
+    from numba import cuda
+    assert len(cuda.gpus) != 0 # check if GPU are available in current env
+
     from cuml.model_selection import train_test_split as train_test_split_gpu
 except ImportError:
     pass

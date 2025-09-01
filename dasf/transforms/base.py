@@ -10,12 +10,9 @@ import numpy as np
 
 try:
     import cupy as cp
-    import dask_cudf as dcudf
-    from rmm._cuda.gpu import CUDARuntimeError
 except ImportError: # pragma: no cover
     pass
-except CUDARuntimeError:
-    pass
+
 
 from dasf.utils.decorators import task_handler
 from dasf.utils.funcs import block_chunk_reduce
