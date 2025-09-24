@@ -13,8 +13,8 @@ from dask.base import is_dask_collection
 from dask.utils import is_arraylike, is_cupy_type, is_dataframe_like, is_series_like
 
 try:
-    from numba import cuda
-    assert len(cuda.gpus) != 0 # check if GPU are available in current env
+    import GPUtil
+    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
     import cudf
     import cupy as cp
     import dask_cudf as dcudf

@@ -99,7 +99,6 @@ class DaskPipelineExecutor(Executor):
                 )
             else:
                 # This avoids initializing workers on GPU:0 when available
-                os.environ["CUDA_VISIBLE_DEVICES"] = ""
                 self.client = Client(LocalCluster(**cluster_kwargs),
                                      **client_kwargs)
 

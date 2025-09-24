@@ -12,8 +12,8 @@ from dask_ml.datasets import make_regression as make_regression_MCPU
 from sklearn.datasets import make_regression as make_regression_CPU
 
 try:
-    from numba import cuda
-    assert len(cuda.gpus) != 0 # check if GPU are available in current env
+    import GPUtil
+    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
     import cupy as cp
 
     from cuml.dask.datasets import make_blobs as make_blobs_MGPU

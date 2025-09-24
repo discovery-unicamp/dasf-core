@@ -16,8 +16,8 @@ import xarray as xr
 import zarr
 
 try:
-    from numba import cuda
-    assert len(cuda.gpus) != 0 # check if GPU are available in current env
+    import GPUtil
+    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
     import cudf
     import cupy as cp
 
@@ -30,7 +30,6 @@ except:  # pragma: no cover
 try:
     import numcodecs  # noqa
     from kvikio.nvcomp_codec import NvCompBatchCodec
-    from kvikio.zarr import GDSStore
 except:  # pragma: no cover
     pass
 
@@ -607,9 +606,11 @@ class DatasetZarr(Dataset):
             The data (or a Future load object, for `_lazy` operations).
 
         """
+        # TODO:kvikio is causing all Dask CUDA workers to reside in the same GPU
         if (self._backend == "kvikio" and is_kvikio_supported() and
            (is_gds_supported() or is_kvikio_compat_mode()) and
            is_nvcomp_codec_supported()):
+            from kvikio.zarr import GDSStore
             store = GDSStore(self._root_file)
             meta = json.loads(store[".zarray"])
             meta["compressor"] = NvCompBatchCodec("lz4").get_config()
