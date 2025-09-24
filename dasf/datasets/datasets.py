@@ -3,26 +3,21 @@
 """ Module representing all types of dataset generators. """
 
 from dask_ml.datasets import make_blobs as make_blobs_MCPU
-from sklearn.datasets import make_blobs as make_blobs_CPU
-
 from dask_ml.datasets import make_classification as make_classification_MCPU
-from sklearn.datasets import make_classification as make_classification_CPU
-
 from dask_ml.datasets import make_regression as make_regression_MCPU
+from sklearn.datasets import make_blobs as make_blobs_CPU
+from sklearn.datasets import make_classification as make_classification_CPU
 from sklearn.datasets import make_regression as make_regression_CPU
 
 try:
     import GPUtil
     assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
     import cupy as cp
-
     from cuml.dask.datasets import make_blobs as make_blobs_MGPU
-    from cuml.datasets import make_blobs as make_blobs_GPU
-
     from cuml.dask.datasets import make_classification as make_classification_MGPU
-    from cuml.datasets import make_classification as make_classification_GPU
-    
     from cuml.dask.datasets import make_regression as make_regression_MGPU
+    from cuml.datasets import make_blobs as make_blobs_GPU
+    from cuml.datasets import make_classification as make_classification_GPU
     from cuml.datasets import make_regression as make_regression_GPU
 except:  # pragma: no cover
     pass

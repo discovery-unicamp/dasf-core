@@ -19,13 +19,13 @@ except:
 from mock import MagicMock
 
 from dasf.transforms.operations import (
+    Overlap,
     Reshape,
+    Roll,
     SliceArray,
     SliceArrayByPercent,
     SliceArrayByPercentile,
-    Overlap,
     Trim,
-    Roll,
 )
 from dasf.utils.funcs import is_gpu_supported
 from dasf.utils.types import (

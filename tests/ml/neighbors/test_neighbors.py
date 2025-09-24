@@ -14,10 +14,7 @@ from sklearn.datasets import make_blobs
 
 from dasf.ml.neighbors import KNeighborsClassifier, NearestNeighbors
 from dasf.utils.funcs import is_gpu_supported
-from dasf.utils.types import (
-    is_cpu_array,
-    is_gpu_array,
-)
+from dasf.utils.types import is_cpu_array, is_gpu_array
 
 
 class TestNearestNeighbors(unittest.TestCase):
