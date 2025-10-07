@@ -10,7 +10,8 @@ from dasf.utils.funcs import is_dask_gpu_supported, is_dask_supported, is_gpu_su
 
 try:
     import GPUtil
-    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
 
     from cuml.dask.decomposition import PCA as PCA_MGPU
     from cuml.decomposition import PCA as PCA_GPU

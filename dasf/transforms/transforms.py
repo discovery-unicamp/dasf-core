@@ -16,7 +16,8 @@ from dasf.utils.types import is_array, is_dask_array, is_dask_gpu_array
 
 try:
     import GPUtil
-    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
     import cudf
     import cupy as cp
 except: # pragma: no cover

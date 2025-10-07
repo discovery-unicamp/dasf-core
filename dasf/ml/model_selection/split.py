@@ -7,7 +7,8 @@ from dasf.transforms import TargeteredTransform, Transform
 
 try:
     import GPUtil
-    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
 
     from cuml.model_selection import train_test_split as train_test_split_gpu
 except ImportError:

@@ -14,7 +14,8 @@ from dask.utils import is_arraylike, is_cupy_type, is_dataframe_like, is_series_
 
 try:
     import GPUtil
-    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
     import cudf
     import cupy as cp
     import dask_cudf as dcudf

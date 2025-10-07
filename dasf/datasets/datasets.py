@@ -11,7 +11,8 @@ from sklearn.datasets import make_regression as make_regression_CPU
 
 try:
     import GPUtil
-    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
     import cupy as cp
     from cuml.dask.datasets import make_blobs as make_blobs_MGPU
     from cuml.dask.datasets import make_classification as make_classification_MGPU

@@ -9,7 +9,8 @@ from dasf.utils.funcs import is_gpu_supported
 
 try:
     import GPUtil
-    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
 
     from cuml.cluster import HDBSCAN as HDBSCAN_GPU
 except ImportError:

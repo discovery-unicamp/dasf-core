@@ -9,7 +9,8 @@ from sklearn.svm import LinearSVR as LinearSVR_CPU
 
 try:
     import GPUtil
-    assert len(GPUtil.getGPUs()) != 0 # check if GPU are available in current env
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
 
     from cuml.svm import SVC as SVC_GPU
     from cuml.svm import SVR as SVR_GPU
