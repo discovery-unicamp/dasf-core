@@ -154,8 +154,6 @@ class TestArrayToZarr(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             T_1 = T._transform_cpu(dataset)
 
-        print(str(context.exception))
-
         self.assertTrue('Array requires a valid path to convert to Zarr.' in str(context.exception))
 
     def tearDown(self):
@@ -252,8 +250,6 @@ class TestZarrToArray(unittest.TestCase):
     def test_zarr_to_array_mcpu(self):
         dataset = DatasetZarr(root=self.zarr, download=False, name="Test Zarr")
 
-        print(self.zarr)
-
         dataset = dataset._lazy_load_cpu()
 
         T = ZarrToArray()
@@ -278,7 +274,7 @@ class TestZarrToArray(unittest.TestCase):
 
     def tearDown(self):
         self.remove(self.array)
-#        self.remove(self.zarr)
+        self.remove(self.zarr)
 
 
 class TestArraysToDataFrame(unittest.TestCase):
