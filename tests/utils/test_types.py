@@ -2,6 +2,7 @@
 
 import unittest
 
+import dask
 import dask.array as da
 import dask.dataframe as ddf
 import numpy as np
@@ -310,23 +311,21 @@ class TestTypes(unittest.TestCase):
         self.__set_data_op(keys)
         self.__assert_not_equal_all_data(is_dask_cpu_dataframe)
 
-#    @patch('dasf.utils.types.is_gpu_supported', Mock(return_value=False))
-#    def test_is_dask_cpu_dataframe_no_gpu(self):
-#        keys = [
-#            "Dask DataFrame"
-#        ]
-#
-#        self.__set_data(keys)
-#        self.__assert_equal_all_data(is_dask_cpu_dataframe)
-#
-#    @patch('dasf.utils.types.is_gpu_supported', Mock(return_value=False))
-#    def test_is_not_dask_cpu_dataframe_no_gpu(self):
-#        keys = [
-#            "Dask DataFrame"
-#        ]
-#
-#        self.__set_data_op(keys)
-#        self.__assert_not_equal_all_data(is_dask_cpu_dataframe)
+    def test_is_dask_cpu_dataframe_no_gpu(self):
+        keys = [
+            "Dask DataFrame"
+        ]
+
+        self.__set_data(keys)
+        self.__assert_equal_all_data(is_dask_cpu_dataframe)
+
+    def test_is_not_dask_cpu_dataframe_no_gpu(self):
+        keys = [
+            "Dask DataFrame"
+        ]
+
+        self.__set_data_op(keys)
+        self.__assert_not_equal_all_data(is_dask_cpu_dataframe)
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
@@ -404,25 +403,23 @@ class TestTypes(unittest.TestCase):
         self.__set_data_op(keys)
         self.__assert_not_equal_all_data(is_dask_dataframe)
 
-#    @patch('dasf.utils.types.is_gpu_supported', Mock(return_value=False))
-#    def test_is_dask_dataframe_no_gpu(self):
-#        keys = [
-#            "Dask DataFrame",
-#            "Dask CuDF"
-#        ]
-#
-#        self.__set_data(keys)
-#        self.__assert_equal_all_data(is_dask_dataframe)
-#
-#    @patch('dasf.utils.types.is_gpu_supported', Mock(return_value=False))
-#    def test_is_dask_dataframe_no_gpu(self):
-#        keys = [
-#            "Dask DataFrame",
-#            "Dask CuDF"
-#        ]
-#
-#       self.__set_data_op(keys)
-#       self.__assert_not_equal_all_data(is_dask_dataframe)
+    def test_is_dask_dataframe_no_gpu(self):
+        keys = [
+            "Dask DataFrame",
+            "Dask CuDF"
+        ]
+
+        self.__set_data(keys)
+        self.__assert_equal_all_data(is_dask_dataframe)
+
+    def test_is_dask_dataframe_no_gpu(self):
+        keys = [
+            "Dask DataFrame",
+            "Dask CuDF"
+        ]
+
+        self.__set_data_op(keys)
+        self.__assert_not_equal_all_data(is_dask_dataframe)
 
     def test_is_dask(self):
         keys = [
@@ -461,3 +458,110 @@ class TestTypes(unittest.TestCase):
 
         self.__set_data_op(keys)
         self.__assert_not_equal_all_data(is_xarray_array)
+
+
+class TestTypesEdgeCases(unittest.TestCase):
+    def test_none_inputs(self):
+        # Test that all type checking functions handle None gracefully
+        self.assertFalse(is_array(None))
+        self.assertFalse(is_dataframe(None))
+        self.assertFalse(is_series(None))
+        self.assertFalse(is_cpu_array(None))
+        self.assertFalse(is_cpu_dataframe(None))
+        self.assertFalse(is_cpu_datatype(None))
+        self.assertFalse(is_dask(None))
+        self.assertFalse(is_dask_array(None))
+        self.assertFalse(is_dask_dataframe(None))
+        self.assertFalse(is_dask_cpu_array(None))
+        self.assertFalse(is_dask_cpu_dataframe(None))
+        self.assertFalse(is_xarray_array(None))
+
+    @unittest.skipIf(not is_gpu_supported(), "not supported CUDA in this platform")
+    def test_none_inputs_gpu(self):
+        # Test GPU-specific functions with None
+        self.assertFalse(is_gpu_array(None))
+        self.assertFalse(is_gpu_dataframe(None))
+        self.assertFalse(is_gpu_datatype(None))
+        self.assertFalse(is_dask_gpu_array(None))
+        self.assertFalse(is_dask_gpu_dataframe(None))
+
+    def test_string_inputs(self):
+        # Test that type checking functions handle strings properly
+        test_string = "not a data structure"
+        self.assertFalse(is_array(test_string))
+        self.assertFalse(is_dataframe(test_string))
+        self.assertFalse(is_series(test_string))
+        self.assertFalse(is_dask(test_string))
+
+    def test_integer_inputs(self):
+        # Test that type checking functions handle integers properly
+        test_int = 42
+        self.assertFalse(is_array(test_int))
+        self.assertFalse(is_dataframe(test_int))
+        self.assertFalse(is_series(test_int))
+        self.assertFalse(is_dask(test_int))
+
+    def test_empty_list(self):
+        # Test with empty list
+        empty_list = []
+        self.assertTrue(is_array(empty_list))  # Empty list is considered an array
+        self.assertFalse(is_dataframe(empty_list))
+        self.assertFalse(is_series(empty_list))
+
+    def test_nested_list(self):
+        # Test with nested list
+        nested_list = [[1, 2], [3, 4]]
+        self.assertTrue(is_array(nested_list))
+        self.assertFalse(is_dataframe(nested_list))
+
+    def test_pandas_series(self):
+        # Test pandas Series separately
+        series = pd.Series([1, 2, 3, 4])
+        self.assertTrue(is_array(series))  # Series is not considered an array
+        self.assertFalse(is_dataframe(series))  # Series is not a dataframe
+        self.assertTrue(is_series(series))
+
+    def test_mixed_type_operations(self):
+        # Test operations that might involve type conversion
+        array = np.array([1, 2, 3])
+        df = pd.DataFrame({'col': [1, 2, 3]})
+
+        # These should maintain their types
+        self.assertTrue(is_cpu_array(array))
+        self.assertTrue(is_cpu_dataframe(df))
+        self.assertTrue(is_cpu_datatype(array))
+        self.assertTrue(is_cpu_datatype(df))
+
+    @unittest.skipIf(not is_gpu_supported(), "not supported CUDA in this platform")
+    def test_gpu_dask_combinations(self):
+        # Test combinations of GPU and Dask
+        cupy_array = cp.array([1, 2, 3])
+        dask_cupy = da.from_array(cupy_array, chunks=(2,))
+
+        self.assertTrue(is_gpu_array(cupy_array))
+        self.assertTrue(is_dask_gpu_array(dask_cupy))
+        self.assertTrue(is_dask_array(dask_cupy))
+        self.assertTrue(is_dask(dask_cupy))
+        self.assertTrue(is_array(dask_cupy))
+
+    def test_xarray_with_different_backends(self):
+        # Test xarray with different data backends
+        numpy_data = np.random.random((5, 5))
+        xr_array = xr.DataArray(numpy_data)
+
+        self.assertTrue(is_xarray_array(xr_array))
+        self.assertTrue(is_series(xr_array))
+        self.assertTrue(is_array(xr_array))
+        self.assertFalse(is_dataframe(xr_array))
+
+    def test_dask_delayed_objects(self):
+        # Test with dask delayed objects which aren't arrays or dataframes
+        delayed_obj = dask.delayed(lambda x: x + 1)(5)
+
+        # Delayed objects should not be recognized as arrays or dataframes
+        self.assertFalse(is_array(delayed_obj))
+        self.assertFalse(is_dataframe(delayed_obj))
+        self.assertFalse(is_dask_array(delayed_obj))
+        self.assertFalse(is_dask_dataframe(delayed_obj))
+        # But they are dask collections
+        self.assertTrue(is_dask(delayed_obj))
