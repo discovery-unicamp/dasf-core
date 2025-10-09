@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-import socket
-import time
 import unittest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 
 from dasf.profile.plugins import WorkerTaskPlugin, ResourceMonitor, GPUAnnotationPlugin
 
@@ -24,25 +22,30 @@ class TestWorkerTaskPlugin(unittest.TestCase):
     def test_setup(self, mock_profiler, mock_hostname):
         mock_profiler_instance = Mock()
         mock_profiler.return_value = mock_profiler_instance
-        
+
         self.plugin.setup(self.mock_worker)
-        
+
         self.assertEqual(self.plugin.worker, self.mock_worker)
         self.assertEqual(self.plugin.hostname, 'test-host')
         self.assertEqual(self.plugin.worker_id, 'worker-test-host-worker-123')
-        
-        mock_profiler.assert_called_once_with(database_file="TestPlugin-test-host.msgpack")
+
+        mock_profiler.assert_called_once_with(
+                database_file="TestPlugin-test-host.msgpack"
+                )
         self.assertEqual(self.plugin.database, mock_profiler_instance)
 
     @patch('socket.gethostname', return_value='test-host')
     @patch('dasf.profile.plugins.EventProfiler')
     @patch('time.monotonic', return_value=100.0)
-    def test_transition_to_memory_with_compute_startstop(self, mock_time, mock_profiler, mock_hostname):
+    def test_transition_to_memory_with_compute_startstop(self,
+                                                         mock_time,
+                                                         mock_profiler,
+                                                         mock_hostname):
         mock_profiler_instance = Mock()
         mock_profiler.return_value = mock_profiler_instance
-        
+
         self.plugin.setup(self.mock_worker)
-        
+
         # Setup task with startstops
         task_key = "test-task-123"
         mock_task = Mock()
@@ -53,27 +56,27 @@ class TestWorkerTaskPlugin(unittest.TestCase):
         mock_task.nbytes = 2048
         mock_task.dependencies = []
         mock_task.dependents = []
-        
+
         self.mock_worker.state.tasks[task_key] = mock_task
-        
+
         # Setup data object with shape and dtype
         mock_data = Mock()
         mock_data.shape = (100, 200)
         mock_data.dtype = "float32"
         self.mock_worker.data[task_key] = mock_data
-        
+
         self.plugin.transition(task_key, "executing", "memory")
-        
+
         # Verify complete event was recorded
         mock_profiler_instance.record_complete_event.assert_called_once()
         call_args = mock_profiler_instance.record_complete_event.call_args
-        
+
         self.assertEqual(call_args[1]["name"], "Compute")
         self.assertEqual(call_args[1]["timestamp"], 100.0)
         self.assertEqual(call_args[1]["duration"], 5.0)  # 95.0 - 90.0
         self.assertEqual(call_args[1]["process_id"], "test-host")
         self.assertEqual(call_args[1]["thread_id"], "worker-test-host-worker-123")
-        
+
         args = call_args[1]["args"]
         self.assertEqual(args["key"], task_key)
         self.assertEqual(args["size"], 2048)
@@ -83,10 +86,13 @@ class TestWorkerTaskPlugin(unittest.TestCase):
     @patch('socket.gethostname', return_value='test-host')
     @patch('dasf.profile.plugins.EventProfiler')
     @patch('time.monotonic', return_value=200.0)
-    def test_transition_to_memory_records_managed_memory_event(self, mock_time, mock_profiler, mock_hostname):
+    def test_transition_to_memory_records_managed_memory_event(self,
+                                                               mock_time,
+                                                               mock_profiler,
+                                                               mock_hostname):
         mock_profiler_instance = Mock()
         mock_profiler.return_value = mock_profiler_instance
-        
+
         self.plugin.setup(self.mock_worker)
 
         task_key = "test-task-456"
@@ -98,7 +104,6 @@ class TestWorkerTaskPlugin(unittest.TestCase):
         mock_task.dependents = []
 
         self.mock_worker.state.tasks[task_key] = mock_task
-
 
         self.plugin.transition(task_key, "executing", "memory")
 
@@ -120,7 +125,10 @@ class TestWorkerTaskPlugin(unittest.TestCase):
     @patch('socket.gethostname', return_value='test-host')
     @patch('dasf.profile.plugins.EventProfiler')
     @patch('time.monotonic', return_value=300.0)
-    def test_transition_to_erred_records_managed_memory_event(self, mock_time, mock_profiler, mock_hostname):
+    def test_transition_to_erred_records_managed_memory_event(self,
+                                                              mock_time,
+                                                              mock_profiler,
+                                                              mock_hostname):
         mock_profiler_instance = Mock()
         mock_profiler.return_value = mock_profiler_instance
 
@@ -143,8 +151,11 @@ class TestResourceMonitor(unittest.TestCase):
     @patch('dasf.profile.plugins.EventProfiler')
     @patch('dasf.profile.plugins.SystemMonitor')
     @patch('dasf.profile.plugins.PeriodicCallback')
-    def test_resource_monitor_creation(self, mock_callback, mock_system_monitor, 
-                                     mock_profiler, mock_hostname):
+    def test_resource_monitor_creation(self,
+                                       mock_callback,
+                                       mock_system_monitor,
+                                       mock_profiler,
+                                       mock_hostname):
         mock_profiler_instance = Mock()
         mock_system_monitor_instance = Mock()
         mock_callback_instance = Mock()
@@ -159,7 +170,9 @@ class TestResourceMonitor(unittest.TestCase):
         self.assertEqual(monitor.name, "TestMonitor")
         self.assertEqual(monitor.hostname, "monitor-host")
 
-        mock_profiler.assert_called_once_with(database_file="TestMonitor-monitor-host.msgpack")
+        mock_profiler.assert_called_once_with(
+                database_file="TestMonitor-monitor-host.msgpack"
+                )
         mock_system_monitor.assert_called_once()
         mock_callback.assert_called_once_with(monitor.update, callback_time=50)
 
@@ -170,12 +183,15 @@ class TestResourceMonitor(unittest.TestCase):
     @patch('dasf.profile.plugins.EventProfiler')
     @patch('dasf.profile.plugins.SystemMonitor')
     @patch('dasf.profile.plugins.PeriodicCallback')
-    def test_resource_monitor_autostart(self, mock_callback, mock_system_monitor, 
-                                       mock_profiler, mock_hostname):
+    def test_resource_monitor_autostart(self,
+                                        mock_callback,
+                                        mock_system_monitor,
+                                        mock_profiler,
+                                        mock_hostname):
         mock_callback_instance = Mock()
         mock_callback.return_value = mock_callback_instance
 
-        monitor = ResourceMonitor(autostart=True)
+        _ = ResourceMonitor(autostart=True)
 
         mock_callback_instance.start.assert_called_once()
 
@@ -184,8 +200,12 @@ class TestResourceMonitor(unittest.TestCase):
     @patch('dasf.profile.plugins.SystemMonitor')
     @patch('dasf.profile.plugins.PeriodicCallback')
     @patch('time.monotonic', return_value=400.0)
-    def test_update_method(self, mock_time, mock_callback, mock_system_monitor, 
-                          mock_profiler, mock_hostname):
+    def test_update_method(self,
+                           mock_time,
+                           mock_callback,
+                           mock_system_monitor,
+                           mock_profiler,
+                           mock_hostname):
         mock_profiler_instance = Mock()
         mock_system_monitor_instance = Mock()
         mock_profiler.return_value = mock_profiler_instance
@@ -198,7 +218,7 @@ class TestResourceMonitor(unittest.TestCase):
             "disk_read": 1024,
             "disk_write": 2048
         }
-        
+
         monitor = ResourceMonitor(autostart=False)
         result = monitor.update()
 
@@ -225,8 +245,11 @@ class TestResourceMonitor(unittest.TestCase):
     @patch('dasf.profile.plugins.EventProfiler')
     @patch('dasf.profile.plugins.SystemMonitor')
     @patch('dasf.profile.plugins.PeriodicCallback')
-    def test_start_and_stop_methods(self, mock_callback, mock_system_monitor, 
-                                   mock_profiler, mock_hostname):
+    def test_start_and_stop_methods(self,
+                                    mock_callback,
+                                    mock_system_monitor,
+                                    mock_profiler,
+                                    mock_hostname):
         mock_profiler_instance = Mock()
         mock_callback_instance = Mock()
         mock_profiler.return_value = mock_profiler_instance
@@ -309,7 +332,10 @@ class TestGPUAnnotationPlugin(unittest.TestCase):
     @patch('pynvml.nvmlDeviceGetHandleByIndex')
     @patch('nvtx.start_range')
     @patch('nvtx.end_range')
-    def test_transition_no_action_for_other_states(self, mock_end_range, mock_start_range, mock_get_handle):
+    def test_transition_no_action_for_other_states(self,
+                                                   mock_end_range,
+                                                   mock_start_range,
+                                                   mock_get_handle):
         self.plugin.setup(self.mock_worker)
 
         # Transition that doesn't involve executing
@@ -334,7 +360,7 @@ class TestPluginInitialization(unittest.TestCase):
              patch('dasf.profile.plugins.EventProfiler'), \
              patch('dasf.profile.plugins.SystemMonitor'), \
              patch('dasf.profile.plugins.PeriodicCallback'):
-            
+
             monitor = ResourceMonitor(autostart=False)
             self.assertEqual(monitor.time, 100)
             self.assertEqual(monitor.name, "ResourceMonitor")

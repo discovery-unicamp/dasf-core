@@ -152,9 +152,10 @@ class TestArrayToZarr(unittest.TestCase):
         T = ArrayToZarr(chunks=(2,))
 
         with self.assertRaises(Exception) as context:
-            T_1 = T._transform_cpu(dataset)
+            _ = T._transform_cpu(dataset)
 
-        self.assertTrue('Array requires a valid path to convert to Zarr.' in str(context.exception))
+        self.assertTrue('Array requires a valid path to convert to Zarr.'
+                        in str(context.exception))
 
     def tearDown(self):
         self.remove(self.array)
@@ -213,8 +214,8 @@ class FakeArray(np.ndarray):
         return obj
 
     def __array_finalize__(self, obj):
-        if obj is None: return
-        self.chunks = getattr(obj, 'chunks', None)
+        if obj is not None:
+            self.chunks = getattr(obj, 'chunks', None)
 
 
 class TestZarrToArray(unittest.TestCase):
@@ -224,7 +225,7 @@ class TestZarrToArray(unittest.TestCase):
 
         random = np.random.random(10000)
         fake_random = FakeArray(random)
-        fake_random.chunks=(100,)
+        fake_random.chunks = (100,)
         zarr.save_array(store=self.zarr, arr=fake_random)
 
     @staticmethod
@@ -268,7 +269,7 @@ class TestZarrToArray(unittest.TestCase):
 
             T = ZarrToArray()
 
-            T_1 = T.transform(dataset)
+            _ = T.transform(dataset)
 
         self.assertTrue('Input is not a Zarr dataset' in str(context.exception))
 

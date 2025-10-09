@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import os
 import socket
 import subprocess
 import unittest
@@ -10,7 +9,6 @@ try:
     import ray as ray_default
 except ModuleNotFoundError:
     raise unittest.SkipTest("Ray module is not installed")
-from mock import Mock, patch
 from packaging.version import Version
 
 from dasf.pipeline.executors import RayPipelineExecutor
@@ -93,4 +91,4 @@ class TestRayExecutor(unittest.TestCase):
     def tearDown(self):
         ray_default.shutdown()
 
-        rc = subprocess.call(["ray", "stop"])
+        _ = subprocess.call(["ray", "stop"])

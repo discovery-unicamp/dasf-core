@@ -25,13 +25,13 @@ try:
     # This is just to enable Xarray Cupy capabilities
     import cupy_xarray as cx  # noqa
     import dask_cudf as dcudf
-except:  # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 try:
     import numcodecs  # noqa
     from kvikio.nvcomp_codec import NvCompBatchCodec
-except:  # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from pathlib import Path

@@ -8,7 +8,7 @@ import dask.dataframe as ddf
 import numpy as np
 import pandas as pd
 import xarray as xr
-from mock import Mock, patch
+# Mock and patch imports unused
 
 try:
     import GPUtil
@@ -17,7 +17,7 @@ try:
     import cudf
     import cupy as cp
     import dask_cudf as dcudf
-except:
+except ImportError:
     pass
 
 from dasf.utils.funcs import is_gpu_supported
@@ -412,7 +412,7 @@ class TestTypes(unittest.TestCase):
         self.__set_data(keys)
         self.__assert_equal_all_data(is_dask_dataframe)
 
-    def test_is_dask_dataframe_no_gpu(self):
+    def test_is_dask_dataframe_no_gpu_alternative(self):
         keys = [
             "Dask DataFrame",
             "Dask CuDF"

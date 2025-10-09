@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import numpy as np
+import numpy as np  # noqa: F401
 
 try:
     import cupy as cp

@@ -2,12 +2,9 @@
 
 import os
 import tempfile
-import time
 import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
-
-import ormsgpack
 
 from dasf.profile.profiler import (
     CompleteEvent,
@@ -16,7 +13,6 @@ from dasf.profile.profiler import (
     EventDatabase,
     EventPhases,
     EventProfiler,
-    EventTypes,
     FileDatabase,
     InstantEvent,
     InstantEventScope,
@@ -108,11 +104,6 @@ class TestFileDatabase(unittest.TestCase):
         self.temp_dir = tempfile.mkdtemp()
         self.temp_file = os.path.join(self.temp_dir, "test_traces.msgpack")
 
-    def tearDown(self):
-        if os.path.exists(self.temp_file):
-            os.remove(self.temp_file)
-        os.rmdir(self.temp_dir)
-
     def test_file_database_creation(self):
         db = FileDatabase(
             database_file=self.temp_file,
@@ -192,6 +183,9 @@ class TestFileDatabase(unittest.TestCase):
             remove_old_output_file=True
         )
 
+        expected = f"FileDatabase at {self.temp_file}"
+        self.assertEqual(str(db), expected)
+
         self.assertFalse(os.path.exists(self.temp_file))
 
     def test_string_representation(self):
@@ -205,19 +199,36 @@ class TestEventProfiler(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp()
 
-    def tearDown(self):
-        for file in os.listdir(self.temp_dir):
-            os.remove(os.path.join(self.temp_dir, file))
-        os.rmdir(self.temp_dir)
+    def test_event_profiler_with_custom_database(self):
+        # Test with a custom database
+        mock_database = Mock(spec=EventDatabase)
+        profiler = EventProfiler(database=mock_database)
 
-    def test_event_profiler_with_default_database(self):
+        self.assertIs(profiler.database, mock_database)
+        self.assertIsNone(profiler.output_file)
+
+    def test_event_profiler_with_default_database_file_generation(self):
+        # Test the default UUID-based filename generation in temp directory
         with patch('dasf.profile.profiler.uuid.uuid4') as mock_uuid:
-            mock_uuid.return_value.hex = "12345678"
-            mock_uuid.return_value.__getitem__ = lambda self, key: "12345678"[key]
+            mock_uuid.return_value.__str__ = Mock(
+                    return_value="12345678-1234-1234-1234-123456789012"
+                    )
 
-            profiler = EventProfiler()
-            self.assertIsInstance(profiler.database, FileDatabase)
-            self.assertTrue(profiler.output_file.startswith("traces-"))
+            # Override the default kwargs to use temp directory and disable atexit
+            # registration.
+            with patch.object(EventProfiler,
+                              'default_database_kwargs',
+                              {
+                                  'commit_threshold': 1000,
+                                  'remove_old_output_file': False,
+                                  'commit_on_close': False
+                                  }
+                              ), \
+                 patch('dasf.profile.profiler.atexit.register'):
+                profiler = EventProfiler()
+                self.assertIsInstance(profiler.database, FileDatabase)
+                self.assertTrue(profiler.output_file.startswith("traces-"))
+                self.assertTrue(profiler.output_file.endswith(".msgpack"))
 
     def test_event_profiler_with_custom_database_file(self):
         test_file = os.path.join(self.temp_dir, "custom_traces.msgpack")
@@ -226,7 +237,7 @@ class TestEventProfiler(unittest.TestCase):
         self.assertEqual(profiler.output_file, test_file)
         self.assertIsInstance(profiler.database, FileDatabase)
 
-    def test_event_profiler_with_custom_database(self):
+    def test_event_profiler_with_custom_database_with_mock(self):
         mock_database = Mock(spec=EventDatabase)
         profiler = EventProfiler(database=mock_database)
 
@@ -243,7 +254,7 @@ class TestEventProfiler(unittest.TestCase):
         profiler = EventProfiler(database=mock_database)
 
         profiler.record_complete_event(
-            "test_task", 100.0, 5.0, 
+            "test_task", 100.0, 5.0,
             process_id=1, thread_id=2, args={"size": 1024}
         )
 
@@ -316,9 +327,9 @@ class TestEventProfiler(unittest.TestCase):
     def test_string_representation(self):
         mock_database = Mock(spec=EventDatabase)
         mock_database.__str__ = Mock(return_value="MockDatabase")
-        
+
         profiler = EventProfiler(database=mock_database)
         expected = "EventProfiler(database=MockDatabase)"
-        
+
         self.assertEqual(str(profiler), expected)
         self.assertEqual(repr(profiler), expected)

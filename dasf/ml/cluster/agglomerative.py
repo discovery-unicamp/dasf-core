@@ -116,7 +116,8 @@ class AgglomerativeClustering(ClusterClassifier):
     AgglomerativeClustering()
 
     For further informations see:
-    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html
+    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.\
+AgglomerativeClustering.html
     - https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering
 
     """

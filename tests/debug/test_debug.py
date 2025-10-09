@@ -15,7 +15,7 @@ try:
     import cudf
     import cupy as cp
     import dask_cudf as cuddf
-except:
+except ImportError:
     pass
 
 from io import StringIO
@@ -36,7 +36,7 @@ class TestDebug(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
             self.assertIn("Datashape is: (40, 40, 40)", fake_out.getvalue())
-            self.assertIn("Datatype is: <class 'numpy.ndarray'>", fake_out.getvalue()) 
+            self.assertIn("Datatype is: <class 'numpy.ndarray'>", fake_out.getvalue())
             self.assertIn("Data content is: [[[", fake_out.getvalue())
 
     def test_debug_dask_array_cpu(self):
@@ -46,9 +46,14 @@ class TestDebug(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
-            self.assertIn("Datashape is: (40, 40, 40)", fake_out.getvalue())
-            self.assertIn("Datatype is: <class 'dask.array.core.Array'>", fake_out.getvalue())
-            self.assertIn("Data content is: dask.array<random_sample, shape=(40, 40, 40), dtype=float64, chunksize=(5, 5, 5), chunktype=numpy.ndarray>", fake_out.getvalue())
+            self.assertIn("Datashape is: (40, 40, 40)",
+                          fake_out.getvalue())
+            self.assertIn("Datatype is: <class 'dask.array.core.Array'>",
+                          fake_out.getvalue())
+            self.assertIn("Data content is: dask.array<random_sample, "
+                          "shape=(40, 40, 40), "
+                          "dtype=float64, chunksize=(5, 5, 5), chunktype=numpy.ndarray>",
+                          fake_out.getvalue())
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
@@ -72,9 +77,13 @@ class TestDebug(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
-            self.assertIn("Datashape is: (40, 40, 40)", fake_out.getvalue())
-            self.assertIn("Datatype is: <class 'dask.array.core.Array'>", fake_out.getvalue())
-            self.assertIn("Data content is: dask.array<array, shape=(40, 40, 40), dtype=float64, chunksize=(5, 5, 5), chunktype=cupy.ndarray>", fake_out.getvalue())
+            self.assertIn("Datashape is: (40, 40, 40)",
+                          fake_out.getvalue())
+            self.assertIn("Datatype is: <class 'dask.array.core.Array'>",
+                          fake_out.getvalue())
+            self.assertIn("Data content is: dask.array<array, shape=(40, 40, 40), "
+                          "dtype=float64, chunksize=(5, 5, 5), chunktype=cupy.ndarray>",
+                          fake_out.getvalue())
 
     def test_debug_dataframe_cpu(self):
         data = pd.DataFrame(np.random.random((3, 4)), columns=['A', 'B', 'C', 'D'])
@@ -84,51 +93,67 @@ class TestDebug(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
             self.assertIn("Datashape is: (3, 4)", fake_out.getvalue())
-            self.assertIn("Datatype is: <class 'pandas.core.frame.DataFrame'>", fake_out.getvalue())
-            self.assertIn("Data content is:           A         B         C         D", fake_out.getvalue())
+            self.assertIn("Datatype is: <class 'pandas.core.frame.DataFrame'>",
+                          fake_out.getvalue())
+            self.assertIn("Data content is:           A         B         C         D",
+                          fake_out.getvalue())
 
     def test_debug_dask_dataframe_cpu(self):
-        data = ddf.from_pandas(pd.DataFrame(np.random.random((3, 4)), columns=['A', 'B', 'C', 'D']), npartitions=3)
+        data = ddf.from_pandas(pd.DataFrame(np.random.random((3, 4)),
+                                            columns=['A', 'B', 'C', 'D']),
+                               npartitions=3)
 
         debug = Debug()
 
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
-            self.assertIn("Datashape is: (<dask_expr.expr.Scalar: expr=df.size() // 4, dtype=int64>, 4)",
+            self.assertIn("Datashape is: (<dask_expr.expr.Scalar: expr=df.size() // 4, "
+                          "dtype=int64>, 4)",
                           fake_out.getvalue())
-            self.assertIn("Datatype is: <class 'dask.dataframe.dask_expr._collection.DataFrame'>", fake_out.getvalue())
+            self.assertIn("Datatype is: <class "
+                          "'dask.dataframe.dask_expr._collection.DataFrame'>",
+                          fake_out.getvalue())
             self.assertIn("Data content is: Dask DataFrame Structure:\n"
                           "                     A        B        C        D\n"
-                          "npartitions=3                                    \n", fake_out.getvalue())
+                          "npartitions=3                                    \n",
+                          fake_out.getvalue())
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_debug_dataframe_gpu(self):
-        data = cudf.DataFrame(cp.random.random((3, 4)), columns=['A', 'B', 'C', 'D'])
+        data = cudf.DataFrame(cp.random.random((3, 4)),
+                              columns=['A', 'B', 'C', 'D'])
 
         debug = Debug()
 
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
             self.assertIn("Datashape is: (3, 4)", fake_out.getvalue())
-            self.assertIn("Datatype is: <class 'cudf.core.dataframe.DataFrame'>", fake_out.getvalue())
-            self.assertIn("Data content is:           A         B         C         D", fake_out.getvalue())
+            self.assertIn("Datatype is: <class 'cudf.core.dataframe.DataFrame'>",
+                          fake_out.getvalue())
+            self.assertIn("Data content is:           A         B         C         D",
+                          fake_out.getvalue())
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_debug_dask_dataframe_gpu(self):
-        data = cuddf.from_cudf(cudf.DataFrame(cp.random.random((3, 4)), columns=['A', 'B', 'C', 'D']), npartitions=3)
+        data = cuddf.from_cudf(cudf.DataFrame(cp.random.random((3, 4)),
+                                              columns=['A', 'B', 'C', 'D']),
+                               npartitions=3)
 
         debug = Debug()
 
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
-            self.assertIn("Datashape is: (<dask_expr.expr.Scalar: expr=df.size() // 4, dtype=int64>, 4)",
+            self.assertIn("Datashape is: (<dask_expr.expr.Scalar: expr=df.size() // 4, "
+                          "dtype=int64>, 4)",
                           fake_out.getvalue())
-            self.assertIn("Datatype is: <class 'dask_cudf.expr._collection.DataFrame'>", fake_out.getvalue())
+            self.assertIn("Datatype is: <class 'dask_cudf.expr._collection.DataFrame'>",
+                          fake_out.getvalue())
             self.assertIn("Data content is: Dask DataFrame Structure:\n"
                           "                     A        B        C        D\n"
-                          "npartitions=3                                    \n", fake_out.getvalue())
+                          "npartitions=3                                    \n",
+                          fake_out.getvalue())
 
     def test_debug_list(self):
         data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -138,7 +163,8 @@ class TestDebug(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as fake_out:
             debug.display(X=data)
             self.assertIn("Datatype is: <class 'list'>", fake_out.getvalue())
-            self.assertIn("Data content is: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", fake_out.getvalue())
+            self.assertIn("Data content is: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]",
+                          fake_out.getvalue())
 
     @patch('dasf.debug.debug.idisplay', return_value=Mock())
     @patch('dasf.debug.debug.is_notebook', Mock(return_value=True))
@@ -155,7 +181,9 @@ class TestDebug(unittest.TestCase):
     @patch('dasf.debug.debug.idisplay', return_value=Mock())
     @patch('dasf.debug.debug.is_notebook', Mock(return_value=True))
     def test_debug_dask_dataframe_ipython(self, idisplay):
-        data = ddf.from_pandas(pd.DataFrame(np.random.random((3, 4)), columns=['A', 'B', 'C', 'D']), npartitions=3)
+        data = ddf.from_pandas(pd.DataFrame(np.random.random((3, 4)),
+                                            columns=['A', 'B', 'C', 'D']),
+                               npartitions=3)
 
         debug = Debug()
 
@@ -176,7 +204,9 @@ class TestVisualizeDaskData(unittest.TestCase):
             wrapped_visualize.assert_called_once()
 
     def test_visualize_dask_dataframe_cpu(self):
-        data = ddf.from_pandas(pd.DataFrame(np.random.random((3, 4)), columns=['A', 'B', 'C', 'D']), npartitions=3)
+        data = ddf.from_pandas(pd.DataFrame(np.random.random((3, 4)),
+                                            columns=['A', 'B', 'C', 'D']),
+                               npartitions=3)
 
         visualize = VisualizeDaskData()
 
@@ -198,7 +228,9 @@ class TestVisualizeDaskData(unittest.TestCase):
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_visualize_dask_dataframe_gpu(self):
-        data = cuddf.from_cudf(cudf.DataFrame(cp.random.random((3, 4)), columns=['A', 'B', 'C', 'D']), npartitions=3)
+        data = cuddf.from_cudf(cudf.DataFrame(cp.random.random((3, 4)),
+                                              columns=['A', 'B', 'C', 'D']),
+                               npartitions=3)
 
         visualize = VisualizeDaskData()
 

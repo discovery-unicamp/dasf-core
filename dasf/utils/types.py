@@ -19,7 +19,7 @@ try:
     import cudf
     import cupy as cp
     import dask_cudf as dcudf
-except:  # pragma: no cover
+except Exception:  # pragma: no cover
     pass
 
 ArrayCPU = Union[list, np.ndarray, zarr.Array]
@@ -145,6 +145,7 @@ def is_dask_cpu_dataframe(data) -> bool:
             is_cpu_dataframe(data._meta) and
             is_dask_collection(data) and
             is_dataframe(data))
+
 
 def is_dask_gpu_array(data) -> bool:
     """

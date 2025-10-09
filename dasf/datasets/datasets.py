@@ -20,7 +20,7 @@ try:
     from cuml.datasets import make_blobs as make_blobs_GPU
     from cuml.datasets import make_classification as make_classification_GPU
     from cuml.datasets import make_regression as make_regression_GPU
-except:  # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dasf.utils.funcs import is_dask_gpu_supported, is_dask_supported, is_gpu_supported

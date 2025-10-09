@@ -1,5 +1,4 @@
 import atexit
-import fcntl
 import os
 import uuid
 from abc import ABC, abstractmethod
@@ -106,7 +105,7 @@ class EventDatabase(ABC):
 
     def close(self):
         pass
-    
+
     def __enter__(self):
         return self.open()
 
@@ -144,11 +143,14 @@ class FileDatabase(EventDatabase):
             self.commit()
 
     def commit(self):
-        # TODO implement async commit
-        # Create a exclusive lock file to prevent other processes from writing to the file
-        with portalocker.Lock(self.database_file, mode="ab", timeout=self.lock_timeout) as f:
-            # Write each event to file
-            # Always write the size of the event first (8 bytes) then the event data 
+        # TODO: implement async commit.
+        # Create a exclusive lock file to prevent other processes from
+        # writing to the file.
+        with portalocker.Lock(self.database_file, mode="ab",
+                              timeout=self.lock_timeout) as f:
+            # Write each event to file.
+            # Always write the size of the event first (8 bytes) then the
+            # event data.
             events = []
             while not self.queue.empty():
                 event = self.queue.get()
@@ -158,7 +160,7 @@ class FileDatabase(EventDatabase):
                 events.append(packed_data)
             events = b"".join(events)
             f.write(events)
-        
+
             if self.flush:
                 f.flush()
                 os.fsync(f.fileno())
@@ -178,10 +180,10 @@ class FileDatabase(EventDatabase):
     def close(self):
         if self.commit_on_close:
             self.commit()
-        
+
     def __str__(self) -> str:
         return f"FileDatabase at {self.database_file}"
-    
+
     def __repr__(self) -> str:
         return f"FileDatabase at {self.database_file}"
 
@@ -214,7 +216,8 @@ class EventProfiler:
             if database_creation_kwargs is None:
                 database_creation_kwargs = self.default_database_kwargs
             if database_file is None:
-                database_file = f"{self.traces_file_prefix}{str(uuid.uuid4())[:8]}.msgpack"
+                database_file = (f"{self.traces_file_prefix}"
+                                 f"{str(uuid.uuid4())[:8]}.msgpack")
             self.output_file = database_file
             self.database = self.default_database(
                 database_file, **database_creation_kwargs
@@ -243,9 +246,9 @@ class EventProfiler:
 
     def __str__(self):
         return f"EventProfiler(database={self.database})"
-    
+
     def __repr__(self) -> str:
         return f"EventProfiler(database={self.database})"
-    
+
     def commit(self):
         self.database.commit()

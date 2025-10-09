@@ -142,6 +142,6 @@ class TestKNeighborsClassifier(unittest.TestCase):
         knn = KNeighborsClassifier(n_neighbors=3, output_type='cupy')
 
         with self.assertRaises(NotImplementedError) as context:
-            y = knn._predict_gpu(self.X)
+            _ = knn._predict_gpu(self.X)
 
         self.assertTrue('GPU is not supported' in str(context.exception))

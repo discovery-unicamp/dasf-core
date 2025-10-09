@@ -10,7 +10,7 @@ import numpy as np
 
 try:
     import cupy as cp
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 
@@ -36,6 +36,7 @@ class Operator:
         if not hasattr(self, "_uuid"):
             self._uuid = uuid4()
         return self._uuid
+
 
 class Fit(Operator):
     """
@@ -338,10 +339,10 @@ class Transform(Operator):
 class TargeteredTransform(Transform):
     """
     Class representing a Targetered Transform operation of the pipeline.
-    
+
     This specific transform operates according the parameters of the
     constructor.
-    
+
     Parameters
     ----------
     run_local : bool

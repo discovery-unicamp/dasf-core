@@ -147,7 +147,8 @@ class TestDaskExecutor(unittest.TestCase):
             dask.shutdown(gracefully=True)
             dask.close()
 
-            self.assertTrue('\'foo\' GPU Memory allocator is not known' in str(context.exception))
+            self.assertTrue('\'foo\' GPU Memory allocator is not known'
+                            in str(context.exception))
             self.assertFalse(dask.is_connected)
 
     def test_dask_executor_scheduler_file(self):
@@ -187,7 +188,9 @@ class TestDaskTasksPipelineExecutor(unittest.TestCase):
         with LocalCluster() as cluster:
             conn = urllib.parse.urlsplit(cluster.scheduler.address)
 
-            dask = DaskTasksPipelineExecutor(address=conn.hostname, port=conn.port, use_gpu=False)
+            dask = DaskTasksPipelineExecutor(address=conn.hostname,
+                                             port=conn.port,
+                                             use_gpu=False)
 
             self.assertTrue('Executor is connected!' in dask.info)
             self.assertTrue('Executor Type: ' in dask.info)

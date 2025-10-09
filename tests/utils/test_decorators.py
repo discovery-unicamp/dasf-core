@@ -287,7 +287,9 @@ class TestTaskHandlerEdgeCases(unittest.TestCase):
         simple_transform._run_gpu = None
 
         # Remove all expected methods including the base method
-        for attr in ['_lazy_invalid_method_gpu', '_lazy_invalid_method_cpu', '_invalid_method_gpu', '_invalid_method_cpu', 'invalid_method']:
+        for attr in ['_lazy_invalid_method_gpu', '_lazy_invalid_method_cpu',
+                     '_invalid_method_gpu', '_invalid_method_cpu',
+                     'invalid_method']:
             if hasattr(simple_transform, attr):
                 delattr(simple_transform, attr)
 
@@ -321,7 +323,8 @@ class TestTaskHandlerEdgeCases(unittest.TestCase):
         mock_transform.test_method = Mock(return_value="base_result")
 
         # Remove all specialized methods
-        for attr in ['_lazy_test_method_gpu', '_lazy_test_method_cpu', '_test_method_gpu', '_test_method_cpu']:
+        for attr in ['_lazy_test_method_gpu', '_lazy_test_method_cpu',
+                     '_test_method_gpu', '_test_method_cpu']:
             if hasattr(mock_transform, attr):
                 delattr(mock_transform, attr)
 
@@ -332,7 +335,8 @@ class TestTaskHandlerEdgeCases(unittest.TestCase):
         test_method.__name__ = 'test_method'
         X = np.array([1, 2, 3])
 
-        # This should raise a TypeError because the decorator tries to call func(*new_args)
-        # but func is a bound method that expects self as first argument
+        # This should raise a TypeError because the decorator tries to call
+        # func(*new_args) but func is a bound method that expects self as
+        # first argument.
         with self.assertRaises(TypeError):
             test_method(mock_transform, X)

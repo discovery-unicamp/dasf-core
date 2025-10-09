@@ -202,8 +202,6 @@ class TestPipeline(unittest.TestCase):
             self.assertTrue(np.array_equal(t_B_r, orig_data))
 
     def test_pipeline_results_from_wrong_operator(self):
-        orig_data = np.arange(10)
-
         dataset_A = Dataset_A(name="Test Dataset A")
 
         t_A = Transform_A()
@@ -221,13 +219,11 @@ class TestPipeline(unittest.TestCase):
 
             self.assertIn('Pipeline run successfully', plogs.output[-1])
 
-            t_C_r = pipeline.get_result_from(t_C)
+            _ = pipeline.get_result_from(t_C)
 
             self.assertTrue('was not added into pipeline.' in str(context.exception))
 
     def test_pipeline_results_not_run_exception(self):
-        orig_data = np.arange(10)
-
         dataset_A = Dataset_A(name="Test Dataset A")
 
         t_A = Transform_A()
@@ -239,8 +235,8 @@ class TestPipeline(unittest.TestCase):
                            .add(t_B, X=t_A)
 
         with self.assertRaises(Exception) as context:
-            t_A_r = pipeline.get_result_from(t_A)
-            t_B_r = pipeline.get_result_from(t_B)
+            _ = pipeline.get_result_from(t_A)
+            _ = pipeline.get_result_from(t_B)
 
         self.assertTrue('Pipeline was not executed yet.' in str(context.exception))
 
@@ -265,10 +261,10 @@ class TestPipeline(unittest.TestCase):
 
         pipeline.run()
 
-        key = str(hash(dataset_A.load))
-        kwargs = {key: dataset_A}
-
         # XXX: Disable register dataset for now
+        # key = str(hash(dataset_A.load))
+        # kwargs = {key: dataset_A}
+
         # executor.register_dataset.assert_called_once_with(**kwargs)
         # executor.has_dataset.assert_called_with(key)
         raise unittest.SkipTest("Datasets are disabled for now")
@@ -289,7 +285,8 @@ class TestPipeline(unittest.TestCase):
         with self.assertLogs('DASF', level='INFO') as plogs:
             pipeline.run()
 
-            self.assertIn('Pipeline failed at \'Transform_Fail.transform\'', plogs.output[-1])
+            self.assertIn('Pipeline failed at \'Transform_Fail.transform\'',
+                          plogs.output[-1])
 
             all_output = '\n'.join(plogs.output)
 
@@ -351,4 +348,5 @@ class TestPipeline(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             pipeline.run()
 
-        self.assertTrue('Executor TestNonExecutor has not a execute() method.' in str(context.exception))
+        self.assertTrue('Executor TestNonExecutor has not a execute() method.'
+                        in str(context.exception))

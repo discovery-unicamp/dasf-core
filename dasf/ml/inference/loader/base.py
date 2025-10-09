@@ -6,7 +6,8 @@ from dasf.utils.funcs import get_dask_running_client
 
 class BaseLoader:
     """
-    BaseLoader for DL models. When running in a Dask Cluster instantiates a model per worker that will be reused on every subsequent prediction task.
+    BaseLoader for DL models. When running in a Dask Cluster instantiates a \
+model per worker that will be reused on every subsequent prediction task.
     """
 
     def __init__(self):
@@ -28,7 +29,7 @@ class BaseLoader:
         try:
             Worker.model = self.load_model(**kwargs)
             return "UP"
-        except:
+        except Exception:
             return "DOWN"
 
     def _lazy_load(self, **kwargs):
@@ -80,7 +81,7 @@ class BaseLoader:
         else:
             model = Worker.model
         data = self.preprocessing(data)
-        output = self.inference(model, data)
+        output = self._inference(model, data)
         return self.postprocessing(output)
 
     def preprocessing(self, data):
@@ -89,7 +90,7 @@ class BaseLoader:
         """
         return data
 
-    def inference(self, model, data):
+    def _inference(self, model, data):
         """
         Inference method, receives model and input data
         """

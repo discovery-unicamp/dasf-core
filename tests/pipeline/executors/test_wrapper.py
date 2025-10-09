@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import os
 import unittest
 
 import numpy as np
@@ -49,7 +48,7 @@ class TestLocalExecutor(unittest.TestCase):
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
-    def test_local_executor_use_gpu_backend_cupy(self):
+    def test_local_executor_use_gpu_backend_cupy_use_gpu_default(self):
         local = LocalExecutor(backend="cupy")
 
         self.assertEqual(local.dtype, TaskExecutorType.single_gpu)

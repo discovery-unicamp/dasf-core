@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import uuid
-
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader
 

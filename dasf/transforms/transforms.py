@@ -2,7 +2,6 @@
 
 """ All the essential data transforms module. """
 
-import math
 
 import dask
 import dask.dataframe as ddf
@@ -20,7 +19,7 @@ try:
         raise ImportError("There is no GPU available here")
     import cudf
     import cupy as cp
-except: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 
@@ -47,7 +46,8 @@ class ExtractData(Transform):
         """
         if hasattr(X, "_data") and X._data is not None:
             return X._data
-        raise ValueError("Data could not be extracted. Dataset needs to be previously loaded.")
+        raise ValueError("Data could not be extracted. "
+                         "Dataset needs to be previously loaded.")
 
 
 class Normalize(Transform):
@@ -125,7 +125,7 @@ class ArrayToZarr(Transform):
         z = zarr.open(store=url, mode='w', shape=data.shape,
                       chunks=chunks, dtype='i4')
 
-        z = data
+        z = data  # noqa: F841
 
         return url
 
@@ -197,8 +197,6 @@ class ArrayToZarr(Transform):
 
 class ArrayToHDF5(Transform):
     def __init__(self, dataset_path, chunks=None, save=True, filename=None):
-        # Avoid circular dependency
-        from dasf.datasets.base import DatasetArray, DatasetHDF5
 
         self.dataset_path = dataset_path
         self.chunks = chunks
@@ -371,7 +369,10 @@ class ArraysToDataFrame(Transform):
         lazy_dataframe_build = dask.delayed(self._build_dataframe)
         data_chunks = [x.to_delayed().ravel() for x in X]
         partial_dataframes = [
-            ddf.from_delayed(lazy_dataframe_build(data=mapped_chunks, columns=y, xp=xp, df=df), meta=meta)
+            ddf.from_delayed(lazy_dataframe_build(data=mapped_chunks,
+                                                  columns=y,
+                                                  xp=xp,
+                                                  df=df), meta=meta)
             for mapped_chunks in zip(*data_chunks)
         ]
 
@@ -379,10 +380,10 @@ class ArraysToDataFrame(Transform):
 
     def _lazy_transform_cpu(self, X=None, **kwargs):
         return self._lazy_transform(np, pd, **kwargs)
-    
+
     def _lazy_transform_gpu(self, X=None, **kwargs):
         return self._lazy_transform(cp, cudf, **kwargs)
-    
+
     def _transform(self, xp, df, **kwargs):
         X = list(kwargs.values())
         y = list(kwargs.keys())

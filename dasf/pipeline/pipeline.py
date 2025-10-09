@@ -187,7 +187,7 @@ class Pipeline:
 
         raise Exception(f"Function {obj_name} was not added into pipeline.")
 
-    def run(self):
+    def run(self):  # noqa: C901
         if not nx.is_directed_acyclic_graph(self._dag):
             raise Exception("Pipeline has not a DAG format.")
 

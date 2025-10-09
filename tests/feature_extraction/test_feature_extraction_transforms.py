@@ -14,7 +14,7 @@ try:
     import cudf
     import cupy as cp
     import dask_cudf as cuddf
-except:
+except ImportError:
     pass
 
 from dasf.feature_extraction import (
@@ -87,7 +87,9 @@ class TestSampleDataframe(unittest.TestCase):
         self.assertTrue(70 <= len(new) <= 80)
 
     def test_sample_dataframe_mcpu(self):
-        data = ddf.from_pandas(pd.DataFrame(np.random.random((100)), columns=['A']), npartitions=4)
+        data = ddf.from_pandas(pd.DataFrame(np.random.random((100)),
+                                            columns=['A']),
+                               npartitions=4)
 
         sample = SampleDataframe(75.0)
 
@@ -110,7 +112,9 @@ class TestSampleDataframe(unittest.TestCase):
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_sample_dataframe_mgpu(self):
-        data = cuddf.from_cudf(cudf.DataFrame(cp.random.random((100)), columns=['A']), npartitions=4)
+        data = cuddf.from_cudf(cudf.DataFrame(cp.random.random((100)),
+                                              columns=['A']),
+                               npartitions=4)
 
         sample = SampleDataframe(75.0)
 
@@ -138,7 +142,9 @@ class TestGetSubDataframe(unittest.TestCase):
         self.assertEqual(len(new), 75)
 
     def test_get_sub_dataframe_mcpu(self):
-        data = ddf.from_pandas(pd.DataFrame(np.random.random((100)), columns=['A']), npartitions=4)
+        data = ddf.from_pandas(pd.DataFrame(np.random.random((100)),
+                                            columns=['A']),
+                               npartitions=4)
 
         sample = GetSubDataframe(75.0)
 
@@ -158,7 +164,9 @@ class TestGetSubDataframe(unittest.TestCase):
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
     def test_get_sub_dataframe_mgpu(self):
-        data = cuddf.from_cudf(cudf.DataFrame(cp.random.random((100)), columns=['A']), npartitions=4)
+        data = cuddf.from_cudf(cudf.DataFrame(cp.random.random((100)),
+                                              columns=['A']),
+                               npartitions=4)
 
         sample = GetSubDataframe(75.0)
 

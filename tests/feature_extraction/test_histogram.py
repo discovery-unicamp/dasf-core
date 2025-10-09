@@ -13,9 +13,11 @@ try:
 except ImportError:
     pass
 
+
 class TestHistogram(unittest.TestCase):
     def setUp(self):
-        self._data = np.array([0, 8, 6, 9, 7, 3, 5, 2, 3, 4, 1, 3, 2, 3, 4, 3, 2, 1, 9, 2])
+        self._data = np.array([0, 8, 6, 9, 7, 3, 5, 2, 3, 4,
+                               1, 3, 2, 3, 4, 3, 2, 1, 9, 2])
 
     def test_histogram_cpu(self):
         data = self._data

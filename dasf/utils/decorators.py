@@ -1,5 +1,6 @@
-""" Implementations of important library decorators. """
 #!/usr/bin/env python3
+""" Implementations of important library decorators. """
+
 
 from functools import wraps
 
@@ -123,11 +124,13 @@ def task_handler(func):
         func_type = ""
         arch = "cpu"
         client = get_dask_running_client()
-        if client is not None: # Runs task according to current client configuration, i.e, Pipeline Executor
+        # Runs task according to current client configuration, i.e, Pipeline Executor
+        if client is not None:
             func_type = "_lazy"
             arch = "gpu" if getattr(client, "backend", None) == "cupy" else "cpu"
         else:
-            if not is_forced_local(cls) and (is_dask_gpu_supported() or is_dask_supported()):
+            if (not is_forced_local(cls) and
+               (is_dask_gpu_supported() or is_dask_supported())):
                 func_type = "_lazy"
             if is_dask_gpu_supported() or is_gpu_supported():
                 arch = "gpu"
@@ -135,9 +138,9 @@ def task_handler(func):
         if is_forced_local(cls):
             func_type = ""
             new_args, kwargs = fetch_from_dask(*new_args, **kwargs)
-        
+
         if is_forced_gpu(cls):
-                arch = "gpu"
+            arch = "gpu"
 
         if arch == "cpu":
             new_args, kwargs = fetch_from_gpu(*new_args, **kwargs)
@@ -148,7 +151,7 @@ def task_handler(func):
            hasattr(cls, func_name)):
             return func(*new_args, **kwargs)
         if (not hasattr(cls, wrapper_func_attr) and
-              not hasattr(cls, func_name)):
+           not hasattr(cls, func_name)):
             raise NotImplementedError(
                 f"There is no implementation of {wrapper_func_attr} nor "
                 f"{func_name}"

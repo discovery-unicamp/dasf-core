@@ -97,7 +97,7 @@ class TestAgglomerativeClustering(unittest.TestCase):
         sc = AgglomerativeClustering(n_clusters=self.centers, output_type='cupy')
 
         with self.assertRaises(NotImplementedError) as context:
-            y = sc._fit_gpu(self.X)
+            _ = sc._fit_gpu(self.X)
 
         self.assertTrue('GPU is not supported' in str(context.exception))
 
@@ -106,6 +106,6 @@ class TestAgglomerativeClustering(unittest.TestCase):
         sc = AgglomerativeClustering(n_clusters=self.centers, output_type='cupy')
 
         with self.assertRaises(NotImplementedError) as context:
-            y = sc._fit_predict_gpu(self.X)
+            _ = sc._fit_predict_gpu(self.X)
 
         self.assertTrue('GPU is not supported' in str(context.exception))

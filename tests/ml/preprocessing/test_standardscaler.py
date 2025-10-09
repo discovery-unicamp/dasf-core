@@ -90,7 +90,8 @@ class TestStandardScaler(unittest.TestCase):
     def test_standardscaler_2_mcpu(self):
         ss = StandardScaler()
 
-        y = ss._lazy_fit_cpu(da.from_array(self.X))._lazy_transform_cpu(da.from_array(self.X))
+        y = ss._lazy_fit_cpu(da.from_array(self.X)) \
+              ._lazy_transform_cpu(da.from_array(self.X))
 
         self.assertTrue(is_dask_cpu_array(y))
         self.assertTrue(np.array_equal(self.y, y.compute(), equal_nan=True))
@@ -110,7 +111,8 @@ class TestStandardScaler(unittest.TestCase):
     def test_standardscaler_2_mgpu(self):
         ss = StandardScaler()
 
-        y = ss._lazy_fit_gpu(da.from_array(cp.asarray(self.X)))._lazy_transform_gpu(da.from_array(cp.asarray(self.X)))
+        y = ss._lazy_fit_gpu(da.from_array(cp.asarray(self.X))) \
+              ._lazy_transform_gpu(da.from_array(cp.asarray(self.X)))
 
         self.assertTrue(is_dask_gpu_array(y))
         self.assertTrue(np.array_equal(self.y, y.compute().get(), equal_nan=True))
@@ -126,8 +128,9 @@ class TestStandardScaler(unittest.TestCase):
     def test_standardscaler_partial_mcpu(self):
         ss = StandardScaler()
 
-        with self.assertRaises(NotImplementedError) as context:
-            y = ss._lazy_partial_fit_cpu(da.from_array(self.X))._lazy_transform_cpu(da.from_array(self.X))
+        with self.assertRaises(NotImplementedError):
+            _ = ss._lazy_partial_fit_cpu(da.from_array(self.X)) \
+                  ._lazy_transform_cpu(da.from_array(self.X))
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
@@ -144,8 +147,9 @@ class TestStandardScaler(unittest.TestCase):
     def test_standardscaler_partial_mgpu(self):
         ss = StandardScaler()
 
-        with self.assertRaises(NotImplementedError) as context:
-            y = ss._lazy_partial_fit_gpu(da.from_array(cp.asarray(self.X)))._lazy_transform_gpu(da.from_array(cp.asarray(self.X)))
+        with self.assertRaises(NotImplementedError):
+            _ = ss._lazy_partial_fit_gpu(da.from_array(cp.asarray(self.X))) \
+                  ._lazy_transform_gpu(da.from_array(cp.asarray(self.X)))
 
     def test_standardscaler_inverse_cpu(self):
         ss = StandardScaler()
@@ -160,7 +164,8 @@ class TestStandardScaler(unittest.TestCase):
     def test_standardscaler_inverse_mcpu(self):
         ss = StandardScaler()
 
-        y = ss._lazy_fit_cpu(da.from_array(self.X))._lazy_transform_cpu(da.from_array(self.X))
+        y = ss._lazy_fit_cpu(da.from_array(self.X)) \
+              ._lazy_transform_cpu(da.from_array(self.X))
 
         x = ss._lazy_inverse_transform_cpu(y)
 
@@ -184,7 +189,8 @@ class TestStandardScaler(unittest.TestCase):
     def test_standardscaler_inverse_mgpu(self):
         ss = StandardScaler()
 
-        y = ss._lazy_fit_gpu(da.from_array(cp.asarray(self.X)))._lazy_transform_gpu(da.from_array(cp.asarray(self.X)))
+        y = ss._lazy_fit_gpu(da.from_array(cp.asarray(self.X))) \
+              ._lazy_transform_gpu(da.from_array(cp.asarray(self.X)))
 
         x = ss._lazy_inverse_transform_gpu(y)
 

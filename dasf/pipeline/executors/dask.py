@@ -62,7 +62,7 @@ class DaskPipelineExecutor(Executor):
     client_kwargs -- extra Client parameters.
     """
 
-    def __init__(
+    def __init__(  # noqa: C901
         self,
         address=None,
         port=8786,

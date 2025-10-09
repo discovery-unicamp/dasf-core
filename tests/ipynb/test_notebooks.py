@@ -13,7 +13,6 @@ except ImportError:
     from IPython.zmq.blockingkernelmanager import BlockingKernelManager as KernelManager
 
 from parameterized import parameterized_class
-from pytest import fixture
 
 from dasf.utils.funcs import is_gpu_supported
 
@@ -71,8 +70,8 @@ class TestNotebooks(unittest.TestCase):
         for key in ref:
             if key not in test:
                 return False
-            elif key not in skip_compare and \
-                 self.__sanitize(test[key]) != self.__sanitize(ref[key]):
+            elif (key not in skip_compare and
+                  self.__sanitize(test[key]) != self.__sanitize(ref[key])):
                 return False
         return True
 
@@ -141,10 +140,6 @@ class TestNotebooks(unittest.TestCase):
         while not km.is_alive() and not km.ready.done():
             continue
 
-        successes = 0
-        failures = 0
-        errors = 0
-
         ncell = 1
         for cell in nb.cells:
             if cell.cell_type != 'code':
@@ -158,7 +153,6 @@ class TestNotebooks(unittest.TestCase):
 
                 kc.stop_channels()
                 km.shutdown_kernel()
-                del km
 
                 raise CellExecutionException(error_str)
 
@@ -167,18 +161,16 @@ class TestNotebooks(unittest.TestCase):
                 if not self.__compare_outputs(out, ref):
                     kc.stop_channels()
                     km.shutdown_kernel()
-                    del km
 
                     try:
                         err_msg = out[:10] + "..."
                     except TypeError:
                         return -1
 
-                    raise CellOutputException(out[:10] + "...")
+                    raise CellOutputException(err_msg)
 
         kc.stop_channels()
         km.shutdown_kernel()
-        del km
 
         return 0
 

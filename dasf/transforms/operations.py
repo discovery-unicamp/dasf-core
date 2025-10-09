@@ -8,7 +8,7 @@ from scipy import stats
 
 try:
     import cupy as cp
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 from dasf.ml.inference.loader.base import BaseLoader
@@ -52,11 +52,11 @@ class SliceArray(Transform):
 
     def transform(self, X):
         if len(self.x) == 1:
-            return X[0 : self.x[0]]
+            return X[0:self.x[0]]
         elif len(self.x) == 2:
-            return X[0 : self.x[0], 0 : self.x[1]]
+            return X[0:self.x[0], 0:self.x[1]]
         elif len(self.x) == 3:
-            return X[0 : self.x[0], 0 : self.x[1], 0 : self.x[2]]
+            return X[0:self.x[0], 0:self.x[1], 0:self.x[2]]
         else:
             raise Exception("The dimmension is not known")
 
@@ -75,14 +75,14 @@ class SliceArrayByPercent(Transform):
             raise Exception("Percentages cannot be negative or 0")
 
         if X.ndim == 1:
-            return X[0 : int(self.x * X.shape[0])]
+            return X[0:int(self.x * X.shape[0])]
         elif X.ndim == 2:
-            return X[0 : int(self.x * X.shape[0]), 0 : int(self.y * X.shape[1])]
+            return X[0:int(self.x * X.shape[0]), 0:int(self.y * X.shape[1])]
         elif X.ndim == 3:
             return X[
-                0 : int(self.x * X.shape[0]),
-                0 : int(self.y * X.shape[1]),
-                0 : int(self.z * X.shape[2]),
+                0:int(self.x * X.shape[0]),
+                0:int(self.y * X.shape[1]),
+                0:int(self.z * X.shape[2]),
             ]
         else:
             raise Exception("The dimmension is not known")
@@ -114,13 +114,17 @@ class SliceArrayByPercentile(Transform):
         return xp.array([xp.min(block)])
 
     def _lazy_transform_cpu(self, X):
-        positive = ReductionTransform(func_chunk=self._internal_chunk_array_positive,
-                                      func_aggregate=self._internal_aggregate_array_positive,
-                                      output_size=[0])
+        positive = ReductionTransform(
+                func_chunk=self._internal_chunk_array_positive,
+                func_aggregate=self._internal_aggregate_array_positive,
+                output_size=[0]
+                )
 
-        negative = ReductionTransform(func_chunk=self._internal_chunk_array_negative,
-                                      func_aggregate=self._internal_aggregate_array_negative,
-                                      output_size=[0])
+        negative = ReductionTransform(
+                func_chunk=self._internal_chunk_array_negative,
+                func_aggregate=self._internal_aggregate_array_negative,
+                output_size=[0]
+                )
 
         p = positive._lazy_transform_cpu(X, concatenate=False)
         n = negative._lazy_transform_cpu(X, concatenate=False)
@@ -135,13 +139,17 @@ class SliceArrayByPercentile(Transform):
         return X
 
     def _lazy_transform_gpu(self, X):
-        positive = ReductionTransform(func_chunk=self._internal_aggregate_array_positive,
-                                      func_aggregate=self._internal_aggregate_array_positive,
-                                      output_size=[0])
+        positive = ReductionTransform(
+                func_chunk=self._internal_aggregate_array_positive,
+                func_aggregate=self._internal_aggregate_array_positive,
+                output_size=[0]
+                )
 
-        negative = ReductionTransform(func_chunk=self._internal_aggregate_array_negative,
-                                      func_aggregate=self._internal_aggregate_array_negative,
-                                      output_size=[0])
+        negative = ReductionTransform(
+                func_chunk=self._internal_aggregate_array_negative,
+                func_aggregate=self._internal_aggregate_array_negative,
+                output_size=[0]
+                )
 
         p = positive._lazy_transform_gpu(X, concatenate=False)
         n = negative._lazy_transform_gpu(X, concatenate=False)
@@ -176,7 +184,9 @@ class SliceArrayByPercentile(Transform):
 
 class Overlap(Transform):
     """
-    Operator to get chunks with their respective overlaps. Useful when it is desired to use the same chunks with overlaps for multiple operations.
+    Operator to get chunks with their respective overlaps.
+    Useful when it is desired to use the same chunks with overlaps
+    for multiple operations.
     """
 
     def __init__(self, pad=(1, 1, 1)):
@@ -195,9 +205,9 @@ class Overlap(Transform):
         return xp.pad(
             X,
             [
-                (self._pad[0],self._pad[0]),
-                (self._pad[1],self._pad[1]),
-                (self._pad[2],self._pad[2]),
+                (self._pad[0], self._pad[0]),
+                (self._pad[1], self._pad[1]),
+                (self._pad[2], self._pad[2]),
             ],
             mode="edge",
         )
@@ -211,7 +221,8 @@ class Overlap(Transform):
 
 class Trim(Transform):
     """
-    Operator to trim dask array that was produced by an Overlap transform or subsequent results from that transform.
+    Operator to trim dask array that was produced by an Overlap
+    transform or subsequent results from that transform.
     """
 
     def __init__(self, trim=(1, 1, 1)):
@@ -272,11 +283,16 @@ class ApplyPatchesBase(Transform):
 
     def __init__(self, function, weight_function, input_size, overlap, offsets):
         """
-        function: function to be applied to each patch, can be eiter a Python Function or a ModelLoader
-        weight_function: weight attribution function, must receive a shape and produce a NDArray with the respective weights for each array position
-        input_size: size of input to the function to be applied,
-        overlap: dictionary containing overlapping/padding configurations to use with np.pad or dask.overlap.overlap. Its important that for the base patch set the whole "chunk core" is covered by the patches.
-        offsets: list of offsets for overlapping patches extraction
+        function: Function to be applied to each patch, can be eiter a Python
+                  Function or a ModelLoader.
+        weight_function: Weight attribution function, must receive a shape and
+                         produce a NDArray with the respective weights for each
+                         array position.
+        input_size: Size of input to the function to be applied.
+        overlap: Dictionary containing overlapping/padding configurations to use
+                 with np.pad or dask.overlap.overlap. Its important that for the
+                 base patch set the whole "chunk core" is covered by the patches.
+        offsets: List of offsets for overlapping patches extraction
         """
         self._function = function
         self._weight_function = weight_function
@@ -330,7 +346,8 @@ class ApplyPatchesBase(Transform):
 
     def _adjust_patches(self, arrays, ref_shape, offset, pad_value=0):
         """
-        Pads reconstructed_patches with 0s to have same shape as the reference shape from the base patch set
+        Pads reconstructed_patches with 0s to have same shape as the reference
+        shape from the base patch set.
         """
         pad_width = []
         sl = []
@@ -374,7 +391,8 @@ class ApplyPatchesBase(Transform):
 
     def _extract_patches(self, data, patch_shape):
         """
-        Patch extraction method. It will be called once for the base patch set and also for the requested offsets (overlapping patch sets)
+        Patch extraction method. It will be called once for the base patch set and
+        also for the requested offsets (overlapping patch sets).
         """
         indexes = tuple(np.array(data.shape) // np.array(patch_shape))
         patches = []
@@ -437,7 +455,7 @@ class ApplyPatchesBase(Transform):
             new_chunks.append(tuple(np.array(chunk_set) - 2*padding))
         new_chunks = tuple(new_chunks)
 
-        X =  X_overlap.map_blocks(
+        X = X_overlap.map_blocks(
             self._operation, dtype=X_overlap.dtype, chunks=new_chunks
         )
         X = X.rechunk()
@@ -501,13 +519,18 @@ class ApplyPatchesVoting(ApplyPatchesBase):
         num_classes,
     ):
         """
-        function: function to be applied to each patch, can be eiter a Python Function or a ModelLoader
-        weight_function: weight attribution function, must receive a shape and produce a NDArray with the respective weights for each array position
-        input_size: size of input to the function to be applied,
-        overlap: dictionary containing overlapping/padding configurations to use with np.pad or dask.overlap.overlap. Its important that for the base patch set the whole "chunk core" is covered by the patches.
-        offsets: list of offsets for overlapping patches extraction
-        voting: voting method. "hard"  or "soft"
-        num_classes: number of classes possible
+        function: Function to be applied to each patch, can be eiter a Python
+                  Function or a ModelLoader.
+        weight_function: Weight attribution function, must receive a shape and
+                         produce a NDArray with the respective weights for each
+                         array position.
+        input_size: Size of input to the function to be applied.
+        overlap: Dictionary containing overlapping/padding configurations to use
+                 with np.pad or dask.overlap.overlap. Its important that for the
+                 base patch set the whole "chunk core" is covered by the patches.
+        offsets: List of offsets for overlapping patches extraction.
+        voting: Voting method. "hard"  or "soft".
+        num_classes: Number of classes possible.
         """
         super().__init__(function, weight_function, input_size, overlap, offsets)
         self._voting = voting  # Types: Hard Voting, Soft Voting

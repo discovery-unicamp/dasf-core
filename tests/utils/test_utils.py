@@ -158,7 +158,10 @@ class TestArchitetures(unittest.TestCase):
     @patch('dasf.utils.funcs.is_dask_supported', return_value=True)
     @patch('dask.distributed.Client.current', return_value=Mock())
     @patch('dasf.utils.funcs.get_dask_gpu_count', return_value=0)
-    def test_is_dask_gpu_supported_from_workers_false(self, gpu_count, client_current, dask_check):
+    def test_is_dask_gpu_supported_from_workers_false(self,
+                                                      gpu_count,
+                                                      client_current,
+                                                      dask_check):
         worker_data = {
                 'workers': {
                     'tcp://127.0.0.1:11111': {
@@ -215,7 +218,8 @@ class TestArchitetures(unittest.TestCase):
                            memoryTotal=1024.0)
 
         with patch('GPUtil.getGPUs', Mock(return_value=[gpu])):
-            self.assertEqual(get_dask_gpu_names(fetch=True), ["GPU Foo Bar(tm), 1024.0 MB"])
+            self.assertEqual(get_dask_gpu_names(fetch=True),
+                             ["GPU Foo Bar(tm), 1024.0 MB"])
 
     def test_get_dask_gpu_names_as_dd(self):
         gpu = Mock()
@@ -234,7 +238,9 @@ class TestArchitetures(unittest.TestCase):
         os.makedirs(memusage_path, exist_ok=True)
 
         with open(os.path.join(memusage_path, "dask-memusage"), "w") as fp:
-            fp.write("key,min_memory_mb,max_memory_mb\nfunc,10,10\nfunc,10,15\nfunc,10,20\nfunc,10,12")
+            fp.write("key,min_memory_mb,max_memory_mb\n"
+                     "func,10,10\nfunc,10,15\n"
+                     "func,10,20\nfunc,10,12")
 
         memory = get_dask_mem_usage("memusage")
 
@@ -318,7 +324,8 @@ class TestBlockChunkReduce(unittest.TestCase):
     def test_trim_chunk_location_2d(self):
         depth = (5, 0)
 
-        block_info = [{'array-location': [(40, 60), (0, 40)], 'chunk-location': (2, 0)}]
+        block_info = [{'array-location': [(40, 60), (0, 40)],
+                       'chunk-location': (2, 0)}]
 
         loc = np.asarray(trim_chunk_location(block_info, depth))
 
@@ -327,7 +334,8 @@ class TestBlockChunkReduce(unittest.TestCase):
     def test_trim_chunk_location_3d(self):
         depth = (5, 0, 0)
 
-        block_info = [{'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
+        block_info = [{'array-location': [(40, 60), (0, 40), (0, 40)],
+                       'chunk-location': (2, 0, 0)}]
 
         loc = np.asarray(trim_chunk_location(block_info, depth))
 
@@ -336,7 +344,9 @@ class TestBlockChunkReduce(unittest.TestCase):
     def test_trim_chunk_location_3d_index(self):
         depth = (5, 0, 0)
 
-        block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
+        block_info = [{}, {}, {}, {}, {},
+                      {'array-location': [(40, 60), (0, 40), (0, 40)],
+                       'chunk-location': (2, 0, 0)}]
 
         loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
@@ -348,27 +358,32 @@ class TestBlockChunkReduce(unittest.TestCase):
         block_info = [{}, {}, {}, {}, {}, {'chunk-location': (2, 0, 0)}]
 
         with self.assertRaises(IndexError) as context:
-            loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+            _ = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
-        self.assertTrue('Key \'array-location\' was not found in block-info' in str(context.exception))
+        self.assertTrue('Key \'array-location\' was not found '
+                        'in block-info' in str(context.exception))
 
     def test_trim_chunk_location_3d_no_chunk_location(self):
         depth = (5, 0, 0)
 
-        block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)]}]
+        block_info = [{}, {}, {}, {}, {},
+                      {'array-location': [(40, 60), (0, 40), (0, 40)]}]
 
         with self.assertRaises(IndexError) as context:
-            loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+            _ = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
-        self.assertTrue('Key \'chunk-location\' was not found in block-info' in str(context.exception))
+        self.assertTrue(('Key \'chunk-location\' was not found '
+                        'in block-info') in str(context.exception))
 
     def test_trim_chunk_location_3d_wrong_len(self):
         depth = (5, 0)
 
-        block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
+        block_info = [{}, {}, {}, {}, {},
+                      {'array-location': [(40, 60), (0, 40), (0, 40)],
+                       'chunk-location': (2, 0, 0)}]
 
-        with self.assertRaises(ValueError) as context:
-            loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+        with self.assertRaises(ValueError):
+            _ = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
         self.assertTrue("Depth 2, location 3 and/or chunks 3 do not match.")
 
@@ -403,17 +418,18 @@ class TestWorkerInfo(unittest.TestCase):
         self.assertEqual(len(workers), 0)
 
     def test_get_worker_info_regular(self):
-        worker_data = {'workers': {
-                           'tcp://127.0.0.1:11111': {
-                               'host': '127.0.0.1',
-                               'nthreads': 4,
-                               },
-                           'tcp://127.0.0.1:22222': {
-                               'host': '127.0.0.1',
-                               'nthreads': 4,
-                               }
-                           }
-                      }
+        worker_data = {
+                'workers': {
+                    'tcp://127.0.0.1:11111': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        },
+                    'tcp://127.0.0.1:22222': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        }
+                    }
+                }
         client = Mock()
         client.scheduler_info.return_value = worker_data
 
