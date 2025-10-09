@@ -6,7 +6,10 @@ import subprocess
 import unittest
 
 import dask
-import ray as ray_default
+try:
+    import ray as ray_default
+except ModuleNotFoundError:
+    raise unittest.SkipTest("Ray module is not installed")
 from mock import Mock, patch
 from packaging.version import Version
 
