@@ -17,13 +17,13 @@ def init_logging() -> Logger:
 
     if logger.hasHandlers():
         logger.handlers.clear()
-    else:
-        formatter = Formatter(
-            fmt="[%(asctime)s] %(levelname)s - %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S%z",
-        )
 
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
+    formatter = Formatter(
+        fmt="[%(asctime)s] %(levelname)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S%z",
+    )
+
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 
     return logger

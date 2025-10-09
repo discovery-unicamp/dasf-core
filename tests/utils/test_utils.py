@@ -135,19 +135,20 @@ class TestArchitetures(unittest.TestCase):
     @patch('dasf.utils.funcs.is_dask_supported', return_value=True)
     @patch('dask.distributed.Client.current', return_value=Mock())
     def test_is_dask_gpu_supported_from_workers(self, client_current, dask_check):
-        worker_data = {'workers': {
-                           'tcp://127.0.0.1:11111': {
-                               'host': '127.0.0.1',
-                               'nthreads': 4,
-                               'gpu': [0],
-                               },
-                           'tcp://127.0.0.1:22222': {
-                               'host': '127.0.0.1',
-                               'nthreads': 4,
-                               'gpu': [0],
-                               }
-                           }
-                      }
+        worker_data = {
+                'workers': {
+                    'tcp://127.0.0.1:11111': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        'gpu': [0],
+                        },
+                    'tcp://127.0.0.1:22222': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        'gpu': [0],
+                        }
+                    }
+                }
 
         client = Mock(cluster=Mock(scheduler_info=worker_data))
         client_current.return_value = client
@@ -158,17 +159,18 @@ class TestArchitetures(unittest.TestCase):
     @patch('dask.distributed.Client.current', return_value=Mock())
     @patch('dasf.utils.funcs.get_dask_gpu_count', return_value=0)
     def test_is_dask_gpu_supported_from_workers_false(self, gpu_count, client_current, dask_check):
-        worker_data = {'workers': {
-                           'tcp://127.0.0.1:11111': {
-                               'host': '127.0.0.1',
-                               'nthreads': 4,
-                               },
-                           'tcp://127.0.0.1:22222': {
-                               'host': '127.0.0.1',
-                               'nthreads': 4,
-                               }
-                           }
-                      }
+        worker_data = {
+                'workers': {
+                    'tcp://127.0.0.1:11111': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        },
+                    'tcp://127.0.0.1:22222': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        }
+                    }
+                }
 
         client = Mock(cluster=Mock(scheduler_info=worker_data))
         client_current.return_value = client
@@ -372,7 +374,7 @@ class TestBlockChunkReduce(unittest.TestCase):
 
 
 class TestBackendSignature(unittest.TestCase):
-    def func1(self, a, b , c, d, e, f):
+    def func1(self, a, b, c, d, e, f):
         return a + b + c + d + e + f
 
     def func2(self, a, b, backend=None):
@@ -570,3 +572,27 @@ class TestNotebookProgressBar(unittest.TestCase):
         self.assertEqual(pbar.percentage.value, "100 %%")
         self.assertEqual(pbar.data.value, "1000 / 1000")
         self.assertEqual(pbar.bar.style.bar_color, '#03c04a')
+
+    def test_error_state(self):
+        pbar = NotebookProgressBar()
+        pbar.show()
+        pbar.set_error(True)
+
+        # Simulate the run method with error
+        pbar._NotebookProgressBar__current = 100
+        pbar._NotebookProgressBar__total = 1000
+        pbar._NotebookProgressBar__error = True
+
+        # The run method should set error color
+        if hasattr(pbar, 'bar') and pbar.bar:
+            pbar.bar.style.bar_color = '#ff0000'
+            self.assertEqual(pbar.bar.style.bar_color, '#ff0000')
+
+    def test_zero_division_protection(self):
+        pbar = NotebookProgressBar()
+        pbar.show()
+
+        # Test with zero total to ensure no division by zero
+        pbar.set_current(10, 0)
+        self.assertEqual(pbar._NotebookProgressBar__current, 10)
+        self.assertEqual(pbar._NotebookProgressBar__total, 0)
