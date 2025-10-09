@@ -88,20 +88,29 @@ class TestWorkerTaskPlugin(unittest.TestCase):
         mock_profiler.return_value = mock_profiler_instance
         
         self.plugin.setup(self.mock_worker)
-        
+
         task_key = "test-task-456"
-        
+        # Setup task without startstops (no compute action)
+        mock_task = Mock()
+        mock_task.startstops = []
+        mock_task.nbytes = 512
+        mock_task.dependencies = []
+        mock_task.dependents = []
+
+        self.mock_worker.state.tasks[task_key] = mock_task
+
+
         self.plugin.transition(task_key, "executing", "memory")
-        
+
         # Verify instant event was recorded for managed memory
         mock_profiler_instance.record_instant_event.assert_called_once()
         call_args = mock_profiler_instance.record_instant_event.call_args
-        
+
         self.assertEqual(call_args[1]["name"], "Managed Memory")
         self.assertEqual(call_args[1]["timestamp"], 200.0)
         self.assertEqual(call_args[1]["process_id"], "test-host")
         self.assertEqual(call_args[1]["thread_id"], "worker-test-host-worker-123")
-        
+
         args = call_args[1]["args"]
         self.assertEqual(args["key"], task_key)
         self.assertEqual(args["state"], "memory")
@@ -114,17 +123,17 @@ class TestWorkerTaskPlugin(unittest.TestCase):
     def test_transition_to_erred_records_managed_memory_event(self, mock_time, mock_profiler, mock_hostname):
         mock_profiler_instance = Mock()
         mock_profiler.return_value = mock_profiler_instance
-        
+
         self.plugin.setup(self.mock_worker)
-        
+
         task_key = "test-task-789"
-        
+
         self.plugin.transition(task_key, "executing", "erred")
-        
+
         # Verify instant event was recorded for managed memory even on error
         mock_profiler_instance.record_instant_event.assert_called_once()
         call_args = mock_profiler_instance.record_instant_event.call_args
-        
+
         args = call_args[1]["args"]
         self.assertEqual(args["state"], "erred")
 
@@ -139,21 +148,21 @@ class TestResourceMonitor(unittest.TestCase):
         mock_profiler_instance = Mock()
         mock_system_monitor_instance = Mock()
         mock_callback_instance = Mock()
-        
+
         mock_profiler.return_value = mock_profiler_instance
         mock_system_monitor.return_value = mock_system_monitor_instance
         mock_callback.return_value = mock_callback_instance
-        
+
         monitor = ResourceMonitor(time=50, autostart=False, name="TestMonitor")
-        
+
         self.assertEqual(monitor.time, 50)
         self.assertEqual(monitor.name, "TestMonitor")
         self.assertEqual(monitor.hostname, "monitor-host")
-        
+
         mock_profiler.assert_called_once_with(database_file="TestMonitor-monitor-host.msgpack")
         mock_system_monitor.assert_called_once()
         mock_callback.assert_called_once_with(monitor.update, callback_time=50)
-        
+
         # autostart=False, so start should not be called
         mock_callback_instance.start.assert_not_called()
 
@@ -165,9 +174,9 @@ class TestResourceMonitor(unittest.TestCase):
                                        mock_profiler, mock_hostname):
         mock_callback_instance = Mock()
         mock_callback.return_value = mock_callback_instance
-        
+
         monitor = ResourceMonitor(autostart=True)
-        
+
         mock_callback_instance.start.assert_called_once()
 
     @patch('socket.gethostname', return_value='monitor-host')
@@ -181,7 +190,7 @@ class TestResourceMonitor(unittest.TestCase):
         mock_system_monitor_instance = Mock()
         mock_profiler.return_value = mock_profiler_instance
         mock_system_monitor.return_value = mock_system_monitor_instance
-        
+
         # Mock system monitor update result
         mock_system_monitor_instance.update.return_value = {
             "cpu_percent": 75.5,
@@ -192,7 +201,7 @@ class TestResourceMonitor(unittest.TestCase):
         
         monitor = ResourceMonitor(autostart=False)
         result = monitor.update()
-        
+
         # Verify update was called and result returned
         mock_system_monitor_instance.update.assert_called_once()
         self.assertEqual(result, {
@@ -201,11 +210,11 @@ class TestResourceMonitor(unittest.TestCase):
             "disk_read": 1024,
             "disk_write": 2048
         })
-        
+
         # Verify instant event was recorded
         mock_profiler_instance.record_instant_event.assert_called_once()
         call_args = mock_profiler_instance.record_instant_event.call_args
-        
+
         self.assertEqual(call_args[1]["name"], "Resource Usage")
         self.assertEqual(call_args[1]["timestamp"], 400.0)
         self.assertEqual(call_args[1]["process_id"], "monitor-host")
@@ -222,12 +231,12 @@ class TestResourceMonitor(unittest.TestCase):
         mock_callback_instance = Mock()
         mock_profiler.return_value = mock_profiler_instance
         mock_callback.return_value = mock_callback_instance
-        
+
         monitor = ResourceMonitor(autostart=False)
-        
+
         monitor.start()
         mock_callback_instance.start.assert_called_once()
-        
+
         monitor.stop()
         mock_profiler_instance.commit.assert_called_once()
         mock_callback_instance.stop.assert_called_once()
@@ -243,10 +252,10 @@ class TestGPUAnnotationPlugin(unittest.TestCase):
     @patch('builtins.print')
     def test_setup(self, mock_print):
         self.plugin.setup(self.mock_worker)
-        
+
         self.assertEqual(self.plugin.worker, self.mock_worker)
         self.assertEqual(self.plugin.gpu_num, 0)
-        
+
         mock_print.assert_called_once_with(
             "Setting up GPU annotation plugin for worker gpu-worker. GPU: 0"
         )
@@ -263,15 +272,15 @@ class TestGPUAnnotationPlugin(unittest.TestCase):
         mock_handle = Mock()
         mock_get_handle.return_value = mock_handle
         mock_start_range.return_value = "nvtx_mark_123"
-        
+
         self.plugin.setup(self.mock_worker)
-        
+
         task_key = "gpu-task-456"
         self.plugin.transition(task_key, "ready", "executing")
-        
+
         mock_get_handle.assert_called_once_with(1)
         mock_start_range.assert_called_once_with(message=task_key, domain="compute")
-        
+
         # Verify mark is stored
         self.assertEqual(self.plugin.marks[task_key], "nvtx_mark_123")
 
@@ -281,18 +290,18 @@ class TestGPUAnnotationPlugin(unittest.TestCase):
     def test_transition_from_executing(self, mock_end_range, mock_get_handle):
         mock_handle = Mock()
         mock_get_handle.return_value = mock_handle
-        
+
         self.plugin.setup(self.mock_worker)
-        
+
         # Setup existing mark
         task_key = "gpu-task-789"
         self.plugin.marks[task_key] = "nvtx_mark_789"
-        
+
         self.plugin.transition(task_key, "executing", "memory")
-        
+
         mock_get_handle.assert_called_once_with(0)
         mock_end_range.assert_called_once_with("nvtx_mark_789")
-        
+
         # Verify mark is removed
         self.assertNotIn(task_key, self.plugin.marks)
 
@@ -302,10 +311,10 @@ class TestGPUAnnotationPlugin(unittest.TestCase):
     @patch('nvtx.end_range')
     def test_transition_no_action_for_other_states(self, mock_end_range, mock_start_range, mock_get_handle):
         self.plugin.setup(self.mock_worker)
-        
+
         # Transition that doesn't involve executing
         self.plugin.transition("task", "ready", "memory")
-        
+
         mock_get_handle.assert_not_called()
         mock_start_range.assert_not_called()
         mock_end_range.assert_not_called()
@@ -335,7 +344,3 @@ class TestPluginInitialization(unittest.TestCase):
         self.assertEqual(plugin.name, "GPUAnnotationPlugin")
         self.assertIsNone(plugin.gpu_num)
         self.assertEqual(plugin.marks, {})
-
-
-if __name__ == '__main__':
-    unittest.main()

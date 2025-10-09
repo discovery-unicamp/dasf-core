@@ -362,7 +362,3 @@ class TestAnalysisIntegration(unittest.TestCase):
             
             balance_df = analyser.per_worker_task_balance()
             self.assertIsInstance(balance_df, pd.DataFrame)
-
-
-if __name__ == '__main__':
-    unittest.main()

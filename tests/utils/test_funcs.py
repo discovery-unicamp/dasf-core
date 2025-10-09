@@ -295,7 +295,3 @@ class TestProgressBarIntegration(unittest.TestCase):
         pbar.set_error(True)
         
         self.assertTrue(pbar._NotebookProgressBar__error)
-
-
-if __name__ == '__main__':
-    unittest.main()

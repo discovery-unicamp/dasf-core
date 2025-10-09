@@ -193,7 +193,3 @@ class TestRegisterDefaultProfiler(unittest.TestCase):
         # Call the close function and verify it stops the resource monitor
         close_function()
         mock_resource_instance.stop.assert_called_once()
-
-
-if __name__ == '__main__':
-    unittest.main()

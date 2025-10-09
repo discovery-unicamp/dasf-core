@@ -73,7 +73,3 @@ class TestLogging(unittest.TestCase):
         
         mock_logger.setLevel.assert_called_once_with(logging.INFO)
         mock_logger.handlers.clear.assert_called_once()
-
-
-if __name__ == '__main__':
-    unittest.main()

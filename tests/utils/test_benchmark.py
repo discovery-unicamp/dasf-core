@@ -261,7 +261,3 @@ class TestMemoryBenchmark(unittest.TestCase):
         mb.run(test_function)
         
         mock_print.assert_called_once_with("The backend memray is not supported")
-
-
-if __name__ == '__main__':
-    unittest.main()

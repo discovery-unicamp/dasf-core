@@ -192,9 +192,7 @@ class TestFileDatabase(unittest.TestCase):
             remove_old_output_file=True
         )
 
-        with open(self.temp_file, 'r') as f:
-            content = f.read()
-            self.assertEqual(content, "")
+        self.assertFalse(os.path.exists(self.temp_file))
 
     def test_string_representation(self):
         db = FileDatabase(database_file=self.temp_file)
@@ -324,7 +322,3 @@ class TestEventProfiler(unittest.TestCase):
         
         self.assertEqual(str(profiler), expected)
         self.assertEqual(repr(profiler), expected)
-
-
-if __name__ == '__main__':
-    unittest.main()
