@@ -2,7 +2,7 @@
 
 import unittest
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from dasf.datasets.download import DownloadGDrive, DownloadWget
 

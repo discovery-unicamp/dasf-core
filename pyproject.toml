@@ -66,11 +66,11 @@ flake8 = "*"
 hpccm = "*"
 interrogate = "*"
 isort = "*"
-mock = "*"
 nvtx = "*"
 parameterized = "*"
 pytest = "*"
 pytest-cov = "*"
+pytest-mock = "*"
 wheel = "*"
 
 [tool.poetry.group.docs.dependencies]

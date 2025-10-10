@@ -9,7 +9,7 @@ import dask.array as da
 import numpy as np
 from dask.delayed import Delayed
 from distributed.utils import TimeoutError as DistributedTimeoutError
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from parameterized import parameterized
 
 from dasf.pipeline.types import TaskExecutorType

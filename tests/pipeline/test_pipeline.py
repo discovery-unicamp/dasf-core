@@ -3,7 +3,7 @@
 import unittest
 
 import numpy as np
-from mock import MagicMock
+from unittest.mock import MagicMock
 
 from dasf.datasets import DatasetArray
 from dasf.pipeline import Pipeline

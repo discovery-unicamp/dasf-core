@@ -7,7 +7,7 @@ import urllib.parse
 
 import networkx as nx
 from dask.distributed import Client, LocalCluster
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from dasf.pipeline.executors import DaskPipelineExecutor, DaskTasksPipelineExecutor
 from dasf.pipeline.executors.dask import setup_dask_protocol

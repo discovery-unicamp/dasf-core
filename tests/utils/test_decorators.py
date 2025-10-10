@@ -10,7 +10,7 @@ try:
 except ImportError:
     pass
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from dasf.transforms.base import Transform
 from dasf.utils.decorators import (

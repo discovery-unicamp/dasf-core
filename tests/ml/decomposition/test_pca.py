@@ -12,7 +12,7 @@ try:
 except ImportError:
     pass
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from parameterized import parameterized
 from sklearn import datasets
 

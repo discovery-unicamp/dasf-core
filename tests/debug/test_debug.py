@@ -21,7 +21,7 @@ except ImportError:
 from io import StringIO
 
 from IPython.core.display import HTML
-from mock import ANY, Mock, patch
+from unittest.mock import ANY, Mock, patch
 
 from dasf.debug import Debug, VisualizeDaskData
 from dasf.utils.funcs import is_gpu_supported

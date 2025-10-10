@@ -6,9 +6,12 @@ from unittest.mock import Mock, patch
 import pandas as pd
 import networkx as nx
 
-from dasf.profile.analysis import TraceAnalyser, main, valid_analyses
-from dasf.profile.profiler import CompleteEvent, InstantEvent
-from dasf.profile.utils import MultiEventDatabase
+try:
+    from dasf.profile.analysis import TraceAnalyser, main, valid_analyses
+    from dasf.profile.profiler import CompleteEvent, InstantEvent
+    from dasf.profile.utils import MultiEventDatabase
+except ImportError:
+    raise unittest.SkipTest("Module nvtx is not installed")
 
 
 class TestTraceAnalyser(unittest.TestCase):

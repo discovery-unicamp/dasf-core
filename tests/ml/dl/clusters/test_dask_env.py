@@ -3,7 +3,7 @@
 import os
 import unittest
 
-from mock import patch
+from unittest.mock import patch
 from parameterized import parameterized
 
 from dasf.ml.dl.clusters.dask import DaskClusterEnvironment

@@ -15,7 +15,7 @@ try:
 except ImportError:
     pass
 
-from mock import MagicMock
+from unittest.mock import MagicMock
 
 from dasf.transforms.operations import (
     Overlap,

@@ -4,7 +4,11 @@ import os
 import unittest
 from unittest.mock import Mock, patch
 
-from dasf.profile.plugins import WorkerTaskPlugin, ResourceMonitor, GPUAnnotationPlugin
+try:
+    from dasf.profile.plugins import WorkerTaskPlugin, ResourceMonitor
+    from dasf.profile.plugins import GPUAnnotationPlugin
+except ImportError:
+    raise unittest.SkipTest("Module nvtx is not installed")
 
 
 class TestWorkerTaskPlugin(unittest.TestCase):

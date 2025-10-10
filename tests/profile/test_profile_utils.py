@@ -5,7 +5,10 @@ from unittest.mock import Mock, patch
 
 from dasf.pipeline import Pipeline
 from dasf.profile.profiler import EventDatabase
-from dasf.profile.utils import MultiEventDatabase, register_default_profiler
+try:
+    from dasf.profile.utils import MultiEventDatabase, register_default_profiler
+except ImportError:
+    raise unittest.SkipTest("Module nvtx is not installed")
 
 
 class TestMultiEventDatabase(unittest.TestCase):

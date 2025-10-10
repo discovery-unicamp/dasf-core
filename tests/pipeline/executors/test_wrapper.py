@@ -3,7 +3,7 @@
 import unittest
 
 import numpy as np
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 try:
     import cupy as cp
