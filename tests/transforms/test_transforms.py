@@ -97,8 +97,6 @@ class TestArrayToZarr(unittest.TestCase):
             os.remove(path)  # remove the file
         elif os.path.isdir(path):
             shutil.rmtree(path)  # remove dir and all contains
-        else:
-            raise ValueError("file {} is not a file or dir.".format(path))
 
     def test_array_to_zarr_cpu(self):
         dataset = DatasetArray(root=self.array, download=False, name="Test Array")
@@ -148,6 +146,17 @@ class TestArrayToZarr(unittest.TestCase):
 
         self.assertTrue(isinstance(T_1, DatasetZarr))
 
+    def test_array_to_zarr_exception(self):
+        dataset = [0, 1, 6, 3, 7, 3, 2, 4, 1, 8]
+
+        T = ArrayToZarr(chunks=(2,))
+
+        with self.assertRaises(Exception) as context:
+            _ = T._transform_cpu(dataset)
+
+        self.assertTrue('Array requires a valid path to convert to Zarr.'
+                        in str(context.exception))
+
     def tearDown(self):
         self.remove(self.array)
         self.remove(self.zarr)
@@ -167,8 +176,6 @@ class TestArrayToHDF5(unittest.TestCase):
             os.remove(path)  # remove the file
         elif os.path.isdir(path):
             shutil.rmtree(path)  # remove dir and all contains
-        else:
-            raise ValueError("file {} is not a file or dir.".format(path))
 
     def test_array_to_hdf5_cpu(self):
         dataset = DatasetArray(root=self.array, download=False, name="Test Array")
@@ -197,13 +204,29 @@ class TestArrayToHDF5(unittest.TestCase):
         self.remove(self.hdf5)
 
 
+# Bug introduced by zarr 3.*
+# We need a fake array because zarr expects an object that has a `chunks`
+# attribute.
+class FakeArray(np.ndarray):
+    def __new__(cls, input_array, chunks=None):
+        obj = np.asarray(input_array).view(cls)
+        obj.chunks = chunks
+        return obj
+
+    def __array_finalize__(self, obj):
+        if obj is not None:
+            self.chunks = getattr(obj, 'chunks', None)
+
+
 class TestZarrToArray(unittest.TestCase):
     def setUp(self):
         self.array = os.path.abspath(f"{tempfile.gettempdir()}/array.npy")
         self.zarr = os.path.abspath(f"{tempfile.gettempdir()}/array.zarr")
 
-        random = z = zarr.array(np.random.random(10000), chunks=100)
-        zarr.save(self.zarr, random)
+        random = np.random.random(10000)
+        fake_random = FakeArray(random)
+        fake_random.chunks = (100,)
+        zarr.save_array(store=self.zarr, arr=fake_random)
 
     @staticmethod
     def remove(path):
@@ -246,7 +269,7 @@ class TestZarrToArray(unittest.TestCase):
 
             T = ZarrToArray()
 
-            T_1 = T.transform(dataset)
+            _ = T.transform(dataset)
 
         self.assertTrue('Input is not a Zarr dataset' in str(context.exception))
 

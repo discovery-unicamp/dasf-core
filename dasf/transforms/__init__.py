@@ -30,7 +30,7 @@ __all__ = [
     "FitTransform",
     "Predict",
     "GetParams",
-    "SetParams"
+    "SetParams",
     "Transform",
     "TargeteredTransform",
     "MappedTransform",

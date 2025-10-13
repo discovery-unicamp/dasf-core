@@ -16,6 +16,9 @@ import xarray as xr
 import zarr
 
 try:
+    import GPUtil
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
     import cudf
     import cupy as cp
 
@@ -28,7 +31,6 @@ except ImportError:  # pragma: no cover
 try:
     import numcodecs  # noqa
     from kvikio.nvcomp_codec import NvCompBatchCodec
-    from kvikio.zarr import GDSStore
 except ImportError:  # pragma: no cover
     pass
 
@@ -579,6 +581,9 @@ class DatasetZarr(Dataset):
 
         self._root_file = root
 
+        # For API compatibility
+        self.__major_version = int(zarr.__version__.split('.')[0])
+
         if root is not None:
             if not os.path.isfile(root):
                 self._root = root
@@ -602,9 +607,11 @@ class DatasetZarr(Dataset):
             The data (or a Future load object, for `_lazy` operations).
 
         """
+        # TODO:kvikio is causing all Dask CUDA workers to reside in the same GPU
         if (self._backend == "kvikio" and is_kvikio_supported() and
            (is_gds_supported() or is_kvikio_compat_mode()) and
            is_nvcomp_codec_supported()):
+            from kvikio.zarr import GDSStore
             store = GDSStore(self._root_file)
             meta = json.loads(store[".zarray"])
             meta["compressor"] = NvCompBatchCodec("lz4").get_config()
@@ -613,7 +620,7 @@ class DatasetZarr(Dataset):
             array = zarr.open_array(store, meta_array=xp.empty(()))
             return da.from_zarr(array, chunks=array.chunks).map_blocks(xp.asarray)
 
-        return da.from_zarr(self._root_file, chunks=self._chunks).map_blocks(xp.asarray)
+        return da.from_zarr(self._root_file).map_blocks(xp.asarray)
 
     def _load(self, xp, **kwargs):
         """
@@ -627,7 +634,7 @@ class DatasetZarr(Dataset):
             Additional `kwargs` to `xp.load` function.
 
         """
-        return zarr.open(self._root_file, mode='r', meta_array=xp.empty(()))
+        return zarr.open_array(self._root_file, mode='r', meta_array=xp.empty(()))
 
     def _lazy_load_cpu(self):
         """Load data with CPU container + DASK. (It does not load immediattly)
@@ -750,26 +757,35 @@ class DatasetZarr(Dataset):
         """
         z = zarr.open(self._root_file, mode='r')
 
+        if self.__major_version >= 3:
+            items = z.metadata.to_dict().items()
+        else:
+            items = z.info_items()
+
         info = {}
-        for k, v in z.info_items():
+        for k, v in items:
             info[k] = v
 
         if isinstance(self._chunks, bool) and self._chunks:
-            self._chunks = info["Chunk shape"]
+            self._chunks = z.chunks if hasattr(z, 'chunks') \
+                                    else info["Chunk shape"]
 
         if self._chunks is None:
             self._chunks = self.chunksize
 
-        return {
+        info.update({
             "size": human_readable_size(
-                int(info["No. bytes"].split(' ')[0])
+                int(z.nbytes) if hasattr(z, 'nbytes')
+                else int(info["No. bytes"].split(' ')[0])
             ),
-            "compressor": info["Compressor"],
-            "type": info["Store type"],
+            "type": type(z.store_path.store).__name__ if (hasattr(z, 'store_path') and
+                                                          hasattr(z.store_path, 'store'))
+            else info["Store type"],
             "file": self._root_file,
-            "shape": info["Shape"],
             "block": {"chunks": self._chunks},
-        }
+        })
+
+        return info
 
     def __repr__(self):
         """
@@ -887,9 +903,13 @@ class DatasetZarr(Dataset):
 
         attrs = dir(self._data)
         for attr in attrs:
-            if not attr.startswith("__") and callable(getattr(self._data, attr)):
-                if not hasattr(self, attr):
-                    self.__dict__[attr] = getattr(self._data, attr)
+            try:
+                if not attr.startswith("__") and callable(getattr(self._data, attr)):
+                    if not hasattr(self, attr):
+                        self.__dict__[attr] = getattr(self._data, attr)
+            except TypeError as te:
+                if attr != "compressor":
+                    raise TypeError(str(te))
 
 
 class DatasetHDF5(Dataset):

@@ -10,6 +10,10 @@ from dasf.utils.decorators import task_handler
 from dasf.utils.funcs import is_gpu_supported
 
 try:
+    import GPUtil
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
+
     from cuml.cluster import KMeans as KMeans_GPU
     from cuml.dask.cluster import KMeans as KMeans_MGPU
 except ImportError:
@@ -29,7 +33,8 @@ class KMeans(ClusterClassifier):
         The number of clusters to form as well as the number of
         centroids to generate.
 
-    init : {'k-means++', 'random'}, callable or array-like of shape (n_clusters, n_features), default='k-means++'
+    init : {'k-means++', 'random'}, callable or array-like of shape \
+(n_clusters, n_features), default='k-means++'
 
         Method for initialization:
 

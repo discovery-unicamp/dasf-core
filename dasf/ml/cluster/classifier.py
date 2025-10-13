@@ -1,5 +1,6 @@
-""" Generic Clustering Classifier algorithm method. """
 #!/usr/bin/env python3
+
+""" Generic Clustering Classifier algorithm method. """
 
 from dasf.transforms.base import (
     Fit,
@@ -9,7 +10,6 @@ from dasf.transforms.base import (
     Predict,
     SetParams,
     TargeteredTransform,
-    Transform,
 )
 
 

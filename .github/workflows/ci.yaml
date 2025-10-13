@@ -1,3 +1,4 @@
+---
 name: Continuous Test
 
 on:
@@ -15,6 +16,9 @@ jobs:
         python-version: ['3.8']
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -41,7 +45,7 @@ jobs:
           # stop the build if there are Python syntax errors or undefined names
           flake8 dasf/ --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 dasf/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          flake8 dasf/ --count --max-complexity=10 --max-line-length=127 --statistics
           if [[ $? -ne 0 ]] ; then
               echo "* **flake8 results:**" >> $GITHUB_STEP_SUMMARY
               echo "```python" >> $GITHUB_STEP_SUMMARY
@@ -61,14 +65,24 @@ jobs:
   test_cpu:
     runs-on: ubuntu-latest
     environment: continuous_test
+    strategy:
+      matrix: 
+        zarr: ['zarr<3.0.0', 'zarr>=3.0.0'] 
     needs: [lint]
     container:
       image: docker.io/jcfaracco/dasf:cpu_ci
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: |
-          pip install pytest-coverage
+          pip install pytest-coverage --user --break-system-packages
+      - name: Install project
+        run: |
+          pip install -e . --break-system-packages
+          pip install ray nvtx "${{ matrix.zarr }}" --break-system-packages
       - name: Run test cases
         run: |
           pytest tests/
@@ -79,22 +93,63 @@ jobs:
     needs: [lint]
     # Skip this test for PRs due to dangerous code submitted.
     if: ${{ github.event_name != 'pull_request' }}
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh/
-          sudo apt-get update
-          sudo apt-get install sshpass -y
+          echo -e "${{ secrets.CLUSTER_SSH_CONFIG }}" > ~/.ssh/config
+          echo -e "${{ secrets.CLUSTER_SSH_PRIV_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/*
           ssh-keyscan -H ${{ secrets.CLUSTER_ADDRESS }} >> ~/.ssh/known_hosts
       - name: Test SSH connection
         id: test_connection
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh -T ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 > /dev/null
+          ssh -o StrictHostKeyChecking=accept-new -T ${{ secrets.CLUSTER_GPU_ID }} exit > /dev/null
       - name: Pull latest docker image
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker pull jcfaracco/dasf:gpu\""
-      - name: Run test cases remotely
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "docker pull jcfaracco/dasf:gpu"
+      - name: Clean up running containers
         run: |
-          sshpass -p ${{ secrets.CLUSTER_SSH_PASSWORD }} ssh ${{ secrets.CLUSTER_USER }}@${{ secrets.CLUSTER_ADDRESS }} -p 8686 "ssh ${{ secrets.CLUSTER_GPU_ID }} \"docker run --rm --gpus all jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov pip --upgrade && rm -rf dasf-core && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 uninstall dasf -y && pip3 install . && pytest --cov dasf/ tests/ && cd -'\""
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "docker stop dasf_core_github || true && docker rm -f dasf_core_github || true"
+      - name: Update and commit the container
+        run: |
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "nohup docker run --name dasf_core_github --gpus all -v \$HOME:/data/:rw jcfaracco/dasf:gpu sh -c 'pip3 install pytest parameterized pytest-cov nvtx pip --upgrade && rm -rf dasf-core /data/dasf-core/* && git clone https://github.com/discovery-unicamp/dasf-core.git && cd dasf-core/ && pip3 install -e . && pip install --no-dependencies --upgrade ray cupy_xarray && mkdir -p /data/dasf-core/ && cd -' && docker commit dasf_core_github dasf_core_github_live:latest && docker stop dasf_core_github || true && docker rm -f dasf_core_github || true"
+      - name: Run test cases setup
+        continue-on-error: true
+        run: |
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "nohup docker run --name dasf_core_github --gpus all -v \$HOME:/data/:rw dasf_core_github_live:latest sh -c 'cd dasf-core/ && pytest --cov dasf/ --cov-report term --cov-report html:/data/dasf-core/coverage_html --cov-report xml:/data/dasf-core/coverage.xml --cov-report json:/data/dasf-core/coverage.json tests/ && cd -'"
+      - name: Clean up the last container
+        run: |
+          ssh ${{ secrets.CLUSTER_GPU_ID }} "docker stop dasf_core_github || true && docker rm -f dasf_core_github || true && docker rmi -f dasf_core_github_live:latest || true"
+      - name: Generate artifacts path
+        run: mkdir -p deployment/gpu/tests/
+      - name: Upload artifacts from runner
+        run: |
+          scp -r ${{ secrets.CLUSTER_GPU_ID }}:~/dasf-core/* deployment/gpu/tests/
+          # Convert HTML directory into a zip file and remove target
+          zip -jrm deployment/gpu/tests/coverage-html.zip deployment/gpu/tests/coverage_html
+      - name: Coverage report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: deployment/gpu/tests/coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          thresholds: '50 80'
+      - name: Write to Job Summary
+        run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+      - name: Upload coverage HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html.zip
+          path: deployment/gpu/tests/coverage-html.zip
+          if-no-files-found: error

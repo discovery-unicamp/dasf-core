@@ -2,6 +2,8 @@
 
 """ Init module for Neighbors ML algorithms. """
 
+from dasf.ml.neighbors.neighbors import KNeighborsClassifier  # noqa
 from dasf.ml.neighbors.neighbors import NearestNeighbors  # noqa
 
-__all__ = ["NearestNeighbors"]
+__all__ = ["NearestNeighbors",
+           "KNeighborsClassifier"]

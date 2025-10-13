@@ -55,8 +55,8 @@ def generate_blobs():
     blobs.append({'X': X, 'y': y, 'centroids': c})
 
     X, y = make_moons(n_samples=3000,
-                         noise=0.1,
-                         random_state=42)
+                      noise=0.1,
+                      random_state=42)
 
     blobs.append({'X': X, 'y': y, 'centroids': []})
 
@@ -75,7 +75,6 @@ class TestHDBSCAN(unittest.TestCase):
                                                     return_centers=True,
                                                     random_state=random_state)
 
-
     def __match_randomly_labels_created(self, y1, y2):
         y2 = (y2 * -1) - 1
 
@@ -91,7 +90,7 @@ class TestHDBSCAN(unittest.TestCase):
     def test_hdbscan_cpu_only_fit(self):
         sc = HDBSCAN()
 
-        y = sc._fit_cpu(self.X)
+        _ = sc._fit_cpu(self.X)
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
@@ -100,7 +99,7 @@ class TestHDBSCAN(unittest.TestCase):
 
         cp_X = cp.asarray(self.X)
 
-        y = sc._fit_gpu(cp_X)
+        _ = sc._fit_gpu(cp_X)
 
     def test_hdbscan_cpu(self):
         sc = HDBSCAN()

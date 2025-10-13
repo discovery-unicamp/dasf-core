@@ -1,4 +1,3 @@
-import os
 from typing import Any, Tuple, Union
 
 try:
@@ -132,7 +131,7 @@ class LightningTrainer:
         self.unsqueeze_dim = unsqueeze_dim
 
     @task_handler
-    def fit(self, train_data: Any, val_data: Any = None): 
+    def fit(self, train_data: Any, val_data: Any = None):
         """Perform the training of the model using torch Lightning.
 
         Parameters

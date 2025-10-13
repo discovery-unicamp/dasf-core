@@ -2,7 +2,7 @@
 
 import unittest
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 try:
     from dask.distributed import Client

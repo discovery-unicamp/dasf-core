@@ -10,12 +10,9 @@ import numpy as np
 
 try:
     import cupy as cp
-    import dask_cudf as dcudf
-    from rmm._cuda.gpu import CUDARuntimeError
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
-except CUDARuntimeError:
-    pass
+
 
 from dasf.utils.decorators import task_handler
 from dasf.utils.funcs import block_chunk_reduce
@@ -39,6 +36,7 @@ class Operator:
         if not hasattr(self, "_uuid"):
             self._uuid = uuid4()
         return self._uuid
+
 
 class Fit(Operator):
     """
@@ -341,10 +339,10 @@ class Transform(Operator):
 class TargeteredTransform(Transform):
     """
     Class representing a Targetered Transform operation of the pipeline.
-    
+
     This specific transform operates according the parameters of the
     constructor.
-    
+
     Parameters
     ----------
     run_local : bool
@@ -406,6 +404,26 @@ class MappedTransform(Transform):
         drop_axis=None,
         new_axis=None,
     ):
+        """
+        Initialize the MappedTransform.
+
+        Parameters
+        ----------
+        function : callable
+            A function that will be applied in a block.
+        depth : tuple, optional
+            The value of the boundary elements per axis.
+        boundary : str, optional
+            The type of the boundary. See Dask boundaries for more examples.
+        trim : bool, default=True
+            Option to trim the data after an overlap.
+        output_chunk : tuple, optional
+            New shape of the output after computing the function.
+        drop_axis : tuple, optional
+            Which axis should be deleted after computing the function.
+        new_axis : tuple, optional
+            Which axis represent a new axis after computing the function.
+        """
 
         self.function = function
         self.depth = depth
@@ -425,6 +443,23 @@ class MappedTransform(Transform):
                             "together")
 
     def __lazy_transform_generic(self, X, xp, **kwargs):
+        """
+        Generic lazy transform implementation for mapping functions.
+
+        Parameters
+        ----------
+        X : dask.array.Array or dask.dataframe.DataFrame
+            Input data to transform.
+        xp : module
+            Array module (numpy or cupy).
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        dask.array.Array or dask.dataframe.DataFrame
+            Transformed data.
+        """
         if self.drop_axis is not None or self.new_axis is not None:
             drop_axis, new_axis = self.drop_axis, self.new_axis
         else:
@@ -476,19 +511,94 @@ class MappedTransform(Transform):
         return new_data
 
     def _lazy_transform_cpu(self, X, **kwargs):
+        """
+        CPU lazy transform for mapping functions.
+
+        Parameters
+        ----------
+        X : dask.array.Array or dask.dataframe.DataFrame
+            Input data to transform.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        dask.array.Array or dask.dataframe.DataFrame
+            Transformed data.
+        """
         return self.__lazy_transform_generic(X, xp=np, **kwargs)
 
     def _lazy_transform_gpu(self, X, **kwargs):
+        """
+        GPU lazy transform for mapping functions.
+
+        Parameters
+        ----------
+        X : dask.array.Array or dask.dataframe.DataFrame
+            Input data to transform.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        dask.array.Array or dask.dataframe.DataFrame
+            Transformed data.
+        """
         return self.__lazy_transform_generic(X, xp=cp, **kwargs)
 
     def _transform_cpu(self, X, **kwargs):
+        """
+        CPU transform for mapping functions.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data to transform.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        array-like
+            Transformed data.
+        """
         return self.function(X, **kwargs)
 
     def _transform_gpu(self, X, **kwargs):
+        """
+        GPU transform for mapping functions.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data to transform.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        array-like
+            Transformed data.
+        """
         return self.function(X, **kwargs)
 
     @task_handler
     def transform(self, X, **kwargs):
+        """
+        Execute the transform operation according to the configured executor.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data to transform.
+        **kwargs
+            Additional keyword arguments passed to the transform function.
+
+        Returns
+        -------
+        Any
+            Transformed data.
+        """
         ...
 
 
@@ -512,6 +622,20 @@ class ReductionTransform(Transform):
 
     """
     def __init__(self, output_size, func_aggregate, func_chunk, func_combine=None):
+        """
+        Initialize the ReductionTransform.
+
+        Parameters
+        ----------
+        output_size : tuple
+            The size of the new output.
+        func_aggregate : callable
+            The function called to aggregate the result of each chunk.
+        func_chunk : callable
+            The function applied in each chunk.
+        func_combine : callable, optional
+            The function to combine each reduction of aggregate.
+        """
         self.output_size = output_size
 
         self.func_aggregate = func_aggregate
@@ -519,24 +643,143 @@ class ReductionTransform(Transform):
         self.func_combine = func_combine
 
     def _operation_aggregate_cpu(self, block, axis=None, keepdims=False):
+        """
+        CPU aggregation operation.
+
+        Parameters
+        ----------
+        block : array-like
+            Input block to aggregate.
+        axis : int, optional
+            Axis along which to aggregate.
+        keepdims : bool, default=False
+            Whether to keep dimensions.
+
+        Returns
+        -------
+        array-like
+            Aggregated result.
+        """
         return self.func_aggregate(block, axis, keepdims, xp=np)
 
     def _operation_aggregate_gpu(self, block, axis=None, keepdims=False):
+        """
+        GPU aggregation operation.
+
+        Parameters
+        ----------
+        block : array-like
+            Input block to aggregate.
+        axis : int, optional
+            Axis along which to aggregate.
+        keepdims : bool, default=False
+            Whether to keep dimensions.
+
+        Returns
+        -------
+        array-like
+            Aggregated result.
+        """
         return self.func_aggregate(block, axis, keepdims, xp=cp)
 
     def _operation_combine_cpu(self, block, axis=None, keepdims=False):
+        """
+        CPU combine operation.
+
+        Parameters
+        ----------
+        block : array-like
+            Input block to combine.
+        axis : int, optional
+            Axis along which to combine.
+        keepdims : bool, default=False
+            Whether to keep dimensions.
+
+        Returns
+        -------
+        array-like
+            Combined result.
+        """
         return self.func_combine(block, axis, keepdims, xp=np)
 
     def _operation_combine_gpu(self, block, axis=None, keepdims=False):
+        """
+        GPU combine operation.
+
+        Parameters
+        ----------
+        block : array-like
+            Input block to combine.
+        axis : int, optional
+            Axis along which to combine.
+        keepdims : bool, default=False
+            Whether to keep dimensions.
+
+        Returns
+        -------
+        array-like
+            Combined result.
+        """
         return self.func_combine(block, axis, keepdims, xp=cp)
 
     def _operation_chunk_cpu(self, block, axis=None, keepdims=False):
+        """
+        CPU chunk operation.
+
+        Parameters
+        ----------
+        block : array-like
+            Input block to process.
+        axis : int, optional
+            Axis along which to process.
+        keepdims : bool, default=False
+            Whether to keep dimensions.
+
+        Returns
+        -------
+        array-like
+            Processed chunk result.
+        """
         return self.func_chunk(block, axis, keepdims, xp=np)
 
     def _operation_chunk_gpu(self, block, axis=None, keepdims=False):
+        """
+        GPU chunk operation.
+
+        Parameters
+        ----------
+        block : array-like
+            Input block to process.
+        axis : int, optional
+            Axis along which to process.
+        keepdims : bool, default=False
+            Whether to keep dimensions.
+
+        Returns
+        -------
+        array-like
+            Processed chunk result.
+        """
         return self.func_chunk(block, axis, keepdims, xp=cp)
 
     def _lazy_transform_cpu(self, X, *args, **kwargs):
+        """
+        CPU lazy transform for reduction operations.
+
+        Parameters
+        ----------
+        X : dask.array.Array or dask.dataframe.DataFrame
+            Input data to reduce.
+        *args
+            Positional arguments for reduction.
+        **kwargs
+            Keyword arguments for reduction.
+
+        Returns
+        -------
+        dask.array.Array or dask.dataframe.DataFrame
+            Reduced data.
+        """
         if self.func_combine is not None:
             kwargs['combine'] = self._operation_combine_cpu
 
@@ -557,6 +800,23 @@ class ReductionTransform(Transform):
                                 **kwargs)
 
     def _lazy_transform_gpu(self, X, *args, **kwargs):
+        """
+        GPU lazy transform for reduction operations.
+
+        Parameters
+        ----------
+        X : dask.array.Array or dask.dataframe.DataFrame
+            Input data to reduce.
+        *args
+            Positional arguments for reduction.
+        **kwargs
+            Keyword arguments for reduction.
+
+        Returns
+        -------
+        dask.array.Array or dask.dataframe.DataFrame
+            Reduced data.
+        """
         if self.func_combine is not None:
             kwargs['combine'] = self._operation_combine_gpu
 
@@ -577,11 +837,62 @@ class ReductionTransform(Transform):
                                 **kwargs)
 
     def _transform_cpu(self, X, *args, **kwargs):
+        """
+        CPU transform for reduction operations.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data to reduce.
+        *args
+            Positional arguments for reduction.
+        **kwargs
+            Keyword arguments for reduction.
+
+        Returns
+        -------
+        array-like
+            Reduced data.
+        """
         return self.func_chunk(block=X, xp=np, *args, **kwargs)
 
     def _transform_gpu(self, X, *args, **kwargs):
+        """
+        GPU transform for reduction operations.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data to reduce.
+        *args
+            Positional arguments for reduction.
+        **kwargs
+            Keyword arguments for reduction.
+
+        Returns
+        -------
+        array-like
+            Reduced data.
+        """
         return self.func_chunk(block=X, xp=cp, *args, **kwargs)
 
     @task_handler
     def transform(self, X, *args, **kwargs):
+        """
+        Execute the reduction transform operation according to the configured executor.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data to reduce.
+        *args
+            Additional positional arguments passed to the reduction function.
+        **kwargs
+            Additional keyword arguments passed to the reduction function.
+
+        Returns
+        -------
+        Any
+            Reduced data result.
+        """
         ...

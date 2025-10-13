@@ -10,6 +10,10 @@ from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.funcs import is_gpu_supported
 
 try:
+    import GPUtil
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
+
     from cuml import AgglomerativeClustering as AgglomerativeClustering_GPU
 except ImportError:
     pass
@@ -112,7 +116,8 @@ class AgglomerativeClustering(ClusterClassifier):
     AgglomerativeClustering()
 
     For further informations see:
-    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html
+    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.\
+AgglomerativeClustering.html
     - https://docs.rapids.ai/api/cuml/stable/api.html#agglomerative-clustering
 
     """

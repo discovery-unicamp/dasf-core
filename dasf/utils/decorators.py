@@ -1,5 +1,6 @@
-""" Implementations of important library decorators. """
 #!/usr/bin/env python3
+""" Implementations of important library decorators. """
+
 
 from functools import wraps
 
@@ -14,7 +15,17 @@ from dasf.utils.types import is_dask_array, is_gpu_array
 
 def is_forced_local(cls):
     """
-    Returns if object is forced to run in a CPU.
+    Check if an object is forced to run locally on CPU.
+
+    Parameters
+    ----------
+    cls : object
+        The object to check for local execution forcing.
+
+    Returns
+    -------
+    bool or None
+        True if forced to run locally, False if not forced, None if attribute not set.
     """
     # pylint: disable=protected-access
     if hasattr(cls, "_run_local") and cls._run_local is not None:
@@ -110,7 +121,21 @@ def fetch_args_from_gpu(func):
 
 def task_handler(func):
     """
-    Returns all mapped functions corresponding to the executor in place.
+    Decorator that maps functions to appropriate execution contexts.
+
+    This decorator automatically selects the appropriate implementation
+    of a function based on the current execution context (local vs distributed,
+    CPU vs GPU) and available backends.
+
+    Parameters
+    ----------
+    func : callable
+        The function to wrap with task handling logic.
+
+    Returns
+    -------
+    callable
+        The wrapped function that will dispatch to the appropriate implementation.
     """
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -123,11 +148,13 @@ def task_handler(func):
         func_type = ""
         arch = "cpu"
         client = get_dask_running_client()
-        if client is not None: # Runs task according to current client configuration, i.e, Pipeline Executor
+        # Runs task according to current client configuration, i.e, Pipeline Executor
+        if client is not None:
             func_type = "_lazy"
             arch = "gpu" if getattr(client, "backend", None) == "cupy" else "cpu"
         else:
-            if not is_forced_local(cls) and (is_dask_gpu_supported() or is_dask_supported()):
+            if (not is_forced_local(cls) and
+               (is_dask_gpu_supported() or is_dask_supported())):
                 func_type = "_lazy"
             if is_dask_gpu_supported() or is_gpu_supported():
                 arch = "gpu"
@@ -135,9 +162,9 @@ def task_handler(func):
         if is_forced_local(cls):
             func_type = ""
             new_args, kwargs = fetch_from_dask(*new_args, **kwargs)
-        
+
         if is_forced_gpu(cls):
-                arch = "gpu"
+            arch = "gpu"
 
         if arch == "cpu":
             new_args, kwargs = fetch_from_gpu(*new_args, **kwargs)
@@ -148,7 +175,7 @@ def task_handler(func):
            hasattr(cls, func_name)):
             return func(*new_args, **kwargs)
         if (not hasattr(cls, wrapper_func_attr) and
-              not hasattr(cls, func_name)):
+           not hasattr(cls, func_name)):
             raise NotImplementedError(
                 f"There is no implementation of {wrapper_func_attr} nor "
                 f"{func_name}"

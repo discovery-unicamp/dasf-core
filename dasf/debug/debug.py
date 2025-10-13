@@ -3,7 +3,7 @@
 """ Debug DASF module. """
 
 from IPython.core.display import HTML as iHTML
-from IPython.core.display import display as idisplay
+from IPython.core.display import display_html as idisplay
 
 from dasf.utils.funcs import is_notebook
 from dasf.utils.types import is_dask_array, is_dask_dataframe
@@ -35,7 +35,7 @@ class Debug:
             Same input data without any transformation.
         """
         if (is_dask_array(X) or is_dask_dataframe(X)) and is_notebook():
-            idisplay(iHTML(X._repr_html_()))
+            idisplay(iHTML(X._repr_html_()), raw=True)
         else:
             if hasattr(X, "shape"):
                 print("Datashape is:", X.shape)

@@ -3,29 +3,22 @@
 """ Module representing all types of dataset generators. """
 
 from dask_ml.datasets import make_blobs as make_blobs_MCPU
-from sklearn.datasets import make_blobs as make_blobs_CPU
-
-try:
-    import cupy as cp
-    from cuml.dask.datasets import make_blobs as make_blobs_MGPU
-    from cuml.datasets import make_blobs as make_blobs_GPU
-except ImportError:  # pragma: no cover
-    pass
-
 from dask_ml.datasets import make_classification as make_classification_MCPU
-from sklearn.datasets import make_classification as make_classification_CPU
-
-try:
-    from cuml.dask.datasets import make_classification as make_classification_MGPU
-    from cuml.datasets import make_classification as make_classification_GPU
-except ImportError:  # pragma: no cover
-    pass
-
 from dask_ml.datasets import make_regression as make_regression_MCPU
+from sklearn.datasets import make_blobs as make_blobs_CPU
+from sklearn.datasets import make_classification as make_classification_CPU
 from sklearn.datasets import make_regression as make_regression_CPU
 
 try:
+    import GPUtil
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
+    import cupy as cp
+    from cuml.dask.datasets import make_blobs as make_blobs_MGPU
+    from cuml.dask.datasets import make_classification as make_classification_MGPU
     from cuml.dask.datasets import make_regression as make_regression_MGPU
+    from cuml.datasets import make_blobs as make_blobs_GPU
+    from cuml.datasets import make_classification as make_classification_GPU
     from cuml.datasets import make_regression as make_regression_GPU
 except ImportError:  # pragma: no cover
     pass
@@ -115,6 +108,18 @@ class make_blobs:
     array([0, 1, 2, 0, 2, 2, 2, 1, 1, 0])
     """
     def __new__(cls, **kwargs):
+        """Create a new instance of make_blobs.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to the make_blobs function.
+
+        Returns
+        -------
+        make_blobs or result
+            Either a make_blobs instance or the result of calling it.
+        """
         instance = super().__new__(cls)
         if kwargs is None:
             return instance
@@ -122,18 +127,82 @@ class make_blobs:
             return instance(**kwargs)
 
     def _lazy_make_blobs_cpu(self, **kwargs):
+        """Generate blobs using lazy CPU computation with Dask.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to dask_ml make_blobs.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         return make_blobs_MCPU(**kwargs)
 
     def _lazy_make_blobs_gpu(self, **kwargs):
+        """Generate blobs using lazy GPU computation with Dask.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to cuML Dask make_blobs.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         return make_blobs_MGPU(**kwargs)
 
     def _make_blobs_cpu(self, **kwargs):
+        """Generate blobs using CPU computation.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to sklearn make_blobs.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         return make_blobs_CPU(**kwargs)
 
     def _make_blobs_gpu(self, **kwargs):
+        """Generate blobs using GPU computation.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to cuML make_blobs.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         return make_blobs_GPU(**kwargs)
 
     def __call__(self, **kwargs):
+        """Generate isotropic Gaussian blobs for clustering.
+
+        Automatically selects the best available backend (GPU/CPU, Dask/single-node)
+        based on system capabilities.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to the underlying make_blobs implementation.
+            See class docstring for parameter details.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         if is_dask_gpu_supported():
             if "centers" in kwargs and is_cpu_array(kwargs["centers"]):
                 kwargs["centers"] = cp.asarray(kwargs["centers"])
@@ -280,6 +349,18 @@ class make_classification:
     [0, 0, 1, 1, 0]
     """
     def __new__(cls, **kwargs):
+        """Create a new instance of make_classification.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to the make_classification function.
+
+        Returns
+        -------
+        make_classification or result
+            Either a make_classification instance or the result of calling it.
+        """
         instance = super().__new__(cls)
         if kwargs is None:
             return instance
@@ -287,18 +368,82 @@ class make_classification:
             return instance(**kwargs)
 
     def _lazy_make_classification_cpu(self, **kwargs):
+        """Generate classification data using lazy CPU computation with Dask.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to dask_ml make_classification.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         return make_classification_MCPU(**kwargs)
 
     def _lazy_make_classification_gpu(self, **kwargs):
+        """Generate classification data using lazy GPU computation with Dask.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to cuML Dask make_classification.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         return make_classification_MGPU(**kwargs)
 
     def _make_classification_cpu(self, **kwargs):
+        """Generate classification data using CPU computation.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to sklearn make_classification.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         return make_classification_CPU(**kwargs)
 
     def _make_classification_gpu(self, **kwargs):
+        """Generate classification data using GPU computation.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to cuML make_classification.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         return make_classification_GPU(**kwargs)
 
     def __call__(self, **kwargs):
+        """Generate a random n-class classification problem.
+
+        Automatically selects the best available backend (GPU/CPU, Dask/single-node)
+        based on system capabilities.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to the underlying make_classification implementation.
+            See class docstring for parameter details.
+
+        Returns
+        -------
+        tuple
+            Generated samples and labels.
+        """
         if is_dask_gpu_supported():
             return self._lazy_make_classification_gpu(**kwargs)
         elif is_dask_supported():
@@ -397,6 +542,18 @@ class make_regression:
     array([  6.737...,  37.79..., -10.27...,   0.4017...,   42.22...])
     """
     def __new__(cls, **kwargs):
+        """Create a new instance of make_regression.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to the make_regression function.
+
+        Returns
+        -------
+        make_regression or result
+            Either a make_regression instance or the result of calling it.
+        """
         instance = super().__new__(cls)
         if kwargs is None:
             return instance
@@ -404,18 +561,82 @@ class make_regression:
             return instance(**kwargs)
 
     def _lazy_make_regression_cpu(self, **kwargs):
+        """Generate regression data using lazy CPU computation with Dask.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to dask_ml make_regression.
+
+        Returns
+        -------
+        tuple
+            Generated samples and target values.
+        """
         return make_regression_MCPU(**kwargs)
 
     def _lazy_make_regression_gpu(self, **kwargs):
+        """Generate regression data using lazy GPU computation with Dask.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to cuML Dask make_regression.
+
+        Returns
+        -------
+        tuple
+            Generated samples and target values.
+        """
         return make_regression_MGPU(**kwargs)
 
     def _make_regression_cpu(self, **kwargs):
+        """Generate regression data using CPU computation.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to sklearn make_regression.
+
+        Returns
+        -------
+        tuple
+            Generated samples and target values.
+        """
         return make_regression_CPU(**kwargs)
 
     def _make_regression_gpu(self, **kwargs):
+        """Generate regression data using GPU computation.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to cuML make_regression.
+
+        Returns
+        -------
+        tuple
+            Generated samples and target values.
+        """
         return make_regression_GPU(**kwargs)
 
     def __call__(self, **kwargs):
+        """Generate a random regression problem.
+
+        Automatically selects the best available backend (GPU/CPU, Dask/single-node)
+        based on system capabilities.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments passed to the underlying make_regression implementation.
+            See class docstring for parameter details.
+
+        Returns
+        -------
+        tuple
+            Generated samples and target values.
+        """
         if is_dask_gpu_supported():
             return self._lazy_make_regression_gpu(**kwargs)
         elif is_dask_supported():

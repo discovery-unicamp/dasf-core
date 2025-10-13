@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+""" Init module for feature extraction functions. """
+
 from dasf.feature_extraction.histogram import Histogram  # noqa
 
 # from dasf.feature_extraction.transform import ConcatenateToDataframe  # noqa

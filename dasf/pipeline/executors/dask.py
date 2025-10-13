@@ -7,6 +7,7 @@ from typing import Union
 try:
     import cupy as cp
     import rmm
+    from rmm.allocators.cupy import rmm_cupy_allocator
 except ImportError:  # pragma: no cover
     pass
 
@@ -35,6 +36,24 @@ from dasf.utils.funcs import (
 
 
 def setup_dask_protocol(protocol=None):
+    """
+    Setup the Dask protocol.
+
+    Parameters
+    ----------
+    protocol : str, optional
+        The protocol to use. (default is None)
+
+    Returns
+    -------
+    str
+        The protocol to use.
+
+    Raises
+    ------
+    ValueError
+        If the protocol is not supported.
+    """
     if protocol is None or protocol == "tcp":
         return "tcp://"
 
@@ -48,20 +67,30 @@ class DaskPipelineExecutor(Executor):
     """
     A pipeline engine based on dask data flow.
 
-    Keyword arguments:
-    address -- address of the Dask scheduler (default None).
-    port -- port of the Dask scheduler (default 8786).
-    local -- kicks off a new local Dask cluster (default False).
-    use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
-                cluster (default False).
-    profiler -- sets a Dask profiler.
-    protocol -- sets the Dask protocol (default TCP)
-    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
-    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
-    client_kwargs -- extra Client parameters.
+    Parameters
+    ----------
+    address : str, optional
+        Address of the Dask scheduler (default is None).
+    port : int, optional
+        Port of the Dask scheduler (default is 8786).
+    local : bool, optional
+        Kicks off a new local Dask cluster (default is False).
+    use_gpu : bool, optional
+        In conjunction with `local`, it kicks off a local CUDA Dask
+        cluster (default is False).
+    profiler : str, optional
+        Sets a Dask profiler.
+    protocol : str, optional
+        Sets the Dask protocol (default is TCP)
+    gpu_allocator : str, optional
+        Sets which is the memory allocator for GPU (default is cupy).
+    cluster_kwargs : dict, optional
+        Extra Dask parameters like memory, processes, etc.
+    client_kwargs : dict, optional
+        Extra Client parameters.
     """
 
-    def __init__(
+    def __init__(  # noqa: C901
         self,
         address=None,
         port=8786,
@@ -73,6 +102,34 @@ class DaskPipelineExecutor(Executor):
         cluster_kwargs=None,
         client_kwargs=None,
     ):
+        """
+        Constructor of the DaskPipelineExecutor.
+
+        Initializes a Dask-based pipeline executor that can connect to
+        existing clusters or create local clusters with CPU or GPU support.
+
+        Parameters
+        ----------
+        address : str, optional
+            Address of the Dask scheduler (default is None).
+        port : int, optional
+            Port of the Dask scheduler (default is 8786).
+        local : bool, optional
+            Kicks off a new local Dask cluster (default is False).
+        use_gpu : bool, optional
+            In conjunction with `local`, it kicks off a local CUDA Dask
+            cluster (default is False).
+        profiler : str, optional
+            Sets a Dask profiler.
+        protocol : str, optional
+            Sets the Dask protocol (default is TCP).
+        gpu_allocator : str, optional
+            Sets which is the memory allocator for GPU (default is cupy).
+        cluster_kwargs : dict, optional
+            Extra Dask parameters like memory, processes, etc.
+        client_kwargs : dict, optional
+            Extra Client parameters.
+        """
         self.address = address
         self.port = port
 
@@ -98,7 +155,6 @@ class DaskPipelineExecutor(Executor):
                 )
             else:
                 # This avoids initializing workers on GPU:0 when available
-                os.environ["CUDA_VISIBLE_DEVICES"] = ""
                 self.client = Client(LocalCluster(**cluster_kwargs),
                                      **client_kwargs)
 
@@ -114,9 +170,9 @@ class DaskPipelineExecutor(Executor):
                     # Nothing is required yet.
                     pass
                 elif gpu_allocator == "rmm" and is_gpu_supported():
-                    self.client.run(cp.cuda.set_allocator, rmm.rmm_cupy_allocator)
+                    self.client.run(cp.cuda.set_allocator, rmm_cupy_allocator)
                     rmm.reinitialize(managed_memory=True)
-                    cp.cuda.set_allocator(rmm.rmm_cupy_allocator)
+                    cp.cuda.set_allocator(rmm_cupy_allocator)
                 else:
                     raise ValueError(f"'{gpu_allocator}' GPU Memory allocator is not "
                                      "known")
@@ -148,51 +204,85 @@ class DaskPipelineExecutor(Executor):
 
     @property
     def ngpus(self) -> int:
+        """Returns the number of GPUs available in the cluster."""
         return get_dask_gpu_count()
 
     @property
     def is_connected(self) -> bool:
+        """Returns true if the executor is connected to a backend."""
         if "running" in self.client.status:
             return True
         return False
 
     @property
     def info(self) -> str:
+        """Returns a string with the executor information."""
+        info = ""
         if self.is_connected:
-            print("Executor is connected!")
+            info += "Executor is connected!\n"
         else:
-            print("Executor not is connected!")
+            info += "Executor is not connected!\n"
 
-        print(f"Executor Type: {executor_to_string(self.dtype)}")
-        print(f"Executor Backend: {self.client.backend}")
+        info += f"Executor Type: {executor_to_string(self.dtype)}\n"
+        info += f"Executor Backend: {self.client.backend}\n"
 
         if self.is_connected and self.ngpus > 0:
-            print(f"With {self.ngpus} GPUs")
+            info += f"With {self.ngpus} GPUs\n"
 
-            print("Available GPUs:")
+            info += "Available GPUs:\n"
             for gpu_name in list(set(get_dask_gpu_names())):
-                print(f"- {gpu_name}")
+                info += f"- {gpu_name}\n"
+        return info
 
     def execute(self, fn, *args, **kwargs):
+        """Executes a function in the executor.
+
+        Parameters
+        ----------
+        fn : function
+            The function to be executed.
+        args : list
+            The arguments of the function.
+        kwargs : dict
+            The keyword arguments of the function.
+        """
         return fn(*args, **kwargs)
 
     def register_plugin(self, plugin: Union[WorkerPlugin,
                                             NannyPlugin]):
+        """Registers a plugin in the executor.
+
+        Parameters
+        ----------
+        plugin : Union[WorkerPlugin, NannyPlugin]
+            The plugin to be registered.
+        """
         if isinstance(plugin, WorkerPlugin):
             self.client.register_worker_plugin(plugin)
         elif isinstance(plugin, NannyPlugin):
             self.client.register_worker_plugin(plugin, nanny=True)
 
     def register_dataset(self, **kwargs):
+        """Registers a dataset in the executor."""
         self.client.publish_dataset(**kwargs)
 
     def has_dataset(self, key):
+        """Returns true if a dataset is registered in the executor."""
         return key in self.client.list_datasets()
 
     def get_dataset(self, key):
+        """Gets a dataset from the executor."""
         return self.client.get_dataset(name=key)
 
     def shutdown(self, gracefully=True):
+        """Shutdowns the executor.
+
+        Parameters
+        ----------
+        gracefully : bool, optional
+            If true, it will try to shutdown the executor gracefully.
+            (default is True)
+        """
         if gracefully:
             info = get_worker_info(self.client)
 
@@ -206,6 +296,7 @@ class DaskPipelineExecutor(Executor):
             self.client.shutdown()
 
     def close(self):
+        """Closes the executor."""
         self.client.close()
 
 
@@ -213,16 +304,25 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
     """
     A not centric execution engine based on dask.
 
-    Keyword arguments:
-    address -- address of the Dask scheduler (default None).
-    port -- port of the Dask scheduler (default 8786).
-    local -- kicks off a new local Dask cluster (default False).
-    use_gpu -- in conjunction with `local`, it kicks off a local CUDA Dask
-                cluster (default False).
-    profiler -- sets a Dask profiler.
-    gpu_allocator -- sets which is the memory allocator for GPU (default cupy).
-    cluster_kwargs -- extra Dask parameters like memory, processes, etc.
-    client_kwargs -- extra Client parameters.
+    Parameters
+    ----------
+    address : str, optional
+        Address of the Dask scheduler (default is None).
+    port : int, optional
+        Port of the Dask scheduler (default is 8786).
+    local : bool, optional
+        Kicks off a new local Dask cluster (default is False).
+    use_gpu : bool, optional
+        In conjunction with `local`, it kicks off a local CUDA Dask
+        cluster (default is False).
+    profiler : str, optional
+        Sets a Dask profiler.
+    gpu_allocator : str, optional
+        Sets which is the memory allocator for GPU (default is cupy).
+    cluster_kwargs : dict, optional
+        Extra Dask parameters like memory, processes, etc.
+    client_kwargs : dict, optional
+        Extra Client parameters.
     """
     def __init__(
         self,
@@ -236,7 +336,34 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         cluster_kwargs=None,
         client_kwargs=None,
     ):
+        """
+        Constructor of the DaskTasksPipelineExecutor.
 
+        Initializes a task-specific Dask executor that distributes individual
+        tasks across workers rather than using centralized data management.
+
+        Parameters
+        ----------
+        address : str, optional
+            Address of the Dask scheduler (default is None).
+        port : int, optional
+            Port of the Dask scheduler (default is 8786).
+        local : bool, optional
+            Kicks off a new local Dask cluster (default is False).
+        use_gpu : bool, optional
+            In conjunction with `local`, it kicks off a local CUDA Dask
+            cluster (default is True).
+        profiler : str, optional
+            Sets a Dask profiler.
+        protocol : str, optional
+            Sets the Dask protocol.
+        gpu_allocator : str, optional
+            Sets which is the memory allocator for GPU (default is cupy).
+        cluster_kwargs : dict, optional
+            Extra Dask parameters like memory, processes, etc.
+        client_kwargs : dict, optional
+            Extra Client parameters.
+        """
         super().__init__(
             address=address,
             port=port,
@@ -264,6 +391,13 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         self._tasks_map = dict()
 
     def pre_run(self, pipeline):
+        """Executes before the pipeline starts.
+
+        Parameters
+        ----------
+        pipeline : Pipeline
+            The pipeline to be executed.
+        """
         nodes = list(nx.topological_sort(pipeline._dag))
 
         # TODO: we need to consider other branches for complex pipelines
@@ -289,9 +423,27 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
                 worker_idx += 1
 
     def post_run(self, pipeline):
+        """Executes after the pipeline finishes.
+
+        Parameters
+        ----------
+        pipeline : Pipeline
+            The pipeline that was executed.
+        """
         pass
 
     def execute(self, fn, *args, **kwargs):
+        """Executes a function in the executor.
+
+        Parameters
+        ----------
+        fn : function
+            The function to be executed.
+        args : list
+            The arguments of the function.
+        kwargs : dict
+            The keyword arguments of the function.
+        """
         key = hash(fn)
 
         worker = self._tasks_map[key]["worker"]
@@ -299,15 +451,26 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
         return self.client.submit(fn, *args, **kwargs, workers=[worker])
 
     def register_dataset(self, **kwargs):
+        """Registers a dataset in the executor."""
         self.client.publish_dataset(**kwargs)
 
     def has_dataset(self, key):
+        """Returns true if a dataset is registered in the executor."""
         return key in self.client.list_datasets()
 
     def get_dataset(self, key):
+        """Gets a dataset from the executor."""
         return self.client.get_dataset(name=key)
 
     def shutdown(self, gracefully=True):
+        """Shutdowns the executor.
+
+        Parameters
+        ----------
+        gracefully : bool, optional
+            If true, it will try to shutdown the executor gracefully.
+            (default is True)
+        """
         if gracefully:
             info = get_worker_info(self.client)
 
@@ -321,11 +484,31 @@ class DaskTasksPipelineExecutor(DaskPipelineExecutor):
             self.client.shutdown()
 
     def close(self):
+        """Closes the executor."""
         self.client.close()
 
 
 class DaskPBSPipelineExecutor(Executor):
+    """A PBS-based execution engine based on dask.
+
+    Parameters
+    ----------
+    kwargs : dict
+        The arguments to be passed to the PBSCluster.
+    """
     def __init__(self, **kwargs):
+        """
+        Constructor of the DaskPBSPipelineExecutor.
+
+        Initializes a PBS (Portable Batch System) based Dask executor
+        for running pipelines on HPC clusters.
+
+        Parameters
+        ----------
+        **kwargs
+            Arguments to be passed to the PBSCluster constructor.
+            See dask_jobqueue.PBSCluster documentation for available options.
+        """
         self.client = Client(PBSCluster(**kwargs))
 
         # Ask workers for GPUs

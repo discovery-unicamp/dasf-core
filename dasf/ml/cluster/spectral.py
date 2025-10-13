@@ -144,7 +144,8 @@ class SpectralClustering(ClusterClassifier):
         random_state=0)
 
     For further informations see:
-    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering
+    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.\
+SpectralClustering.html#sklearn.cluster.SpectralClustering
     - https://ml.dask.org/modules/generated/dask_ml.cluster.SpectralClustering.html
 
     Notes

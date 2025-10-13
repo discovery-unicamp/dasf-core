@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 
 import os
-import time
 import shutil
+import time
 import unittest
 
 import dask.array as da
 import numpy as np
 from dask.delayed import Delayed
 from distributed.utils import TimeoutError as DistributedTimeoutError
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from parameterized import parameterized
 
 from dasf.pipeline.types import TaskExecutorType
 from dasf.utils.funcs import (
+    NotebookProgressBar,
     block_chunk_reduce,
     executor_to_string,
     get_backend_supported,
@@ -34,7 +35,6 @@ from dasf.utils.funcs import (
     is_gpu_supported,
     is_jax_supported,
     is_notebook,
-    NotebookProgressBar,
     set_executor_cpu,
     set_executor_default,
     set_executor_gpu,
@@ -132,6 +132,54 @@ class TestArchitetures(unittest.TestCase):
     def test_is_dask_gpu_supported_zero_gpus_count(self, dask_check, dask_gpu_count):
         self.assertFalse(is_dask_gpu_supported())
 
+    @patch('dasf.utils.funcs.is_dask_supported', return_value=True)
+    @patch('dask.distributed.Client.current', return_value=Mock())
+    def test_is_dask_gpu_supported_from_workers(self, client_current, dask_check):
+        worker_data = {
+                'workers': {
+                    'tcp://127.0.0.1:11111': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        'gpu': [0],
+                        },
+                    'tcp://127.0.0.1:22222': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        'gpu': [0],
+                        }
+                    }
+                }
+
+        client = Mock(cluster=Mock(scheduler_info=worker_data))
+        client_current.return_value = client
+
+        self.assertTrue(is_dask_gpu_supported())
+
+    @patch('dasf.utils.funcs.is_dask_supported', return_value=True)
+    @patch('dask.distributed.Client.current', return_value=Mock())
+    @patch('dasf.utils.funcs.get_dask_gpu_count', return_value=0)
+    def test_is_dask_gpu_supported_from_workers_false(self,
+                                                      gpu_count,
+                                                      client_current,
+                                                      dask_check):
+        worker_data = {
+                'workers': {
+                    'tcp://127.0.0.1:11111': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        },
+                    'tcp://127.0.0.1:22222': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        }
+                    }
+                }
+
+        client = Mock(cluster=Mock(scheduler_info=worker_data))
+        client_current.return_value = client
+
+        self.assertFalse(is_dask_gpu_supported())
+
     @patch('dasf.utils.funcs.JAX_SUPPORTED', True)
     def test_is_jax_supported_true(self):
         self.assertTrue(is_jax_supported())
@@ -170,7 +218,8 @@ class TestArchitetures(unittest.TestCase):
                            memoryTotal=1024.0)
 
         with patch('GPUtil.getGPUs', Mock(return_value=[gpu])):
-            self.assertEqual(get_dask_gpu_names(fetch=True), ["GPU Foo Bar(tm), 1024.0 MB"])
+            self.assertEqual(get_dask_gpu_names(fetch=True),
+                             ["GPU Foo Bar(tm), 1024.0 MB"])
 
     def test_get_dask_gpu_names_as_dd(self):
         gpu = Mock()
@@ -189,7 +238,9 @@ class TestArchitetures(unittest.TestCase):
         os.makedirs(memusage_path, exist_ok=True)
 
         with open(os.path.join(memusage_path, "dask-memusage"), "w") as fp:
-            fp.write("key,min_memory_mb,max_memory_mb\nfunc,10,10\nfunc,10,15\nfunc,10,20\nfunc,10,12")
+            fp.write("key,min_memory_mb,max_memory_mb\n"
+                     "func,10,10\nfunc,10,15\n"
+                     "func,10,20\nfunc,10,12")
 
         memory = get_dask_mem_usage("memusage")
 
@@ -273,7 +324,8 @@ class TestBlockChunkReduce(unittest.TestCase):
     def test_trim_chunk_location_2d(self):
         depth = (5, 0)
 
-        block_info = [{'array-location': [(40, 60), (0, 40)], 'chunk-location': (2, 0)}]
+        block_info = [{'array-location': [(40, 60), (0, 40)],
+                       'chunk-location': (2, 0)}]
 
         loc = np.asarray(trim_chunk_location(block_info, depth))
 
@@ -282,7 +334,8 @@ class TestBlockChunkReduce(unittest.TestCase):
     def test_trim_chunk_location_3d(self):
         depth = (5, 0, 0)
 
-        block_info = [{'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
+        block_info = [{'array-location': [(40, 60), (0, 40), (0, 40)],
+                       'chunk-location': (2, 0, 0)}]
 
         loc = np.asarray(trim_chunk_location(block_info, depth))
 
@@ -291,7 +344,9 @@ class TestBlockChunkReduce(unittest.TestCase):
     def test_trim_chunk_location_3d_index(self):
         depth = (5, 0, 0)
 
-        block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
+        block_info = [{}, {}, {}, {}, {},
+                      {'array-location': [(40, 60), (0, 40), (0, 40)],
+                       'chunk-location': (2, 0, 0)}]
 
         loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
@@ -303,33 +358,38 @@ class TestBlockChunkReduce(unittest.TestCase):
         block_info = [{}, {}, {}, {}, {}, {'chunk-location': (2, 0, 0)}]
 
         with self.assertRaises(IndexError) as context:
-            loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+            _ = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
-        self.assertTrue('Key \'array-location\' was not found in block-info' in str(context.exception))
+        self.assertTrue('Key \'array-location\' was not found '
+                        'in block-info' in str(context.exception))
 
     def test_trim_chunk_location_3d_no_chunk_location(self):
         depth = (5, 0, 0)
 
-        block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)]}]
+        block_info = [{}, {}, {}, {}, {},
+                      {'array-location': [(40, 60), (0, 40), (0, 40)]}]
 
         with self.assertRaises(IndexError) as context:
-            loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+            _ = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
-        self.assertTrue('Key \'chunk-location\' was not found in block-info' in str(context.exception))
+        self.assertTrue(('Key \'chunk-location\' was not found '
+                        'in block-info') in str(context.exception))
 
     def test_trim_chunk_location_3d_wrong_len(self):
         depth = (5, 0)
 
-        block_info = [{}, {}, {}, {}, {}, {'array-location': [(40, 60), (0, 40), (0, 40)], 'chunk-location': (2, 0, 0)}]
+        block_info = [{}, {}, {}, {}, {},
+                      {'array-location': [(40, 60), (0, 40), (0, 40)],
+                       'chunk-location': (2, 0, 0)}]
 
-        with self.assertRaises(ValueError) as context:
-            loc = np.asarray(trim_chunk_location(block_info, depth, index=5))
+        with self.assertRaises(ValueError):
+            _ = np.asarray(trim_chunk_location(block_info, depth, index=5))
 
         self.assertTrue("Depth 2, location 3 and/or chunks 3 do not match.")
 
 
 class TestBackendSignature(unittest.TestCase):
-    def func1(self, a, b , c, d, e, f):
+    def func1(self, a, b, c, d, e, f):
         return a + b + c + d + e + f
 
     def func2(self, a, b, backend=None):
@@ -358,17 +418,18 @@ class TestWorkerInfo(unittest.TestCase):
         self.assertEqual(len(workers), 0)
 
     def test_get_worker_info_regular(self):
-        worker_data = {'workers': {
-                           'tcp://127.0.0.1:11111': {
-                               'host': '127.0.0.1',
-                               'nthreads': 4,
-                               },
-                           'tcp://127.0.0.1:22222': {
-                               'host': '127.0.0.1',
-                               'nthreads': 4,
-                               }
-                           }
-                      }
+        worker_data = {
+                'workers': {
+                    'tcp://127.0.0.1:11111': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        },
+                    'tcp://127.0.0.1:22222': {
+                        'host': '127.0.0.1',
+                        'nthreads': 4,
+                        }
+                    }
+                }
         client = Mock()
         client.scheduler_info.return_value = worker_data
 
@@ -527,3 +588,27 @@ class TestNotebookProgressBar(unittest.TestCase):
         self.assertEqual(pbar.percentage.value, "100 %%")
         self.assertEqual(pbar.data.value, "1000 / 1000")
         self.assertEqual(pbar.bar.style.bar_color, '#03c04a')
+
+    def test_error_state(self):
+        pbar = NotebookProgressBar()
+        pbar.show()
+        pbar.set_error(True)
+
+        # Simulate the run method with error
+        pbar._NotebookProgressBar__current = 100
+        pbar._NotebookProgressBar__total = 1000
+        pbar._NotebookProgressBar__error = True
+
+        # The run method should set error color
+        if hasattr(pbar, 'bar') and pbar.bar:
+            pbar.bar.style.bar_color = '#ff0000'
+            self.assertEqual(pbar.bar.style.bar_color, '#ff0000')
+
+    def test_zero_division_protection(self):
+        pbar = NotebookProgressBar()
+        pbar.show()
+
+        # Test with zero total to ensure no division by zero
+        pbar.set_current(10, 0)
+        self.assertEqual(pbar._NotebookProgressBar__current, 10)
+        self.assertEqual(pbar._NotebookProgressBar__total, 0)

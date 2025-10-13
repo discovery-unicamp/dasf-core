@@ -1,5 +1,6 @@
-""" Dask Cluster Environment executor for PyTorch module. """
 #!/usr/bin/env python
+
+""" Dask Cluster Environment executor for PyTorch module. """
 
 import os
 
@@ -28,7 +29,6 @@ class DaskClusterEnvironment(ClusterEnvironment):
 
     def detect(self) -> bool:
         """Detect if important data are present into metadata dictionary.
-        
         Returns
         -------
         bool : if they are present or not.

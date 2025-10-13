@@ -7,7 +7,7 @@ import numpy as np
 from parameterized import parameterized_class
 from pytest import fixture
 
-from dasf.datasets import (
+from dasf.datasets import (  # noqa: F401
     DatasetArray,
     DatasetDataFrame,
     DatasetHDF5,
@@ -22,16 +22,34 @@ from dasf.utils.funcs import is_gpu_supported
 
 def parameterize_dataset_type():
     datasets = [
-        {"name": "Array", "cls": "DatasetArray", "file": "Array.npy", "extra_args": {}},
-        {"name": "Zarr", "cls": "DatasetZarr", "file": "Zarr.zarr", "extra_args": {}},
-        {"name": "HDF5", "cls": "DatasetHDF5", "file": "HDF5.h5", "extra_args": {"dataset_path": "dataset"}},
-        {"name": "Xarray", "cls": "DatasetXarray", "file": "Xarray.nc", "extra_args": {"chunks": {"x": 10, "y": 10, "z": 10}}},
-        {"name": "DataFrame", "cls": "DatasetDataFrame", "file": "DataFrame.csv", "extra_args": {}},
-        {"name": "Parquet", "cls": "DatasetParquet", "file": "Parquet.parquet", "extra_args": {}},
+        {"name": "Array",
+         "cls": "DatasetArray",
+         "file": "Array.npy",
+         "extra_args": {}},
+        {"name": "Zarr",
+         "cls": "DatasetZarr",
+         "file": "Zarr.zarr",
+         "extra_args": {}},
+        {"name": "HDF5",
+         "cls": "DatasetHDF5",
+         "file": "HDF5.h5",
+         "extra_args": {"dataset_path": "dataset"}},
+        {"name": "Xarray",
+         "cls": "DatasetXarray",
+         "file": "Xarray.nc",
+         "extra_args": {"chunks": {"x": 10, "y": 10, "z": 10}}},
+        {"name": "DataFrame",
+         "cls": "DatasetDataFrame",
+         "file": "DataFrame.csv",
+         "extra_args": {}},
+        {"name": "Parquet",
+         "cls": "DatasetParquet",
+         "file": "Parquet.parquet",
+         "extra_args": {}},
     ]
-    
+
     return datasets
-    
+
 
 @parameterized_class(parameterize_dataset_type())
 class TestTypes(unittest.TestCase):
@@ -39,13 +57,51 @@ class TestTypes(unittest.TestCase):
     def data_dir(self, request):
         filename = request.module.__file__
         self.test_dir, _ = os.path.splitext(filename)
-        
-    def test_dataset_load(self):
+
+    def test_dataset_load_cpu(self):
         raw_path = os.path.join(self.test_dir, "simple",
                                 self.file)
-                                
-        dataset = eval(self.cls)(name=self.name, root=raw_path, download=False, **self.extra_args)
-        dataset.load()
+
+        dataset = eval(self.cls)(name=self.name, root=raw_path,
+                                 download=False, **self.extra_args)
+        dataset._load_cpu()
+
+        self.assertTrue(hasattr(dataset, '_metadata'))
+        self.assertTrue("size" in dataset._metadata)
+
+    def test_dataset_lazy_load_cpu(self):
+        raw_path = os.path.join(self.test_dir, "simple",
+                                self.file)
+
+        dataset = eval(self.cls)(name=self.name, root=raw_path,
+                                 download=False, **self.extra_args)
+        dataset._lazy_load_cpu()
+
+        self.assertTrue(hasattr(dataset, '_metadata'))
+        self.assertTrue("size" in dataset._metadata)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_dataset_load_gpu(self):
+        raw_path = os.path.join(self.test_dir, "simple",
+                                self.file)
+
+        dataset = eval(self.cls)(name=self.name, root=raw_path,
+                                 download=False, **self.extra_args)
+        dataset._load_gpu()
+
+        self.assertTrue(hasattr(dataset, '_metadata'))
+        self.assertTrue("size" in dataset._metadata)
+
+    @unittest.skipIf(not is_gpu_supported(),
+                     "not supported CUDA in this platform")
+    def test_dataset_lazy_load_gpu(self):
+        raw_path = os.path.join(self.test_dir, "simple",
+                                self.file)
+
+        dataset = eval(self.cls)(name=self.name, root=raw_path,
+                                 download=False, **self.extra_args)
+        dataset._lazy_load_gpu()
 
         self.assertTrue(hasattr(dataset, '_metadata'))
         self.assertTrue("size" in dataset._metadata)
@@ -176,7 +232,7 @@ class TestDatasetArray(unittest.TestCase):
         extract = ExtractData()
 
         with self.assertRaises(ValueError) as context:
-            data = extract.transform(X=dataset)
+            _ = extract.transform(X=dataset)
 
             self.assertTrue('Data could not be extracted.' in str(context.exception))
 

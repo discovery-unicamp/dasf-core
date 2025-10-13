@@ -1,3 +1,4 @@
+---
 name: PyPi Automatic Upload
 
 on:
@@ -9,6 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: pypi_upload
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - name: Generate artifacts
@@ -19,4 +23,6 @@ jobs:
           poetry build
       - name: Upload artifacts
         run: |
-          twine upload --repository ${{ vars.PYPI_REPOSITORY }} -u ${{ secrets.PYPI_USER }} -p ${{ secrets.PYPI_TOKEN }} dist/*
+          twine upload --repository ${{ vars.PYPI_REPOSITORY }} \
+                       -u ${{ secrets.PYPI_USER }} \
+                       -p ${{ secrets.PYPI_TOKEN }} dist/*

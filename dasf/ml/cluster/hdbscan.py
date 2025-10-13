@@ -8,6 +8,10 @@ from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.funcs import is_gpu_supported
 
 try:
+    import GPUtil
+    if len(GPUtil.getGPUs()) == 0:  # check if GPU are available in current env
+        raise ImportError("There is no GPU available here")
+
     from cuml.cluster import HDBSCAN as HDBSCAN_GPU
 except ImportError:
     pass
@@ -152,7 +156,8 @@ class HDBSCAN(ClusterClassifier):
     HDBSCAN(min_cluster_size=30, min_samples=2)
 
     For further informations see:
-    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html#sklearn.cluster.DBSCAN
+    - https://scikit-learn.org/stable/modules/generated/sklearn.cluster.\
+DBSCAN.html#sklearn.cluster.DBSCAN
     - https://docs.rapids.ai/api/cuml/stable/api.html#dbscan
     - https://docs.rapids.ai/api/cuml/stable/api.html#dbscan-clustering
 

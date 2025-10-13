@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+"""
+Pipeline module for creating and executing computational pipelines.
+
+This module provides the Pipeline class and PipelinePlugin base class for
+creating directed acyclic graphs (DAGs) of computational tasks and executing
+them with various executors. The pipeline supports dependency resolution,
+error handling, visualization, and plugin callbacks.
+"""
+
 import inspect
 from typing import List
 
@@ -10,28 +19,106 @@ from dasf.utils.logging import init_logging
 
 
 class PipelinePlugin:
+    """A base class for pipeline plugins."""
     def on_pipeline_start(self, fn_keys):
+        """
+        Called when the pipeline starts.
+
+        Parameters
+        ----------
+        fn_keys : list
+            A list of function keys.
+        """
         pass
 
     def on_pipeline_end(self):
+        """Called when the pipeline ends."""
         pass
 
     def on_task_start(self, func, params, name):
+        """
+        Called when a task starts.
+
+        Parameters
+        ----------
+        func : function
+            The function to be executed.
+        params : dict
+            The parameters of the function.
+        name : str
+            The name of the task.
+        """
         pass
 
     def on_task_end(self, func, params, name, ret):
+        """
+        Called when a task ends.
+
+        Parameters
+        ----------
+        func : function
+            The function to be executed.
+        params : dict
+            The parameters of the function.
+        name : str
+            The name of the task.
+        ret : object
+            The return value of the task.
+        """
         pass
 
     def on_task_error(self, func, params, name, exception):
+        """
+        Called when a task fails.
+
+        Parameters
+        ----------
+        func : function
+            The function to be executed.
+        params : dict
+            The parameters of the function.
+        name : str
+            The name of the task.
+        exception : Exception
+            The exception raised by the task.
+        """
         pass
 
 
 class Pipeline:
+    """
+    A class for creating and executing pipelines.
+
+    Parameters
+    ----------
+    name : str
+        The name of the pipeline.
+    executor : object, optional
+        The executor to use for running the pipeline, by default None.
+    verbose : bool, optional
+        Whether to print verbose output, by default False.
+    callbacks : List[PipelinePlugin], optional
+        A list of plugins to use with the pipeline, by default None.
+    """
     def __init__(self,
                  name,
                  executor=None,
                  verbose=False,
                  callbacks: List[PipelinePlugin] = None):
+        """
+        Constructor for the Pipeline class.
+
+        Parameters
+        ----------
+        name : str
+            The name of the pipeline.
+        executor : object, optional
+            The executor to use for running the pipeline, by default None.
+        verbose : bool, optional
+            Whether to print verbose output, by default False.
+        callbacks : List[PipelinePlugin], optional
+            A list of plugins to use with the pipeline, by default None.
+        """
         from dasf.pipeline.executors.wrapper import LocalExecutor
 
         self._name = name
@@ -46,19 +133,59 @@ class Pipeline:
         self._callbacks = callbacks or []
 
     def register_plugin(self, plugin):
+        """
+        Register a plugin with the pipeline.
+
+        Parameters
+        ----------
+        plugin : PipelinePlugin or other
+            The plugin to register. If it's a PipelinePlugin, it will be added
+            to the callbacks list. Otherwise, it will be registered with the executor.
+        """
         if isinstance(plugin, PipelinePlugin):
             self._callbacks.append(plugin)
         else:
             self._executor.register_plugin(plugin)
 
     def info(self):
+        """
+        Print information about the executor.
+
+        Displays the current executor's information by calling its info property.
+        """
         print(self._executor.info)
 
     def execute_callbacks(self, func_name: str, *args, **kwargs):
+        """
+        Execute a method on all registered callbacks.
+
+        Parameters
+        ----------
+        func_name : str
+            The name of the method to call on each callback.
+        *args
+            Positional arguments to pass to the callback method.
+        **kwargs
+            Keyword arguments to pass to the callback method.
+        """
         for callback in self._callbacks:
             getattr(callback, func_name)(*args, **kwargs)
 
     def __add_into_dag(self, obj, func_name, parameters=None, itself=None):
+        """
+        Add an object and its dependencies into the DAG.
+
+        Parameters
+        ----------
+        obj : callable
+            The function or callable object to add to the DAG.
+        func_name : str
+            The name to use for this function in the DAG.
+        parameters : dict, optional
+            Parameters for the function that may contain dependencies.
+        itself : object, optional
+            Reference to the object instance if obj is a bound method.
+        """
         key = hash(obj)
 
         if key not in self._dag_table:
@@ -91,11 +218,44 @@ class Pipeline:
                 self._dag_g.edge(str(hash(dep_obj)), str(key), label=k)
 
     def __inspect_element(self, obj):
+        """
+        Inspect an object to determine its type and extract relevant information.
+
+        Parameters
+        ----------
+        obj : object
+            The object to inspect (function, method, or class instance).
+
+        Returns
+        -------
+        tuple
+            A tuple containing (callable, function_name, object_reference).
+
+        Raises
+        ------
+        ValueError
+            If the object type is not supported.
+        """
         from dasf.datasets.base import Dataset
         from dasf.ml.inference.loader.base import BaseLoader
         from dasf.transforms.base import Fit, Transform
 
         def generate_name(class_name, func_name):
+            """
+            Generate a qualified name for a class method.
+
+            Parameters
+            ----------
+            class_name : str
+                The name of the class.
+            func_name : str
+                The name of the function/method.
+
+            Returns
+            -------
+            str
+                A qualified name in the format "ClassName.method_name".
+            """
             return ("%s.%s" % (class_name, func_name))
 
         if inspect.isfunction(obj) and callable(obj):
@@ -137,12 +297,42 @@ class Pipeline:
             )
 
     def add(self, obj, **kwargs):
+        """
+        Add an object to the pipeline DAG.
+
+        Parameters
+        ----------
+        obj : object
+            The object to add to the pipeline (function, method, or transform).
+        **kwargs
+            Keyword arguments that represent dependencies for this object.
+
+        Returns
+        -------
+        Pipeline
+            Returns self for method chaining.
+        """
         obj, func_name, objref = self.__inspect_element(obj)
         self.__add_into_dag(obj, func_name, kwargs, objref)
 
         return self
 
     def visualize(self, filename=None):
+        """
+        Generate a visual representation of the pipeline DAG.
+
+        Parameters
+        ----------
+        filename : str, optional
+            The filename to save the visualization. If None and not in a notebook,
+            a temporary file will be used.
+
+        Returns
+        -------
+        graphviz.Digraph or str
+            In Jupyter notebooks, returns the graphviz object for inline display.
+            Otherwise, returns the path to the saved visualization file.
+        """
         from dasf.utils.funcs import is_notebook
 
         if is_notebook():
@@ -150,6 +340,19 @@ class Pipeline:
         return self._dag_g.view(filename)
 
     def __register_dataset(self, dataset):
+        """
+        Register a dataset with the executor for reusability.
+
+        Parameters
+        ----------
+        dataset : Dataset
+            The dataset object to register.
+
+        Returns
+        -------
+        Dataset
+            The registered dataset object from the executor.
+        """
         key = str(hash(dataset.load))
         kwargs = {key: dataset}
 
@@ -159,6 +362,23 @@ class Pipeline:
         return self._executor.get_dataset(key)
 
     def __execute(self, func, params, name):
+        """
+        Execute a function with resolved dependencies.
+
+        Parameters
+        ----------
+        func : callable
+            The function to execute.
+        params : dict or None
+            Parameters containing dependency references.
+        name : str
+            The name of the task being executed.
+
+        Returns
+        -------
+        object
+            The result of the function execution.
+        """
         ret = None
 
         new_params = dict()
@@ -177,6 +397,25 @@ class Pipeline:
         return ret
 
     def get_result_from(self, obj):
+        """
+        Get the result from a specific object in the pipeline.
+
+        Parameters
+        ----------
+        obj : object
+            The object whose result should be retrieved.
+
+        Returns
+        -------
+        object
+            The result produced by the specified object during pipeline execution.
+
+        Raises
+        ------
+        Exception
+            If the pipeline hasn't been executed yet or if the object
+            wasn't added to the pipeline.
+        """
         _, obj_name, *_ = self.__inspect_element(obj)
 
         for key in self._dag_table:
@@ -187,7 +426,25 @@ class Pipeline:
 
         raise Exception(f"Function {obj_name} was not added into pipeline.")
 
-    def run(self):
+    def run(self):  # noqa: C901
+        """
+        Execute the pipeline by running all tasks in topological order.
+
+        Executes all tasks in the pipeline according to their dependencies,
+        handling errors and calling appropriate callbacks throughout the process.
+
+        Returns
+        -------
+        object or None
+            The result of the pipeline execution, typically the result of
+            the last task executed.
+
+        Raises
+        ------
+        Exception
+            If the pipeline is not a directed acyclic graph, if the executor
+            doesn't have an execute method, or if the executor is not connected.
+        """
         if not nx.is_directed_acyclic_graph(self._dag):
             raise Exception("Pipeline has not a DAG format.")
 

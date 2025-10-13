@@ -2,10 +2,9 @@
 
 import unittest
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
-from dasf.datasets.download import DownloadWget
-from dasf.datasets.download import DownloadGDrive
+from dasf.datasets.download import DownloadGDrive, DownloadWget
 
 
 class TestDownloadWget(unittest.TestCase):

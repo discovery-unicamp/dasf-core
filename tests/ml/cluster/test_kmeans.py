@@ -12,7 +12,7 @@ try:
 except ImportError:
     pass
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import KMeans

@@ -7,7 +7,7 @@ import urllib.parse
 
 import networkx as nx
 from dask.distributed import Client, LocalCluster
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from dasf.pipeline.executors import DaskPipelineExecutor, DaskTasksPipelineExecutor
 from dasf.pipeline.executors.dask import setup_dask_protocol
@@ -98,6 +98,8 @@ class TestDaskExecutor(unittest.TestCase):
 
             dask = DaskPipelineExecutor(local=True, use_gpu=True)
 
+            self.assertTrue('Available GPUs:' in dask.info)
+
             client = Client.current()
 
             self.assertEqual(hash(dask.client), hash(client))
@@ -109,6 +111,7 @@ class TestDaskExecutor(unittest.TestCase):
             dask.close()
 
             self.assertFalse(dask.is_connected)
+            self.assertTrue('Executor is not connected!' in dask.info)
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")
@@ -144,7 +147,8 @@ class TestDaskExecutor(unittest.TestCase):
             dask.shutdown(gracefully=True)
             dask.close()
 
-            self.assertTrue('\'foo\' GPU Memory allocator is not known' in str(context.exception))
+            self.assertTrue('\'foo\' GPU Memory allocator is not known'
+                            in str(context.exception))
             self.assertFalse(dask.is_connected)
 
     def test_dask_executor_scheduler_file(self):
@@ -184,13 +188,20 @@ class TestDaskTasksPipelineExecutor(unittest.TestCase):
         with LocalCluster() as cluster:
             conn = urllib.parse.urlsplit(cluster.scheduler.address)
 
-            dask = DaskTasksPipelineExecutor(address=conn.hostname, port=conn.port, use_gpu=False)
+            dask = DaskTasksPipelineExecutor(address=conn.hostname,
+                                             port=conn.port,
+                                             use_gpu=False)
+
+            self.assertTrue('Executor is connected!' in dask.info)
+            self.assertTrue('Executor Type: ' in dask.info)
+            self.assertTrue('Executor Backend: ' in dask.info)
 
             # Compute everything to gracefully shutdown
             dask.shutdown(gracefully=True)
             dask.close()
 
             self.assertFalse(dask.is_connected)
+            self.assertTrue('Executor is not connected!' in dask.info)
 
     @unittest.skipIf(not is_gpu_supported(),
                      "not supported CUDA in this platform")

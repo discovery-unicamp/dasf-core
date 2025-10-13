@@ -9,7 +9,7 @@ try:
 except ImportError:
     pass
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from sklearn.datasets import make_blobs
 
 from dasf.ml.cluster import AgglomerativeClustering
@@ -91,3 +91,21 @@ class TestAgglomerativeClustering(unittest.TestCase):
         y1, y2 = self.__match_randomly_labels_created(y.labels_.get(), self.y)
 
         self.assertTrue(np.array_equal(y1, y2, equal_nan=True))
+
+    @patch('dasf.ml.cluster.agglomerative.is_gpu_supported', Mock(return_value=False))
+    def test_agglomerative_fit_gpu_no_gpu(self):
+        sc = AgglomerativeClustering(n_clusters=self.centers, output_type='cupy')
+
+        with self.assertRaises(NotImplementedError) as context:
+            _ = sc._fit_gpu(self.X)
+
+        self.assertTrue('GPU is not supported' in str(context.exception))
+
+    @patch('dasf.ml.cluster.agglomerative.is_gpu_supported', Mock(return_value=False))
+    def test_agglomerative_fit_predict_gpu_no_gpu(self):
+        sc = AgglomerativeClustering(n_clusters=self.centers, output_type='cupy')
+
+        with self.assertRaises(NotImplementedError) as context:
+            _ = sc._fit_predict_gpu(self.X)
+
+        self.assertTrue('GPU is not supported' in str(context.exception))

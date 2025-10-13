@@ -3,7 +3,7 @@
 import os
 import unittest
 
-from mock import patch
+from unittest.mock import patch
 from parameterized import parameterized
 
 from dasf.ml.dl.clusters.dask import DaskClusterEnvironment
@@ -68,10 +68,14 @@ class TestDaskClusterEnvironment(unittest.TestCase):
             self.assertEqual(dask.node_rank(), 1)
 
     @parameterized.expand([
-        ({'MASTER': '1.2.3.4', 'WORLD_SIZE': '0', 'GLOBAL_RANK': '1', 'LOCAL_RANK': '2'}, True),
-        ({'WORLD_SIZE': '0', 'GLOBAL_RANK': '1', 'LOCAL_RANK': '2'}, False),
-        ({'MASTER': '1.2.3.4', 'GLOBAL_RANK': '1', 'LOCAL_RANK': '2'}, False),
-        ({'MASTER': '1.2.3.4', 'WORLD_SIZE': '0', 'LOCAL_RANK': '2'}, False),
+        ({'MASTER': '1.2.3.4', 'WORLD_SIZE': '0', 'GLOBAL_RANK': '1', 'LOCAL_RANK': '2'},
+         True),
+        ({'WORLD_SIZE': '0', 'GLOBAL_RANK': '1', 'LOCAL_RANK': '2'},
+         False),
+        ({'MASTER': '1.2.3.4', 'GLOBAL_RANK': '1', 'LOCAL_RANK': '2'},
+         False),
+        ({'MASTER': '1.2.3.4', 'WORLD_SIZE': '0', 'LOCAL_RANK': '2'},
+         False),
     ])
     def test_dask_cluster_detect(self, os_env, ret):
         with patch.dict(os.environ, os_env):
