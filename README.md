@@ -1,91 +1,128 @@
-# DASF is an Accelerated and Scalable Framework
+# DASF: An Accelerated and Scalable Framework for Machine Learning
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Continuous Test](https://github.com/discovery-unicamp/dasf-core/actions/workflows/ci.yaml/badge.svg)](https://github.com/discovery-unicamp/dasf-core/actions/workflows/ci.yaml)
 [![Commit Check Policy](https://github.com/discovery-unicamp/dasf-core/actions/workflows/commit-check.yaml/badge.svg)](https://github.com/discovery-unicamp/dasf-core/actions/workflows/commit-check.yaml)
 ![Interrogate](https://raw.githubusercontent.com/discovery-unicamp/dasf-core/badges/badges/interrogate_badge.svg)
 ![Coverage](https://raw.githubusercontent.com/discovery-unicamp/dasf-core/badges/badges/coverage.svg)
+[![Docker](https://img.shields.io/badge/docker-required-blue.svg)](https://www.docker.com/)
 
-DASF is a generic framework specialized in acceleration and scaling common 
-techniques for Machine Learning. DASF uses most methods and functions from 
-the most common libraries to increase the speed up of most algorithms. Part 
-of this is to use Dask data to scale computation and RAPIDS AI algorithms to 
-extend the support to GPUs as well.
+DASF is a powerful, generic framework designed to accelerate and scale common machine learning techniques. By leveraging Dask for distributed computation and RAPIDS AI for GPU acceleration, DASF significantly speeds up algorithms, enabling you to tackle larger datasets and more complex problems.
 
-## Installation
+## 🚀 Getting Started
 
-For now, the installation can be done using docker or singularity (if available).
+### Prerequisites
 
-### Containers
+Before you begin, ensure you have the following installed:
 
-To install DASF using docker or singularity, you must go to the `build/`
-directory and execute the command below directory according to your build type:
-`cpu` or `gpu`. Notice that DASF uses [HPC Container Maker](https://github.com/NVIDIA/hpc-container-maker)
-(HPCCM) to generate recipes for all sorts of container types. You should install
-HPCCM first, in order to generate them.
+- [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://sylabs.io/docs/)
+- [HPC Container Maker (HPCCM)](https://github.com/NVIDIA/hpc-container-maker)
 
-```bash
-./build_container.sh --device <cpu|gpu>
-```
+### Installation
 
-You can also configure other parameters of the container if you want. Run `-h`
-for further information. It includes the container backend: docker or
-singularity.
+#### 🐳 Container-Based Installation
 
-The `dasf` image will be created and ready to use. Once it is ready, you 
-can start a jupyter instance by executing the command:
+The recommended way to get started with DASF is by using our pre-configured containers.
 
-```bash
-./start_jupyter_server.sh --device <cpu|gpu>
-```
+1.  **Navigate to the `build` directory:**
 
-You can also define a different port by using `--port PORT` argument.
+    ```bash
+    cd build/
+    ```
 
-### Install
+2.  **Build the container:**
 
-To install this development version, all you need to do is run `pip` from the 
-root project directory (the same where `pyproject.toml` lives).
+    Choose the appropriate device type (`cpu` or `gpu`) for your environment.
 
-```bash
-pip3 install .
-```
+    ```bash
+    ./build_container.sh --device <cpu|gpu>
+    ```
 
-### Examples
+    For more build options, run `./build_container.sh -h`.
 
-If you want to see some examples of how to use DASF, you can visit the
-[tutorials](https://discovery-unicamp.github.io/dasf-core/tutorials.html)
-page to get more information of basic and advanced usage.
+3.  **Start the Jupyter server:**
 
-### Testing
+    Once the container is built, you can start a Jupyter server to begin working with DASF.
 
-If you have a working environment with DASF installed, you can execute all 
-the test sets. Make sure you have all development packages installed such as 
-**pytest**, **parameterized** and **mock**. To run, you need to execute 
-`pytest` from the `tests/` directory.
+    ```bash
+    ./start_jupyter_server.sh --device <cpu|gpu>
+    ```
 
-```bash
-pytest tests/
-```
+    You can specify a different port using the `--port` argument.
 
-### Machine Learning Algorithms
+#### 🐍 Local Installation
 
-The table below is a list of supported machine learning algorithms by DASF framework.
+For development purposes, you can install DASF locally using `pip`.
 
-|     **ML Algorithm**     | **CPU** | **GPU** | **Multi-CPU** | **Multi-GPU** |       **Path**        |
-|--------------------------|:-------:|:-------:|:-------------:|:-------------:|:---------------------:|
-| K-Means                  |    X    |    X    |       X       |       X       |    dasf.ml.cluster    |
-| Agglomerative Clustering |    X    |    X    |               |               |    dasf.ml.cluster    |
-| DBSCAN                   |    X    |    X    |               |       X       |    dasf.ml.cluster    |
-| HDBSCAN                  |    X    |    X    |               |               |    dasf.ml.cluster    |
-| Spectral Clustering      |    X    |         |       X       |               |    dasf.ml.cluster    |
-| Gaussian Mixture Models  |    X    |         |               |               |    dasf.ml.mixture    |
-| PCA                      |    X    |    X    |       X       |       X       | dasf.ml.decomposition |
-| SVM                      |    X    |    X    |               |               |      dasf.ml.svm      |
-| Boosted Trees            |    X    |    X    |       X       |       X       |    dasf.ml.xgboost    |
-| NearestNeightbors        |    X    |    X    |               |               |   dasf.ml.neighbors   |
+1.  **Clone the repository:**
 
-### Cite
+    ```bash
+    git clone https://github.com/discovery-unicamp/dasf-core.git
+    cd dasf-core
+    ```
 
-If you are using this project in your research, please cite our first paper where DASF was proposed.
+2.  **Install the package:**
+
+    ```bash
+    pip3 install .
+    ```
+
+## 📖 Usage
+
+To learn how to use DASF, check out our comprehensive tutorials. They cover everything from basic usage to advanced features.
+
+- [**Tutorials**](https://discovery-unicamp.github.io/dasf-core/tutorials.html)
+
+## ✅ Testing
+
+To ensure the stability and correctness of DASF, we have a comprehensive test suite. To run the tests, you'll need to have the development packages installed.
+
+1.  **Install development dependencies:**
+
+    ```bash
+    pip3 install pytest parameterized mock
+    ```
+
+2.  **Run the tests:**
+
+    ```bash
+    pytest tests/
+    ```
+
+## 🤖 Supported Machine Learning Algorithms
+
+DASF supports a wide range of machine learning algorithms, with varying levels of acceleration and scaling.
+
+| **ML Algorithm**           | **CPU** | **GPU** | **Multi-CPU** | **Multi-GPU** | **Path**                |
+| -------------------------- | :-----: | :-----: | :-----------: | :-----------: | :---------------------- |
+| K-Means                    |    ✅    |    ✅    |       ✅       |       ✅       | `dasf.ml.cluster`       |
+| Agglomerative Clustering   |    ✅    |    ✅    |               |               | `dasf.ml.cluster`       |
+| DBSCAN                     |    ✅    |    ✅    |               |       ✅       | `dasf.ml.cluster`       |
+| HDBSCAN                    |    ✅    |    ✅    |               |               | `dasf.ml.cluster`       |
+| Spectral Clustering        |    ✅    |         |       ✅       |               | `dasf.ml.cluster`       |
+| Gaussian Mixture Models    |    ✅    |         |               |               | `dasf.ml.mixture`       |
+| PCA                        |    ✅    |    ✅    |       ✅       |       ✅       | `dasf.ml.decomposition` |
+| SVM                        |    ✅    |    ✅    |               |               | `dasf.ml.svm`           |
+| Boosted Trees              |    ✅    |    ✅    |       ✅       |       ✅       | `dasf.ml.xgboost`       |
+| Nearest Neighbors          |    ✅    |    ✅    |               |               | `dasf.ml.neighbors`     |
+
+## 🤝 Contributing
+
+We welcome contributions from the community! If you'd like to contribute to DASF, please read our [**Contributing Guidelines**](CONTRIBUTING.md) for more information.
+
+## 📄 License
+
+This project is licensed under the permissive MIT License. This means you are free to:
+
+- ✅ **Use:** Freely use the software in your own projects, whether personal, commercial, or open source.
+- ✅ **Modify:** Adapt the code to your specific needs.
+- ✅ **Distribute:** Share the original or your modified versions with others.
+
+All we ask is that you include the original copyright and license notice in any copy of the software/source. For more details, see the [LICENSE](LICENSE) file.
+
+## 📜 Citation
+
+If you use DASF in your research, please cite our paper:
 
 ```bibtex
 @inproceedings{dasf,
@@ -99,13 +136,9 @@ If you are using this project in your research, please cite our first paper wher
 }
 ```
 
-### Authors
+## 👥 Authors
 
-For further reference, below the authors list:
-
-* Julio Faracco
-* João Seródio
-* Otavio Napoli
-* Edson Borin
-
-
+- Julio Faracco
+- João Seródio
+- Otavio Napoli
+- Edson Borin
