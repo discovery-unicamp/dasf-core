@@ -218,6 +218,11 @@ class SVC(Fit, Predict, GetParams, SetParams):
         nochange_steps=1000,
         random_state=None,
     ):
+        """Initialize SVC classifier.
+
+        Parameters are passed to underlying sklearn/cuml SVC implementations.
+        See class docstring for parameter descriptions.
+        """
 
         self.__svc_cpu = SVC_CPU(
             C=C,
@@ -256,21 +261,101 @@ class SVC(Fit, Predict, GetParams, SetParams):
             )
 
     def _fit_cpu(self, X, y, sample_weight=None):
+        """Fit SVC model using CPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Training data.
+        y : array-like
+            Target values.
+        sample_weight : array-like, optional
+            Sample weights.
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         return self.__svc_cpu.fit(X, y, sample_weight)
 
     def _fit_gpu(self, X, y, sample_weight=None):
+        """Fit SVC model using GPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Training data.
+        y : array-like
+            Target values.
+        sample_weight : array-like, optional
+            Sample weights.
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         return self.__svc_gpu.fit(X, y, sample_weight)
 
     def _predict_cpu(self, X):
+        """Predict using CPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data.
+
+        Returns
+        -------
+        array-like
+            Predicted class labels.
+        """
         return self.__svc_cpu.predict(X)
 
     def _predict_gpu(self, X):
+        """Predict using GPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data.
+
+        Returns
+        -------
+        array-like
+            Predicted class labels.
+        """
         return self.__svc_gpu.predict(X)
 
     def _get_params_cpu(self, deep=True):
+        """Get parameters using CPU implementation.
+
+        Parameters
+        ----------
+        deep : bool, optional
+            If True, return parameters for sub-estimators, by default True.
+
+        Returns
+        -------
+        dict
+            Parameter names mapped to their values.
+        """
         return self.__svc_cpu.get_params(deep=deep)
 
     def _set_params_cpu(self, **params):
+        """Set parameters using CPU implementation.
+
+        Parameters
+        ----------
+        **params
+            Estimator parameters.
+
+        Returns
+        -------
+        self
+            Estimator instance.
+        """
         return self.__svc_cpu.set_params(**params)
 
 
@@ -444,15 +529,71 @@ class SVR(Fit, Predict):
             self.__svr_gpu = None
 
     def _fit_cpu(self, X, y, sample_weight=None):
+        """Fit SVR model using CPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Training data.
+        y : array-like
+            Target values.
+        sample_weight : array-like, optional
+            Sample weights.
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         return self.__svr_cpu.fit(X, y, sample_weight)
 
     def _fit_gpu(self, X, y, sample_weight=None):
+        """Fit SVR model using GPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Training data.
+        y : array-like
+            Target values.
+        sample_weight : array-like, optional
+            Sample weights.
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         return self.__svr_gpu.fit(X, y, sample_weight)
 
     def _predict_cpu(self, X):
+        """Predict using CPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data.
+
+        Returns
+        -------
+        array-like
+            Predicted values.
+        """
         return self.__svr_cpu.predict(X)
 
     def _predict_gpu(self, X):
+        """Predict using GPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data.
+
+        Returns
+        -------
+        array-like
+            Predicted values.
+        """
         return self.__svr_gpu.predict(X)
 
 
@@ -700,9 +841,33 @@ class LinearSVC(Fit, Predict, GetParams, SetParams):
         return self.__linear_svc_gpu.fit(X, y, sample_weight)
 
     def _predict_cpu(self, X):
+        """Predict using CPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data.
+
+        Returns
+        -------
+        array-like
+            Predicted class labels.
+        """
         return self.__linear_svc_cpu.predict(X)
 
     def _predict_gpu(self, X):
+        """Predict using GPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data.
+
+        Returns
+        -------
+        array-like
+            Predicted class labels.
+        """
         return self.__linear_svc_gpu.predict(X)
 
 
@@ -866,13 +1031,69 @@ class LinearSVR(Fit, Predict):
             )
 
     def _fit_cpu(self, X, y, sample_weight=None):
+        """Fit LinearSVR model using CPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Training data.
+        y : array-like
+            Target values.
+        sample_weight : array-like, optional
+            Sample weights.
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         return self.__linear_svr_cpu.fit(X, y, sample_weight)
 
     def _fit_gpu(self, X, y, sample_weight=None):
+        """Fit LinearSVR model using GPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Training data.
+        y : array-like
+            Target values.
+        sample_weight : array-like, optional
+            Sample weights.
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+        """
         return self.__linear_svr_gpu.fit(X, y, sample_weight)
 
     def _predict_cpu(self, X):
+        """Predict using CPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data.
+
+        Returns
+        -------
+        array-like
+            Predicted values.
+        """
         return self.__linear_svr_cpu.predict(X)
 
     def _predict_gpu(self, X):
+        """Predict using GPU.
+
+        Parameters
+        ----------
+        X : array-like
+            Input data.
+
+        Returns
+        -------
+        array-like
+            Predicted values.
+        """
         return self.__linear_svr_gpu.predict(X)

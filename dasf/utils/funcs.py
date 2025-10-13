@@ -51,7 +51,19 @@ except ImportError:  # pragma: no cover
 
 def human_readable_size(size, decimal=3) -> str:
     """
-    converts data size into the proper measurement
+    Convert data size into human-readable format.
+
+    Parameters
+    ----------
+    size : float
+        The size in bytes to convert.
+    decimal : int, optional
+        Number of decimal places to show (default is 3).
+
+    Returns
+    -------
+    str
+        Human-readable size string with appropriate units (B, KB, MB, GB, TB).
     """
     for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
         if size < 1024.0:
@@ -62,8 +74,24 @@ def human_readable_size(size, decimal=3) -> str:
 
 def get_worker_info(client) -> list:
     """
-    Returns a list of workers (sorted), and the DNS name for the master host
-    The master is the 0th worker's host
+    Get information about workers in a Dask cluster.
+
+    Parameters
+    ----------
+    client : dask.distributed.Client
+        The Dask client connected to the cluster.
+
+    Returns
+    -------
+    list
+        List of dictionaries containing worker information including:
+        - master: DNS name of the master host
+        - worker: worker identifier
+        - nthreads: number of threads
+        - local_rank: rank within the host
+        - global_rank: global rank across all workers
+        - host: hostname
+        - world_size: total number of hosts
     """
     info = client.scheduler_info()
 
@@ -109,6 +137,19 @@ def get_worker_info(client) -> list:
 def sync_future_loop(futures):
     """
     Synchronize all futures submitted to workers.
+
+    Waits for all futures to complete, handling timeouts and exceptions
+    appropriately. Futures are processed as they complete.
+
+    Parameters
+    ----------
+    futures : list
+        List of Dask futures to synchronize.
+
+    Raises
+    ------
+    Exception
+        If any future raises an exception during execution.
     """
     while True:
         if not futures:
@@ -197,7 +238,31 @@ class NotebookProgressBar(threading.Thread):
 
 def download_file(url, filename=None, directory=None):  # noqa: C901
     """
-    Download a generic file and save it.
+    Download a file from a URL and save it to local storage.
+
+    Supports progress bars in Jupyter notebooks and handles various
+    combinations of filename and directory parameters.
+
+    Parameters
+    ----------
+    url : str
+        The URL of the file to download.
+    filename : str, optional
+        The filename to save the downloaded file as.
+    directory : str, optional
+        The directory to save the file in.
+
+    Returns
+    -------
+    str
+        The absolute path to the downloaded file.
+
+    Notes
+    -----
+    If both filename and directory are provided, the file is saved as
+    directory/filename. If only filename is provided, it's saved in the
+    current working directory. If only directory is provided, the original
+    filename from the URL is used.
     """
     if directory is not None:
         os.makedirs(os.path.dirname(directory), exist_ok=True)
@@ -279,7 +344,21 @@ def download_file(url, filename=None, directory=None):  # noqa: C901
 
 def download_file_from_gdrive(file_id, filename=None, directory=None):
     """
-    Download a file from Google Drive using gdrive file id.
+    Download a file from Google Drive using the file ID.
+
+    Parameters
+    ----------
+    file_id : str
+        The Google Drive file ID (the long string in the sharing URL).
+    filename : str, optional
+        The filename to save the downloaded file as.
+    directory : str, optional
+        The directory to save the file in.
+
+    Returns
+    -------
+    str
+        The absolute path to the downloaded file.
     """
     url = f"https://drive.google.com/uc?export=download&confirm=9iBg&id={file_id}"
 
@@ -288,14 +367,24 @@ def download_file_from_gdrive(file_id, filename=None, directory=None):
 
 def get_machine_memory_avail():
     """
-    Return free memory available from a single machine.
+    Get the amount of free memory available on the current machine.
+
+    Returns
+    -------
+    int
+        Free memory in bytes.
     """
     return psutil.virtual_memory().free
 
 
 def set_executor_default():
     """
-    Return executor as a CPU (default) instance.
+    Get the default executor type.
+
+    Returns
+    -------
+    TaskExecutorType
+        The default single CPU executor type.
     """
     return TaskExecutorType.single_cpu
 
@@ -492,7 +581,12 @@ def get_gpu_from_workers() -> bool:
 
 def get_gpu_count() -> int:
     """
-    Get single node GPU count.
+    Get the number of GPUs available on the current node.
+
+    Returns
+    -------
+    int
+        Number of GPUs detected by GPUtil.
     """
     return len(GPUtil.getGPUs())
 

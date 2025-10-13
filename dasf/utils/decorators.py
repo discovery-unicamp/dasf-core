@@ -15,7 +15,17 @@ from dasf.utils.types import is_dask_array, is_gpu_array
 
 def is_forced_local(cls):
     """
-    Returns if object is forced to run in a CPU.
+    Check if an object is forced to run locally on CPU.
+
+    Parameters
+    ----------
+    cls : object
+        The object to check for local execution forcing.
+
+    Returns
+    -------
+    bool or None
+        True if forced to run locally, False if not forced, None if attribute not set.
     """
     # pylint: disable=protected-access
     if hasattr(cls, "_run_local") and cls._run_local is not None:
@@ -111,7 +121,21 @@ def fetch_args_from_gpu(func):
 
 def task_handler(func):
     """
-    Returns all mapped functions corresponding to the executor in place.
+    Decorator that maps functions to appropriate execution contexts.
+
+    This decorator automatically selects the appropriate implementation
+    of a function based on the current execution context (local vs distributed,
+    CPU vs GPU) and available backends.
+
+    Parameters
+    ----------
+    func : callable
+        The function to wrap with task handling logic.
+
+    Returns
+    -------
+    callable
+        The wrapped function that will dispatch to the appropriate implementation.
     """
     @wraps(func)
     def wrapper(*args, **kwargs):

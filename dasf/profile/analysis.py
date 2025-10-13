@@ -1,3 +1,4 @@
+"""A module for profile analysis."""
 import argparse
 from collections import defaultdict
 from pathlib import Path
@@ -12,13 +13,41 @@ from dasf.profile.utils import MultiEventDatabase
 
 
 class TraceAnalyser:
+    """
+    TraceAnalyser is a class that provides methods to analyse traces.
+
+    Parameters
+    ----------
+    database : MultiEventDatabase
+        The database with the traces to analyse.
+    process_trace_before : bool
+        If True, process the traces before analysing them.
+    """
     def __init__(self, database: MultiEventDatabase,
                  process_trace_before: bool = True):
+        """
+        Constructor for the TraceAnalyser class.
+
+        Parameters
+        ----------
+        database : MultiEventDatabase
+            The database with the traces to analyse.
+        process_trace_before : bool
+            If True, process the traces before analysing them.
+        """
         self._database = database
         if process_trace_before:
             self._database = list(self._database)
 
     def create_annotated_task_graph(self) -> nx.DiGraph:
+        """
+        Create an annotated task graph from the traces.
+
+        Returns
+        -------
+        nx.DiGraph
+            The annotated task graph.
+        """
         graph = nx.DiGraph()
 
         for event in tqdm.tqdm(self._database,
@@ -64,6 +93,14 @@ class TraceAnalyser:
         return graph
 
     def per_function_bottleneck(self):
+        """
+        Analyse the bottleneck per function.
+
+        Returns
+        -------
+        pd.DataFrame
+            A dataframe with the bottleneck analysis per function.
+        """
         # Create the annotated DAG
         graph = self.create_annotated_task_graph()
 
@@ -163,6 +200,14 @@ class TraceAnalyser:
         return df
 
     def per_worker_task_balance(self):
+        """
+        Analyse the task balance per worker.
+
+        Returns
+        -------
+        pd.DataFrame
+            A dataframe with the task balance analysis per worker.
+        """
         # Dictionary to store the number of tasks per worker at each timestamp
         tasks_per_worker = defaultdict(lambda: defaultdict(int))
 
@@ -222,6 +267,14 @@ class TraceAnalyser:
         return df
 
     def per_task_bottleneck(self):
+        """
+        Analyse the bottleneck per task.
+
+        Returns
+        -------
+        pd.DataFrame
+            A dataframe with the bottleneck analysis per task.
+        """
         # Create the annotated DAG
         # graph = self.create_annotated_task_graph()  # Unused
         # Dictionary to store task durations per thread_id
@@ -311,6 +364,20 @@ valid_analyses = [
 
 def main(database: MultiEventDatabase, output: str = None,
          analyses: List[str] = None, head: int = 30):
+    """
+    Run the main analysis CLI.
+
+    Parameters
+    ----------
+    database : MultiEventDatabase
+        The database with the traces to analyse.
+    output : str, optional
+        The output directory, by default None
+    analyses : List[str], optional
+        A list of analyses to run, by default None
+    head : int, optional
+        The number of rows to print, by default 30
+    """
     pd.set_option('display.float_format', lambda x: '%.5f' % x)
     pd.set_option('display.max_rows', 100)
     pd.set_option('display.max_columns', 100)

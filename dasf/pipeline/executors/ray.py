@@ -15,7 +15,24 @@ from dasf.utils.funcs import get_dask_gpu_count
 
 
 def setup_ray_protocol(protocol=None):
-    """Returns the proper URL protocol for ray connections."""
+    """
+    Setup the Ray protocol for connections.
+
+    Parameters
+    ----------
+    protocol : str, optional
+        The protocol to use. Supports 'tcp' (default) and 'ray'.
+
+    Returns
+    -------
+    str
+        The protocol prefix for Ray connections.
+
+    Raises
+    ------
+    ValueError
+        If the protocol is not supported.
+    """
     if protocol is None or protocol == "tcp":
         return ""
     if protocol == "ray":
@@ -51,7 +68,31 @@ class RayPipelineExecutor(Executor):
         protocol=None,
         ray_kwargs=None,
     ):
-        """ Constructor of the object RayPipelineExecutor. """
+        """
+        Constructor of the RayPipelineExecutor.
+
+        Initializes a Ray-based pipeline executor for distributed computing.
+
+        Parameters
+        ----------
+        address : str, optional
+            Address of the Ray head node (default is None).
+        port : int, optional
+            Port of the Ray head node (default is 6379).
+        local : bool, optional
+            Whether to start a local Ray cluster (default is False).
+        use_gpu : bool, optional
+            Whether to enable GPU support (default is False).
+        protocol : str, optional
+            The Ray protocol to use (default is TCP).
+        ray_kwargs : dict, optional
+            Additional keyword arguments to pass to ray.init().
+
+        Raises
+        ------
+        Exception
+            If Ray is not installed or not supported.
+        """
         if not USE_RAY:
             raise Exception("Ray executor is not support. "
                             "Check if you have it installed first.")

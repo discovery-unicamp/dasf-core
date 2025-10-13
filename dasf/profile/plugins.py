@@ -1,3 +1,4 @@
+"""A module for profiling plugins."""
 import os
 import socket
 import time
@@ -12,13 +13,37 @@ from dasf.profile.profiler import EventProfiler
 
 
 class WorkerTaskPlugin(WorkerPlugin):
+    """
+    A Dask worker plugin to trace task execution.
+
+    Parameters
+    ----------
+    name : str
+        The name of the plugin.
+    """
     def __init__(
         self,
         name: str = "TracePlugin",
     ):
+        """
+        Initialize the plugin.
+
+        Parameters
+        ----------
+        name : str, optional
+            The name of the plugin, by default "TracePlugin"
+        """
         self.name = name
 
     def setup(self, worker):
+        """
+        Set up the plugin.
+
+        Parameters
+        ----------
+        worker : dask.distributed.Worker
+            The Dask worker.
+        """
         self.worker = worker
         self.hostname = socket.gethostname()
         self.worker_id = f"worker-{self.hostname}-{self.worker.name}"
@@ -27,6 +52,18 @@ class WorkerTaskPlugin(WorkerPlugin):
         )
 
     def transition(self, key, start, finish, *args, **kwargs):
+        """
+        Trace the task transition.
+
+        Parameters
+        ----------
+        key : str
+            The key of the task.
+        start : str
+            The start state of the task.
+        finish : str
+            The finish state of the task.
+        """
         now = time.monotonic()
 
         if finish == "memory":
@@ -90,12 +127,36 @@ class WorkerTaskPlugin(WorkerPlugin):
 
 
 class ResourceMonitor:
+    """
+    A resource monitor for Dask workers.
+
+    Parameters
+    ----------
+    time : int
+        The time interval to update the monitor in ms.
+    autostart : bool
+        Whether to start the monitor automatically.
+    name : str
+        The name of the monitor.
+    """
     def __init__(self,
-                 time=100,
+                 time: int = 100,
                  autostart: bool = True,
                  name: str = "ResourceMonitor",
                  **monitor_kwargs
                  ):
+        """
+        Initialize the monitor.
+
+        Parameters
+        ----------
+        time : int, optional
+            The time in ms to wait between updates, by default 100
+        autostart : bool, optional
+            Start the monitor automatically, by default True
+        name : str, optional
+            The name of the monitor, by default "ResourceMonitor"
+        """
         self.time = time
         self.name = name
         self.hostname = socket.gethostname()
@@ -108,9 +169,11 @@ class ResourceMonitor:
             self.start()
 
     def __del__(self):
+        """Delete the monitor."""
         self.stop()
 
     def update(self):
+        """Update the monitor."""
         res = self.monitor.update()
         self.database.record_instant_event(
             name="Resource Usage",
@@ -122,29 +185,67 @@ class ResourceMonitor:
         return res
 
     def start(self):
+        """Start the monitor."""
         self.callback.start()
 
     def stop(self):
+        """Stop the monitor."""
         self.database.commit()
         self.callback.stop()
 
 
 class GPUAnnotationPlugin(WorkerPlugin):
+    """
+    A Dask worker plugin to annotate GPU tasks.
+
+    Parameters
+    ----------
+    name : str
+        The name of the plugin.
+    """
     def __init__(
         self,
         name: str = "GPUAnnotationPlugin",
     ):
+        """
+        Initialize the plugin.
+
+        Parameters
+        ----------
+        name : str, optional
+            The name of the plugin, by default "GPUAnnotationPlugin"
+        """
         self.name = name
         self.gpu_num = None
         self.marks = {}
 
     def setup(self, worker):
+        """
+        Set up the plugin.
+
+        Parameters
+        ----------
+        worker : dask.distributed.Worker
+            The Dask worker.
+        """
         self.worker = worker
         self.gpu_num = int(os.environ['CUDA_VISIBLE_DEVICES'].split(",")[0])
         print("Setting up GPU annotation plugin for worker "
               f"{self.worker.name}. GPU: {self.gpu_num}")
 
     def transition(self, key, start, finish, *args, **kwargs):
+        """
+        Trace the task transition.
+
+        Parameters
+        ----------
+        key : str
+            The key of the task.
+        start : str
+            The start state of the task.
+        finish : str
+            The finish state of the task.
+        """
         if finish == "executing":
             _ = pynvml.nvmlDeviceGetHandleByIndex(self.gpu_num)
             mark = nvtx.start_range(message=key, domain="compute")

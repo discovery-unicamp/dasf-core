@@ -55,14 +55,34 @@ except NameError:  # pragma: no cover
 
 def is_array(data) -> bool:
     """
-    Returns if data is a generic array.
+    Check if data is a generic array.
+
+    Parameters
+    ----------
+    data : object
+        The data to check.
+
+    Returns
+    -------
+    bool
+        True if data is an array-like object, False otherwise.
     """
     return isinstance(data, list) or is_arraylike(data)
 
 
 def is_dataframe(data) -> bool:
     """
-    Returns if data is a generic dataframe.
+    Check if data is a generic dataframe.
+
+    Parameters
+    ----------
+    data : object
+        The data to check.
+
+    Returns
+    -------
+    bool
+        True if data is a dataframe-like object, False otherwise.
     """
     return is_dataframe_like(data)
 
@@ -76,7 +96,17 @@ def is_series(data) -> bool:
 
 def is_cpu_array(data) -> bool:
     """
-    Returns if data is a CPU arrau like Numpy.
+    Check if data is a CPU array like NumPy.
+
+    Parameters
+    ----------
+    data : object
+        The data to check.
+
+    Returns
+    -------
+    bool
+        True if data is a CPU-based array (NumPy, list, zarr), False otherwise.
     """
     return isinstance(data, get_args(ArrayCPU))
 

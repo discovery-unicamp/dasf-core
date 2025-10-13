@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""This module contains the implementation of the pipeline executors."""
 
 from dasf.pipeline.executors.base import Executor  # noqa
 from dasf.pipeline.executors.dask import DaskPBSPipelineExecutor  # noqa

@@ -24,9 +24,30 @@ class ConcatenateToArray(Transform):
 
     """
     def __init__(self, flatten: bool = False):
+        """Initialize ConcatenateToArray transformer.
+
+        Parameters
+        ----------
+        flatten : bool, optional
+            If the arrays must be flatten prior concatenating, by default False.
+        """
         self.flatten = flatten
 
     def __transform_generic(self, xp, **kwargs):
+        """Generic transformation method for concatenating arrays.
+
+        Parameters
+        ----------
+        xp : module
+            Array module (numpy or cupy).
+        **kwargs
+            Variable keyword arguments containing arrays to concatenate.
+
+        Returns
+        -------
+        array
+            Concatenated array.
+        """
         datas = None
         for key in kwargs:
             if datas is None:
@@ -53,9 +74,33 @@ class ConcatenateToArray(Transform):
         return data
 
     def _transform_cpu(self, **kwargs):
+        """Transform using CPU (numpy).
+
+        Parameters
+        ----------
+        **kwargs
+            Variable keyword arguments containing arrays to concatenate.
+
+        Returns
+        -------
+        array
+            Concatenated array.
+        """
         return self.__transform_generic(np, **kwargs)
 
     def _transform_gpu(self, **kwargs):
+        """Transform using GPU (cupy).
+
+        Parameters
+        ----------
+        **kwargs
+            Variable keyword arguments containing arrays to concatenate.
+
+        Returns
+        -------
+        array
+            Concatenated array.
+        """
         return self.__transform_generic(cp, **kwargs)
 
 
@@ -69,6 +114,13 @@ class SampleDataframe(Transform):
 
     """
     def __init__(self, percent: float):
+        """Initialize SampleDataframe transformer.
+
+        Parameters
+        ----------
+        percent : float
+            Percentage of the samples to get from the dataset.
+        """
         self.__percent = float(percent / 100.0)
 
     def transform(self, X):
@@ -101,6 +153,13 @@ class GetSubCubeArray:
 
     """
     def __init__(self, percent: float):
+        """Initialize GetSubCubeArray transformer.
+
+        Parameters
+        ----------
+        percent : float
+            Percentage of the samples to get from the cube.
+        """
         self.__percent = float(percent / 100.0)
 
         assert (
@@ -108,6 +167,18 @@ class GetSubCubeArray:
         ), "Percent must be in [0,1] range."
 
     def transform(self, X):
+        """Transform the input cube to get a subcube.
+
+        Parameters
+        ----------
+        X : array-like
+            Input 3D array/cube.
+
+        Returns
+        -------
+        array-like
+            Subcube with specified percentage of samples.
+        """
         i_num, x_num, t_num = X.shape
 
         i_start_idx = int((i_num - (i_num * self.__percent)) / 2)
@@ -134,9 +205,28 @@ class GetSubDataframe:
 
     """
     def __init__(self, percent: float):
+        """Initialize GetSubDataframe transformer.
+
+        Parameters
+        ----------
+        percent : float
+            Percentage of the samples to get from the dataframe.
+        """
         self.__percent = float(percent / 100.0)
 
     def transform(self, X):
+        """Transform the input dataframe to get first x% samples.
+
+        Parameters
+        ----------
+        X : DataFrame
+            Input dataframe.
+
+        Returns
+        -------
+        DataFrame
+            Subset dataframe with first x% samples.
+        """
         new_size = int(len(X) * self.__percent)
 
         return X.iloc[0:new_size]
