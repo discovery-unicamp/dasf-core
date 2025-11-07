@@ -29,3 +29,49 @@ jobs:
           author-email: true
           commit-signoff: true
           job-summary: true
+
+      - name: Verify Signed-off-by in commits
+        run: |
+          # Run only in pull requests
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Get the base branch commit
+            BASE_SHA=$(git merge-base origin/${{ github.base_ref }} HEAD)
+
+            # Get all commits in the PR
+            COMMITS=$(git rev-list $BASE_SHA..HEAD)
+
+            echo "Checking commits for Signed-off-by trailers..."
+
+            MISSING_SIGNOFF=()
+
+            for commit in $COMMITS; do
+              echo "Checking commit: $(git log --oneline -1 $commit)"
+
+              # Check if commit has Signed-off-by trailer
+              if ! git log --format="%B" -1 $commit \
+                  | grep -q "^Signed-off-by:"; then
+                MISSING_SIGNOFF+=($commit)
+                echo "  [FAIL] Missing Signed-off-by trailer"
+              else
+                SIGNOFF=$(git log --format="%B" -1 $commit \
+                  | grep "^Signed-off-by:")
+                echo "  [PASS] Found: $SIGNOFF"
+              fi
+            done
+
+            if [ ${#MISSING_SIGNOFF[@]} -ne 0 ]; then
+              echo ""
+              echo "[ERROR] Missing Signed-off-by trailers:"
+              for commit in "${MISSING_SIGNOFF[@]}"; do
+                echo "  - $(git log --oneline -1 $commit)"
+              done
+              echo ""
+              echo "Please add Signed-off-by trailers to all commits."
+              echo "You can amend commits with: git commit --amend --signoff"
+              echo "For multiple commits, use: git rebase --signoff HEAD~N"
+              exit 1
+            fi
+
+            echo ""
+            echo "[SUCCESS] All commits have valid Signed-off-by trailers!"
+          fi
