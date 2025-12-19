@@ -620,7 +620,7 @@ class DatasetZarr(Dataset):
             array = zarr.open_array(store, meta_array=xp.empty(()))
             return da.from_zarr(array, chunks=array.chunks).map_blocks(xp.asarray)
 
-        return da.from_zarr(self._root_file).map_blocks(xp.asarray)
+        return da.from_zarr(self._root_file, chunks=self._chunks).map_blocks(xp.asarray)
 
     def _load(self, xp, **kwargs):
         """
