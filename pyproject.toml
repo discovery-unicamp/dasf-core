@@ -22,7 +22,7 @@ readme="README.md"
 exclude = ["tests/*", "docs/*"]
 
 [tool.poetry.dependencies]
-bokeh = "3.7.3"
+bokeh = ">=3.8.2"
 charset-normalizer = "3.4.2"
 dask = "<=2025.7.0"
 dask_cuda = "*"
