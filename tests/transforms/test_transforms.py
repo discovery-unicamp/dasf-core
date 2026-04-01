@@ -88,15 +88,21 @@ class TestArrayToZarr(unittest.TestCase):
         self.array = os.path.abspath(f"{tempfile.gettempdir()}/array.npy")
         self.zarr = os.path.abspath(f"{tempfile.gettempdir()}/array.zarr")
 
+        # Clean up any existing files from previous test runs
+        self.remove(self.array, silent=True)
+        self.remove(self.zarr, silent=True)
+
         random = np.random.random(10000)
         np.save(self.array, random)
 
     @staticmethod
-    def remove(path):
+    def remove(path, silent=False):
         if os.path.isfile(path) or os.path.islink(path):
             os.remove(path)  # remove the file
         elif os.path.isdir(path):
             shutil.rmtree(path)  # remove dir and all contains
+        elif not silent:
+            raise ValueError("file {} is not a file or dir.".format(path))
 
     def test_array_to_zarr_cpu(self):
         dataset = DatasetArray(root=self.array, download=False, name="Test Array")
@@ -158,8 +164,8 @@ class TestArrayToZarr(unittest.TestCase):
                         in str(context.exception))
 
     def tearDown(self):
-        self.remove(self.array)
-        self.remove(self.zarr)
+        self.remove(self.array, silent=True)
+        self.remove(self.zarr, silent=True)
 
 
 class TestArrayToHDF5(unittest.TestCase):
@@ -167,15 +173,21 @@ class TestArrayToHDF5(unittest.TestCase):
         self.array = os.path.abspath(f"{tempfile.gettempdir()}/array.npy")
         self.hdf5 = os.path.abspath(f"{tempfile.gettempdir()}/array.hdf5")
 
+        # Clean up any existing files from previous test runs
+        self.remove(self.array, silent=True)
+        self.remove(self.hdf5, silent=True)
+
         random = np.random.random(10000)
         np.save(self.array, random)
 
     @staticmethod
-    def remove(path):
+    def remove(path, silent=False):
         if os.path.isfile(path) or os.path.islink(path):
             os.remove(path)  # remove the file
         elif os.path.isdir(path):
             shutil.rmtree(path)  # remove dir and all contains
+        elif not silent:
+            raise ValueError("file {} is not a file or dir.".format(path))
 
     def test_array_to_hdf5_cpu(self):
         dataset = DatasetArray(root=self.array, download=False, name="Test Array")
@@ -200,8 +212,8 @@ class TestArrayToHDF5(unittest.TestCase):
         self.assertTrue(isinstance(T_1, DatasetHDF5))
 
     def tearDown(self):
-        self.remove(self.array)
-        self.remove(self.hdf5)
+        self.remove(self.array, silent=True)
+        self.remove(self.hdf5, silent=True)
 
 
 # Bug introduced by zarr 3.*
@@ -278,8 +290,8 @@ class TestZarrToArray(unittest.TestCase):
         self.assertTrue('Input is not a Zarr dataset' in str(context.exception))
 
     def tearDown(self):
-        self.remove(self.array)
-        self.remove(self.zarr)
+        self.remove(self.array, silent=True)
+        self.remove(self.zarr, silent=True)
 
 
 class TestArraysToDataFrame(unittest.TestCase):
