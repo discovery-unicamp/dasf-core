@@ -380,8 +380,9 @@ class DatasetArray(Dataset):
                     if callable(attr_value):
                         if not hasattr(self, attr):
                             self.__dict__[attr] = attr_value
-                except AttributeError:
-                    # Skip attributes that were removed in newer NumPy versions (e.g., itemset in NumPy 2.0)
+                except (AttributeError, ValueError):
+                    # Skip attributes that raise errors in newer NumPy versions
+                    # (e.g., itemset removed in NumPy 2.0, .T raises ValueError on 1D arrays)
                     pass
 
     def __npy_header(self):
