@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:25.06-py3
+FROM nvcr.io/nvidia/pytorch:26.02-py3
 
 RUN apt-get update -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \

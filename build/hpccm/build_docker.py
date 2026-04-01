@@ -27,7 +27,7 @@ if python_version:
 gpu_image_devel = f"rapidsai/base:{rapidsai_version}-cuda{cuda_version}{python_version}"
 
 # GPU image needs to be fixed due to dependency matrix
-gpu_image = "nvcr.io/nvidia/pytorch:25.06-py3"
+gpu_image = "nvcr.io/nvidia/pytorch:26.02-py3"
 
 cpu_image = f"ubuntu:{ubuntu_version}"
 
