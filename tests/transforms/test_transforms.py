@@ -223,18 +223,22 @@ class TestZarrToArray(unittest.TestCase):
         self.array = os.path.abspath(f"{tempfile.gettempdir()}/array.npy")
         self.zarr = os.path.abspath(f"{tempfile.gettempdir()}/array.zarr")
 
+        # Clean up any existing files from previous test runs
+        self.remove(self.array, silent=True)
+        self.remove(self.zarr, silent=True)
+
         random = np.random.random(10000)
         fake_random = FakeArray(random)
         fake_random.chunks = (100,)
         zarr.save_array(store=self.zarr, arr=fake_random)
 
     @staticmethod
-    def remove(path):
+    def remove(path, silent=False):
         if os.path.isfile(path) or os.path.islink(path):
             os.remove(path)  # remove the file
         elif os.path.isdir(path):
             shutil.rmtree(path)  # remove dir and all contains
-        else:
+        elif not silent:
             raise ValueError("file {} is not a file or dir.".format(path))
 
     def test_zarr_to_array_cpu(self):
