@@ -374,9 +374,15 @@ class DatasetArray(Dataset):
 
         attrs = dir(self._data)
         for attr in attrs:
-            if not attr.startswith("__") and callable(getattr(self._data, attr)):
-                if not hasattr(self, attr):
-                    self.__dict__[attr] = getattr(self._data, attr)
+            if not attr.startswith("__"):
+                try:
+                    attr_value = getattr(self._data, attr)
+                    if callable(attr_value):
+                        if not hasattr(self, attr):
+                            self.__dict__[attr] = attr_value
+                except AttributeError:
+                    # Skip attributes that were removed in newer NumPy versions (e.g., itemset in NumPy 2.0)
+                    pass
 
     def __npy_header(self):
         """
@@ -620,7 +626,10 @@ class DatasetZarr(Dataset):
             array = zarr.open_array(store, meta_array=xp.empty(()))
             return da.from_zarr(array, chunks=array.chunks).map_blocks(xp.asarray)
 
-        return da.from_zarr(self._root_file, chunks=self._chunks).map_blocks(xp.asarray)
+        if self._chunks is not None:
+            return da.from_zarr(self._root_file, chunks=self._chunks).map_blocks(xp.asarray)
+        else:
+            return da.from_zarr(self._root_file).map_blocks(xp.asarray)
 
     def _load(self, xp, **kwargs):
         """
