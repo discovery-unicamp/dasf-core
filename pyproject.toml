@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dasf"
-version = "1.0.beta.7"
+version = "1.1"
 description = "DASF is an Accelerated Framework for Machine Learning"
 authors = ["Julio Faracco <jcfaracco@gmail.com>"]
 maintainers = ["Julio Faracco <jcfaracco@gmail.com>"]
@@ -12,8 +12,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Operating System :: OS Independent",
     "Environment :: GPU :: NVIDIA CUDA",
@@ -22,41 +20,38 @@ readme="README.md"
 exclude = ["tests/*", "docs/*"]
 
 [tool.poetry.dependencies]
-bokeh = ">=3.8.2"
-charset-normalizer = "3.4.2"
-dask = "<=2025.7.0"
-dask_cuda = "*"
-dask_jobqueue = "0.8.5"
+bokeh = "3.9.2"
+dask = "2026.7.1"
+distributed = "2026.7.1"
+dask_cuda = "26.10.0"
+dask_ml = "2025.1.0"
 dask_memusage = "1.1"
-dask_ml = ">=2025.1.0"
-dask-pytorch-ddp = ">=0.2.0"
+dask_jobqueue = "0.9.0"
+xarray = "2026.9.0"
 GPUtil = "1.4.0"
-gdown = "4.7.3"
-graphviz = "0.20.3"
-h5py = "3.14.0"
-hdbscan = "0.8.40"
-ipympl = "0.9.7"
-ipywidgets = "8.1.7"
-joblib = "1.5.1"
-jupyterlab = ">=4.5.7"
-lightning = "2.5.3"
-matplotlib = "3.10.3"
-memray = "1.19.2"
-networkx = "^3.2.1"
-numpy = ">=1.26.4,<2.3"
-ormsgpack = "^1.4.1"
-packaging = "23.2"
-pandas = "2.2.3"
-portalocker = "2.10.1"
-protobuf = ">=4.25.8"
-psutil = "6.1.1"
-pyarrow = "23.0.1"
-python = ">=3.10"
-scikit-learn = "1.6.1"
-tornado = "6.5.6"
-xarray = "2025.6.1"
-xgboost = "2.1.4"
-zarr = "2.18.7"
+gdown = "6.4.2"
+graphviz = "0.21"
+h5py = "3.16.0"
+hdbscan = "0.8.44"
+ipympl = "0.10.0"
+ipywidgets = "8.1.9"
+joblib = "1.5.3"
+jupyterlab = "4.5.4"
+lightning = 2.6.6"
+matplotlib = "3.10.8"
+memray = "1.20.0"
+networkx = "3.6.1"
+numpy = "2.3.5"
+ormsgpack = "1.13.0"
+packaging = "25.0"
+pandas = "2.3.3"
+portalocker = "4.4.2"
+protobuf = "6.33.5"
+tornado = "6.5.4"
+xgboost = "3.4.1"
+scikit-learn = "1.8.0"
+imageio = "2.38.1"
+zarr = "3.4.2"
 
 
 [tool.poetry.group.dev.dependencies]
