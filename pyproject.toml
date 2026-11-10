@@ -44,7 +44,7 @@ dependencies = [
     "networkx==3.7",
     "numpy==2.3.5",
     "ormsgpack==1.13.0",
-    "packaging==25.0",
+    "packaging==26.3",
     "pandas==2.3.3",
     "portalocker==4.4.2",
     "protobuf==6.33.5",
