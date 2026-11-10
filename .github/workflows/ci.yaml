@@ -9,7 +9,6 @@ on:
 
 jobs:
   lint:
-    environment: continuous_test
     strategy:
       matrix:
         # Run for Python 3.8 only for now
@@ -64,7 +63,6 @@ jobs:
 
   test_cpu:
     runs-on: ubuntu-latest
-    environment: continuous_test
     strategy:
       matrix: 
         zarr: ['zarr<3.0.0', 'zarr>=3.0.0'] 
