@@ -91,6 +91,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: continuous_test
     needs: [lint]
+    # Target GPU machine has docker issues; don't block CI on it for now.
+    continue-on-error: true
     # Skip this test for PRs due to dangerous code submitted.
     if: ${{ github.event_name != 'pull_request' }}
     permissions:
