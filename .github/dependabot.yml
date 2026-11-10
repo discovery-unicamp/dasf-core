@@ -1,6 +1,6 @@
 version: 2
 updates:
-  - package-ecosystem: "pip" # Change to "poetry" or "uv" if using those lockfiles
+  - package-ecosystem: "uv"
     directory: "/"           # Location of your pyproject.toml
     schedule:
       interval: "monthly"    # Options are "daily", "weekly", or "monthly"

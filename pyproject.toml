@@ -1,12 +1,16 @@
-[tool.poetry]
+[project]
 name = "dasf"
 version = "1.1"
 description = "DASF is an Accelerated Framework for Machine Learning"
-authors = ["Julio Faracco <jcfaracco@gmail.com>"]
-maintainers = ["Julio Faracco <jcfaracco@gmail.com>"]
+authors = [
+    { name = "Julio Faracco", email = "jcfaracco@gmail.com" },
+]
+maintainers = [
+    { name = "Julio Faracco", email = "jcfaracco@gmail.com" },
+]
 license = "MIT"
-homepage = "https://github.com/discovery-unicamp/dasf-core"
-repository = "https://github.com/discovery-unicamp/dasf-core"
+readme = "README.md"
+requires-python = ">=3.12"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -16,66 +20,69 @@ classifiers = [
     "Operating System :: OS Independent",
     "Environment :: GPU :: NVIDIA CUDA",
 ]
-readme="README.md"
-exclude = ["tests/*", "docs/*"]
+dependencies = [
+    "bokeh==3.9.2",
+    "dask==2026.7.1",
+    "distributed==2026.7.1",
+    "dask_cuda==26.10.0",
+    "dask_ml==2025.1.0",
+    "dask_memusage==1.1",
+    "dask_jobqueue==0.9.0",
+    "xarray==2026.9.0",
+    "GPUtil==1.4.0",
+    "gdown==6.4.2",
+    "graphviz==0.21",
+    "h5py==3.16.0",
+    "hdbscan==0.8.44",
+    "ipympl==0.10.0",
+    "ipywidgets==8.1.9",
+    "joblib==1.5.3",
+    "jupyterlab==4.5.4",
+    "lightning==2.6.6",
+    "matplotlib==3.10.8",
+    "memray==1.20.0",
+    "networkx==3.6.1",
+    "numpy==2.3.5",
+    "cupy==14.2.0",
+    "ormsgpack==1.13.0",
+    "packaging==25.0",
+    "pandas==2.3.3",
+    "portalocker==4.4.2",
+    "protobuf==6.33.5",
+    "tornado==6.5.4",
+    "xgboost==3.4.1",
+    "scikit-learn==1.8.0",
+    "imageio==2.38.1",
+    "zarr==3.4.2",
+    "Pygments==2.17.2",
+]
 
-[tool.poetry.dependencies]
-bokeh = "3.9.2"
-dask = "2026.7.1"
-distributed = "2026.7.1"
-dask_cuda = "26.10.0"
-dask_ml = "2025.1.0"
-dask_memusage = "1.1"
-dask_jobqueue = "0.9.0"
-xarray = "2026.9.0"
-GPUtil = "1.4.0"
-gdown = "6.4.2"
-graphviz = "0.21"
-h5py = "3.16.0"
-hdbscan = "0.8.44"
-ipympl = "0.10.0"
-ipywidgets = "8.1.9"
-joblib = "1.5.3"
-jupyterlab = "4.5.4"
-lightning = "2.6.6"
-matplotlib = "3.10.8"
-memray = "1.20.0"
-networkx = "3.6.1"
-numpy = "2.3.5"
-cupy = "14.2.0"
-ormsgpack = "1.13.0"
-packaging = "25.0"
-pandas = "2.3.3"
-portalocker = "4.4.2"
-protobuf = "6.33.5"
-tornado = "6.5.4"
-xgboost = "3.4.1"
-scikit-learn = "1.8.0"
-imageio = "2.38.1"
-zarr = "3.4.2"
-Pygments = "2.17.2"
+[project.urls]
+Homepage = "https://github.com/discovery-unicamp/dasf-core"
+Repository = "https://github.com/discovery-unicamp/dasf-core"
 
-
-[tool.poetry.group.dev.dependencies]
-black = "*"
-coverage = "*"
-flake8 = "*"
-hpccm = "*"
-interrogate = "*"
-isort = "*"
-nvtx = "*"
-parameterized = "*"
-pytest = "*"
-pytest-cov = "*"
-pytest-mock = "*"
-wheel = "*"
-
-[tool.poetry.group.docs.dependencies]
-sphinx = "*"
-sphinx-autoapi = "*"
-sphinx_rtd_theme = "*"
-nbsphinx = "*"
-pandoc = "*"
+[dependency-groups]
+dev = [
+    "black",
+    "coverage",
+    "flake8",
+    "hpccm",
+    "interrogate",
+    "isort",
+    "nvtx",
+    "parameterized",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "wheel",
+]
+docs = [
+    "sphinx",
+    "sphinx-autoapi",
+    "sphinx_rtd_theme",
+    "nbsphinx",
+    "pandoc",
+]
 
 [tool.isort]
 profile = "black"
@@ -98,5 +105,8 @@ exclude_also = [
     ]
 
 [build-system]
-requires = ["poetry-core>=1.1.10"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["dasf"]
