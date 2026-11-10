@@ -3,6 +3,7 @@
 
 import GPUtil
 import xgboost as xgb
+import xgboost.dask  # noqa
 
 from dasf.transforms import Fit, FitPredict, Predict
 from dasf.utils.funcs import is_gpu_supported
