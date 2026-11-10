@@ -994,7 +994,6 @@ version = "1.1"
 source = { editable = "." }
 dependencies = [
     { name = "bokeh" },
-    { name = "cupy" },
     { name = "dask" },
     { name = "dask-cuda" },
     { name = "dask-jobqueue" },
@@ -1029,6 +1028,11 @@ dependencies = [
     { name = "zarr" },
 ]
 
+[package.optional-dependencies]
+gpu = [
+    { name = "cupy" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "black" },
@@ -1055,7 +1059,7 @@ docs = [
 [package.metadata]
 requires-dist = [
     { name = "bokeh", specifier = "==3.9.2" },
-    { name = "cupy", specifier = "==14.2.0" },
+    { name = "cupy", marker = "extra == 'gpu'", specifier = "==14.2.0" },
     { name = "dask", specifier = "==2026.7.1" },
     { name = "dask-cuda", specifier = "==26.10.0" },
     { name = "dask-jobqueue", specifier = "==0.9.0" },
@@ -1089,6 +1093,7 @@ requires-dist = [
     { name = "xgboost", specifier = "==3.4.1" },
     { name = "zarr", specifier = "==3.4.2" },
 ]
+provides-extras = ["gpu"]
 
 [package.metadata.requires-dev]
 dev = [
