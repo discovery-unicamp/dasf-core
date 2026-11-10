@@ -17,10 +17,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Generate artifacts
         run: |
-          # Install twine and poetry
-          pip install twine poetry
-          poetry config virtualenvs.create false
-          poetry build
+          pip install twine build
+          python -m build
       - name: Upload artifacts
         run: |
           twine upload --repository ${{ vars.PYPI_REPOSITORY }} \
