@@ -41,7 +41,7 @@ dependencies = [
     "lightning==2.6.6",
     "matplotlib==3.10.8",
     "memray==1.20.0",
-    "networkx==3.6.1",
+    "networkx==3.7",
     "numpy==2.3.5",
     "ormsgpack==1.13.0",
     "packaging==25.0",
