@@ -2,9 +2,7 @@
 
 """ Agglomerative Clustering algorithm module. """
 
-from sklearn.cluster import (  # noqa
-    AgglomerativeClustering as AgglomerativeClustering_CPU,
-)
+from sklearn.cluster import AgglomerativeClustering as AgglomerativeClustering_CPU  # noqa
 
 from dasf.ml.cluster.classifier import ClusterClassifier
 from dasf.utils.funcs import is_gpu_supported
