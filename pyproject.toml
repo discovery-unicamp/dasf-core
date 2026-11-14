@@ -48,7 +48,7 @@ dependencies = [
     "pandas==2.3.3",
     "portalocker==4.4.2",
     "protobuf==6.33.5",
-    "tornado==6.6",
+    "tornado==6.6.1",
     "xgboost==3.4.1",
     "scikit-learn==1.9.1",
     "imageio==2.38.1",
